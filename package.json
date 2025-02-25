@@ -46,6 +46,7 @@
     "embla-carousel-react": "^8.5.2",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.476.0",
+    "moment-timezone": "^0.5.47",
     "mongoose": "^8.10.1",
     "next": "15.1.7",
     "next-auth": "^4.24.11",
