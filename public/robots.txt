@@ -1,0 +1,17 @@
+User-agent: *
+
+Disallow: /auth/forgot-password
+Disallow: /auth/reset-password
+Disallow: /learning
+Disallow: /cart
+Disallow: /admin
+Disallow: /checkout
+Disallow: /js
+Disallow: /css
+Disallow: /images
+Disallow: /icons
+Disallow: /backgrounds
+
+Allow: /sitemap.xml
+
+Sitemap: https://monaedu.com/sitemap.xml
