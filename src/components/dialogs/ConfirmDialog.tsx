@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from './ui/alert-dialog'
+} from '../ui/alert-dialog'
 
 interface ConfirmDialogProps {
   trigger: ReactNode

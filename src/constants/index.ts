@@ -1,3 +1,10 @@
+import {
+  LucideChartNoAxesCombined,
+  LucideHandCoins,
+  LucideTrendingDown,
+  LucideTrendingUp,
+  LucideWalletCards,
+} from 'lucide-react'
 import momentTZ from 'moment-timezone'
 
 // MARK: Regular Expressions

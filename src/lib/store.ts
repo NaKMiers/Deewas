@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import modalReducer from './reducers/modalReducer'
+import walletReducer from './reducers/walletReducer'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       modal: modalReducer,
+      wallet: walletReducer,
     },
     devTools: process.env.NODE_ENV !== 'production',
   })

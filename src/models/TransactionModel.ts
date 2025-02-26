@@ -21,12 +21,13 @@ const TransactionSchema = new Schema(
       ref: 'category',
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+    },
     amount: {
       type: Number,
       required: true,
-    },
-    description: {
-      type: String,
     },
     date: {
       type: Date,
@@ -36,6 +37,10 @@ const TransactionSchema = new Schema(
       type: String,
       enum: ['income', 'expense', 'saving', 'invest'],
       required: true,
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
@@ -49,12 +54,13 @@ export interface ITransaction {
   createdAt: string
   updatedAt: string
 
+  name: string
   amount: number
-  description?: string
   date: string
   user: string
   type: TransactionType
   category: string
+  deleted: boolean
 }
 
 export type TransactionType = 'income' | 'expense' | 'saving' | 'invest'

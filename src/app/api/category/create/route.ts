@@ -1,14 +1,14 @@
 import { connectDatabase } from '@/config/database'
-import WalletModel from '@/models/WalletModel'
+import CategoryModel from '@/models/CategoryModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Wallet
-import '@/models/WalletModel'
+// Models: Category
+import '@/models/CategoryModel'
 
-// [POST]: /wallet/create
+// [POST]: /category/create
 export async function POST(req: NextRequest) {
-  console.log('- Create Wallet -')
+  console.log('- Create Category -')
 
   try {
     // connect to database
@@ -23,17 +23,19 @@ export async function POST(req: NextRequest) {
     }
 
     // get data from request body
-    const { name, icon } = await req.json()
+    const { name, icon, type, walletId } = await req.json()
 
-    // create wallet
-    const wallet = await WalletModel.create({
+    // create category
+    const category = await CategoryModel.create({
+      wallet: walletId,
       user: userId,
       name,
       icon,
+      type,
     })
 
     // return response
-    return NextResponse.json({ wallet, message: 'Created wallet' }, { status: 200 })
+    return NextResponse.json({ category, message: 'Created category' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

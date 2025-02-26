@@ -1,10 +1,10 @@
 import { connectDatabase } from '@/config/database'
 import WalletModel from '@/models/WalletModel'
 import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
 // Models: Wallet
 import '@/models/WalletModel'
-import { getToken } from 'next-auth/jwt'
 
 // [PUT]: /wallet/:id/update
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

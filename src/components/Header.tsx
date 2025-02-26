@@ -19,8 +19,8 @@ function Header() {
   const { setTheme } = useTheme()
 
   return (
-    <header className="px-21/2 flex h-[50px] w-full items-center justify-between border-b border-muted-foreground bg-secondary text-primary">
-      <h1 className="font-semibold tracking-wide">Hello {shortName(user)}!👋</h1>
+    <header className="flex h-[50px] w-full items-center justify-between border-b border-muted-foreground bg-secondary px-21/2 text-primary">
+      <h1 className="text-nowrap font-semibold tracking-wide">Hello {shortName(user)}!👋</h1>
 
       <div className="flex items-center gap-2">
         <Button className="relative h-8">Upgrade</Button>

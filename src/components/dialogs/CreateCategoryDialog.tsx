@@ -1,15 +1,19 @@
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { setWalletCategories } from '@/lib/reducers/walletReducer'
+import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
-import { IWallet } from '@/models/WalletModel'
-import { updateWalletApi } from '@/requests'
+import { TransactionType } from '@/models/TransactionModel'
+import { createCategoryApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import CustomInput from './CustomInput'
-import { Button } from './ui/button'
+import CustomInput from '../CustomInput'
+import { Button } from '../ui/button'
 import {
   Dialog,
   DialogContent,
@@ -18,18 +22,27 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+} from '../ui/dialog'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { ICategory } from '@/models/CategoryModel'
 
-interface UpdateWalletDialogProps {
+interface CreateCategoryDialogProps {
+  walletId: string
+  type?: TransactionType
+  update?: (category: ICategory) => void
   trigger: ReactNode
-  wallet: IWallet
-  update?: Dispatch<SetStateAction<IWallet[]>>
   load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 
-function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: UpdateWalletDialogProps) {
+function CreateCategoryDialog({
+  walletId,
+  type,
+  trigger,
+  update,
+  load,
+  className = '',
+}: CreateCategoryDialogProps) {
   // form
   const {
     register,
@@ -37,13 +50,15 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
     formState: { errors },
     setError,
     setValue,
+    control,
     clearErrors,
     watch,
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      name: wallet.name,
-      icon: wallet.icon,
+      name: '',
+      icon: '',
+      type: type || '',
     },
   })
 
@@ -58,7 +73,7 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
       let isValid = true
 
       // name is required
-      if (!data.name) {
+      if (!data.name.trim()) {
         setError('name', {
           type: 'manual',
           message: 'Name is required',
@@ -71,33 +86,32 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
     [setError]
   )
 
-  // update wallet
-  const handleUpdateWallet: SubmitHandler<FieldValues> = useCallback(
+  // create category
+  const handleCreateCategory: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form
       if (!handleValidate(data)) return
-
       // start loading
       setSaving(true)
       if (load) {
         load(true)
       }
-      toast.loading('Updating wallet...', { id: 'update-wallet' })
+      toast.loading('Creating category...', { id: 'create-category' })
 
       try {
-        const { wallet: w, message } = await updateWalletApi(wallet._id, data)
+        const { category, message } = await createCategoryApi({ ...data, walletId })
 
-        console.log('wallet', w)
+        console.log('category', category)
 
         if (update) {
-          update(prev => prev.map(wallet => (wallet._id === w._id ? w : wallet)))
+          update(category)
         }
 
-        toast.success(message, { id: 'update-wallet' })
+        toast.success(message, { id: 'create-category' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error(err.message, { id: 'update-wallet' })
+        toast.error(err.message, { id: 'create-category' })
         console.log(err)
       } finally {
         // stop loading
@@ -107,7 +121,7 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
         }
       }
     },
-    [handleValidate, reset, update, load, wallet._id]
+    [handleValidate, load, reset, update, walletId]
   )
 
   return (
@@ -117,15 +131,17 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
     >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-      <DialogContent
-        className={cn(
-          'rounded-lg border-slate-200/30 bg-neutral-950 text-white sm:max-w-[425px]',
-          className
-        )}
-      >
+      <DialogContent className={cn('rounded-lg border-slate-200/30 sm:max-w-[425px]', className)}>
         <DialogHeader className="text-start">
-          <DialogTitle className="font-semibold">Update wallet</DialogTitle>
-          <DialogDescription>Wallets are used to group your categories</DialogDescription>
+          <DialogTitle className="font-semibold">
+            Create {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+            category
+          </DialogTitle>
+          <DialogDescription>
+            Categories are used to group your{' '}
+            {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+            transactions
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
@@ -135,9 +151,37 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
             disabled={saving}
             register={register}
             errors={errors}
-            required
             type="text"
             onFocus={() => clearErrors('name')}
+          />
+
+          <CustomInput
+            id="type"
+            label="Type"
+            disabled={saving}
+            register={register}
+            errors={errors}
+            type="select"
+            control={control}
+            options={[
+              {
+                label: 'Expense',
+                value: 'expense',
+              },
+              {
+                label: 'Income',
+                value: 'income',
+              },
+              {
+                label: 'Saving',
+                value: 'saving',
+              },
+              {
+                label: 'Invest',
+                value: 'invest',
+              },
+            ]}
+            onFocus={() => clearErrors('type')}
           />
 
           <div className="mt-3 text-xs">
@@ -147,13 +191,13 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
 
             <Popover>
               <PopoverTrigger className="w-full">
-                <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md bg-neutral-800">
+                <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
                   {form.icon ? (
                     <span className="block text-[48px] leading-[48px]">{form.icon}</span>
                   ) : (
                     <LucideCircleOff size={48} />
                   )}
-                  <p className="mt-1 text-xs text-slate-200">Click to select</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
                 </button>
               </PopoverTrigger>
 
@@ -164,7 +208,9 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
                 />
               </PopoverContent>
             </Popover>
-            <p className="mt-2 text-slate-300">This is how your wallet will appear in the app</p>
+            <p className="mt-2 text-muted-foreground">
+              This is how your category will appear in the app
+            </p>
           </div>
         </div>
 
@@ -172,6 +218,7 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
           <div className="mt-3 flex items-center justify-end gap-21/2">
             <DialogClose>
               <Button
+                variant="secondary"
                 className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
                 onClick={() => {
                   setOpen(false)
@@ -182,14 +229,14 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
               </Button>
             </DialogClose>
             <Button
-              variant="secondary"
+              variant="default"
               className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-              onClick={handleSubmit(handleUpdateWallet)}
+              onClick={handleSubmit(handleCreateCategory)}
             >
               {saving ? (
                 <LucideLoaderCircle
                   size={20}
-                  className="animate-spin text-slate-400"
+                  className="animate-spin text-muted-foreground"
                 />
               ) : (
                 'Save'
@@ -202,4 +249,4 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
   )
 }
 
-export default UpdateWalletDialog
+export default CreateCategoryDialog

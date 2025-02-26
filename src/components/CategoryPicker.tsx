@@ -1,0 +1,204 @@
+'use client'
+
+import { ICategory } from '@/models/CategoryModel'
+import { TransactionType } from '@/models/TransactionModel'
+import { deleteCategoryApi, getMyCategoriesApi } from '@/requests'
+import { LucidePlusCircle, LucidePlusSquare, LucideX } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { LuChevronsUpDown, LuLoaderCircle } from 'react-icons/lu'
+import ConfirmDialog from './dialogs/ConfirmDialog'
+import { Button } from './ui/button'
+import {
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from './ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { Skeleton } from './ui/skeleton'
+import CreateCategoryDialog from './dialogs/CreateCategoryDialog'
+import { cn } from '@/lib/utils'
+import { checkTranType } from '@/lib/string'
+import { useAppSelector } from '@/hooks/reduxHook'
+
+interface CategoryPickerProps {
+  type: TransactionType
+  onChange: (value: string) => void
+  initCategory?: ICategory
+  className?: string
+}
+
+function CategoryPicker({ type, onChange, initCategory, className = '' }: CategoryPickerProps) {
+  // store
+  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
+
+  // states
+  const [open, setOpen] = useState<boolean>(false)
+  const [categories, setCategories] = useState<ICategory[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(initCategory || null)
+
+  const [getting, setGetting] = useState<boolean>(true)
+  const [deleting, setDeleting] = useState<string>('')
+
+  // reset selected category when type changes
+  useEffect(() => {
+    setSelectedCategory(null)
+  }, [type])
+
+  // get user categories
+  const getUserCategories = useCallback(async () => {
+    // start loading
+    setGetting(true)
+
+    try {
+      const { categories } = await getMyCategoriesApi()
+      console.log('categories', categories)
+
+      setCategories(categories)
+    } catch (err: any) {
+      console.error(err)
+      toast.error(err.message)
+    } finally {
+      // stop loading
+      setGetting(false)
+    }
+  }, [])
+
+  // initially get user categories
+  useEffect(() => {
+    getUserCategories()
+  }, [getUserCategories])
+
+  // delete category
+  const handleDeleteCategory = useCallback(
+    async (id: string) => {
+      if (!id) return
+      // start loading
+      setDeleting(id)
+      try {
+        const { deletedCategory, message } = await deleteCategoryApi(id)
+        setCategories(categories.filter(category => category._id !== deletedCategory._id))
+        if (selectedCategory?._id === deletedCategory._id) setSelectedCategory(null)
+        toast.success(message, { id: 'delete-category' })
+      } catch (err: any) {
+        toast.error(err.message, { id: 'delete-category' })
+        console.log(err)
+      } finally {
+        // stop loading
+        setDeleting('')
+      }
+    },
+    [categories, selectedCategory?._id]
+  )
+
+  return (
+    <div className={`relative ${className}`}>
+      <Popover
+        open={open}
+        onOpenChange={setOpen}
+      >
+        <PopoverTrigger asChild>
+          {!getting ? (
+            <Button
+              variant="outline"
+              className="w-full justify-between"
+            >
+              {selectedCategory ? (
+                <p>
+                  <span>{selectedCategory.icon}</span> {selectedCategory.name}
+                </p>
+              ) : (
+                'Select Category'
+              )}{' '}
+              <LuChevronsUpDown size={18} />
+            </Button>
+          ) : (
+            <Skeleton className="h-9 rounded-md" />
+          )}
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0 shadow-md">
+          {/* Search Bar */}
+          <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+            <CommandInput placeholder="Type a command or search..." />
+            {curWallet && (
+              <CreateCategoryDialog
+                walletId={curWallet._id}
+                update={category => {
+                  setCategories([...categories, category])
+                }}
+                type={type}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    className="flex w-full justify-start gap-2 text-left text-sm"
+                  >
+                    <LucidePlusSquare size={18} />
+                    Create Category
+                  </Button>
+                }
+              />
+            )}
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandSeparator />
+              {categories
+                .filter(c => c.type === type)
+                .map(category => (
+                  <CommandItem
+                    className="justify-between gap-1 rounded-none p-0 py-px"
+                    key={category._id}
+                  >
+                    <Button
+                      variant="ghost"
+                      className={cn(
+                        'rounded-none border-l-[3px] text-xs',
+                        checkTranType(category.type).border
+                      )}
+                      onClick={() => {
+                        setOpen(false)
+                        setSelectedCategory(category)
+                        onChange(category._id)
+                      }}
+                      disabled={false}
+                    >
+                      <span>{category.icon}</span> {category.name}
+                    </Button>
+                    <ConfirmDialog
+                      label="Delete category"
+                      desc={`Are you sure you want to delete ${category.name} category?`}
+                      confirmLabel="Delete"
+                      cancelLabel="Cancel"
+                      onConfirm={() => handleDeleteCategory(category._id)}
+                      disabled={deleting === category._id}
+                      className="!h-auto !w-auto"
+                      trigger={
+                        <Button
+                          disabled={deleting === category._id}
+                          variant="ghost"
+                          className="trans-200 h-full flex-shrink-0 rounded-md px-21/2 py-1.5 text-start text-sm font-semibold hover:bg-slate-200/30"
+                        >
+                          {deleting === category._id ? (
+                            <LuLoaderCircle
+                              size={16}
+                              className="animate-spin text-slate-400"
+                            />
+                          ) : (
+                            <LucideX size={16} />
+                          )}
+                        </Button>
+                      }
+                    />
+                  </CommandItem>
+                ))}
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}
+
+export default CategoryPicker

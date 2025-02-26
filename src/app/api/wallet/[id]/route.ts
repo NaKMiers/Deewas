@@ -2,11 +2,13 @@ import { connectDatabase } from '@/config/database'
 import WalletModel from '@/models/WalletModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+import CategoryModel from '@/models/CategoryModel'
 
 // Models:
 import '@/models/CategoryModel'
-import CategoryModel from '@/models/CategoryModel'
 import '@/models/WalletModel'
+
+export const dynamic = 'force-dynamic'
 
 // [GET]: /wallet/:id
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

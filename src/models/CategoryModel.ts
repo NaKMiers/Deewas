@@ -11,20 +11,21 @@ const CategorySchema = new Schema(
       ref: 'wallet',
       required: true,
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      index: true,
+    },
     name: {
       type: String,
       required: true,
-    },
-    user: {
-      type: String,
-      index: true,
     },
     icon: {
       type: String,
     },
     type: {
       type: String,
-      enum: ['income', 'expense'],
+      enum: ['income', 'expense', 'saving', 'invest'],
       required: true,
     },
     deleted: {

@@ -1,13 +1,18 @@
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { setWalletCategories } from '@/lib/reducers/walletReducer'
+import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
+import { updateCategoryApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import CustomInput from './CustomInput'
-import { Button } from './ui/button'
+import toast from 'react-hot-toast'
+import CustomInput from '../CustomInput'
+import { Button } from '../ui/button'
 import {
   Dialog,
   DialogContent,
@@ -16,19 +21,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
-import { createCategoryApi } from '@/requests'
-import toast from 'react-hot-toast'
+} from '../ui/dialog'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface CreateCategoryDialogProps {
+interface UpdateCategoryDialogProps {
+  category: ICategory
   trigger: ReactNode
-  update?: Dispatch<SetStateAction<ICategory[]>>
+  update?: (category: ICategory) => void
   load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 
-function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateCategoryDialogProps) {
+function UpdateCategoryDialog({
+  category,
+  trigger,
+  update,
+  load,
+  className = '',
+}: UpdateCategoryDialogProps) {
   // form
   const {
     register,
@@ -36,13 +46,15 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
     formState: { errors },
     setError,
     setValue,
+    control,
     clearErrors,
     watch,
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
-      icon: '',
+      name: category.name || '',
+      icon: category.icon || '',
+      type: category.type || '',
     },
   })
 
@@ -57,7 +69,7 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
       let isValid = true
 
       // name is required
-      if (!data.name) {
+      if (!data.name.trim()) {
         setError('name', {
           type: 'manual',
           message: 'Name is required',
@@ -70,8 +82,8 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
     [setError]
   )
 
-  // create category
-  const handleCreateCategory: SubmitHandler<FieldValues> = useCallback(
+  // update category
+  const handleUpdateCategory: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form
       if (!handleValidate(data)) return
@@ -80,20 +92,20 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
       if (load) {
         load(true)
       }
-      toast.loading('Creating category...', { id: 'create-category' })
+      toast.loading('Updating category...', { id: 'update-category' })
 
       try {
-        const { category, message } = await createCategoryApi(data)
+        const { category: c, message } = await updateCategoryApi(category._id, { ...data })
 
-        console.log('category', category)
         if (update) {
-          update(prev => [category, ...prev])
+          update(c)
         }
-        toast.success(message, { id: 'create-category' })
+
+        toast.success(message, { id: 'update-category' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error(err.message, { id: 'create-category' })
+        toast.error(err.message, { id: 'update-category' })
         console.log(err)
       } finally {
         // stop loading
@@ -103,7 +115,7 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
         }
       }
     },
-    [handleValidate, load, reset, update]
+    [handleValidate, load, reset, update, category._id]
   )
 
   return (
@@ -113,15 +125,17 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
     >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-      <DialogContent
-        className={cn(
-          'rounded-lg border-slate-200/30 bg-neutral-950 text-white sm:max-w-[425px]',
-          className
-        )}
-      >
+      <DialogContent className={cn('rounded-lg border-slate-200/30 sm:max-w-[425px]', className)}>
         <DialogHeader className="text-start">
-          <DialogTitle className="font-semibold">Create category</DialogTitle>
-          <DialogDescription>Categories are used to group your transactions</DialogDescription>
+          <DialogTitle className="font-semibold">
+            Update {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+            category
+          </DialogTitle>
+          <DialogDescription>
+            Categories are used to group your{' '}
+            {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+            transactions
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
@@ -131,9 +145,37 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
             disabled={saving}
             register={register}
             errors={errors}
-            required
             type="text"
             onFocus={() => clearErrors('name')}
+          />
+
+          <CustomInput
+            id="type"
+            label="Type"
+            disabled={saving}
+            register={register}
+            errors={errors}
+            type="select"
+            control={control}
+            options={[
+              {
+                label: 'Expense',
+                value: 'expense',
+              },
+              {
+                label: 'Income',
+                value: 'income',
+              },
+              {
+                label: 'Saving',
+                value: 'saving',
+              },
+              {
+                label: 'Invest',
+                value: 'invest',
+              },
+            ]}
+            onFocus={() => clearErrors('type')}
           />
 
           <div className="mt-3 text-xs">
@@ -143,13 +185,13 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
 
             <Popover>
               <PopoverTrigger className="w-full">
-                <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md bg-neutral-800">
+                <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
                   {form.icon ? (
                     <span className="block text-[48px] leading-[48px]">{form.icon}</span>
                   ) : (
                     <LucideCircleOff size={48} />
                   )}
-                  <p className="mt-1 text-xs text-slate-200">Click to select</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
                 </button>
               </PopoverTrigger>
 
@@ -160,7 +202,9 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
                 />
               </PopoverContent>
             </Popover>
-            <p className="mt-2 text-slate-300">This is how your category will appear in the app</p>
+            <p className="mt-2 text-muted-foreground">
+              This is how your category will appear in the app
+            </p>
           </div>
         </div>
 
@@ -168,6 +212,7 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
           <div className="mt-3 flex items-center justify-end gap-21/2">
             <DialogClose>
               <Button
+                variant="secondary"
                 className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
                 onClick={() => {
                   setOpen(false)
@@ -178,14 +223,14 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
               </Button>
             </DialogClose>
             <Button
-              variant="secondary"
+              variant="default"
               className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-              onClick={handleSubmit(handleCreateCategory)}
+              onClick={handleSubmit(handleUpdateCategory)}
             >
               {saving ? (
                 <LucideLoaderCircle
                   size={20}
-                  className="animate-spin text-slate-400"
+                  className="animate-spin text-muted-foreground"
                 />
               ) : (
                 'Save'
@@ -198,4 +243,4 @@ function CreateCategoryDialog({ trigger, update, load, className = '' }: CreateC
   )
 }
 
-export default CreateCategoryDialog
+export default UpdateCategoryDialog

@@ -1,8 +1,9 @@
 import { cn } from '@/lib/utils'
 import React, { memo, useCallback, useState } from 'react'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import { Controller, FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import { FaEye } from 'react-icons/fa'
 import { Input } from './ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 interface InputProps {
   label: string
@@ -38,6 +39,7 @@ function CustomInput({
   icon: Icon,
   options,
   onClick,
+  control,
   onFocus,
   className = '',
   ...rest
@@ -58,28 +60,61 @@ function CustomInput({
     >
       <label
         htmlFor={id}
-        className={cn('ml-1 text-xs font-semibold', errors[id] ? 'text-rose-400' : '')}
+        className={cn('ml-1 text-xs font-semibold', errors[id] ? 'text-rose-500' : '')}
       >
         {label}
       </label>
 
       <div
         className={cn(
-          'relative mt-0.5 flex h-10 rounded-lg',
+          'relative mt-0.5 flex h-9 rounded-lg',
           errors[id] ? 'border-rose-500' : 'border-dark'
         )}
       >
-        <Input
-          id={id}
-          className="number-input peer block h-full w-full rounded-lg px-2.5 text-sm focus:outline-none focus:ring-0"
-          disabled={disabled}
-          type={type === 'password' ? (isShowPassword ? 'text' : 'password') : type}
-          {...register(id, { required })}
-          onWheel={e => e.currentTarget.blur()}
-          placeholder=""
-          onChange={onChange}
-          {...rest}
-        />
+        {type === 'select' && control ? (
+          <Controller
+            name={id}
+            control={control}
+            rules={{ required }}
+            render={({ field }) => (
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value}
+              >
+                <SelectTrigger
+                  className={cn('border', errors[id]?.message ? 'border-rose-500' : 'border-dark')}
+                >
+                  <SelectValue placeholder={label} />
+                </SelectTrigger>
+                <SelectContent>
+                  {options?.map(option => (
+                    <SelectItem
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+        ) : (
+          <Input
+            id={id}
+            className={cn(
+              'number-input peer block h-full w-full rounded-lg px-2.5 text-sm focus:outline-none focus:ring-0',
+              errors[id]?.message ? 'border-rose-500' : 'border-dark'
+            )}
+            disabled={disabled}
+            type={type === 'password' ? (isShowPassword ? 'text' : 'password') : type}
+            {...register(id, { required })}
+            onWheel={e => e.currentTarget.blur()}
+            placeholder=""
+            onChange={onChange}
+            {...rest}
+          />
+        )}
 
         {type === 'password' &&
           (isShowPassword ? (
@@ -98,8 +133,8 @@ function CustomInput({
       </div>
 
       {/* MARK: Error */}
-      {!errors[id]?.message && (
-        <p className="ml-1 mt-0.5 text-xs text-rose-400 drop-shadow-lg">
+      {errors[id]?.message && (
+        <p className="ml-1 mt-0.5 text-xs text-rose-500 drop-shadow-lg">
           {errors[id]?.message?.toString()}
         </p>
       )}
