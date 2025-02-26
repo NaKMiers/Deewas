@@ -23,7 +23,7 @@ function StoreProvider({ children, session }: { children: React.ReactNode; sessi
           attribute="class"
           defaultTheme="system"
           enableSystem
-          // disableTransitionOnChange
+          disableTransitionOnChange
         >
           {children}
         </ThemeProvider>

@@ -59,9 +59,21 @@ export default async function middleware(req: NextRequest) {
   }
 
   // require auth
-  return requireAuth(req, token)
+  const authPaths = ['/', '/transactions', '/budgets', '/account', '/api']
+  const isRequiredAuth = authPaths.some(path => pathname === path)
+  if (isRequiredAuth) {
+    return requireAuth(req, token)
+  }
 }
 
 export const config = {
-  matcher: ['/', '/admin/:path*', '/api/admin/:path*', '/auth/:path*'],
+  matcher: [
+    '/',
+    '/api/:path*',
+    '/transactions',
+    '/budgets',
+    '/account',
+    '/admin/:path*',
+    '/auth/:path*',
+  ],
 }

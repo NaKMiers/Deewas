@@ -5,7 +5,6 @@ const Schema = mongoose.Schema
 
 const UserSchema = new Schema(
   {
-    // Authentication
     username: {
       type: String,
       required: function (this: { authType: string }) {
@@ -48,7 +47,6 @@ const UserSchema = new Schema(
       enum: ['admin', 'user'],
       default: 'user',
     },
-
     avatar: {
       type: String,
       default: process.env.NEXT_PUBLIC_DEFAULT_AVATAR,
@@ -60,6 +58,10 @@ const UserSchema = new Schema(
     lastName: {
       type: String,
       default: '',
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
     },
   },
   {
@@ -102,6 +104,7 @@ export interface IUser {
   avatar: string
   firstName: string
   lastName: string
+  deleted: boolean
 }
 
 export type TAuthType = 'local' | 'google' | 'facebook' | 'apple'

@@ -1,13 +1,15 @@
 'use client'
 
-import Input from '@/components/Input'
+import CustomInput from '@/components/CustomInput'
 import { Button } from '@/components/ui/button'
 import { commonEmailMistakes } from '@/constants/mistakes'
 import { useAppDispatch } from '@/hooks/reduxHook'
 import { setPageLoading } from '@/lib/reducers/modalReducer'
+import { cn } from '@/lib/utils'
 import { registerApi } from '@/requests'
 import { Separator } from '@radix-ui/react-context-menu'
 import { signIn } from 'next-auth/react'
+import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -19,6 +21,7 @@ function RegisterPage() {
   // hooks
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const { setTheme, resolvedTheme } = useTheme()
 
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -144,9 +147,21 @@ function RegisterPage() {
 
   return (
     <div className="flex h-screen w-full items-center justify-center p-2">
-      <div className="w-full max-w-[400px] overflow-hidden rounded-2xl bg-primary text-secondary">
+      <div
+        className={cn(
+          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary',
+          resolvedTheme === 'dark'
+            ? 'border-neutral-800 bg-white text-secondary'
+            : 'bg-neutral-50 text-primary'
+        )}
+      >
         <div className="no-scrollbar overflow-y-auto px-10 py-8">
-          <h1 className="text-center text-lg font-semibold">Register to Deewas</h1>
+          <h1
+            className="text-center text-lg font-semibold"
+            onClick={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
+          >
+            Register to Deewas
+          </h1>
           <p className="text-center text-sm text-muted-foreground">
             Welcome! Please fill in the details to get started.
           </p>
@@ -155,7 +170,8 @@ function RegisterPage() {
 
           <div className="grid grid-cols-1 items-center justify-center gap-2 md:grid-cols-3">
             <Button
-              className="h-8 bg-primary hover:bg-primary/10"
+              variant={resolvedTheme === 'light' ? 'outline' : 'default'}
+              className="h-8"
               onClick={() => signIn('google', { callbackUrl: `/` })}
             >
               <Image
@@ -166,7 +182,8 @@ function RegisterPage() {
               />
             </Button>
             <Button
-              className="h-8 bg-primary hover:bg-primary/10"
+              variant={resolvedTheme === 'light' ? 'outline' : 'default'}
+              className="h-8"
               onClick={() => signIn('apple', { callbackUrl: `/` })}
             >
               <Image
@@ -177,7 +194,8 @@ function RegisterPage() {
               />
             </Button>
             <Button
-              className="h-8 bg-primary hover:bg-primary/10"
+              variant={resolvedTheme === 'light' ? 'outline' : 'default'}
+              className="h-8"
               onClick={() => signIn('facebook', { callbackUrl: `/` })}
             >
               <Image
@@ -195,45 +213,45 @@ function RegisterPage() {
             <div className="h-px w-full border border-neutral-300/30" />
           </div>
 
-          <Input
-            id="username"
-            label="Username"
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
-            type="text"
-            className=""
-            onFocus={() => clearErrors('username')}
-          />
+          <div className="flex flex-col gap-3">
+            <CustomInput
+              id="username"
+              label="Username"
+              disabled={isLoading}
+              register={register}
+              errors={errors}
+              required
+              type="text"
+              className=""
+              onFocus={() => clearErrors('username')}
+            />
 
-          <Input
-            id="email"
-            label="Email"
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
-            type="text"
-            className="mt-6"
-            onFocus={() => clearErrors('email')}
-          />
+            <CustomInput
+              id="email"
+              label="Email"
+              disabled={isLoading}
+              register={register}
+              errors={errors}
+              required
+              type="text"
+              onFocus={() => clearErrors('email')}
+            />
 
-          <Input
-            id="password"
-            label="Password"
-            disabled={isLoading}
-            register={register}
-            errors={errors}
-            required
-            type="password"
-            className="mt-6"
-            onFocus={() => clearErrors('password')}
-          />
+            <CustomInput
+              id="password"
+              label="Password"
+              disabled={isLoading}
+              register={register}
+              errors={errors}
+              required
+              type="password"
+              onFocus={() => clearErrors('password')}
+            />
+          </div>
 
           <Button
-            variant="outline"
-            className="mt-5 w-full text-primary"
+            variant="default"
+            className="mt-6 w-full bg-neutral-900 text-white"
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
           >
@@ -242,7 +260,7 @@ function RegisterPage() {
         </div>
 
         <div className="border-y border-slate-300 bg-neutral-100">
-          <p className="px-2 py-5 text-center text-sm">
+          <p className="px-2 py-5 text-center text-sm text-black">
             Already have an account?{' '}
             <Link
               href="/auth/login"

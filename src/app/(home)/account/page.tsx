@@ -2,7 +2,7 @@
 
 import { signOut } from 'next-auth/react'
 
-function HomePage() {
+function AccountPage() {
   return (
     <div>
       <button onClick={() => signOut()}>Logout</button>
@@ -10,4 +10,4 @@ function HomePage() {
   )
 }
 
-export default HomePage
+export default AccountPage
