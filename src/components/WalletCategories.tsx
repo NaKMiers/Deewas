@@ -118,6 +118,10 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
 
   // store
   const { walletCategories: categories } = useAppSelector(state => state.wallet)
+  const {
+    settings: { currency },
+    exchangeRates,
+  } = useAppSelector(state => state.settings)
 
   // states
   const [updating, setUpdating] = useState<boolean>(false)
@@ -170,7 +174,9 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
           <p className="text-sm font-semibold">{category.name}</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-body font-bold">{formatCurrency('USD', 255.5, 1)}</span>
+          <span className="font-body font-bold">
+            {formatCurrency(currency, category.amount, exchangeRates[currency])}
+          </span>
           {!updating && !deleting ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

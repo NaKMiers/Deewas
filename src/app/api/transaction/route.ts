@@ -28,8 +28,11 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.nextUrl)
+    const walletId = searchParams.get('walletId')
     const from = searchParams.get('from')
     const to = searchParams.get('to')
+
+    console.log('Wallet ID:', walletId)
 
     if (!from || !to) {
       return NextResponse.json({ message: 'Invalid date range' }, { status: 400 })
@@ -38,6 +41,7 @@ export async function GET(req: NextRequest) {
     // MARK: Overview
     const transactions = await TransactionModel.find({
       user: userId,
+      wallet: walletId,
       deleted: false,
       date: {
         $gte: toUTC(from),

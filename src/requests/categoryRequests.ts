@@ -1,8 +1,11 @@
 // Category  -------------------------------------
 
 // [GET]: /category
-export const getMyCategoriesApi = async (option: RequestInit = { next: { revalidate: 0 } }) => {
-  const res = await fetch('/api/category', option)
+export const getMyCategoriesApi = async (
+  query: string = '',
+  option: RequestInit = { next: { revalidate: 0 } }
+) => {
+  const res = await fetch(`/api/category${query}`, option)
 
   // check status
   if (!res.ok) {

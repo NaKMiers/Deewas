@@ -13,6 +13,9 @@ const UserSchema = new Schema(
       unique: function (this: { authType: string }) {
         return this.authType === 'local'
       },
+      default: function (this: { authType: string; email: string }) {
+        return this.authType !== 'local' ? `${this.email.split('@')[0]}` : ''
+      },
     },
     email: {
       type: String,
@@ -71,7 +74,7 @@ const UserSchema = new Schema(
 
 UserSchema.pre('save', async function (next) {
   console.log('- Pre Save User -')
-  // check authType & username before saving
+  // check authType before saving
   if (this.authType !== 'local' || !this.isModified('password')) {
     return next()
   }

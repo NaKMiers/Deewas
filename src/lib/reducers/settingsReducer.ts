@@ -1,0 +1,27 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+export const settings = createSlice({
+  name: 'settings',
+  initialState: {
+    settings: {
+      currency: 'USD',
+      language: 'en',
+    } as any,
+    loading: false as boolean,
+    exchangeRates: {} as any,
+  },
+  reducers: {
+    setSettings: (state, action: PayloadAction<any>) => {
+      state.settings = action.payload
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload
+    },
+    setExchangeRates: (state, action: PayloadAction<any>) => {
+      state.exchangeRates = action.payload
+    },
+  },
+})
+
+export const { setSettings, setLoading, setExchangeRates } = settings.actions
+export default settings.reducer

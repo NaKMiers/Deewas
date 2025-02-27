@@ -1,7 +1,15 @@
 import { connectDatabase } from '@/config/database'
+import { toUTC } from '@/lib/time'
+import CategoryModel from '@/models/CategoryModel'
 import TransactionModel from '@/models/TransactionModel'
+import WalletModel from '@/models/WalletModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+
+// Models: Transaction, Category, Wallet
+import '@/models/CategoryModel'
+import '@/models/TransactionModel'
+import '@/models/WalletModel'
 
 // [POST]: /transaction/create
 export async function POST(req: NextRequest) {
@@ -36,9 +44,17 @@ export async function POST(req: NextRequest) {
       category: categoryId,
       name,
       amount,
-      date,
+      date: toUTC(date),
       type,
     })
+
+    // update category amount and wallet
+    await Promise.all([
+      // update category amount
+      CategoryModel.findByIdAndUpdate(categoryId, { $inc: { amount } }),
+      // update wallet
+      WalletModel.findByIdAndUpdate(walletId, { $inc: { [type]: amount } }),
+    ])
 
     // return response
     return NextResponse.json({ transaction, message: 'Created transaction' }, { status: 200 })

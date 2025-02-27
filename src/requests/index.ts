@@ -6,3 +6,6 @@ export * from './walletRequests'
 
 // Category
 export * from './categoryRequests'
+
+// Settings
+export * from './settingsRequests'

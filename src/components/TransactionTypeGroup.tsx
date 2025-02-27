@@ -1,27 +1,38 @@
 import CreateCategoryDialog from '@/components/dialogs/CreateCategoryDialog'
 import { Button } from '@/components/ui/button'
 import { useAppSelector } from '@/hooks/reduxHook'
-import { checkTranType, formatSymbol } from '@/lib/string'
+import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
-import { LucidePlus, LucideTrendingUp } from 'lucide-react'
-import TransactionCategoryGroup from './TransactionCategoryGroup'
 import { TransactionType } from '@/models/TransactionModel'
+import { LucidePlus } from 'lucide-react'
+import TransactionCategoryGroup from './TransactionCategoryGroup'
 
 interface ITransactionTypeGroupProps {
   type: TransactionType
   categoryGroups: any[]
+  refetch?: () => void
   className?: string
 }
 
-function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransactionTypeGroupProps) {
+function TransactionTypeGroup({
+  type,
+  categoryGroups,
+  refetch,
+  className = '',
+}: ITransactionTypeGroupProps) {
   // store
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
+  const {
+    settings: { currency },
+    exchangeRates,
+  } = useAppSelector(state => state.settings)
 
   // values
-  const { Icon, color, background, border } = checkTranType(type)
+  const { Icon, background, border } = checkTranType(type)
+  const total = categoryGroups.reduce((total, group) => total + group.category.amount, 0)
 
   return (
-    <div className={cn('mt-21/2 flex flex-col gap-21/2 px-21/2 md:mt-21 md:px-21', className)}>
+    <div className={cn('mt-21/2 flex flex-col gap-21/2 md:mt-21', className)}>
       {/* Type Group */}
       <div className="">
         {/* Type Header */}
@@ -47,17 +58,20 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
           </div>
 
           <div>
-            <span className="text-lg font-semibold">{formatSymbol('USD') + ' ' + 100000}</span>{' '}
+            <span className="text-base font-semibold tracking-tight">
+              {formatCurrency(currency, total, exchangeRates[currency])}
+            </span>{' '}
           </div>
         </div>
 
         {/* Type Body */}
-        <div className="mt-1.5 flex flex-col gap-1">
+        <div className="mt-1.5 flex flex-col gap-2">
           {/* Category Group */}
           {categoryGroups.map((catGroup, index) => (
             <TransactionCategoryGroup
               category={catGroup.category}
               transactions={catGroup.transactions}
+              refetch={refetch}
               key={index}
             />
           ))}
@@ -66,6 +80,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
           {curWallet && (
             <CreateCategoryDialog
               walletId={curWallet._id}
+              type={type}
               trigger={
                 <Button
                   variant="secondary"

@@ -63,6 +63,8 @@ function HomePage() {
       <Separator className="my-8 h-0" />
 
       <History />
+
+      <div className="pt-32" />
     </div>
   )
 }

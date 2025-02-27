@@ -1,4 +1,4 @@
-import { currencies } from '@/constants/currencies'
+import { currencies } from '@/constants/settings'
 import { IUser } from '@/models/UserModel'
 import {
   LucideChartNoAxesCombined,
@@ -29,18 +29,17 @@ export const shortName = (user: IUser) => {
 export const formatSymbol = (currency: string): string =>
   currencies.find(c => c.value === currency)?.symbol || ''
 
-export const formatCurrency = (
-  currency: string,
-  amount: number,
-  rate: number,
-  isSymbol: boolean = true
-): string => {
-  let result = ''
-  if (isSymbol) {
-    result += formatSymbol(currency) + ' '
-  }
-  result += (amount * rate).toFixed(2)
-  return result
+export const formatCurrency = (currency: string, amount: number, rate: number): string => {
+  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
+
+  const formattedAmount = new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    maximumFractionDigits: 2,
+    currencyDisplay: 'symbol',
+  }).format(amount * rate)
+
+  return formattedAmount
 }
 
 export const formatPrice = (price: number = 0) => {
@@ -58,30 +57,35 @@ export const tranOptions = {
     color: 'text-emerald-500',
     background: 'bg-emerald-950',
     border: 'border-emerald-500',
+    hex: '#10b981',
   },
   expense: {
     Icon: LucideTrendingDown,
     color: 'text-rose-500',
     background: 'bg-rose-900',
     border: 'border-rose-500',
+    hex: '#f43f5e',
   },
   saving: {
     Icon: LucideHandCoins,
     color: 'text-yellow-500',
     background: 'bg-yellow-950',
     border: 'border-yellow-500',
+    hex: '#eab308',
   },
   invest: {
     Icon: LucideChartNoAxesCombined,
     color: 'text-violet-500',
     background: 'bg-violet-950',
     border: 'border-violet-500',
+    hex: '#8b5cf6',
   },
   balance: {
     Icon: LucideWalletCards,
     color: 'text-sky-500',
     background: 'bg-sky-950',
     border: 'border-sky-500',
+    hex: '#0ea5e9',
   },
 }
 

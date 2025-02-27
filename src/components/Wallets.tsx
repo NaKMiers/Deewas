@@ -59,22 +59,30 @@ function Wallets({ className = '' }: WalletProps) {
 
       {/* Wallet List */}
       <SkeletonWallets loading={loading}>
-        <Carousel className="mt-1 w-full px-21/2 md:px-21">
-          <CarouselContent>
-            {wallets.map((wallet: IWallet) => (
-              <CarouselItem
-                className={cn('md:basis-1/2 lg:basis-1/3', className)}
-                key={wallet._id}
-              >
-                <WalletCard
-                  wallet={wallet}
-                  update={setWallets}
-                  className="p"
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+        {wallets.length > 0 ? (
+          <Carousel className="mt-1 w-full px-21/2 md:px-21">
+            <CarouselContent>
+              {wallets.map((wallet: IWallet) => (
+                <CarouselItem
+                  className={cn('md:basis-1/2 lg:basis-1/3', className)}
+                  key={wallet._id}
+                >
+                  <WalletCard
+                    wallet={wallet}
+                    update={setWallets}
+                    className="p"
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        ) : (
+          <div className="mt-1 px-21/2 md:px-21">
+            <div className="flex w-full items-center justify-center rounded-md border px-2 py-6 text-lg font-bold text-muted-foreground/50">
+              No wallets found.
+            </div>
+          </div>
+        )}
       </SkeletonWallets>
     </div>
   )
@@ -82,10 +90,18 @@ function Wallets({ className = '' }: WalletProps) {
 
 export default Wallets
 
-export function SkeletonWallets({ loading, children }: { loading: boolean; children: ReactNode }) {
+export function SkeletonWallets({
+  loading,
+  children,
+  className = '',
+}: {
+  loading: boolean
+  children: ReactNode
+  className?: string
+}) {
   return loading ? (
-    <div className="px-21/2">
-      <Skeleton className="loading mt-2 h-[162px] w-full rounded-lg px-2" />
+    <div className={cn('px-21/2', className)}>
+      <Skeleton className="loading h-[162px] w-full rounded-lg px-2" />
     </div>
   ) : (
     children

@@ -56,7 +56,7 @@ function LoginPage() {
           toast.success('Login Successfully!', { id: 'login' })
 
           // redirect to home page
-          router.push('/')
+          router.push('/wizard')
         }
 
         if (res?.error) {
@@ -122,7 +122,7 @@ function LoginPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('google', { callbackUrl: `/` })}
+              onClick={() => signIn('google', { callbackUrl: '/wizard' })}
             >
               <Image
                 src="/icons/google.png"
@@ -134,7 +134,7 @@ function LoginPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('apple', { callbackUrl: `/` })}
+              onClick={() => signIn('apple', { callbackUrl: '/wizard' })}
             >
               <Image
                 src="/icons/apple.png"
@@ -146,7 +146,7 @@ function LoginPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('facebook', { callbackUrl: `/` })}
+              onClick={() => signIn('facebook', { callbackUrl: '/wizard' })}
             >
               <Image
                 src="/icons/facebook.png"
@@ -184,7 +184,7 @@ function LoginPage() {
               required
               type="password"
               onFocus={() => clearErrors('password')}
-              icon={LucideText}
+              icon={<LucideText />}
             />
           </div>
 

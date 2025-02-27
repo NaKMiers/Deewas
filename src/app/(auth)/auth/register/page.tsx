@@ -112,12 +112,12 @@ function RegisterPage() {
           toast.success(message)
 
           // redirect to home page
-          router.push('/')
+          router.push('/wizard')
         }
       } catch (err: any) {
         // show error message
         console.log(err)
-        toast.error(err.message)
+        toast.error('Failed to register')
       } finally {
         // stop loading
         setIsLoading(false)
@@ -172,7 +172,7 @@ function RegisterPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('google', { callbackUrl: `/` })}
+              onClick={() => signIn('google', { callbackUrl: '/wizard' })}
             >
               <Image
                 src="/icons/google.png"
@@ -184,7 +184,7 @@ function RegisterPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('apple', { callbackUrl: `/` })}
+              onClick={() => signIn('apple', { callbackUrl: '/wizard' })}
             >
               <Image
                 src="/icons/apple.png"
@@ -196,7 +196,7 @@ function RegisterPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('facebook', { callbackUrl: `/` })}
+              onClick={() => signIn('facebook', { callbackUrl: '/wizard' })}
             >
               <Image
                 src="/icons/facebook.png"

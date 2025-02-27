@@ -1,5 +1,7 @@
 import { connectDatabase } from '@/config/database'
+import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
+import WalletModel from '@/models/WalletModel'
 import bcrypt from 'bcrypt'
 import { SessionStrategy } from 'next-auth'
 
@@ -146,12 +148,19 @@ const authOptions = {
           }
 
           // create new user with google information (auto verified email)
-          await UserModel.create({
+          const newUser = await UserModel.create({
             email,
             avatar,
             firstName,
             lastName,
             authType: account.provider,
+          })
+
+          // initially create personal wallet
+          await WalletModel.create({
+            user: newUser._id,
+            name: 'Personal',
+            icon: '⭐',
           })
         }
 

@@ -4,8 +4,8 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType, formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
-import { ICategory } from '@/models/CategoryModel'
-import { createTransactionApi } from '@/requests/transactionRequests'
+import { IFullTransaction } from '@/models/TransactionModel'
+import { updateTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
 import { ReactNode, useCallback, useState } from 'react'
@@ -27,21 +27,20 @@ import {
 } from '../ui/dialog'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface CreateTransactionDialogProps {
-  category?: ICategory
+interface UpdateTransactionDialogProps {
+  transaction: IFullTransaction
   trigger: ReactNode
   refetch?: () => void
   className?: string
 }
 
-function CreateTransactionDialog({
-  category,
+function UpdateTransactionDialog({
+  transaction,
   trigger,
   refetch,
   className = '',
-}: CreateTransactionDialogProps) {
+}: UpdateTransactionDialogProps) {
   // store
-  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
     settings: { currency },
     exchangeRates,
@@ -55,17 +54,15 @@ function CreateTransactionDialog({
     setError,
     setValue,
     watch,
-    control,
     clearErrors,
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: curWallet?._id,
-      name: '',
-      categoryId: category?._id || '',
-      amount: '',
+      walletId: transaction.wallet._id || '',
+      name: transaction.name || '',
+      categoryId: transaction.category._id || '',
+      amount: (transaction.amount * exchangeRates[currency]).toFixed(2) || '',
       date: moment().format('YYYY-MM-DD'),
-      type: category?.type || '',
     },
   })
 
@@ -96,15 +93,6 @@ function CreateTransactionDialog({
         isValid = false
       }
 
-      // type is required
-      if (!data.type) {
-        setError('type', {
-          type: 'manual',
-          message: 'Type is required',
-        })
-        isValid = false
-      }
-
       // category must be selected
       if (!data.categoryId) {
         setError('categoryId', {
@@ -128,49 +116,43 @@ function CreateTransactionDialog({
     [setError]
   )
 
-  // create transaction
-  const handleCreateTransaction: SubmitHandler<FieldValues> = useCallback(
+  // update transaction
+  const handleUpdateTransaction: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!curWallet?._id) {
-        return toast.error('Please select a wallet to continue')
-      }
-
       // validate form
       if (!handleValidate(data)) return
 
       // start loading
       setSaving(true)
-      toast.loading('Creating transaction...', { id: 'create-transaction' })
+      toast.loading('Updating transaction...', { id: 'update-transaction' })
 
       console.log('data', {
         ...data,
-        walletId: curWallet._id,
         date: toUTC(data.date),
         amount: data.amount / exchangeRates[currency],
       })
 
       try {
-        const { message } = await createTransactionApi({
+        const { message } = await updateTransactionApi(transaction._id, {
           ...data,
-          walletId: curWallet._id,
           date: toUTC(data.date),
           amount: data.amount / exchangeRates[currency],
         })
 
         if (refetch) refetch()
 
-        toast.success(message, { id: 'create-transaction' })
+        toast.success(message, { id: 'update-transaction' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error('Failed to create transaction', { id: 'create-transaction' })
+        toast.error('Failed to update transaction', { id: 'update-transaction' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id, exchangeRates, currency]
+    [handleValidate, reset, refetch, exchangeRates, currency, transaction._id]
   )
 
   return (
@@ -183,7 +165,10 @@ function CreateTransactionDialog({
       <DialogContent className={cn('rounded-lg border-slate-200/30 sm:max-w-[425px]', className)}>
         <DialogHeader className="text-start">
           <DialogTitle className="font-semibold">
-            Create {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+            Update{' '}
+            {transaction.type && (
+              <span className={cn(checkTranType(transaction.type).color)}>{transaction.type}</span>
+            )}{' '}
             transaction
           </DialogTitle>
           <DialogDescription>Transactions keep track of your finances effectively.</DialogDescription>
@@ -211,46 +196,15 @@ function CreateTransactionDialog({
             icon={<span>{formatSymbol(currency)}</span>}
           />
 
-          {!category && (
-            <CustomInput
-              id="type"
-              label="Type"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="select"
-              control={control}
-              options={[
-                {
-                  label: 'Expense',
-                  value: 'expense',
-                },
-                {
-                  label: 'Income',
-                  value: 'income',
-                },
-                {
-                  label: 'Saving',
-                  value: 'saving',
-                },
-                {
-                  label: 'Invest',
-                  value: 'invest',
-                },
-              ]}
-              onFocus={() => clearErrors('type')}
-            />
-          )}
-
           <div className="mt-1 flex flex-wrap gap-4">
             {/* Category */}
             <div className="flex flex-1 flex-col">
               <p className="mb-1 text-xs font-semibold">Category</p>
               <div onFocus={() => clearErrors('category')}>
                 <CategoryPicker
-                  category={category}
+                  category={transaction.category}
                   onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                  type={form.type}
+                  type={transaction.type}
                 />
               </div>
               {errors.category?.message && (
@@ -312,7 +266,7 @@ function CreateTransactionDialog({
               disabled={saving}
               variant="default"
               className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-              onClick={handleSubmit(handleCreateTransaction)}
+              onClick={handleSubmit(handleUpdateTransaction)}
             >
               {saving ? (
                 <LucideLoaderCircle
@@ -330,7 +284,7 @@ function CreateTransactionDialog({
   )
 }
 
-export default CreateTransactionDialog
+export default UpdateTransactionDialog
 function refresh() {
   throw new Error('Function not implemented.')
 }

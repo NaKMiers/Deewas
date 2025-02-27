@@ -13,7 +13,7 @@ function Navbar() {
   const { theme, setTheme } = useTheme()
 
   return (
-    <nav className="fixed bottom-0 left-0 flex h-[50px] w-full justify-between gap-0.5 bg-primary text-secondary">
+    <nav className="fixed bottom-0 left-0 flex h-[60px] w-full justify-between gap-0.5 bg-primary text-secondary">
       <Link
         href="/"
         className="flex flex-1 flex-col items-center justify-center gap-0.5"

@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/hooks/reduxHook'
-import { setCurWallet } from '@/lib/reducers/walletReducer'
-import { checkTranType, formatSymbol, tranOptions } from '@/lib/string'
+import { setCurWallet, updateWallet } from '@/lib/reducers/walletReducer'
+import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
@@ -29,7 +29,7 @@ interface WalletCardProps {
   className?: string
 }
 
-function WalletCard({ wallet: data, update, className = '' }: WalletCardProps) {
+function WalletCard({ wallet, update, className = '' }: WalletCardProps) {
   // hooks
   const router = useRouter()
   const dispatch = useDispatch()
@@ -38,7 +38,6 @@ function WalletCard({ wallet: data, update, className = '' }: WalletCardProps) {
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
 
   // states
-  const [wallet, setWallet] = useState<IWallet>(data)
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [updating, setUpdating] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -102,7 +101,7 @@ function WalletCard({ wallet: data, update, className = '' }: WalletCardProps) {
                   </Button>
 
                   <UpdateWalletDialog
-                    update={wallet => setWallet(wallet)}
+                    update={wallet => dispatch(updateWallet(wallet))}
                     wallet={wallet}
                     load={setUpdating}
                     trigger={
@@ -148,8 +147,7 @@ function WalletCard({ wallet: data, update, className = '' }: WalletCardProps) {
         <CardContent className="flex flex-col gap-2 px-4 pb-2">
           <Item
             title="Balance"
-            value={1000000}
-            currency="USD"
+            value={wallet.income - wallet.expense}
             type="balance"
           />
           <div
@@ -157,26 +155,22 @@ function WalletCard({ wallet: data, update, className = '' }: WalletCardProps) {
           >
             <Item
               title="Income"
-              value={1000000}
-              currency="USD"
+              value={wallet.income}
               type="income"
             />
             <Item
               title="Expense"
-              value={1000000}
-              currency="USD"
+              value={wallet.expense}
               type="expense"
             />
             <Item
               title="Saving"
-              value={1000000}
-              currency="USD"
+              value={wallet.saving}
               type="saving"
             />
             <Item
               title="Invest"
-              value={1000000}
-              currency="USD"
+              value={wallet.invest}
               type="invest"
             />
           </div>
@@ -206,11 +200,17 @@ export default WalletCard
 interface CardProps {
   title: string
   value: number
-  currency: string
   type: TransactionType | 'balance'
   className?: string
 }
-function Item({ title, type, value, currency }: CardProps) {
+function Item({ title, type, value }: CardProps) {
+  // store
+  const {
+    settings: { currency },
+    exchangeRates,
+  } = useAppSelector(state => state.settings)
+
+  // values
   const { Icon, background, border } = checkTranType(type)
 
   return (
@@ -227,7 +227,9 @@ function Item({ title, type, value, currency }: CardProps) {
       <div className="flex flex-col">
         <p className="font-body tracking-wider">{title}</p>
 
-        <span className="text-xl font-semibold">{formatSymbol(currency) + ' ' + value}</span>
+        <span className="text-xl font-semibold">
+          {formatCurrency(currency, exchangeRates[currency], value)}
+        </span>
       </div>
     </div>
   )

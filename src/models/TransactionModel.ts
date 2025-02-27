@@ -54,12 +54,13 @@ export interface ITransaction {
   createdAt: string
   updatedAt: string
 
+  user: string
+  wallet: string
+  category: string
+  type: TransactionType
   name: string
   amount: number
   date: string
-  user: string
-  type: TransactionType
-  category: string
   deleted: boolean
 }
 

@@ -177,6 +177,9 @@ function UpdateCategoryDialog({
             ]}
             onFocus={() => clearErrors('type')}
           />
+          <p className="-mt-2 pl-1 text-xs italic text-muted-foreground text-yellow-400">
+            When you change type, all transaction&apos;s type of this category will be changed!
+          </p>
 
           <div className="mt-3 text-xs">
             <p className="font-semibold">

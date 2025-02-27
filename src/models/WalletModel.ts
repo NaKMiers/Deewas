@@ -21,6 +21,24 @@ const WalletSchema = new Schema(
       type: Boolean,
       default: false,
     },
+
+    // sync with transaction
+    income: {
+      type: Number,
+      default: 0,
+    },
+    expense: {
+      type: Number,
+      default: 0,
+    },
+    saving: {
+      type: Number,
+      default: 0,
+    },
+    invest: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 )
@@ -38,13 +56,11 @@ export interface IWallet {
   icon: string
   type: TransactionType
   delete: boolean
-}
 
-export type IFullWallet = IWallet & {
-  user: IUser
-  balance: number
   income: number
   expense: number
   saving: number
   invest: number
 }
+
+export type IFullWallet = IWallet & { user: IUser }

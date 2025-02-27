@@ -1,0 +1,69 @@
+import { connectDatabase } from '@/config/database'
+import { getToken } from 'next-auth/jwt'
+import { NextRequest, NextResponse } from 'next/server'
+import { toUTC } from '@/lib/time'
+import CategoryModel from '@/models/CategoryModel'
+import TransactionModel from '@/models/TransactionModel'
+import WalletModel from '@/models/WalletModel'
+
+// Models: Transaction, Category, Wallet
+import '@/models/CategoryModel'
+import '@/models/TransactionModel'
+import '@/models/WalletModel'
+
+// [PUT]: /transaction/:id/update
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  console.log('- Update Transaction - ')
+
+  try {
+    // connect to database
+    await connectDatabase()
+
+    const token = await getToken({ req })
+    const userId = token?._id
+
+    // check if user is logged in
+    if (!userId) {
+      return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
+    }
+
+    // get transaction id to update
+    const { id } = await params
+
+    // get data from request
+    const { name, amount, date } = await req.json()
+
+    console.log('name', name)
+    console.log('amount', amount)
+    console.log('date', date)
+
+    // update transaction
+    const transaction = await TransactionModel.findByIdAndUpdate(
+      id,
+      { $set: { name, amount, date: toUTC(date) } },
+      { new: false }
+    )
+
+    // check if transaction not found
+    if (!transaction) {
+      return NextResponse.json({ message: 'Transaction not found' }, { status: 404 })
+    }
+
+    // amount is changed
+    if (transaction.amount !== amount) {
+      const diffAmount = amount - transaction.amount
+
+      await Promise.all([
+        // update category amount of this transaction
+        CategoryModel.findByIdAndUpdate(transaction.category, { $inc: { amount: diffAmount } }),
+        // update wallet amount of this transaction
+        WalletModel.findByIdAndUpdate(transaction.wallet, { $inc: { [transaction.type]: diffAmount } }),
+      ])
+    }
+
+    // return response
+    return NextResponse.json({ transaction, message: 'Updated transaction' }, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}

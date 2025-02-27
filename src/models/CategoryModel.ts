@@ -32,6 +32,12 @@ const CategorySchema = new Schema(
       type: Boolean,
       default: false,
     },
+
+    // sync with transaction
+    amount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 )
@@ -50,6 +56,8 @@ export interface ICategory {
   icon: string
   type: TransactionType
   deleted: boolean
+
+  amount: number
 }
 
 export type IFullCategory = ICategory & { user: IUser; wallet: IWallet }

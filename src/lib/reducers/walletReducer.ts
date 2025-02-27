@@ -4,17 +4,23 @@ export const wallet = createSlice({
   name: 'wallet',
   initialState: {
     // for (home)
-    curWallet: null,
-    wallets: [],
-    loading: false,
+    curWallet: null as any,
+    wallets: [] as any[],
+    loading: false as boolean,
 
     // for wallet page
-    wallet: null,
-    walletCategories: [],
+    wallet: null as any,
+    walletCategories: [] as any[],
   },
   reducers: {
     setWallets: (state, action: PayloadAction<any>) => {
       state.wallets = action.payload
+    },
+    updateWallet: (state, action: PayloadAction<any>) => {
+      state.wallets = state.wallets.map((w: any) => (w._id === action.payload._id ? action.payload : w))
+      if (state.curWallet?._id === action.payload._id) {
+        state.curWallet = action.payload
+      }
     },
     setCurWallet: (state, action: PayloadAction<any>) => {
       state.curWallet = action.payload
@@ -22,6 +28,8 @@ export const wallet = createSlice({
     setLoading: (state, action: PayloadAction<any>) => {
       state.loading = action.payload
     },
+
+    // for wallet page
     setWallet: (state, action: PayloadAction<any>) => {
       state.wallet = action.payload
     },
@@ -31,5 +39,6 @@ export const wallet = createSlice({
   },
 })
 
-export const { setWallets, setCurWallet, setLoading, setWallet, setWalletCategories } = wallet.actions
+export const { setWallets, setCurWallet, updateWallet, setLoading, setWallet, setWalletCategories } =
+  wallet.actions
 export default wallet.reducer

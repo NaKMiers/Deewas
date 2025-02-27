@@ -1,13 +1,14 @@
 import { cn } from '@/lib/utils'
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, ReactNode, useCallback, useState } from 'react'
 import { Controller, FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import { FaEye } from 'react-icons/fa'
 import { Input } from './ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import { Button } from './ui/button'
 
 interface InputProps {
   label: string
-  icon?: React.ElementType
+  icon?: ReactNode
   className?: string
 
   id: string
@@ -71,6 +72,15 @@ function CustomInput({
           errors[id] ? 'border-rose-500' : 'border-dark'
         )}
       >
+        {Icon && (
+          <Button
+            variant="outline"
+            className="mr-1 w-9"
+          >
+            {Icon}
+          </Button>
+        )}
+
         {type === 'select' && control ? (
           <Controller
             name={id}

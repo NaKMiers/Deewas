@@ -155,34 +155,36 @@ function CreateCategoryDialog({
             onFocus={() => clearErrors('name')}
           />
 
-          <CustomInput
-            id="type"
-            label="Type"
-            disabled={saving}
-            register={register}
-            errors={errors}
-            type="select"
-            control={control}
-            options={[
-              {
-                label: 'Expense',
-                value: 'expense',
-              },
-              {
-                label: 'Income',
-                value: 'income',
-              },
-              {
-                label: 'Saving',
-                value: 'saving',
-              },
-              {
-                label: 'Invest',
-                value: 'invest',
-              },
-            ]}
-            onFocus={() => clearErrors('type')}
-          />
+          {!type && (
+            <CustomInput
+              id="type"
+              label="Type"
+              disabled={saving}
+              register={register}
+              errors={errors}
+              type="select"
+              control={control}
+              options={[
+                {
+                  label: 'Expense',
+                  value: 'expense',
+                },
+                {
+                  label: 'Income',
+                  value: 'income',
+                },
+                {
+                  label: 'Saving',
+                  value: 'saving',
+                },
+                {
+                  label: 'Invest',
+                  value: 'invest',
+                },
+              ]}
+              onFocus={() => clearErrors('type')}
+            />
+          )}
 
           <div className="mt-3 text-xs">
             <p className="font-semibold">

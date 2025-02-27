@@ -24,8 +24,16 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
 
+    // search params
+    const { searchParams } = new URL(req.nextUrl)
+    const walletId = searchParams.get('walletId')
+
     // get user categories
-    const categories = await CategoryModel.find({ user: userId, deleted: false }).lean()
+    const categories = await CategoryModel.find({
+      user: userId,
+      wallet: walletId,
+      deleted: false,
+    }).lean()
 
     // return response
     return NextResponse.json({ categories, message: 'Categories are here' }, { status: 200 })

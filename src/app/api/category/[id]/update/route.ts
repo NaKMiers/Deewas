@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Category
 import '@/models/CategoryModel'
+import TransactionModel from '@/models/TransactionModel'
 
 // [PUT]: /category/:id/update
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -26,10 +27,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params
 
     // check authorization
-    let categoryUserId: any = await CategoryModel.findById(id).distinct('user')
-    categoryUserId = categoryUserId[0].toString()
+    let cat: any = await CategoryModel.findById(id).select('user type')
 
-    if (categoryUserId !== userId) {
+    if (cat.user.toString() !== userId) {
       return NextResponse.json(
         { message: 'You are not allowed to update this category' },
         { status: 401 }
@@ -39,16 +39,19 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // get data from request body
     const { name, icon, type } = await req.json()
 
+    const promises = []
+
     // update category
-    const category = await CategoryModel.findByIdAndUpdate(
-      id,
-      {
-        name,
-        icon,
-        type,
-      },
-      { new: true }
-    ).lean()
+    promises.push(CategoryModel.findByIdAndUpdate(id, { name, icon, type }, { new: true }).lean())
+
+    // category type is changed
+    if (cat.type !== type) {
+      console.log('ddd')
+      // update type of all transactions of this category
+      promises.push(TransactionModel.updateMany({ category: id }, { $set: { type } }))
+    }
+
+    const [category] = await Promise.all(promises)
 
     // return response
     return NextResponse.json({ category, message: 'Updated category' }, { status: 200 })
