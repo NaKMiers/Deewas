@@ -29,7 +29,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params
 
     // get data from request body
-    const { categoryId, name, total, begin, end } = await req.json()
+    const { categoryId, total, begin, end } = await req.json()
 
     // calculate total amount of transactions of category from begin to end of budget
     const transactions = await TransactionModel.find({
@@ -45,7 +45,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       {
         $set: {
           category: categoryId,
-          name,
           total,
           begin: toUTC(begin),
           end: toUTC(end),
@@ -56,7 +55,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     ).lean()
 
     // return response
-    return NextResponse.json({ budget, message: 'updated budget' }, { status: 200 })
+    return NextResponse.json({ budget, message: 'Updated budget' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

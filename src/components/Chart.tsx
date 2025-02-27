@@ -1,8 +1,8 @@
 'use client'
 
-import { capitalize, checkTranType, formatCurrency } from '@/lib/string'
+import { useAppSelector } from '@/hooks/reduxHook'
+import { capitalize, checkTranType, formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
-import { PieChart } from 'lucide-react'
 import { useTheme } from 'next-themes'
 import { memo, useCallback } from 'react'
 import {
@@ -11,10 +11,8 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Cell,
   Line,
   LineChart,
-  Pie,
   PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
@@ -30,6 +28,9 @@ export type ChartDatum = {
   name: string
   income: number
   expense: number
+  balance: number
+  saving: number
+  invest: number
 }
 
 interface ChartProps {
@@ -37,20 +38,24 @@ interface ChartProps {
   types: string[]
   data: any[]
   className?: string
-  currency: string
-  exchangeRate: number
+  maxKey: string
 }
 
-function Chart({ types, chart, data = [], currency, exchangeRate, className = '' }: ChartProps) {
+function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) {
   // hooks
   const { resolvedTheme } = useTheme()
 
+  // store
+  const {
+    settings: { currency },
+  } = useAppSelector(state => state.settings)
+
   const formatTooltip = useCallback(
     (value: number, name: string) => {
-      const formattedValue = formatCurrency(currency, value as number, exchangeRate)
+      const formattedValue = formatCurrency(currency, value, 1)
       return [`${capitalize(name as string)}: ${formattedValue}`]
     },
-    [currency, exchangeRate]
+    [currency]
   )
 
   const renderChart = useCallback(() => {
@@ -66,7 +71,7 @@ function Chart({ types, chart, data = [], currency, exchangeRate, className = ''
               fontSize={10}
             />
             <YAxis
-              dataKey={'income'}
+              dataKey={maxKey}
               tickLine={false}
               axisLine={false}
               fontSize={10}
@@ -107,7 +112,7 @@ function Chart({ types, chart, data = [], currency, exchangeRate, className = ''
               fontSize={12}
             />
             <YAxis
-              dataKey={'income'}
+              dataKey={maxKey}
               tickLine={false}
               axisLine={false}
               fontSize={12}
@@ -174,7 +179,6 @@ function Chart({ types, chart, data = [], currency, exchangeRate, className = ''
         )
 
       case 'pie':
-
       default:
         return (
           <LineChart data={data}>
@@ -186,10 +190,12 @@ function Chart({ types, chart, data = [], currency, exchangeRate, className = ''
               fontSize={10}
             />
             <YAxis
-              dataKey={'income'}
+              dataKey={maxKey}
               tickLine={false}
               axisLine={false}
               fontSize={10}
+              domain={['dataMin', 'dataMax']}
+              tickFormatter={value => formatCompactNumber(value, false)}
             />
             {types.map((type: any) => (
               <Line
@@ -222,7 +228,7 @@ function Chart({ types, chart, data = [], currency, exchangeRate, className = ''
           </LineChart>
         )
     }
-  }, [formatTooltip, chart, data, resolvedTheme, types])
+  }, [formatTooltip, chart, data, types, maxKey, resolvedTheme])
 
   return (
     <div className={cn('relative', className)}>

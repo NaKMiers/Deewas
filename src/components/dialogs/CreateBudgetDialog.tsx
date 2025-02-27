@@ -1,12 +1,11 @@
 'use client'
 
 import { useAppSelector } from '@/hooks/reduxHook'
-import { checkTranType, formatSymbol } from '@/lib/string'
+import { formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
-import { ICategory } from '@/models/CategoryModel'
-import { createTransactionApi } from '@/requests/transactionRequests'
-import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
+import { createBudgetApi } from '@/requests/budgetRequests'
+import { LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
 import { ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -14,7 +13,7 @@ import toast from 'react-hot-toast'
 import CategoryPicker from '../CategoryPicker'
 import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
-import { Calendar } from '../ui/calendar'
+import { DateRangePicker } from '../ui/DateRangePicker'
 import {
   Dialog,
   DialogClose,
@@ -25,21 +24,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../ui/dialog'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface CreateTransactionDialogProps {
-  category?: ICategory
+interface CreateBudgetDialogProps {
   trigger: ReactNode
   refetch?: () => void
   className?: string
 }
 
-function CreateTransactionDialog({
-  category,
-  trigger,
-  refetch,
-  className = '',
-}: CreateTransactionDialogProps) {
+function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDialogProps) {
   // store
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
@@ -55,52 +47,44 @@ function CreateTransactionDialog({
     setError,
     setValue,
     watch,
-    control,
     clearErrors,
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
       walletId: curWallet?._id,
-      name: '',
-      categoryId: category?._id || '',
-      amount: '',
-      date: moment().format('YYYY-MM-DD'),
-      type: category?.type || '',
+      categoryId: '',
+      total: '',
+      begin: moment().startOf('month').toDate(),
+      end: moment().endOf('month').toDate(),
     },
   })
 
-  const form = watch()
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
+  const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
+    from: moment().startOf('month').toDate(),
+    to: moment().endOf('month').toDate(),
+  })
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     data => {
       let isValid = true
 
-      // name is required
-      if (!data.name) {
-        setError('name', {
-          type: 'manual',
-          message: 'Name is required',
-        })
-        isValid = false
-      }
-
-      // amount is required
-      if (!data.amount) {
-        setError('amount', {
+      // total is required
+      if (!data.total) {
+        setError('total', {
           type: 'manual',
           message: 'Amount is required',
         })
         isValid = false
       }
 
-      // type is required
-      if (!data.type) {
-        setError('type', {
+      // total must be > 0
+      if (data.total <= 0) {
+        setError('total', {
           type: 'manual',
-          message: 'Type is required',
+          message: 'Amount must be greater than 0',
         })
         isValid = false
       }
@@ -114,11 +98,20 @@ function CreateTransactionDialog({
         isValid = false
       }
 
-      // date must be selected
-      if (!data.date) {
-        setError('date', {
+      // begin must be selected
+      if (!data.begin) {
+        setError('begin', {
           type: 'manual',
-          message: 'Date is required',
+          message: 'From and To date is required',
+        })
+        isValid = false
+      }
+
+      // to must be selected
+      if (!data.end) {
+        setError('end', {
+          type: 'manual',
+          message: 'From and To date is required',
         })
         isValid = false
       }
@@ -129,7 +122,7 @@ function CreateTransactionDialog({
   )
 
   // create transaction
-  const handleCreateTransaction: SubmitHandler<FieldValues> = useCallback(
+  const handleCreateBudget: SubmitHandler<FieldValues> = useCallback(
     async data => {
       if (!curWallet?._id) {
         return toast.error('Please select a wallet to continue')
@@ -142,19 +135,13 @@ function CreateTransactionDialog({
       setSaving(true)
       toast.loading('Creating transaction...', { id: 'create-transaction' })
 
-      console.log('data', {
-        ...data,
-        walletId: curWallet._id,
-        date: toUTC(data.date),
-        amount: data.amount / exchangeRates[currency],
-      })
-
       try {
-        const { message } = await createTransactionApi({
+        const { message } = await createBudgetApi({
           ...data,
           walletId: curWallet._id,
-          date: toUTC(data.date),
-          amount: data.amount / exchangeRates[currency],
+          begin: toUTC(data.begin),
+          end: toUTC(data.end),
+          total: data.total / exchangeRates[currency],
         })
 
         if (refetch) refetch()
@@ -182,67 +169,23 @@ function CreateTransactionDialog({
 
       <DialogContent className={cn('rounded-lg border-slate-200/30 sm:max-w-[425px]', className)}>
         <DialogHeader className="text-start">
-          <DialogTitle className="font-semibold">
-            Create {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
-            transaction
-          </DialogTitle>
-          <DialogDescription>Transactions keep track of your finances effectively.</DialogDescription>
+          <DialogTitle className="font-semibold">Create Budget</DialogTitle>
+          <DialogDescription>Budget helps you manage money wisely</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
           <CustomInput
-            id="name"
-            label="Name"
-            disabled={saving}
-            register={register}
-            errors={errors}
-            type="text"
-            onFocus={() => clearErrors('name')}
-          />
-
-          <CustomInput
-            id="amount"
-            label="Amount"
+            id="total"
+            label="Total"
             disabled={saving}
             register={register}
             errors={errors}
             type="number"
-            onFocus={() => clearErrors('amount')}
+            onFocus={() => clearErrors('total')}
             icon={<span>{formatSymbol(currency)}</span>}
           />
 
-          {!category && (
-            <CustomInput
-              id="type"
-              label="Type"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="select"
-              control={control}
-              options={[
-                {
-                  label: 'Expense',
-                  value: 'expense',
-                },
-                {
-                  label: 'Income',
-                  value: 'income',
-                },
-                {
-                  label: 'Saving',
-                  value: 'saving',
-                },
-                {
-                  label: 'Invest',
-                  value: 'invest',
-                },
-              ]}
-              onFocus={() => clearErrors('type')}
-            />
-          )}
-
-          <div className="mt-1 flex flex-wrap gap-4">
+          <div className="mt-1 flex gap-4">
             {/* Category */}
             <div className="flex flex-1 flex-col">
               <p
@@ -253,48 +196,54 @@ function CreateTransactionDialog({
               >
                 Category
               </p>
-              <div onFocus={() => clearErrors('category')}>
+              <div onFocus={() => clearErrors('categoryId')}>
                 <CategoryPicker
-                  category={category}
                   onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                  type={form.type}
+                  type="expense"
                 />
               </div>
-              {errors.category?.message && (
+              {errors.categoryId?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
                   {errors.categoryId?.message?.toString()}
                 </span>
               )}
             </div>
 
-            {/* Transaction */}
+            {/* Budget */}
             <div className="flex flex-1 flex-col">
-              <p className="mb-1 text-xs font-semibold">Date</p>
-              <div onFocus={() => clearErrors('date')}>
-                <Popover>
-                  <PopoverTrigger className="w-full">
-                    <button className="flex h-9 w-full items-center justify-between gap-2 rounded-md border px-21/2 text-start text-sm font-semibold">
-                      {moment(form.date).format('MMM DD, YYYY')}
-                      <LucideCalendar size={18} />
-                    </button>
-                  </PopoverTrigger>
+              <p
+                className={cn(
+                  'mb-1 text-xs font-semibold',
+                  (errors.begin || errors.end)?.message && 'text-rose-500'
+                )}
+              >
+                From - To
+              </p>
+              <div
+                onFocus={() => {
+                  clearErrors('begin')
+                  clearErrors('end')
+                }}
+              >
+                <DateRangePicker
+                  initialDateFrom={dateRange.from}
+                  initialDateTo={dateRange.to}
+                  showCompare={false}
+                  onUpdate={values => {
+                    const { from, to } = values.range
 
-                  <PopoverContent className="w-full overflow-hidden rounded-md p-0 outline-none">
-                    <Calendar
-                      mode="single"
-                      selected={form.date}
-                      onSelect={date => {
-                        setValue('date', date)
-                        clearErrors('date')
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                    if (!from || !to) return
+
+                    setDateRange({ from, to })
+                    setValue('begin', from)
+                    setValue('end', to)
+                  }}
+                  className="h-9 w-full"
+                />
               </div>
-              {errors.date?.message && (
+              {(errors.begin || errors.end)?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {errors.date?.message?.toString()}
+                  {(errors.begin || errors.end)?.message?.toString()}
                 </span>
               )}
             </div>
@@ -319,7 +268,7 @@ function CreateTransactionDialog({
               disabled={saving}
               variant="default"
               className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-              onClick={handleSubmit(handleCreateTransaction)}
+              onClick={handleSubmit(handleCreateBudget)}
             >
               {saving ? (
                 <LucideLoaderCircle
@@ -337,7 +286,7 @@ function CreateTransactionDialog({
   )
 }
 
-export default CreateTransactionDialog
+export default CreateBudgetDialog
 function refresh() {
   throw new Error('Function not implemented.')
 }

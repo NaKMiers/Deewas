@@ -42,8 +42,20 @@ export const formatCurrency = (currency: string, amount: number, rate: number): 
   return formattedAmount
 }
 
+export function parseCurrency(currency: string): number {
+  return Number(currency.replace(/\D+/g, ''))
+}
+
 export const formatPrice = (price: number = 0) => {
   return Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)
+}
+
+export function formatCompactNumber(num: number | string, isCurrency: boolean): string {
+  if (isCurrency && typeof num === 'string') {
+    return new Intl.NumberFormat('vi-VN', { notation: 'compact' }).format(parseCurrency(num))
+  }
+
+  return new Intl.NumberFormat('en', { notation: 'compact' }).format(num as number)
 }
 
 export const capitalize = (str: string) => {
@@ -93,4 +105,22 @@ type TranOptionKeys = keyof typeof tranOptions
 export const checkTranType = (type: TranOptionKeys) => {
   const results = tranOptions[type]
   return results || tranOptions['balance']
+}
+
+const levels = {
+  hard: {
+    background: 'bg-rose-500',
+  },
+  medium: {
+    background: 'bg-yellow-500',
+  },
+  easy: {
+    background: 'bg-emerald-500',
+  },
+}
+
+export const checkLevel = (level: number) => {
+  if (level <= 50) return levels.easy
+  if (level <= 80) return levels.medium
+  return levels.hard
 }

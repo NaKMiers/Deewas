@@ -22,10 +22,6 @@ const BudgetSchema = new Schema(
       required: true,
     },
 
-    name: {
-      type: String,
-      required: true,
-    },
     total: {
       type: Number,
       required: true,
@@ -67,7 +63,6 @@ export interface IBudget {
   wallet: string
   category: string
 
-  name: string
   total: number
   begin: string
   end: string

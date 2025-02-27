@@ -118,6 +118,9 @@ export default {
     'border-yellow-500',
     'border-violet-500',
     'border-sky-500',
+    'bg-emerald-500',
+    'bg-rose-500',
+    'bg-yellow-500',
   ],
   plugins: [tailwindcssAnimate],
 } satisfies Config

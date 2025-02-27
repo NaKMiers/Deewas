@@ -1,13 +1,10 @@
 import { connectDatabase } from '@/config/database'
-import { toUTC } from '@/lib/time'
 import BudgetModel from '@/models/BudgetModel'
-import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Budget, Transaction
 import '@/models/BudgetModel'
-import '@/models/TransactionModel'
 
 // [DELETE]: /budget/:id/delete
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -28,8 +25,11 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get budget id from params
     const { id } = await params
 
+    // "soft" delete budget
+    const budget = await BudgetModel.findByIdAndUpdate(id, { $set: { deleted: true } }, { new: true })
+
     // return response
-    return NextResponse.json({ message: 'updated budget' }, { status: 200 })
+    return NextResponse.json({ budget, message: 'Deleted budget' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

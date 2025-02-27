@@ -1,3 +1,28 @@
+import {
+  addMonths,
+  addWeeks,
+  addYears,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  format,
+  isSameDay,
+  isSameMonth,
+  isSameWeek,
+  isSameYear,
+  isThisMonth,
+  isThisWeek,
+  isThisYear,
+  isTomorrow,
+  isYesterday,
+  parseISO,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+  subMonths,
+  subWeeks,
+  subYears,
+} from 'date-fns'
 import moment from 'moment'
 import momentTZ from 'moment-timezone'
 
@@ -12,6 +37,57 @@ export const toUTC = (time: Date | string): string => {
 export const formatDate = (time: string): string => {
   // format time using "moment" library consist of day, month, year
   return time && moment(time).format('DD/MM/YYYY')
+}
+
+export function formatTimeRange(begin: string, end: string): string {
+  const beginDate = parseISO(begin)
+  const endDate = parseISO(end)
+
+  const now = new Date()
+
+  const thisWeekStart = startOfWeek(now)
+  const thisWeekEnd = endOfWeek(now)
+
+  const lastWeekStart = startOfWeek(subWeeks(now, 1))
+  const lastWeekEnd = endOfWeek(subWeeks(now, 1))
+
+  const nextWeekStart = startOfWeek(addWeeks(now, 1))
+  const nextWeekEnd = endOfWeek(addWeeks(now, 1))
+
+  const thisMonthStart = startOfMonth(now)
+  const thisMonthEnd = endOfMonth(now)
+
+  const lastMonthStart = startOfMonth(subMonths(now, 1))
+  const lastMonthEnd = endOfMonth(subMonths(now, 1))
+
+  const nextMonthStart = startOfMonth(addMonths(now, 1))
+  const nextMonthEnd = endOfMonth(addMonths(now, 1))
+
+  const thisYearStart = startOfYear(now)
+  const thisYearEnd = endOfYear(now)
+
+  const lastYearStart = startOfYear(subYears(now, 1))
+  const lastYearEnd = endOfYear(subYears(now, 1))
+
+  const nextYearStart = startOfYear(addYears(now, 1))
+  const nextYearEnd = endOfYear(addYears(now, 1))
+
+  if (isToday(beginDate) && isToday(endDate)) return 'Today'
+  if (isTomorrow(beginDate) && isTomorrow(endDate)) return 'Tomorrow'
+  if (isYesterday(beginDate) && isYesterday(endDate)) return 'Yesterday'
+  if (isSameDay(beginDate, thisWeekStart) && isSameDay(endDate, thisWeekEnd)) return 'This week'
+  if (isSameDay(beginDate, lastWeekStart) && isSameDay(endDate, lastWeekEnd)) return 'Last week'
+  if (isSameDay(beginDate, nextWeekStart) && isSameDay(endDate, nextWeekEnd)) return 'Next week'
+  if (isSameDay(beginDate, thisMonthStart) && isSameDay(endDate, thisMonthEnd)) return 'This month'
+  if (isSameDay(beginDate, lastMonthStart) && isSameDay(endDate, lastMonthEnd)) return 'Last month'
+  if (isSameDay(beginDate, nextMonthStart) && isSameDay(endDate, nextMonthEnd)) return 'Next month'
+  if (isSameDay(beginDate, thisYearStart) && isSameDay(endDate, thisYearEnd)) return 'This year'
+  if (isSameDay(beginDate, lastYearStart) && isSameDay(endDate, lastYearEnd)) return 'Last year'
+  if (isSameDay(beginDate, nextYearStart) && isSameDay(endDate, nextYearEnd)) return 'Next year'
+
+  return isSameYear(beginDate, endDate)
+    ? `${format(beginDate, 'dd/MM')} - ${format(endDate, 'dd/MM/yyyy')}`
+    : `${format(beginDate, 'dd/MM/yyyy')} - ${format(endDate, 'dd/MM/yyyy')}`
 }
 
 export const isSameDate = (date1: Date, date2: Date): boolean => {

@@ -1,12 +1,14 @@
 import { connectDatabase } from '@/config/database'
-import { getToken } from 'next-auth/jwt'
-import { NextRequest, NextResponse } from 'next/server'
 import { toUTC } from '@/lib/time'
+import BudgetModel from '@/models/BudgetModel'
 import CategoryModel from '@/models/CategoryModel'
 import TransactionModel from '@/models/TransactionModel'
 import WalletModel from '@/models/WalletModel'
+import { getToken } from 'next-auth/jwt'
+import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Transaction, Category, Wallet
+// Models: Transaction, Category, Wallet, Budget
+import '@/models/BudgetModel'
 import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 import '@/models/WalletModel'
@@ -58,6 +60,15 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         CategoryModel.findByIdAndUpdate(transaction.category, { $inc: { amount: diffAmount } }),
         // update wallet amount of this transaction
         WalletModel.findByIdAndUpdate(transaction.wallet, { $inc: { [transaction.type]: diffAmount } }),
+        // update budgets
+        BudgetModel.updateMany(
+          {
+            category: transaction.category,
+            begin: { $lte: transaction.date },
+            end: { $gte: transaction.date },
+          },
+          { $inc: { amount: diffAmount } }
+        ),
       ])
     }
 

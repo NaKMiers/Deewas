@@ -1,11 +1,13 @@
 import { connectDatabase } from '@/config/database'
 import { toUTC } from '@/lib/time'
 import BudgetModel from '@/models/BudgetModel'
+import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Budget
+// Models: Budget, Transaction
 import '@/models/BudgetModel'
+import '@/models/TransactionModel'
 
 // [POST]: /budget/create
 export async function POST(req: NextRequest) {
@@ -24,17 +26,25 @@ export async function POST(req: NextRequest) {
     }
 
     // get data from request body
-    const { categoryId, walletId, name, total, begin, end } = await req.json()
+    const { categoryId, walletId, total, begin, end } = await req.json()
+
+    // calculate total amount of transactions of category from begin to end of budget
+    const transactions = await TransactionModel.find({
+      category: categoryId,
+      date: { $gte: toUTC(begin), $lte: toUTC(end) },
+      deleted: false,
+    }).lean()
+    const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
 
     // create budget
     const budget = await BudgetModel.create({
       user: userId,
       wallet: walletId,
       category: categoryId,
-      name,
       total,
       begin: toUTC(begin),
       end: toUTC(end),
+      amount: totalAmount,
     })
 
     // return response

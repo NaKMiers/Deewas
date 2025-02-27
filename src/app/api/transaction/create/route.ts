@@ -5,11 +5,13 @@ import TransactionModel from '@/models/TransactionModel'
 import WalletModel from '@/models/WalletModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+import BudgetModel from '@/models/BudgetModel'
 
-// Models: Transaction, Category, Wallet
+// Models: Transaction, Category, Wallet, Budget
 import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 import '@/models/WalletModel'
+import '@/models/BudgetModel'
 
 // [POST]: /transaction/create
 export async function POST(req: NextRequest) {
@@ -54,6 +56,15 @@ export async function POST(req: NextRequest) {
       CategoryModel.findByIdAndUpdate(categoryId, { $inc: { amount } }),
       // update wallet
       WalletModel.findByIdAndUpdate(walletId, { $inc: { [type]: amount } }),
+      // update budgets
+      BudgetModel.updateMany(
+        {
+          category: categoryId,
+          begin: { $lte: toUTC(date) },
+          end: { $gte: toUTC(date) },
+        },
+        { $inc: { amount } }
+      ),
     ])
 
     // return response

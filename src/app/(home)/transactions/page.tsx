@@ -235,6 +235,7 @@ function TransactionsPage() {
         </div>
       )}
 
+      {/* Create Transaction */}
       <CreateTransactionDialog
         refetch={getMyTransactions}
         trigger={

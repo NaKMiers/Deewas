@@ -1,13 +1,17 @@
 'use client'
 
+import { useAppSelector } from '@/hooks/reduxHook'
+import { checkTranType } from '@/lib/string'
+import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
 import { deleteCategoryApi, getMyCategoriesApi } from '@/requests'
-import { LucidePlusCircle, LucidePlusSquare, LucideX } from 'lucide-react'
+import { LucidePlusSquare, LucideX } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown, LuLoaderCircle } from 'react-icons/lu'
 import ConfirmDialog from './dialogs/ConfirmDialog'
+import CreateCategoryDialog from './dialogs/CreateCategoryDialog'
 import { Button } from './ui/button'
 import {
   Command,
@@ -19,19 +23,16 @@ import {
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Skeleton } from './ui/skeleton'
-import CreateCategoryDialog from './dialogs/CreateCategoryDialog'
-import { cn } from '@/lib/utils'
-import { checkTranType } from '@/lib/string'
-import { useAppSelector } from '@/hooks/reduxHook'
 
 interface CategoryPickerProps {
   category?: ICategory
   type: TransactionType
   onChange: (value: string) => void
+  isExcept?: boolean
   className?: string
 }
 
-function CategoryPicker({ category, type, onChange, className = '' }: CategoryPickerProps) {
+function CategoryPicker({ category, type, isExcept, onChange, className = '' }: CategoryPickerProps) {
   // store
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
 
@@ -130,10 +131,10 @@ function CategoryPicker({ category, type, onChange, className = '' }: CategoryPi
             <Skeleton className="h-9 rounded-md" />
           )}
         </PopoverTrigger>
-        {!category && type && (
+        {(!category || isExcept) && type && (
           <PopoverContent className="w-full p-0 shadow-md">
             {/* Search Bar */}
-            <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+            <Command className="rounded-lg border shadow-md">
               <CommandInput placeholder="Find a category..." />
               {curWallet && (
                 <CreateCategoryDialog
@@ -168,7 +169,7 @@ function CategoryPicker({ category, type, onChange, className = '' }: CategoryPi
                       <Button
                         variant="ghost"
                         className={cn(
-                          'rounded-none border-l-[3px]',
+                          'w-full justify-start rounded-none border-l-[3px]',
                           checkTranType(category.type).border
                         )}
                         onClick={() => {

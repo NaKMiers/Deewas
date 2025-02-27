@@ -76,7 +76,7 @@ const PRESETS: Preset[] = [
 ]
 
 /** The DateRangePicker component allows a user to select a range of dates */
-export const DateRangePicker: FC<DateRangePickerProps> & {
+export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> & {
   filePath: string
 } = ({
   initialDateFrom = new Date(new Date().setHours(0, 0, 0, 0)),
@@ -87,6 +87,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
   align = 'end',
   locale = 'en-US',
   showCompare = true,
+  className = '',
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -322,6 +323,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
         <Button
           size={'sm'}
           variant="outline"
+          className={cn(className)}
         >
           <div className="text-right">
             <div className="py-1">

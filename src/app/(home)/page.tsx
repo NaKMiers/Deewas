@@ -1,9 +1,13 @@
 'use client'
 
+import { ChartDatum } from '@/components/Chart'
 import History from '@/components/History'
 import { DateRangePicker } from '@/components/ui/DateRangePicker'
 import { Separator } from '@/components/ui/separator'
 import Wallets from '@/components/Wallets'
+import { toUTC } from '@/lib/time'
+import { ITransaction } from '@/models/TransactionModel'
+import { getOverviewApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
 import { useCallback, useEffect, useState } from 'react'
@@ -17,6 +21,7 @@ function HomePage() {
   })
 
   const [loading, setLoading] = useState<boolean>(false)
+  const [transactions, setTransactions] = useState<ITransaction[]>([])
 
   // get overview
   const getOverview = useCallback(async () => {
@@ -24,13 +29,19 @@ function HomePage() {
     setLoading(true)
 
     try {
+      const from = toUTC(dateRange.from)
+      const to = toUTC(dateRange.to)
+
+      const { transactions } = await getOverviewApi(`?from=${from}&to=${to}`)
+      setTransactions(transactions)
+      console.log('transactions', transactions)
     } catch (err: any) {
       console.log(err)
     } finally {
       // stop loading
       setLoading(false)
     }
-  }, [])
+  }, [dateRange])
 
   // initially get stats
   useEffect(() => {
@@ -62,7 +73,12 @@ function HomePage() {
 
       <Separator className="my-8 h-0" />
 
-      <History />
+      <History
+        from={dateRange.from}
+        to={dateRange.to}
+        transactions={transactions}
+        refetch={getOverview}
+      />
     </div>
   )
 }

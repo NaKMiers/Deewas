@@ -1,9 +1,16 @@
 import { connectDatabase } from '@/config/database'
+import BudgetModel from '@/models/BudgetModel'
 import CategoryModel from '@/models/CategoryModel'
 import TransactionModel from '@/models/TransactionModel'
 import WalletModel from '@/models/WalletModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+
+// Models: Transaction, Category, Wallet, Budget
+import '@/models/BudgetModel'
+import '@/models/CategoryModel'
+import '@/models/TransactionModel'
+import '@/models/WalletModel'
 
 // [DELETE]: /transaction/:id/delete
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -41,6 +48,15 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
       WalletModel.findByIdAndUpdate(transaction.wallet, {
         $inc: { [transaction.type]: -transaction.amount },
       }),
+      // update bugdets
+      BudgetModel.updateMany(
+        {
+          category: transaction.category,
+          begin: { $lte: transaction.date },
+          end: { $gte: transaction.date },
+        },
+        { $inc: { amount: -transaction.amount } }
+      ),
     ])
 
     // return response

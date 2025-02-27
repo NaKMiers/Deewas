@@ -68,7 +68,7 @@ function TransactionCategoryGroup({
 
       {/* Transactions of category */}
       <div className="my-1.5 pl-2">
-        <div className="flex flex-col gap-1.5 border-l">
+        <div className="flex flex-col gap-0 border-l">
           {transactions.map(transaction => (
             <Transaction
               refetch={refetch}
@@ -121,7 +121,7 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
   }, [refetch, transaction._id])
 
   return (
-    <div className={cn('flex w-full items-center justify-between gap-2 pl-2', className)}>
+    <div className={cn('flex h-8 w-full items-center justify-between gap-2 pl-2', className)}>
       <div className="flex items-center gap-2">
         <p className="text-sm font-semibold">{transaction.name}</p>
       </div>
@@ -163,8 +163,8 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
             />
 
             <ConfirmDialog
-              label="Delete Wallet"
-              desc="Are you sure you want to delete this wallet?"
+              label="Delete Transaction"
+              desc="Are you sure you want to delete this transaction?"
               confirmLabel="Delete"
               onConfirm={handleDeleteTransaction}
               trigger={
