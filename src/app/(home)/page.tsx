@@ -16,27 +16,6 @@ function HomePage() {
     to: moment().toDate(),
   })
 
-  const [loading, setLoading] = useState<boolean>(false)
-
-  // get overview
-  const getOverview = useCallback(async () => {
-    // start loading
-    setLoading(true)
-
-    try {
-    } catch (err: any) {
-      console.log(err)
-    } finally {
-      // stop loading
-      setLoading(false)
-    }
-  }, [])
-
-  // initially get stats
-  useEffect(() => {
-    getOverview()
-  }, [getOverview])
-
   return (
     <div className="">
       <div className="flex items-center justify-end px-21/2 py-4 md:px-21">
@@ -58,7 +37,7 @@ function HomePage() {
         />
       </div>
 
-      <Wallets />
+      {/* <Wallets /> */}
 
       <Separator className="my-8 h-0" />
 
