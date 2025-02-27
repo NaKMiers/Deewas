@@ -25,7 +25,9 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     const { id } = await params
 
     // delete transaction
-    const transaction: any = await TransactionModel.findByIdAndDelete(id).lean()
+    const transaction: any = await TransactionModel.findByIdAndUpdate(id, {
+      $set: { deleted: true },
+    }).lean()
 
     // check if transaction not found
     if (!transaction) {

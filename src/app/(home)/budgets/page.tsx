@@ -1,3 +1,5 @@
+'use client'
+
 function BudgetsPage() {
   return <div>BudgetsPage</div>
 }

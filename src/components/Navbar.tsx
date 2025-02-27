@@ -39,7 +39,7 @@ function Navbar() {
       </button>
 
       <Link
-        href="/budget"
+        href="/budgets"
         className="flex flex-1 flex-col items-center justify-center gap-0.5"
       >
         <LucideChartPie size={18} />
