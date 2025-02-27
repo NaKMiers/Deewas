@@ -8,7 +8,7 @@ export const settings = createSlice({
       language: 'en',
     } as any,
     loading: false as boolean,
-    exchangeRates: {} as any,
+    exchangeRates: { USD: 1, VND: 25546.35 } as any,
   },
   reducers: {
     setSettings: (state, action: PayloadAction<any>) => {
