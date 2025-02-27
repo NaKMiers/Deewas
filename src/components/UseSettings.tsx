@@ -16,9 +16,10 @@ function UseSettings() {
       dispatch(setLoading(true))
 
       try {
-        const [{ settings }, { rates }] = await Promise.all([getMySettingsApi(), getExchangeRatesApi()])
-
+        const { settings } = await getMySettingsApi()
         dispatch(setSettings(settings))
+
+        const { rates } = await getExchangeRatesApi()
         dispatch(setExchangeRates(rates))
       } catch (err: any) {
         console.log(err)

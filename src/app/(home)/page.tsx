@@ -38,7 +38,7 @@ function HomePage() {
   }, [getOverview])
 
   return (
-    <div className="">
+    <div className="pb-32">
       <div className="flex items-center justify-end px-21/2 py-4 md:px-21">
         <DateRangePicker
           initialDateFrom={dateRange.from}
@@ -63,8 +63,6 @@ function HomePage() {
       <Separator className="my-8 h-0" />
 
       <History />
-
-      <div className="pt-32" />
     </div>
   )
 }

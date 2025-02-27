@@ -111,7 +111,7 @@ function TransactionsPage() {
   }, [getMyTransactions])
 
   return (
-    <div>
+    <div className="pb-32">
       {/* Top */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4 md:px-21">
         <h2 className="text-lg font-bold">
@@ -247,8 +247,6 @@ function TransactionsPage() {
           </Button>
         }
       />
-
-      <div className="pt-32" />
     </div>
   )
 }
