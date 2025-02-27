@@ -26,11 +26,7 @@ export default async function RootLayout({
   const session = await getServerSession(authOptions)
 
   return (
-    <html
-      lang="en"
-      className="light"
-      style={{ colorScheme: 'light' }}
-    >
+    <html lang="en">
       <body>
         <StoreProvider session={session}>
           {/* Toast */}
