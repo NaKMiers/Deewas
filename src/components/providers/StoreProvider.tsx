@@ -14,21 +14,21 @@ function StoreProvider({ children, session }: { children: React.ReactNode; sessi
   }
 
   return (
-    <Provider store={storeRef.current}>
-      <SessionProvider
-        session={session}
-        refetchOnWindowFocus={false}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      <Provider store={storeRef.current}>
+        <SessionProvider
+          session={session}
+          refetchOnWindowFocus={false}
         >
           {children}
-        </ThemeProvider>
-      </SessionProvider>
-    </Provider>
+        </SessionProvider>
+      </Provider>
+    </ThemeProvider>
   )
 }
 

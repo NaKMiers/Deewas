@@ -6,7 +6,6 @@ import { Separator } from '@/components/ui/separator'
 import { useAppDispatch } from '@/hooks/reduxHook'
 import { setPageLoading } from '@/lib/reducers/modalReducer'
 import { cn } from '@/lib/utils'
-import { LucideText } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
@@ -184,7 +183,6 @@ function LoginPage() {
               required
               type="password"
               onFocus={() => clearErrors('password')}
-              icon={<LucideText />}
             />
           </div>
 
