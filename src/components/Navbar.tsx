@@ -103,7 +103,7 @@ function Navbar() {
                 <CreateBudgetDialog
                   trigger={
                     <Button variant="outline">
-                      <LucidePiggyBank />
+                      <LucideChartPie />
                       Create Budget
                     </Button>
                   }
