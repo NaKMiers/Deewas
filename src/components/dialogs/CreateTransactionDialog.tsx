@@ -5,6 +5,7 @@ import { checkTranType, formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
+import { TransactionType } from '@/models/TransactionModel'
 import { createTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
@@ -28,6 +29,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 interface CreateTransactionDialogProps {
+  type?: TransactionType
   category?: ICategory
   trigger: ReactNode
   refetch?: () => void
@@ -35,6 +37,7 @@ interface CreateTransactionDialogProps {
 }
 
 function CreateTransactionDialog({
+  type,
   category,
   trigger,
   refetch,
@@ -65,7 +68,7 @@ function CreateTransactionDialog({
       categoryId: category?._id || '',
       amount: '',
       date: moment().format('YYYY-MM-DD'),
-      type: category?.type || '',
+      type: category?.type || type || '',
     },
   })
 
@@ -211,7 +214,7 @@ function CreateTransactionDialog({
             icon={<span>{formatSymbol(currency)}</span>}
           />
 
-          {!category && (
+          {!category && !type && (
             <CustomInput
               id="type"
               label="Type"
@@ -242,62 +245,57 @@ function CreateTransactionDialog({
             />
           )}
 
-          <div className="mt-1 flex flex-wrap gap-4">
-            {/* Category */}
-            <div className="flex flex-1 flex-col">
-              <p
-                className={cn(
-                  'mb-1 text-xs font-semibold',
-                  errors.categoryId?.message && 'text-rose-500'
-                )}
-              >
-                Category
-              </p>
-              <div onFocus={() => clearErrors('category')}>
-                <CategoryPicker
-                  category={category}
-                  onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                  type={form.type}
-                />
-              </div>
-              {errors.category?.message && (
-                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {errors.categoryId?.message?.toString()}
-                </span>
-              )}
+          {/* Category */}
+          <div className="mt-1.5 flex flex-1 flex-col">
+            <p
+              className={cn('mb-1 text-xs font-semibold', errors.categoryId?.message && 'text-rose-500')}
+            >
+              Category
+            </p>
+            <div onFocus={() => clearErrors('category')}>
+              <CategoryPicker
+                category={category}
+                onChange={(categoryId: string) => setValue('categoryId', categoryId)}
+                type={form.type}
+              />
             </div>
+            {errors.category?.message && (
+              <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                {errors.categoryId?.message?.toString()}
+              </span>
+            )}
+          </div>
 
-            {/* Transaction */}
-            <div className="flex flex-1 flex-col">
-              <p className="mb-1 text-xs font-semibold">Date</p>
-              <div onFocus={() => clearErrors('date')}>
-                <Popover>
-                  <PopoverTrigger className="w-full">
-                    <button className="flex h-9 w-full items-center justify-between gap-2 rounded-md border px-21/2 text-start text-sm font-semibold">
-                      {moment(form.date).format('MMM DD, YYYY')}
-                      <LucideCalendar size={18} />
-                    </button>
-                  </PopoverTrigger>
+          {/* Transaction */}
+          <div className="mt-1.5 flex flex-1 flex-col">
+            <p className="mb-1 text-xs font-semibold">Date</p>
+            <div onFocus={() => clearErrors('date')}>
+              <Popover>
+                <PopoverTrigger className="w-full">
+                  <button className="flex h-9 w-full items-center justify-between gap-2 rounded-md border px-21/2 text-start text-sm font-semibold">
+                    {moment(form.date).format('MMM DD, YYYY')}
+                    <LucideCalendar size={18} />
+                  </button>
+                </PopoverTrigger>
 
-                  <PopoverContent className="w-full overflow-hidden rounded-md p-0 outline-none">
-                    <Calendar
-                      mode="single"
-                      selected={form.date}
-                      onSelect={date => {
-                        setValue('date', date)
-                        clearErrors('date')
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              {errors.date?.message && (
-                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {errors.date?.message?.toString()}
-                </span>
-              )}
+                <PopoverContent className="w-full overflow-hidden rounded-md p-0 outline-none">
+                  <Calendar
+                    mode="single"
+                    selected={form.date}
+                    onSelect={date => {
+                      setValue('date', date)
+                      clearErrors('date')
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
+            {errors.date?.message && (
+              <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                {errors.date?.message?.toString()}
+              </span>
+            )}
           </div>
         </div>
 

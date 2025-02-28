@@ -25,10 +25,17 @@ const BudgetSchema = new Schema(
     total: {
       type: Number,
       required: true,
+      min: 0,
     },
     begin: {
       type: Date,
       required: true,
+      validate: {
+        validator: function (this: { end: Date | string }, value: Date) {
+          return this.end ? value < this.end : true
+        },
+        message: 'Begin date must be before End date',
+      },
     },
     end: {
       type: Date,
@@ -43,10 +50,16 @@ const BudgetSchema = new Schema(
     amount: {
       type: Number,
       default: 0,
+      min: 0,
     },
   },
   { timestamps: true }
 )
+
+// indexed
+BudgetSchema.index({ user: 1 })
+BudgetSchema.index({ wallet: 1 })
+BudgetSchema.index({ category: 1 })
 
 // category-begin-end unique
 BudgetSchema.index({ category: 1, begin: 1, end: 1 }, { unique: true })

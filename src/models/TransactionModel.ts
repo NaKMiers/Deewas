@@ -28,6 +28,13 @@ const TransactionSchema = new Schema(
     amount: {
       type: Number,
       required: true,
+      validate: {
+        validator: function (value: number) {
+          return value > 0
+        },
+        message: 'Amount must be greater than 0',
+      },
+      min: 0,
     },
     date: {
       type: Date,
@@ -45,6 +52,11 @@ const TransactionSchema = new Schema(
   },
   { timestamps: true }
 )
+
+// indexed
+TransactionSchema.index({ user: 1 })
+TransactionSchema.index({ wallet: 1 })
+TransactionSchema.index({ category: 1 })
 
 const TransactionModel = mongoose.models.transaction || mongoose.model('transaction', TransactionSchema)
 export default TransactionModel

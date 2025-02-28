@@ -22,6 +22,9 @@ const SettingsSchema = new Schema(
   { timestamps: true }
 )
 
+// indexed
+SettingsSchema.index({ user: 1 })
+
 const SettingsModel = mongoose.models.settings || mongoose.model('settings', SettingsSchema)
 export default SettingsModel
 

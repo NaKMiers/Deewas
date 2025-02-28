@@ -241,7 +241,7 @@ function TransactionsPage() {
         trigger={
           <Button
             variant="default"
-            className="fixed bottom-[calc(68px)] right-2 z-20 h-10 rounded-full"
+            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full"
           >
             <LucidePlus size={24} />
             Add Transaction

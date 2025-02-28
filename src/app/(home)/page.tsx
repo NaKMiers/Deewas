@@ -1,12 +1,13 @@
 'use client'
 
-import { ChartDatum } from '@/components/Chart'
 import History from '@/components/History'
+import Transactions from '@/components/Transactions'
 import { DateRangePicker } from '@/components/ui/DateRangePicker'
 import { Separator } from '@/components/ui/separator'
 import Wallets from '@/components/Wallets'
+import { useAppSelector } from '@/hooks/reduxHook'
 import { toUTC } from '@/lib/time'
-import { ITransaction } from '@/models/TransactionModel'
+import { IFullTransaction } from '@/models/TransactionModel'
 import { getOverviewApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
@@ -14,6 +15,9 @@ import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 function HomePage() {
+  // store
+  const { curWallet } = useAppSelector(state => state.wallet)
+
   // states
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: moment().startOf('month').toDate(),
@@ -21,10 +25,12 @@ function HomePage() {
   })
 
   const [loading, setLoading] = useState<boolean>(false)
-  const [transactions, setTransactions] = useState<ITransaction[]>([])
+  const [transactions, setTransactions] = useState<IFullTransaction[]>([])
 
   // get overview
   const getOverview = useCallback(async () => {
+    if (!curWallet) return
+
     // start loading
     setLoading(true)
 
@@ -32,7 +38,7 @@ function HomePage() {
       const from = toUTC(dateRange.from)
       const to = toUTC(dateRange.to)
 
-      const { transactions } = await getOverviewApi(`?from=${from}&to=${to}`)
+      const { transactions } = await getOverviewApi(`?walletId=${curWallet._id}&from=${from}&to=${to}`)
       setTransactions(transactions)
       console.log('transactions', transactions)
     } catch (err: any) {
@@ -41,7 +47,7 @@ function HomePage() {
       // stop loading
       setLoading(false)
     }
-  }, [dateRange])
+  }, [curWallet, dateRange])
 
   // initially get stats
   useEffect(() => {
@@ -76,6 +82,13 @@ function HomePage() {
       <History
         from={dateRange.from}
         to={dateRange.to}
+        transactions={transactions}
+        refetch={getOverview}
+      />
+
+      <Separator className="my-8 h-0" />
+
+      <Transactions
         transactions={transactions}
         refetch={getOverview}
       />

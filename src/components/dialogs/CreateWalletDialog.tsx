@@ -23,8 +23,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 interface CreateWalletDialogProps {
   trigger: ReactNode
-  update: (wallet: IWallet) => void
-  load: Dispatch<SetStateAction<boolean>>
+  update?: (wallet: IWallet) => void
+  load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 

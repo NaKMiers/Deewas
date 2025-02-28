@@ -34,9 +34,15 @@ export const toUTC = (time: Date | string): string => {
   return momentTZ(time).utc().format('YYYY-MM-DDTHH:mm:ss[Z]')
 }
 
-export const formatDate = (time: string): string => {
-  // format time using "moment" library consist of day, month, year
-  return time && moment(time).format('DD/MM/YYYY')
+export const formatDate = (date: Date, locale?: string): string => {
+  if (locale)
+    new Intl.DateTimeFormat(locale, {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }).format(date)
+
+  return moment(date).format('DD/MM/YYYY')
 }
 
 export function formatTimeRange(begin: string, end: string): string {

@@ -58,7 +58,10 @@ function Wallets({ className = '' }: WalletProps) {
       </div>
 
       {/* Wallet List */}
-      <SkeletonWallets loading={loading}>
+      <SkeletonWallets
+        loading={loading}
+        className="mt-1"
+      >
         {wallets.length > 0 ? (
           <Carousel className="mt-1 w-full px-21/2 md:px-21">
             <CarouselContent>

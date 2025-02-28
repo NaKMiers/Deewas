@@ -234,7 +234,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
     <div className={cn('relative', className)}>
       <ResponsiveContainer
         width="100%"
-        height={500}
+        height={380}
       >
         {renderChart()}
       </ResponsiveContainer>

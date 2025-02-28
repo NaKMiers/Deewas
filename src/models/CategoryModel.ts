@@ -6,15 +6,15 @@ const Schema = mongoose.Schema
 
 const CategorySchema = new Schema(
   {
-    wallet: {
-      type: Schema.Types.ObjectId,
-      ref: 'wallet',
-      required: true,
-    },
     user: {
       type: Schema.Types.ObjectId,
       ref: 'user',
       index: true,
+    },
+    wallet: {
+      type: Schema.Types.ObjectId,
+      ref: 'wallet',
+      required: true,
     },
     name: {
       type: String,
@@ -41,6 +41,10 @@ const CategorySchema = new Schema(
   },
   { timestamps: true }
 )
+
+// indexed
+CategorySchema.index({ user: 1 })
+CategorySchema.index({ wallet: 1 })
 
 const CategoryModel = mongoose.models.category || mongoose.model('category', CategorySchema)
 export default CategoryModel

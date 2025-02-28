@@ -4,7 +4,8 @@ import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Transaction
+// Models: Transaction, Category
+import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 
 // [GET]: /
@@ -24,8 +25,14 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.nextUrl)
+    const walletId = searchParams.get('walletId')
     const from = searchParams.get('from')
     const to = searchParams.get('to')
+
+    // required wallet id
+    if (!walletId) {
+      return NextResponse.json({ message: 'Please select a wallet' }, { status: 400 })
+    }
 
     // required date range
     if (!from || !to) {
@@ -35,9 +42,13 @@ export async function GET(req: NextRequest) {
     // get all transaction in time range
     const transactions = await TransactionModel.find({
       user: userId,
+      wallet: walletId,
       date: { $gte: toUTC(from), $lte: toUTC(to) },
       deleted: false,
-    }).lean()
+    })
+      .populate('category wallet')
+      .sort({ date: -1 })
+      .lean()
 
     // return response
     return NextResponse.json({ transactions, message: 'Home is here' }, { status: 200 })

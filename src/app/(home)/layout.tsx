@@ -18,7 +18,7 @@ export default async function RootLayout({
       <UseSettings />
 
       {/* Main */}
-      <main className="h-[calc(100vh-60px)] overflow-y-auto">
+      <main className="h-[calc(100vh-70px)] overflow-y-auto">
         <Header />
 
         {children}

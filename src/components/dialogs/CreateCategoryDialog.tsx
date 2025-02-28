@@ -1,14 +1,13 @@
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { setWalletCategories } from '@/lib/reducers/walletReducer'
+import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
+import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
 import { createCategoryApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { DialogClose } from '@radix-ui/react-dialog'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
-import { useParams } from 'next/navigation'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -24,10 +23,9 @@ import {
   DialogTrigger,
 } from '../ui/dialog'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import { ICategory } from '@/models/CategoryModel'
 
 interface CreateCategoryDialogProps {
-  walletId: string
+  walletId?: string
   type?: TransactionType
   update?: (category: ICategory) => void
   trigger: ReactNode
@@ -62,10 +60,16 @@ function CreateCategoryDialog({
     },
   })
 
+  // store
+  const { curWallet } = useAppSelector(state => state.wallet)
+
   // states
   const form = watch()
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
+
+  // values
+  walletId = walletId || curWallet?._id
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
@@ -89,8 +93,11 @@ function CreateCategoryDialog({
   // create category
   const handleCreateCategory: SubmitHandler<FieldValues> = useCallback(
     async data => {
+      if (!walletId) return
+
       // validate form
       if (!handleValidate(data)) return
+
       // start loading
       setSaving(true)
       if (load) {
