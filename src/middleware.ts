@@ -19,7 +19,7 @@ const requireAuth = async (req: NextRequest, token: JWT | null) => {
 
   // check auth
   if (!token) {
-    return NextResponse.redirect(new URL('/auth/sign-in', req.url))
+    return NextResponse.redirect(new URL('/auth/login', req.url))
   }
 
   return NextResponse.next()
