@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
-import UpdateTransactionDialog from './dialogs/UpdateTransactionDialog'
+import UpdateTransactionDrawer from './dialogs/UpdateTransactionDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
@@ -182,7 +182,7 @@ function Transaction({ transaction, refetch, className = '' }: TransactionProps)
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <UpdateTransactionDialog
+                <UpdateTransactionDrawer
                   transaction={transaction}
                   refetch={refetch}
                   trigger={

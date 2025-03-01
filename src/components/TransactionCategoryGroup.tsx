@@ -20,8 +20,8 @@ import moment from 'moment-timezone'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
-import CreateTransactionDialog from './dialogs/CreateTransactionDialog'
-import UpdateTransactionDialog from './dialogs/UpdateTransactionDialog'
+import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
+import UpdateTransactionDrawer from './dialogs/UpdateTransactionDrawer'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 
 interface ITransactionCategoryGroupProps {
@@ -61,7 +61,7 @@ function TransactionCategoryGroup({
         </div>
 
         {/* New Transaction for category */}
-        <CreateTransactionDialog
+        <CreateTransactionDrawer
           category={category}
           refetch={refetch}
           trigger={
@@ -162,7 +162,7 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <UpdateTransactionDialog
+              <UpdateTransactionDrawer
                 transaction={transaction}
                 refetch={refetch}
                 trigger={

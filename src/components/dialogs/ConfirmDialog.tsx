@@ -37,6 +37,7 @@ function ConfirmDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger
+        asChild
         disabled={disabled}
         className={cn('h-full w-full', className)}
       >

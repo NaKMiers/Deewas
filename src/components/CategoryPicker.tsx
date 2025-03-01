@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown, LuLoaderCircle } from 'react-icons/lu'
 import ConfirmDialog from './dialogs/ConfirmDialog'
-import CreateCategoryDialog from './dialogs/CreateCategoryDialog'
+import CreateCategoryDrawer from './dialogs/CreateCategoryDrawer'
 import { Button } from './ui/button'
 import {
   Command,
@@ -23,6 +23,15 @@ import {
 } from './ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Skeleton } from './ui/skeleton'
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from './ui/drawer'
+import { Separator } from '@radix-ui/react-select'
 
 interface CategoryPickerProps {
   category?: ICategory
@@ -107,11 +116,11 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
 
   return (
     <div className={`relative ${className}`}>
-      <Popover
+      <Drawer
         open={open}
         onOpenChange={setOpen}
       >
-        <PopoverTrigger asChild>
+        <DrawerTrigger asChild>
           {!getting ? (
             <Button
               variant="outline"
@@ -130,89 +139,98 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
           ) : (
             <Skeleton className="h-9 rounded-md" />
           )}
-        </PopoverTrigger>
+        </DrawerTrigger>
         {(!category || isExcept) && type && (
-          <PopoverContent className="w-full p-0 shadow-md">
-            {/* Search Bar */}
-            <Command className="rounded-lg border shadow-md">
-              <CommandInput placeholder="Find a category..." />
-              {curWallet && (
-                <CreateCategoryDialog
-                  walletId={curWallet._id}
-                  update={category => {
-                    setCategories([...categories, category])
-                    setSelectedCategory(category)
-                    onChange(category._id)
-                  }}
-                  type={type}
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="mb-0.5 flex w-full justify-start gap-2 rounded-none text-left text-sm"
-                    >
-                      <LucidePlusSquare size={18} />
-                      Create Category
-                    </Button>
-                  }
-                />
-              )}
-              <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
-                <CommandSeparator />
-                {categories
-                  .filter(c => c.type === type)
-                  .map(category => (
-                    <CommandItem
-                      className="justify-between gap-1 rounded-none p-0 py-px"
-                      key={category._id}
-                    >
+          <DrawerContent className="w-full p-0 shadow-md">
+            <div className="mx-auto w-full max-w-sm px-21/2">
+              <DrawerHeader>
+                <DrawerTitle>Select Category</DrawerTitle>
+                <DrawerDescription>Wallets are used to group your categories</DrawerDescription>
+              </DrawerHeader>
+
+              {/* Search Bar */}
+              <Command className="rounded-lg border shadow-md">
+                <CommandInput placeholder="Find a category..." />
+                {curWallet && (
+                  <CreateCategoryDrawer
+                    walletId={curWallet._id}
+                    update={category => {
+                      setCategories([...categories, category])
+                      setSelectedCategory(category)
+                      onChange(category._id)
+                    }}
+                    type={type}
+                    trigger={
                       <Button
                         variant="ghost"
-                        className={cn(
-                          'w-full justify-start rounded-none border-l-[3px]',
-                          checkTranType(category.type).border
-                        )}
-                        onClick={() => {
-                          setOpen(false)
-                          setSelectedCategory(category)
-                          onChange(category._id)
-                        }}
-                        disabled={false}
+                        className="mb-0.5 flex w-full justify-start gap-2 rounded-none text-left text-sm"
                       >
-                        <span>{category.icon}</span> {category.name}
+                        <LucidePlusSquare size={18} />
+                        Create Category
                       </Button>
-                      <ConfirmDialog
-                        label="Delete category"
-                        desc={`Are you sure you want to delete ${category.name} category?`}
-                        confirmLabel="Delete"
-                        cancelLabel="Cancel"
-                        onConfirm={() => handleDeleteCategory(category._id)}
-                        disabled={deleting === category._id}
-                        className="!h-auto !w-auto"
-                        trigger={
-                          <Button
-                            disabled={deleting === category._id}
-                            variant="ghost"
-                            className="trans-200 h-full flex-shrink-0 rounded-md px-21/2 py-1.5 text-start text-sm font-semibold hover:bg-slate-200/30"
-                          >
-                            {deleting === category._id ? (
-                              <LuLoaderCircle
-                                size={16}
-                                className="animate-spin text-slate-400"
-                              />
-                            ) : (
-                              <LucideX size={16} />
-                            )}
-                          </Button>
-                        }
-                      />
-                    </CommandItem>
-                  ))}
-              </CommandList>
-            </Command>
-          </PopoverContent>
+                    }
+                  />
+                )}
+                <CommandList>
+                  <CommandEmpty>No results found.</CommandEmpty>
+                  <CommandSeparator autoFocus={false} />
+                  {categories
+                    .filter(c => c.type === type)
+                    .map(category => (
+                      <CommandItem
+                        className="justify-between gap-1 rounded-none p-0 py-px"
+                        key={category._id}
+                      >
+                        <Button
+                          variant="ghost"
+                          className={cn(
+                            'w-full justify-start rounded-none border-l-[3px]',
+                            checkTranType(category.type).border
+                          )}
+                          onClick={() => {
+                            setOpen(false)
+                            setSelectedCategory(category)
+                            onChange(category._id)
+                          }}
+                          disabled={false}
+                        >
+                          <span>{category.icon}</span> {category.name}
+                        </Button>
+                        <ConfirmDialog
+                          label="Delete category"
+                          desc={`Are you sure you want to delete ${category.name} category?`}
+                          confirmLabel="Delete"
+                          cancelLabel="Cancel"
+                          onConfirm={() => handleDeleteCategory(category._id)}
+                          disabled={deleting === category._id}
+                          className="!h-auto !w-auto"
+                          trigger={
+                            <Button
+                              disabled={deleting === category._id}
+                              variant="ghost"
+                              className="trans-200 h-full flex-shrink-0 rounded-md px-21/2 py-1.5 text-start text-sm font-semibold hover:bg-slate-200/30"
+                            >
+                              {deleting === category._id ? (
+                                <LuLoaderCircle
+                                  size={16}
+                                  className="animate-spin text-slate-400"
+                                />
+                              ) : (
+                                <LucideX size={16} />
+                              )}
+                            </Button>
+                          }
+                        />
+                      </CommandItem>
+                    ))}
+                </CommandList>
+              </Command>
+
+              <Separator className="my-8" />
+            </div>
+          </DrawerContent>
         )}
-      </Popover>
+      </Drawer>
     </div>
   )
 }

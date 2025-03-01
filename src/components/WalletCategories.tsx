@@ -1,6 +1,6 @@
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import CreateCategoryDialog from '@/components/dialogs/CreateCategoryDialog'
-import UpdateCategoryDialog from '@/components/dialogs/UpdateCategoryDialog'
+import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
+import UpdateCategoryDrawer from '@/components/dialogs/UpdateCategoryDrawer'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
@@ -62,7 +62,7 @@ function WalletCategories({ wallet, categories, type }: WalletCategoriesProps) {
           <p className="text-sm font-semibold capitalize md:text-2xl">{type} Categories</p>
           <p className="text-xs font-semibold text-muted-foreground">Sorted by name</p>
         </div>
-        <CreateCategoryDialog
+        <CreateCategoryDrawer
           walletId={wallet._id}
           type={type}
           update={category => dispatch(setWalletCategories([category, ...walletCategories]))}
@@ -186,7 +186,7 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <UpdateCategoryDialog
+                <UpdateCategoryDrawer
                   category={category}
                   update={category =>
                     dispatch(

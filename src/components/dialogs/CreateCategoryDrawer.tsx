@@ -1,9 +1,12 @@
+import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
-import { updateCategoryApi } from '@/requests'
+import { TransactionType } from '@/models/TransactionModel'
+import { createCategoryApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { Separator } from '@radix-ui/react-select'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -20,23 +23,24 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface UpdateCategoryDialogProps {
-  category: ICategory
-  trigger: ReactNode
+interface CreateCategoryDrawerProps {
+  walletId?: string
+  type?: TransactionType
   update?: (category: ICategory) => void
+  trigger: ReactNode
   load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 
-function UpdateCategoryDialog({
-  category,
+function CreateCategoryDrawer({
+  walletId,
+  type,
   trigger,
   update,
   load,
   className = '',
-}: UpdateCategoryDialogProps) {
+}: CreateCategoryDrawerProps) {
   // form
   const {
     register,
@@ -50,16 +54,22 @@ function UpdateCategoryDialog({
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      name: category.name || '',
-      icon: category.icon || '',
-      type: category.type || '',
+      name: '',
+      icon: '',
+      type: type || '',
     },
   })
+
+  // store
+  const { curWallet } = useAppSelector(state => state.wallet)
 
   // states
   const form = watch()
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
+
+  // values
+  walletId = walletId || curWallet?._id
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
@@ -80,30 +90,35 @@ function UpdateCategoryDialog({
     [setError]
   )
 
-  // update category
-  const handleUpdateCategory: SubmitHandler<FieldValues> = useCallback(
+  // create category
+  const handleCreateCategory: SubmitHandler<FieldValues> = useCallback(
     async data => {
+      if (!walletId) return
+
       // validate form
       if (!handleValidate(data)) return
+
       // start loading
       setSaving(true)
       if (load) {
         load(true)
       }
-      toast.loading('Updating category...', { id: 'update-category' })
+      toast.loading('Creating category...', { id: 'create-category' })
 
       try {
-        const { category: c, message } = await updateCategoryApi(category._id, { ...data })
+        const { category, message } = await createCategoryApi({ ...data, walletId })
+
+        console.log('category', category)
 
         if (update) {
-          update(c)
+          update(category)
         }
 
-        toast.success(message, { id: 'update-category' })
+        toast.success(message, { id: 'create-category' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error(err.message, { id: 'update-category' })
+        toast.error(err.message, { id: 'create-category' })
         console.log(err)
       } finally {
         // stop loading
@@ -113,7 +128,7 @@ function UpdateCategoryDialog({
         }
       }
     },
-    [handleValidate, load, reset, update, category._id]
+    [handleValidate, load, reset, update, walletId]
   )
 
   return (
@@ -127,7 +142,7 @@ function UpdateCategoryDialog({
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
             <DrawerTitle>
-              Update{' '}
+              Create{' '}
               {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
               category
             </DrawerTitle>
@@ -149,45 +164,44 @@ function UpdateCategoryDialog({
               onFocus={() => clearErrors('name')}
             />
 
-            <CustomInput
-              id="type"
-              label="Type"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="select"
-              control={control}
-              options={[
-                {
-                  label: 'Expense',
-                  value: 'expense',
-                },
-                {
-                  label: 'Income',
-                  value: 'income',
-                },
-                {
-                  label: 'Saving',
-                  value: 'saving',
-                },
-                {
-                  label: 'Invest',
-                  value: 'invest',
-                },
-              ]}
-              onFocus={() => clearErrors('type')}
-            />
-            <p className="-mt-2 pl-1 text-xs italic text-muted-foreground text-yellow-400">
-              When you change type, all transaction&apos;s type of this category will be changed!
-            </p>
+            {!type && (
+              <CustomInput
+                id="type"
+                label="Type"
+                disabled={saving}
+                register={register}
+                errors={errors}
+                type="select"
+                control={control}
+                options={[
+                  {
+                    label: 'Expense',
+                    value: 'expense',
+                  },
+                  {
+                    label: 'Income',
+                    value: 'income',
+                  },
+                  {
+                    label: 'Saving',
+                    value: 'saving',
+                  },
+                  {
+                    label: 'Invest',
+                    value: 'invest',
+                  },
+                ]}
+                onFocus={() => clearErrors('type')}
+              />
+            )}
 
             <div className="mt-3 text-xs">
               <p className="font-semibold">
                 Icon <span className="font-normal">(optional)</span>
               </p>
 
-              <Popover>
-                <PopoverTrigger className="w-full">
+              <Drawer>
+                <DrawerTrigger className="w-full">
                   <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
                     {form.icon ? (
                       <span className="block text-[48px] leading-[48px]">{form.icon}</span>
@@ -196,15 +210,25 @@ function UpdateCategoryDialog({
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
                   </button>
-                </PopoverTrigger>
+                </DrawerTrigger>
 
-                <PopoverContent className="translate-y-[60px] scale-75 rounded-lg p-0 outline-none">
-                  <Picker
-                    data={data}
-                    onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
-                  />
-                </PopoverContent>
-              </Popover>
+                <DrawerContent className="">
+                  <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
+                    <DrawerHeader>
+                      <DrawerTitle>Select Icon</DrawerTitle>
+                      <DrawerDescription>Icon will be used to represent your wallet</DrawerDescription>
+                    </DrawerHeader>
+
+                    <Picker
+                      data={data}
+                      onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
+                    />
+
+                    <Separator className="mt-8" />
+                  </div>
+                </DrawerContent>
+              </Drawer>
+
               <p className="mt-2 text-muted-foreground">
                 This is how your category will appear in the app
               </p>
@@ -212,7 +236,7 @@ function UpdateCategoryDialog({
           </div>
 
           <DrawerFooter className="mb-21 px-0">
-            <div className="mx-auto w-full max-w-sm px-21/2">
+            <div className="mt-3 flex items-center justify-end gap-21/2">
               <DrawerClose>
                 <Button
                   variant="secondary"
@@ -228,7 +252,7 @@ function UpdateCategoryDialog({
               <Button
                 variant="default"
                 className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={handleSubmit(handleUpdateCategory)}
+                onClick={handleSubmit(handleCreateCategory)}
               >
                 {saving ? (
                   <LucideLoaderCircle
@@ -247,4 +271,4 @@ function UpdateCategoryDialog({
   )
 }
 
-export default UpdateCategoryDialog
+export default CreateCategoryDrawer

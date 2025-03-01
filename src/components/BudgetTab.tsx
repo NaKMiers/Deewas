@@ -1,5 +1,5 @@
 import BudgetCard from '@/components/BudgetCard'
-import CreateBudgetDialog from '@/components/dialogs/CreateBudgetDialog'
+import CreateBudgetDrawer from '@/components/dialogs/CreateBudgetDrawer'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
@@ -66,7 +66,7 @@ function BudgetTab({ value, begin, end, budgets, refetch, className = '' }: IBud
         </div>
 
         {/* MARK: Create Budget */}
-        <CreateBudgetDialog
+        <CreateBudgetDrawer
           refetch={refetch}
           trigger={
             <Button

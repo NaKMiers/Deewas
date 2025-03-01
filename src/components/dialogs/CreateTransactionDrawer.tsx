@@ -38,7 +38,7 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 
-interface CreateTransactionDialogProps {
+interface CreateTransactionDrawerProps {
   type?: TransactionType
   category?: ICategory
   trigger: ReactNode
@@ -46,13 +46,13 @@ interface CreateTransactionDialogProps {
   className?: string
 }
 
-function CreateTransactionDialog({
+function CreateTransactionDrawer({
   type,
   category,
   trigger,
   refetch,
   className = '',
-}: CreateTransactionDialogProps) {
+}: CreateTransactionDrawerProps) {
   // store
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
@@ -204,6 +204,7 @@ function CreateTransactionDialog({
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
+            {/* Name */}
             <CustomInput
               id="name"
               label="Name"
@@ -214,6 +215,7 @@ function CreateTransactionDialog({
               onFocus={() => clearErrors('name')}
             />
 
+            {/* Amount */}
             <CustomInput
               id="amount"
               label="Amount"
@@ -226,6 +228,7 @@ function CreateTransactionDialog({
               icon={<span>{formatSymbol(currency)}</span>}
             />
 
+            {/* Type */}
             {!category && !type && (
               <CustomInput
                 id="type"
@@ -285,26 +288,28 @@ function CreateTransactionDialog({
             <div className="mt-1.5 flex flex-1 flex-col">
               <p className="mb-1 text-xs font-semibold">Date</p>
               <div onFocus={() => clearErrors('date')}>
-                <Popover>
-                  <PopoverTrigger className="w-full">
+                <Drawer>
+                  <DrawerTrigger className="w-full">
                     <button className="flex h-9 w-full items-center justify-between gap-2 rounded-md border px-21/2 text-start text-sm font-semibold">
                       {moment(form.date).format('MMM DD, YYYY')}
                       <LucideCalendar size={18} />
                     </button>
-                  </PopoverTrigger>
+                  </DrawerTrigger>
 
-                  <PopoverContent className="w-full overflow-hidden rounded-md p-0 outline-none">
-                    <Calendar
-                      mode="single"
-                      selected={form.date}
-                      onSelect={date => {
-                        setValue('date', date)
-                        clearErrors('date')
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                  <DrawerContent className="w-full overflow-hidden rounded-md p-0 outline-none">
+                    <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
+                      <Calendar
+                        mode="single"
+                        selected={form.date}
+                        onSelect={date => {
+                          setValue('date', date)
+                          clearErrors('date')
+                        }}
+                        initialFocus
+                      />
+                    </div>
+                  </DrawerContent>
+                </Drawer>
               </div>
               {errors.date?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
@@ -351,7 +356,4 @@ function CreateTransactionDialog({
   )
 }
 
-export default CreateTransactionDialog
-function refresh() {
-  throw new Error('Function not implemented.')
-}
+export default CreateTransactionDrawer

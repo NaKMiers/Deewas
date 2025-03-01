@@ -1,8 +1,9 @@
 import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
-import { updateWalletApi } from '@/requests'
+import { createWalletApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { Separator } from '@radix-ui/react-select'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -19,17 +20,15 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface UpdateWalletDialogProps {
+interface CreateWalletDrawerProps {
   trigger: ReactNode
-  wallet: IWallet
   update?: (wallet: IWallet) => void
   load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 
-function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: UpdateWalletDialogProps) {
+function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWalletDrawerProps) {
   // form
   const {
     register,
@@ -42,8 +41,8 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      name: wallet.name,
-      icon: wallet.icon,
+      name: '',
+      icon: '',
     },
   })
 
@@ -71,8 +70,8 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
     [setError]
   )
 
-  // update wallet
-  const handleUpdateWallet: SubmitHandler<FieldValues> = useCallback(
+  // create wallet
+  const handleCreateWallet: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form
       if (!handleValidate(data)) return
@@ -82,20 +81,22 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
       if (load) {
         load(true)
       }
-      toast.loading('Updating wallet...', { id: 'update-wallet' })
+      toast.loading('Creating wallet...', { id: 'create-wallet' })
 
       try {
-        const { wallet: w, message } = await updateWalletApi(wallet._id, data)
+        const { wallet, message } = await createWalletApi(data)
+
+        console.log('wallet', wallet)
 
         if (update) {
-          update(w)
+          update(wallet)
         }
 
-        toast.success(message, { id: 'update-wallet' })
+        toast.success(message, { id: 'create-wallet' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error(err.message, { id: 'update-wallet' })
+        toast.error(err.message, { id: 'create-wallet' })
         console.log(err)
       } finally {
         // stop loading
@@ -105,7 +106,7 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
         }
       }
     },
-    [handleValidate, reset, update, load, wallet._id]
+    [handleValidate, reset, update, load]
   )
 
   return (
@@ -118,11 +119,12 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>Update wallet</DrawerTitle>
+            <DrawerTitle>Create wallet</DrawerTitle>
             <DrawerDescription>Wallets are used to group your categories</DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
+            {/* Name */}
             <CustomInput
               id="name"
               label="Name"
@@ -134,31 +136,43 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
               onFocus={() => clearErrors('name')}
             />
 
+            {/* Icon */}
             <div className="mt-3 text-xs">
               <p className="font-semibold">
                 Icon <span className="font-normal">(optional)</span>
               </p>
 
-              <Popover>
-                <PopoverTrigger className="w-full">
-                  <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md bg-neutral-800">
+              <Drawer>
+                <DrawerTrigger className="w-full">
+                  <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
                     {form.icon ? (
                       <span className="block text-[48px] leading-[48px]">{form.icon}</span>
                     ) : (
                       <LucideCircleOff size={48} />
                     )}
-                    <p className="mt-1 text-xs text-slate-200">Click to select</p>
+                    <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
                   </button>
-                </PopoverTrigger>
+                </DrawerTrigger>
 
-                <PopoverContent className="translate-y-[60px] scale-75 rounded-lg p-0 outline-none">
-                  <Picker
-                    data={data}
-                    onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
-                  />
-                </PopoverContent>
-              </Popover>
-              <p className="mt-2 text-slate-300">This is how your wallet will appear in the app</p>
+                <DrawerContent className="">
+                  <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
+                    <DrawerHeader>
+                      <DrawerTitle>Select Icon</DrawerTitle>
+                      <DrawerDescription>Icon will be used to represent your wallet</DrawerDescription>
+                    </DrawerHeader>
+
+                    <Picker
+                      data={data}
+                      onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
+                    />
+
+                    <Separator className="mt-8" />
+                  </div>
+                </DrawerContent>
+              </Drawer>
+              <p className="mt-2 text-muted-foreground">
+                This is how your wallet will appear in the app
+              </p>
             </div>
           </div>
 
@@ -166,6 +180,7 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
             <div className="mt-3 flex items-center justify-end gap-21/2">
               <DrawerClose>
                 <Button
+                  variant="secondary"
                   className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
                   onClick={() => {
                     setOpen(false)
@@ -176,14 +191,14 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
                 </Button>
               </DrawerClose>
               <Button
-                variant="secondary"
+                variant="default"
                 className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={handleSubmit(handleUpdateWallet)}
+                onClick={handleSubmit(handleCreateWallet)}
               >
                 {saving ? (
                   <LucideLoaderCircle
                     size={20}
-                    className="animate-spin text-slate-400"
+                    className="animate-spin text-muted-foreground"
                   />
                 ) : (
                   'Save'
@@ -197,4 +212,4 @@ function UpdateWalletDialog({ wallet, trigger, update, load, className = '' }: U
   )
 }
 
-export default UpdateWalletDialog
+export default CreateWalletDrawer

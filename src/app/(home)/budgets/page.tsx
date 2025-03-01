@@ -1,7 +1,7 @@
 'use client'
 
 import BudgetTab from '@/components/BudgetTab'
-import CreateBudgetDialog from '@/components/dialogs/CreateBudgetDialog'
+import CreateBudgetDrawer from '@/components/dialogs/CreateBudgetDrawer'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -129,7 +129,7 @@ function BudgetsPage() {
       )}
 
       {/* MARK: Create Transaction */}
-      <CreateBudgetDialog
+      <CreateBudgetDrawer
         refetch={getBudgets}
         trigger={
           <Button

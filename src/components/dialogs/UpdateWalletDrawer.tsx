@@ -1,8 +1,9 @@
 import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
-import { createWalletApi } from '@/requests'
+import { updateWalletApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { Separator } from '@radix-ui/react-select'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -19,16 +20,16 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface CreateWalletDialogProps {
+interface UpdateWalletDrawerProps {
   trigger: ReactNode
+  wallet: IWallet
   update?: (wallet: IWallet) => void
   load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 
-function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWalletDialogProps) {
+function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: UpdateWalletDrawerProps) {
   // form
   const {
     register,
@@ -41,8 +42,8 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
-      icon: '',
+      name: wallet.name,
+      icon: wallet.icon,
     },
   })
 
@@ -70,8 +71,8 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
     [setError]
   )
 
-  // create wallet
-  const handleCreateWallet: SubmitHandler<FieldValues> = useCallback(
+  // update wallet
+  const handleUpdateWallet: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form
       if (!handleValidate(data)) return
@@ -81,22 +82,20 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
       if (load) {
         load(true)
       }
-      toast.loading('Creating wallet...', { id: 'create-wallet' })
+      toast.loading('Updating wallet...', { id: 'update-wallet' })
 
       try {
-        const { wallet, message } = await createWalletApi(data)
-
-        console.log('wallet', wallet)
+        const { wallet: w, message } = await updateWalletApi(wallet._id, data)
 
         if (update) {
-          update(wallet)
+          update(w)
         }
 
-        toast.success(message, { id: 'create-wallet' })
+        toast.success(message, { id: 'update-wallet' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error(err.message, { id: 'create-wallet' })
+        toast.error(err.message, { id: 'update-wallet' })
         console.log(err)
       } finally {
         // stop loading
@@ -106,7 +105,7 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
         }
       }
     },
-    [handleValidate, reset, update, load]
+    [handleValidate, reset, update, load, wallet._id]
   )
 
   return (
@@ -119,7 +118,7 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>Create wallet</DrawerTitle>
+            <DrawerTitle>Update wallet</DrawerTitle>
             <DrawerDescription>Wallets are used to group your categories</DrawerDescription>
           </DrawerHeader>
 
@@ -140,8 +139,8 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
                 Icon <span className="font-normal">(optional)</span>
               </p>
 
-              <Popover>
-                <PopoverTrigger className="w-full">
+              <Drawer>
+                <DrawerTrigger className="w-full">
                   <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
                     {form.icon ? (
                       <span className="block text-[48px] leading-[48px]">{form.icon}</span>
@@ -150,18 +149,25 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
                   </button>
-                </PopoverTrigger>
+                </DrawerTrigger>
 
-                <PopoverContent className="translate-y-[60px] scale-75 rounded-lg p-0 outline-none">
-                  <Picker
-                    data={data}
-                    onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
-                  />
-                </PopoverContent>
-              </Popover>
-              <p className="mt-2 text-muted-foreground">
-                This is how your wallet will appear in the app
-              </p>
+                <DrawerContent className="">
+                  <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
+                    <DrawerHeader>
+                      <DrawerTitle>Select Icon</DrawerTitle>
+                      <DrawerDescription>Icon will be used to represent your wallet</DrawerDescription>
+                    </DrawerHeader>
+
+                    <Picker
+                      data={data}
+                      onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
+                    />
+
+                    <Separator className="mt-8" />
+                  </div>
+                </DrawerContent>
+              </Drawer>
+              <p className="mt-2 text-slate-300">This is how your wallet will appear in the app</p>
             </div>
           </div>
 
@@ -169,7 +175,6 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
             <div className="mt-3 flex items-center justify-end gap-21/2">
               <DrawerClose>
                 <Button
-                  variant="secondary"
                   className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
                   onClick={() => {
                     setOpen(false)
@@ -180,14 +185,14 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
                 </Button>
               </DrawerClose>
               <Button
-                variant="default"
+                variant="secondary"
                 className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={handleSubmit(handleCreateWallet)}
+                onClick={handleSubmit(handleUpdateWallet)}
               >
                 {saving ? (
                   <LucideLoaderCircle
                     size={20}
-                    className="animate-spin text-muted-foreground"
+                    className="animate-spin text-slate-400"
                   />
                 ) : (
                   'Save'
@@ -201,4 +206,4 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
   )
 }
 
-export default CreateWalletDialog
+export default UpdateWalletDrawer

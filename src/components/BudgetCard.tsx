@@ -8,7 +8,7 @@ import { LucideEllipsis, LucideLoaderCircle, LucidePencil, LucideTrash } from 'l
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
-import UpdateBudgetDialog from './dialogs/UpdateBudgetDialog'
+import UpdateBudgetDrawer from './dialogs/UpdateBudgetDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 
@@ -76,7 +76,7 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <UpdateBudgetDialog
+              <UpdateBudgetDrawer
                 budget={budget}
                 refetch={refetch}
                 trigger={

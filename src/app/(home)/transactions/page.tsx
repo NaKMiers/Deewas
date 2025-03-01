@@ -1,6 +1,6 @@
 'use client'
 
-import CreateTransactionDialog from '@/components/dialogs/CreateTransactionDialog'
+import CreateTransactionDrawer from '@/components/dialogs/CreateTransactionDrawer'
 import TransactionTypeGroup from '@/components/TransactionTypeGroup'
 import { Button } from '@/components/ui/button'
 import {
@@ -236,7 +236,7 @@ function TransactionsPage() {
       )}
 
       {/* Create Transaction */}
-      <CreateTransactionDialog
+      <CreateTransactionDrawer
         refetch={getMyTransactions}
         trigger={
           <Button

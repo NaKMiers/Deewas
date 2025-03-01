@@ -1,6 +1,6 @@
 'use client'
 
-import CreateCategoryDialog from '@/components/dialogs/CreateCategoryDialog'
+import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import WalletCard from '@/components/WalletCard'
@@ -112,7 +112,7 @@ function WalletPage({ params }: { params: Promise<{ id: string }> }) {
 
       {/* Create Category Float Button */}
       {wallet?._id && (
-        <CreateCategoryDialog
+        <CreateCategoryDrawer
           walletId={wallet._id}
           update={category => dispatch(setWalletCategories([category, ...categories]))}
           trigger={

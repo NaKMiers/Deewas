@@ -18,7 +18,7 @@ import { Dispatch, SetStateAction, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useDispatch } from 'react-redux'
 import ConfirmDialog from './dialogs/ConfirmDialog'
-import UpdateWalletDialog from './dialogs/UpdateWalletDialog'
+import UpdateWalletDrawer from './dialogs/UpdateWalletDrawer'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
@@ -100,7 +100,7 @@ function WalletCard({ wallet, update, className = '' }: WalletCardProps) {
                     View
                   </Button>
 
-                  <UpdateWalletDialog
+                  <UpdateWalletDrawer
                     update={wallet => dispatch(updateWallet(wallet))}
                     wallet={wallet}
                     load={setUpdating}

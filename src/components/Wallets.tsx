@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
 import { LucideLoaderCircle, LucidePlusCircle } from 'lucide-react'
 import { ReactNode, useState } from 'react'
-import CreateWalletDialog from './dialogs/CreateWalletDialog'
+import CreateWalletDrawer from './dialogs/CreateWalletDrawer'
 import { Button } from './ui/button'
 import { Carousel, CarouselContent, CarouselItem } from './ui/carousel'
 import { Skeleton } from './ui/skeleton'
@@ -32,7 +32,7 @@ function Wallets({ className = '' }: WalletProps) {
       <div className="flex flex-wrap items-center justify-between gap-2 px-21/2 md:px-21">
         <h2 className="text-lg font-bold">Wallets</h2>
 
-        <CreateWalletDialog
+        <CreateWalletDrawer
           update={wallet => dispatch(setWallets([wallet, ...wallets]))}
           load={setCreating}
           trigger={

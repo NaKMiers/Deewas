@@ -1,11 +1,12 @@
 'use client'
 
 import { useAppSelector } from '@/hooks/reduxHook'
-import { formatSymbol } from '@/lib/string'
+import { checkTranType, formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
-import { createBudgetApi } from '@/requests/budgetRequests'
-import { LucideLoaderCircle } from 'lucide-react'
+import { IFullTransaction } from '@/models/TransactionModel'
+import { updateTransactionApi } from '@/requests/transactionRequests'
+import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
 import { ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -13,7 +14,7 @@ import toast from 'react-hot-toast'
 import CategoryPicker from '../CategoryPicker'
 import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
-import { DateRangePicker } from '../ui/DateRangePicker'
+import { Calendar } from '../ui/calendar'
 import {
   Drawer,
   DrawerClose,
@@ -24,16 +25,22 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface CreateBudgetDialogProps {
+interface UpdateTransactionDrawerProps {
+  transaction: IFullTransaction
   trigger: ReactNode
   refetch?: () => void
   className?: string
 }
 
-function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDialogProps) {
+function UpdateTransactionDrawer({
+  transaction,
+  trigger,
+  refetch,
+  className = '',
+}: UpdateTransactionDrawerProps) {
   // store
-  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
     settings: { currency },
   } = useAppSelector(state => state.settings)
@@ -45,44 +52,42 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
     formState: { errors },
     setError,
     setValue,
+    watch,
     clearErrors,
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: curWallet?._id,
-      categoryId: '',
-      total: '',
-      begin: moment().startOf('month').toDate(),
-      end: moment().endOf('month').toDate(),
+      walletId: transaction.wallet._id || '',
+      name: transaction.name || '',
+      categoryId: transaction.category._id || '',
+      amount: transaction.amount.toFixed(2) || '',
+      date: moment().format('YYYY-MM-DD'),
     },
   })
 
+  const form = watch()
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
-  const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
-    from: moment().startOf('month').toDate(),
-    to: moment().endOf('month').toDate(),
-  })
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     data => {
       let isValid = true
 
-      // total is required
-      if (!data.total) {
-        setError('total', {
+      // name is required
+      if (!data.name) {
+        setError('name', {
           type: 'manual',
-          message: 'Amount is required',
+          message: 'Name is required',
         })
         isValid = false
       }
 
-      // total must be > 0
-      if (data.total <= 0) {
-        setError('total', {
+      // amount is required
+      if (!data.amount) {
+        setError('amount', {
           type: 'manual',
-          message: 'Amount must be greater than 0',
+          message: 'Amount is required',
         })
         isValid = false
       }
@@ -96,20 +101,11 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
         isValid = false
       }
 
-      // begin must be selected
-      if (!data.begin) {
-        setError('begin', {
+      // date must be selected
+      if (!data.date) {
+        setError('date', {
           type: 'manual',
-          message: 'From and To date is required',
-        })
-        isValid = false
-      }
-
-      // to must be selected
-      if (!data.end) {
-        setError('end', {
-          type: 'manual',
-          message: 'From and To date is required',
+          message: 'Date is required',
         })
         isValid = false
       }
@@ -119,43 +115,43 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
     [setError]
   )
 
-  // create transaction
-  const handleCreateBudget: SubmitHandler<FieldValues> = useCallback(
+  // update transaction
+  const handleUpdateTransaction: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!curWallet?._id) {
-        return toast.error('Please select a wallet to continue')
-      }
-
       // validate form
       if (!handleValidate(data)) return
 
       // start loading
       setSaving(true)
-      toast.loading('Creating transaction...', { id: 'create-transaction' })
+      toast.loading('Updating transaction...', { id: 'update-transaction' })
+
+      console.log('data', {
+        ...data,
+        date: toUTC(data.date),
+        amount: data.amount,
+      })
 
       try {
-        const { message } = await createBudgetApi({
+        const { message } = await updateTransactionApi(transaction._id, {
           ...data,
-          walletId: curWallet._id,
-          begin: toUTC(data.begin),
-          end: toUTC(data.end),
-          total: data.total,
+          date: toUTC(data.date),
+          amount: data.amount,
         })
 
         if (refetch) refetch()
 
-        toast.success(message, { id: 'create-transaction' })
+        toast.success(message, { id: 'update-transaction' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error('Failed to create transaction', { id: 'create-transaction' })
+        toast.error('Failed to update transaction', { id: 'update-transaction' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id]
+    [handleValidate, reset, refetch, transaction._id]
   )
 
   return (
@@ -168,19 +164,35 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>Create Budget</DrawerTitle>
-            <DrawerDescription>Budget helps you manage money wisely</DrawerDescription>
+            <DrawerTitle>
+              Update{' '}
+              {transaction.type && (
+                <span className={cn(checkTranType(transaction.type).color)}>{transaction.type}</span>
+              )}{' '}
+              transaction
+            </DrawerTitle>
+            <DrawerDescription>Transactions keep track of your finances effectively.</DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
             <CustomInput
-              id="total"
-              label="Total"
+              id="name"
+              label="Name"
+              disabled={saving}
+              register={register}
+              errors={errors}
+              type="text"
+              onFocus={() => clearErrors('name')}
+            />
+
+            <CustomInput
+              id="amount"
+              label="Amount"
               disabled={saving}
               register={register}
               errors={errors}
               type="number"
-              onFocus={() => clearErrors('total')}
+              onFocus={() => clearErrors('amount')}
               icon={<span>{formatSymbol(currency)}</span>}
             />
 
@@ -194,54 +206,50 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
               >
                 Category
               </p>
-              <div onFocus={() => clearErrors('categoryId')}>
+              <div onFocus={() => clearErrors('category')}>
                 <CategoryPicker
+                  category={transaction.category}
                   onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                  type="expense"
+                  type={transaction.type}
                 />
               </div>
-              {errors.categoryId?.message && (
+              {errors.category?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
                   {errors.categoryId?.message?.toString()}
                 </span>
               )}
             </div>
 
-            {/* Budget */}
+            {/* Transaction */}
             <div className="mt-1.5 flex flex-1 flex-col">
-              <p
-                className={cn(
-                  'mb-1 text-xs font-semibold',
-                  (errors.begin || errors.end)?.message && 'text-rose-500'
-                )}
-              >
-                From - To
-              </p>
-              <div
-                onFocus={() => {
-                  clearErrors('begin')
-                  clearErrors('end')
-                }}
-              >
-                <DateRangePicker
-                  initialDateFrom={dateRange.from}
-                  initialDateTo={dateRange.to}
-                  showCompare={false}
-                  onUpdate={values => {
-                    const { from, to } = values.range
+              <p className="mb-1 text-xs font-semibold">Date</p>
+              <div onFocus={() => clearErrors('date')}>
+                <Drawer>
+                  <DrawerTrigger className="w-full">
+                    <button className="flex h-9 w-full items-center justify-between gap-2 rounded-md border px-21/2 text-start text-sm font-semibold">
+                      {moment(form.date).format('MMM DD, YYYY')}
+                      <LucideCalendar size={18} />
+                    </button>
+                  </DrawerTrigger>
 
-                    if (!from || !to) return
-
-                    setDateRange({ from, to })
-                    setValue('begin', from)
-                    setValue('end', to)
-                  }}
-                  className="h-9 w-full"
-                />
+                  <DrawerContent className="w-full overflow-hidden rounded-md p-0 outline-none">
+                    <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
+                      <Calendar
+                        mode="single"
+                        selected={form.date}
+                        onSelect={date => {
+                          setValue('date', date)
+                          clearErrors('date')
+                        }}
+                        initialFocus
+                      />
+                    </div>
+                  </DrawerContent>
+                </Drawer>
               </div>
-              {(errors.begin || errors.end)?.message && (
+              {errors.date?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {(errors.begin || errors.end)?.message?.toString()}
+                  {errors.date?.message?.toString()}
                 </span>
               )}
             </div>
@@ -265,7 +273,7 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
                 disabled={saving}
                 variant="default"
                 className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={handleSubmit(handleCreateBudget)}
+                onClick={handleSubmit(handleUpdateTransaction)}
               >
                 {saving ? (
                   <LucideLoaderCircle
@@ -284,7 +292,4 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
   )
 }
 
-export default CreateBudgetDialog
-function refresh() {
-  throw new Error('Function not implemented.')
-}
+export default UpdateTransactionDrawer

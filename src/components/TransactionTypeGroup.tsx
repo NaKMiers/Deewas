@@ -1,4 +1,4 @@
-import CreateCategoryDialog from '@/components/dialogs/CreateCategoryDialog'
+import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
 import { Button } from '@/components/ui/button'
 import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType, formatCurrency } from '@/lib/string'
@@ -7,7 +7,7 @@ import { TransactionType } from '@/models/TransactionModel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LucideEllipsisVertical, LucidePlus, LucidePlusCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import CreateTransactionDialog from './dialogs/CreateTransactionDialog'
+import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import TransactionCategoryGroup from './TransactionCategoryGroup'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 
@@ -86,7 +86,7 @@ function TransactionTypeGroup({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-w-max p-0">
-              <CreateTransactionDialog
+              <CreateTransactionDrawer
                 type={type}
                 refetch={refetch}
                 trigger={
@@ -125,7 +125,7 @@ function TransactionTypeGroup({
 
               {/* Add Category */}
               {curWallet && (
-                <CreateCategoryDialog
+                <CreateCategoryDrawer
                   walletId={curWallet._id}
                   type={type}
                   trigger={

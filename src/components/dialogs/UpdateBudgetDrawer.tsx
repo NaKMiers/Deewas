@@ -26,14 +26,14 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 
-interface UpdateBudgetDialogProps {
+interface UpdateBudgetDrawerProps {
   budget: IFullBudget
   trigger: ReactNode
   refetch?: () => void
   className?: string
 }
 
-function UpdateBudgetDialog({ budget, trigger, refetch, className = '' }: UpdateBudgetDialogProps) {
+function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: UpdateBudgetDrawerProps) {
   // store
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
@@ -288,7 +288,4 @@ function UpdateBudgetDialog({ budget, trigger, refetch, className = '' }: Update
   )
 }
 
-export default UpdateBudgetDialog
-function refresh() {
-  throw new Error('Function not implemented.')
-}
+export default UpdateBudgetDrawer

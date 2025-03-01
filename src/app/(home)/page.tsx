@@ -69,7 +69,6 @@ function HomePage() {
               toast.error(`The selected date range is too large. Max allowed range is ${90} days!`)
               return
             }
-
             setDateRange({ from, to })
           }}
         />
