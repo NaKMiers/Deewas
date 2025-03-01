@@ -230,15 +230,13 @@ function CreateCategoryDrawer({
                       <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
                     </DialogHeader>
 
-                    <div style={{ pointerEvents: 'auto' }}>
-                      <Picker
-                        data={data}
-                        onEmojiSelect={(emoji: any) => {
-                          setValue('icon', emoji.native)
-                          setOpenEmojiPicker(false)
-                        }}
-                      />
-                    </div>
+                    <Picker
+                      data={data}
+                      onEmojiSelect={(emoji: any) => {
+                        setValue('icon', emoji.native)
+                        setOpenEmojiPicker(false)
+                      }}
+                    />
                   </div>
                 </DialogContent>
               </Dialog>

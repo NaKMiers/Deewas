@@ -163,22 +163,23 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
                   </button>
                 </DialogTrigger>
 
-                <DialogContent className="px-0">
+                <DialogContent
+                  className="px-0"
+                  onWheelCapture={e => e.stopPropagation()}
+                >
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
                       <DialogTitle>Select Icon</DialogTitle>
                       <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
                     </DialogHeader>
 
-                    <div style={{ pointerEvents: 'auto' }}>
-                      <Picker
-                        data={data}
-                        onEmojiSelect={(emoji: any) => {
-                          setValue('icon', emoji.native)
-                          setOpenEmojiPicker(false)
-                        }}
-                      />
-                    </div>
+                    <Picker
+                      data={data}
+                      onEmojiSelect={(emoji: any) => {
+                        setValue('icon', emoji.native)
+                        setOpenEmojiPicker(false)
+                      }}
+                    />
                   </div>
                 </DialogContent>
               </Dialog>
