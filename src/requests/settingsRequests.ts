@@ -42,3 +42,15 @@ export const updateMySettingsApi = async (data: any) => {
 
   return await res.json()
 }
+
+// [DELETE]: /settings/delete-all
+export const deleteAllDataApi = async () => {
+  const res = await fetch('/api/settings/delete-all', { method: 'DELETE' })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}

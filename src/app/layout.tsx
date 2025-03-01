@@ -36,7 +36,10 @@ export default async function RootLayout({
       <body>
         <StoreProvider session={session}>
           {/* Toast */}
-          <Toaster position="bottom-left" />
+          <Toaster
+            position="bottom-center"
+            containerClassName="mb-[68px]"
+          />
 
           {/* Top Loader */}
           <NextTopLoader

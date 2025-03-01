@@ -44,7 +44,6 @@ const WalletSchema = new Schema(
 )
 
 // indexed
-WalletSchema.index({ user: 1 })
 
 const WalletModel = mongoose.models.wallet || mongoose.model('wallet', WalletSchema)
 export default WalletModel
