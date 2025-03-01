@@ -16,15 +16,15 @@ import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
 import { Calendar } from '../ui/calendar'
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 interface UpdateTransactionDialogProps {
@@ -155,137 +155,139 @@ function UpdateTransactionDialog({
   )
 
   return (
-    <Dialog
+    <Drawer
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
 
-      <DialogContent className={cn('rounded-lg border-slate-200/30 sm:max-w-[425px]', className)}>
-        <DialogHeader className="text-start">
-          <DialogTitle className="font-semibold">
-            Update{' '}
-            {transaction.type && (
-              <span className={cn(checkTranType(transaction.type).color)}>{transaction.type}</span>
-            )}{' '}
-            transaction
-          </DialogTitle>
-          <DialogDescription>Transactions keep track of your finances effectively.</DialogDescription>
-        </DialogHeader>
+      <DrawerContent className={cn(className)}>
+        <div className="mx-auto w-full max-w-sm px-21/2">
+          <DrawerHeader>
+            <DrawerTitle>
+              Update{' '}
+              {transaction.type && (
+                <span className={cn(checkTranType(transaction.type).color)}>{transaction.type}</span>
+              )}{' '}
+              transaction
+            </DrawerTitle>
+            <DrawerDescription>Transactions keep track of your finances effectively.</DrawerDescription>
+          </DrawerHeader>
 
-        <div className="flex flex-col gap-3">
-          <CustomInput
-            id="name"
-            label="Name"
-            disabled={saving}
-            register={register}
-            errors={errors}
-            type="text"
-            onFocus={() => clearErrors('name')}
-          />
-
-          <CustomInput
-            id="amount"
-            label="Amount"
-            disabled={saving}
-            register={register}
-            errors={errors}
-            type="number"
-            onFocus={() => clearErrors('amount')}
-            icon={<span>{formatSymbol(currency)}</span>}
-          />
-
-          {/* Category */}
-          <div className="mt-1.5 flex flex-1 flex-col">
-            <p
-              className={cn('mb-1 text-xs font-semibold', errors.categoryId?.message && 'text-rose-500')}
-            >
-              Category
-            </p>
-            <div onFocus={() => clearErrors('category')}>
-              <CategoryPicker
-                category={transaction.category}
-                onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                type={transaction.type}
-              />
-            </div>
-            {errors.category?.message && (
-              <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                {errors.categoryId?.message?.toString()}
-              </span>
-            )}
-          </div>
-
-          {/* Transaction */}
-          <div className="mt-1.5 flex flex-1 flex-col">
-            <p className="mb-1 text-xs font-semibold">Date</p>
-            <div onFocus={() => clearErrors('date')}>
-              <Popover>
-                <PopoverTrigger className="w-full">
-                  <button className="flex h-9 w-full items-center justify-between gap-2 rounded-md border px-21/2 text-start text-sm font-semibold">
-                    {moment(form.date).format('MMM DD, YYYY')}
-                    <LucideCalendar size={18} />
-                  </button>
-                </PopoverTrigger>
-
-                <PopoverContent className="w-full overflow-hidden rounded-md p-0 outline-none">
-                  <Calendar
-                    mode="single"
-                    selected={form.date}
-                    onSelect={date => {
-                      setValue('date', date)
-                      clearErrors('date')
-                    }}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            {errors.date?.message && (
-              <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                {errors.date?.message?.toString()}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <DialogFooter>
-          <div className="mt-3 flex items-center justify-end gap-21/2">
-            <DialogClose>
-              <Button
-                variant="secondary"
-                className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={() => {
-                  setOpen(false)
-                  reset()
-                }}
-              >
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button
+          <div className="flex flex-col gap-3">
+            <CustomInput
+              id="name"
+              label="Name"
               disabled={saving}
-              variant="default"
-              className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-              onClick={handleSubmit(handleUpdateTransaction)}
-            >
-              {saving ? (
-                <LucideLoaderCircle
-                  size={20}
-                  className="animate-spin text-muted-foreground"
+              register={register}
+              errors={errors}
+              type="text"
+              onFocus={() => clearErrors('name')}
+            />
+
+            <CustomInput
+              id="amount"
+              label="Amount"
+              disabled={saving}
+              register={register}
+              errors={errors}
+              type="number"
+              onFocus={() => clearErrors('amount')}
+              icon={<span>{formatSymbol(currency)}</span>}
+            />
+
+            {/* Category */}
+            <div className="mt-1.5 flex flex-1 flex-col">
+              <p
+                className={cn(
+                  'mb-1 text-xs font-semibold',
+                  errors.categoryId?.message && 'text-rose-500'
+                )}
+              >
+                Category
+              </p>
+              <div onFocus={() => clearErrors('category')}>
+                <CategoryPicker
+                  category={transaction.category}
+                  onChange={(categoryId: string) => setValue('categoryId', categoryId)}
+                  type={transaction.type}
                 />
-              ) : (
-                'Save'
+              </div>
+              {errors.category?.message && (
+                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                  {errors.categoryId?.message?.toString()}
+                </span>
               )}
-            </Button>
+            </div>
+
+            {/* Transaction */}
+            <div className="mt-1.5 flex flex-1 flex-col">
+              <p className="mb-1 text-xs font-semibold">Date</p>
+              <div onFocus={() => clearErrors('date')}>
+                <Popover>
+                  <PopoverTrigger className="w-full">
+                    <button className="flex h-9 w-full items-center justify-between gap-2 rounded-md border px-21/2 text-start text-sm font-semibold">
+                      {moment(form.date).format('MMM DD, YYYY')}
+                      <LucideCalendar size={18} />
+                    </button>
+                  </PopoverTrigger>
+
+                  <PopoverContent className="w-full overflow-hidden rounded-md p-0 outline-none">
+                    <Calendar
+                      mode="single"
+                      selected={form.date}
+                      onSelect={date => {
+                        setValue('date', date)
+                        clearErrors('date')
+                      }}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              {errors.date?.message && (
+                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                  {errors.date?.message?.toString()}
+                </span>
+              )}
+            </div>
           </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+
+          <DrawerFooter className="mb-21 px-0">
+            <div className="mt-3 flex items-center justify-end gap-21/2">
+              <DrawerClose>
+                <Button
+                  variant="secondary"
+                  className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
+                  onClick={() => {
+                    setOpen(false)
+                    reset()
+                  }}
+                >
+                  Cancel
+                </Button>
+              </DrawerClose>
+              <Button
+                disabled={saving}
+                variant="default"
+                className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
+                onClick={handleSubmit(handleUpdateTransaction)}
+              >
+                {saving ? (
+                  <LucideLoaderCircle
+                    size={20}
+                    className="animate-spin text-muted-foreground"
+                  />
+                ) : (
+                  'Save'
+                )}
+              </Button>
+            </div>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
   )
 }
 
 export default UpdateTransactionDialog
-function refresh() {
-  throw new Error('Function not implemented.')
-}

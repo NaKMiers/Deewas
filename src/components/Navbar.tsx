@@ -10,13 +10,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { useAppSelector } from '@/hooks/reduxHook'
 import {
   LucideArrowLeftRight,
   LucideBookCopy,
   LucideChartPie,
   LucideHouse,
-  LucidePiggyBank,
   LucidePlus,
   LucideWallet,
   LucideWalletCards,
@@ -24,18 +22,16 @@ import {
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import CreateBudgetDialog from './dialogs/CreateBudgetDialog'
 import CreateCategoryDialog from './dialogs/CreateCategoryDialog'
+import CreateTransactionDialog from './dialogs/CreateTransactionDialog'
 import CreateWalletDialog from './dialogs/CreateWalletDialog'
 import { Button } from './ui/button'
-import CreateTransactionDialog from './dialogs/CreateTransactionDialog'
-import CreateBudgetDialog from './dialogs/CreateBudgetDialog'
 
 function Navbar() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
-
-  const { curWallet } = useAppSelector(state => state.wallet)
 
   return (
     <>

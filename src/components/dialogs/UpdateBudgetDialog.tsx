@@ -16,15 +16,15 @@ import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
 import { DateRangePicker } from '../ui/DateRangePicker'
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer'
 
 interface UpdateBudgetDialogProps {
   budget: IFullBudget
@@ -159,130 +159,132 @@ function UpdateBudgetDialog({ budget, trigger, refetch, className = '' }: Update
   )
 
   return (
-    <Dialog
+    <Drawer
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
 
-      <DialogContent className={cn('rounded-lg border-slate-200/30 sm:max-w-[425px]', className)}>
-        <DialogHeader className="text-start">
-          <DialogTitle className="font-semibold">Update Budget</DialogTitle>
-          <DialogDescription>Budget helps you manage money wisely</DialogDescription>
-        </DialogHeader>
+      <DrawerContent className={cn(className)}>
+        <div className="mx-auto w-full max-w-sm px-21/2">
+          <DrawerHeader>
+            <DrawerTitle>Update Budget</DrawerTitle>
+            <DrawerDescription>Budget helps you manage money wisely</DrawerDescription>
+          </DrawerHeader>
 
-        <div className="flex flex-col gap-3">
-          <CustomInput
-            id="total"
-            label="Total"
-            disabled={saving}
-            register={register}
-            errors={errors}
-            type="number"
-            onFocus={() => clearErrors('total')}
-            icon={<span>{formatSymbol(currency)}</span>}
-          />
-
-          <div className="mt-1 flex gap-4">
-            {/* Category */}
-            <div className="flex flex-1 flex-col">
-              <p
-                className={cn(
-                  'mb-1 text-xs font-semibold',
-                  errors.categoryId?.message && 'text-rose-500'
-                )}
-              >
-                Category
-              </p>
-              <div onFocus={() => clearErrors('categoryId')}>
-                <CategoryPicker
-                  category={budget.category}
-                  isExcept
-                  onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                  type="expense"
-                />
-              </div>
-              {errors.categoryId?.message && (
-                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {errors.categoryId?.message?.toString()}
-                </span>
-              )}
-            </div>
-
-            {/* Budget */}
-            <div className="flex flex-1 flex-col">
-              <p
-                className={cn(
-                  'mb-1 text-xs font-semibold',
-                  (errors.begin || errors.end)?.message && 'text-rose-500'
-                )}
-              >
-                From - To
-              </p>
-              <div
-                onFocus={() => {
-                  clearErrors('begin')
-                  clearErrors('end')
-                }}
-              >
-                <DateRangePicker
-                  initialDateFrom={dateRange.from}
-                  initialDateTo={dateRange.to}
-                  showCompare={false}
-                  onUpdate={values => {
-                    const { from, to } = values.range
-
-                    if (!from || !to) return
-
-                    setDateRange({ from, to })
-                    setValue('begin', from)
-                    setValue('end', to)
-                  }}
-                  className="h-9 w-full"
-                />
-              </div>
-              {(errors.begin || errors.end)?.message && (
-                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {(errors.begin || errors.end)?.message?.toString()}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <DialogFooter>
-          <div className="mt-3 flex items-center justify-end gap-21/2">
-            <DialogClose>
-              <Button
-                variant="secondary"
-                className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={() => {
-                  setOpen(false)
-                  reset()
-                }}
-              >
-                Cancel
-              </Button>
-            </DialogClose>
-            <Button
+          <div className="flex flex-col gap-3">
+            <CustomInput
+              id="total"
+              label="Total"
               disabled={saving}
-              variant="default"
-              className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-              onClick={handleSubmit(handleUpdateBudget)}
-            >
-              {saving ? (
-                <LucideLoaderCircle
-                  size={20}
-                  className="animate-spin text-muted-foreground"
-                />
-              ) : (
-                'Save'
-              )}
-            </Button>
+              register={register}
+              errors={errors}
+              type="number"
+              onFocus={() => clearErrors('total')}
+              icon={<span>{formatSymbol(currency)}</span>}
+            />
+
+            <div className="mt-1 flex gap-4">
+              {/* Category */}
+              <div className="flex flex-1 flex-col">
+                <p
+                  className={cn(
+                    'mb-1 text-xs font-semibold',
+                    errors.categoryId?.message && 'text-rose-500'
+                  )}
+                >
+                  Category
+                </p>
+                <div onFocus={() => clearErrors('categoryId')}>
+                  <CategoryPicker
+                    category={budget.category}
+                    isExcept
+                    onChange={(categoryId: string) => setValue('categoryId', categoryId)}
+                    type="expense"
+                  />
+                </div>
+                {errors.categoryId?.message && (
+                  <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                    {errors.categoryId?.message?.toString()}
+                  </span>
+                )}
+              </div>
+
+              {/* Budget */}
+              <div className="flex flex-1 flex-col">
+                <p
+                  className={cn(
+                    'mb-1 text-xs font-semibold',
+                    (errors.begin || errors.end)?.message && 'text-rose-500'
+                  )}
+                >
+                  From - To
+                </p>
+                <div
+                  onFocus={() => {
+                    clearErrors('begin')
+                    clearErrors('end')
+                  }}
+                >
+                  <DateRangePicker
+                    initialDateFrom={dateRange.from}
+                    initialDateTo={dateRange.to}
+                    showCompare={false}
+                    onUpdate={values => {
+                      const { from, to } = values.range
+
+                      if (!from || !to) return
+
+                      setDateRange({ from, to })
+                      setValue('begin', from)
+                      setValue('end', to)
+                    }}
+                    className="h-9 w-full"
+                  />
+                </div>
+                {(errors.begin || errors.end)?.message && (
+                  <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                    {(errors.begin || errors.end)?.message?.toString()}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+
+          <DrawerFooter className="mb-21 px-0">
+            <div className="mt-3 flex items-center justify-end gap-21/2">
+              <DrawerClose>
+                <Button
+                  variant="secondary"
+                  className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
+                  onClick={() => {
+                    setOpen(false)
+                    reset()
+                  }}
+                >
+                  Cancel
+                </Button>
+              </DrawerClose>
+              <Button
+                disabled={saving}
+                variant="default"
+                className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
+                onClick={handleSubmit(handleUpdateBudget)}
+              >
+                {saving ? (
+                  <LucideLoaderCircle
+                    size={20}
+                    className="animate-spin text-muted-foreground"
+                  />
+                ) : (
+                  'Save'
+                )}
+              </Button>
+            </div>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
   )
 }
 

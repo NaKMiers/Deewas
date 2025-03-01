@@ -14,14 +14,15 @@ import toast from 'react-hot-toast'
 import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '../ui/drawer'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 interface CreateCategoryDialogProps {
@@ -132,129 +133,132 @@ function CreateCategoryDialog({
   )
 
   return (
-    <Dialog
+    <Drawer
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
 
-      <DialogContent className={cn('rounded-lg border-slate-200/30 sm:max-w-[425px]', className)}>
-        <DialogHeader className="text-start">
-          <DialogTitle className="font-semibold">
-            Create {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
-            category
-          </DialogTitle>
-          <DialogDescription>
-            Categories are used to group your{' '}
-            {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
-            transactions
-          </DialogDescription>
-        </DialogHeader>
+      <DrawerContent className={cn(className)}>
+        <div className="mx-auto w-full max-w-sm px-21/2">
+          <DrawerHeader>
+            <DrawerTitle>
+              Create{' '}
+              {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+              category
+            </DrawerTitle>
+            <DrawerDescription>
+              Categories are used to group your{' '}
+              {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+              transactions
+            </DrawerDescription>
+          </DrawerHeader>
 
-        <div className="flex flex-col gap-3">
-          <CustomInput
-            id="name"
-            label="Name"
-            disabled={saving}
-            register={register}
-            errors={errors}
-            type="text"
-            onFocus={() => clearErrors('name')}
-          />
-
-          {!type && (
+          <div className="flex flex-col gap-3">
             <CustomInput
-              id="type"
-              label="Type"
+              id="name"
+              label="Name"
               disabled={saving}
               register={register}
               errors={errors}
-              type="select"
-              control={control}
-              options={[
-                {
-                  label: 'Expense',
-                  value: 'expense',
-                },
-                {
-                  label: 'Income',
-                  value: 'income',
-                },
-                {
-                  label: 'Saving',
-                  value: 'saving',
-                },
-                {
-                  label: 'Invest',
-                  value: 'invest',
-                },
-              ]}
-              onFocus={() => clearErrors('type')}
+              type="text"
+              onFocus={() => clearErrors('name')}
             />
-          )}
 
-          <div className="mt-3 text-xs">
-            <p className="font-semibold">
-              Icon <span className="font-normal">(optional)</span>
-            </p>
+            {!type && (
+              <CustomInput
+                id="type"
+                label="Type"
+                disabled={saving}
+                register={register}
+                errors={errors}
+                type="select"
+                control={control}
+                options={[
+                  {
+                    label: 'Expense',
+                    value: 'expense',
+                  },
+                  {
+                    label: 'Income',
+                    value: 'income',
+                  },
+                  {
+                    label: 'Saving',
+                    value: 'saving',
+                  },
+                  {
+                    label: 'Invest',
+                    value: 'invest',
+                  },
+                ]}
+                onFocus={() => clearErrors('type')}
+              />
+            )}
 
-            <Popover>
-              <PopoverTrigger className="w-full">
-                <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
-                  {form.icon ? (
-                    <span className="block text-[48px] leading-[48px]">{form.icon}</span>
-                  ) : (
-                    <LucideCircleOff size={48} />
-                  )}
-                  <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
-                </button>
-              </PopoverTrigger>
+            <div className="mt-3 text-xs">
+              <p className="font-semibold">
+                Icon <span className="font-normal">(optional)</span>
+              </p>
 
-              <PopoverContent className="translate-y-[60px] scale-75 rounded-lg p-0 outline-none">
-                <Picker
-                  data={data}
-                  onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
-                />
-              </PopoverContent>
-            </Popover>
-            <p className="mt-2 text-muted-foreground">
-              This is how your category will appear in the app
-            </p>
+              <Popover>
+                <PopoverTrigger className="w-full">
+                  <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
+                    {form.icon ? (
+                      <span className="block text-[48px] leading-[48px]">{form.icon}</span>
+                    ) : (
+                      <LucideCircleOff size={48} />
+                    )}
+                    <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
+                  </button>
+                </PopoverTrigger>
+
+                <PopoverContent className="translate-y-[60px] scale-75 rounded-lg p-0 outline-none">
+                  <Picker
+                    data={data}
+                    onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
+                  />
+                </PopoverContent>
+              </Popover>
+              <p className="mt-2 text-muted-foreground">
+                This is how your category will appear in the app
+              </p>
+            </div>
           </div>
-        </div>
 
-        <DialogFooter>
-          <div className="mt-3 flex items-center justify-end gap-21/2">
-            <DialogClose>
+          <DrawerFooter className="mb-21 px-0">
+            <div className="mt-3 flex items-center justify-end gap-21/2">
+              <DrawerClose>
+                <Button
+                  variant="secondary"
+                  className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
+                  onClick={() => {
+                    setOpen(false)
+                    reset()
+                  }}
+                >
+                  Cancel
+                </Button>
+              </DrawerClose>
               <Button
-                variant="secondary"
-                className="h-10 rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={() => {
-                  setOpen(false)
-                  reset()
-                }}
+                variant="default"
+                className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
+                onClick={handleSubmit(handleCreateCategory)}
               >
-                Cancel
+                {saving ? (
+                  <LucideLoaderCircle
+                    size={20}
+                    className="animate-spin text-muted-foreground"
+                  />
+                ) : (
+                  'Save'
+                )}
               </Button>
-            </DialogClose>
-            <Button
-              variant="default"
-              className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-              onClick={handleSubmit(handleCreateCategory)}
-            >
-              {saving ? (
-                <LucideLoaderCircle
-                  size={20}
-                  className="animate-spin text-muted-foreground"
-                />
-              ) : (
-                'Save'
-              )}
-            </Button>
-          </div>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            </div>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
   )
 }
 
