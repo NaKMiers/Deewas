@@ -5,8 +5,6 @@ import { useAppDispatch } from '@/hooks/reduxHook'
 import { setSettings } from '@/lib/reducers/settingsReducer'
 import { cn } from '@/lib/utils'
 import { updateMySettingsApi } from '@/requests'
-import { useSession } from 'next-auth/react'
-import { useTheme } from 'next-themes'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown } from 'react-icons/lu'
@@ -52,9 +50,6 @@ interface BoxProps {
 function Box({ type, desc, list, className = '' }: BoxProps) {
   // hooks
   const dispatch = useAppDispatch()
-  const { setTheme, resolvedTheme } = useTheme()
-  const { data: session } = useSession()
-  const user: any = session?.user
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -93,12 +88,7 @@ function Box({ type, desc, list, className = '' }: BoxProps) {
 
   return (
     <div className={cn('relative w-full items-center justify-center rounded-lg border p-21', className)}>
-      <p
-        className="font-bold capitalize"
-        onClick={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
-      >
-        {type}
-      </p>
+      <p className="font-bold capitalize">{type}</p>
       <p className="mb-3 text-sm text-muted-foreground">{desc}</p>
 
       <Popover

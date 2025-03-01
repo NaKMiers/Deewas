@@ -208,7 +208,8 @@ function CreateTransactionDialog({
             disabled={saving}
             register={register}
             errors={errors}
-            type="number"
+            type="currency"
+            control={control}
             onFocus={() => clearErrors('amount')}
             icon={<span>{formatSymbol(currency)}</span>}
           />

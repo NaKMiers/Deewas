@@ -1,10 +1,12 @@
+import { currencies } from '@/constants/settings'
+import { useAppSelector } from '@/hooks/reduxHook'
 import { cn } from '@/lib/utils'
-import React, { memo, ReactNode, useCallback, useState } from 'react'
+import { memo, ReactNode, useCallback, useState } from 'react'
 import { Controller, FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
 import { FaEye } from 'react-icons/fa'
+import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { Button } from './ui/button'
 
 interface InputProps {
   label: string
@@ -45,6 +47,12 @@ function CustomInput({
   className = '',
   ...rest
 }: InputProps) {
+  // store
+  const {
+    settings: { currency },
+  } = useAppSelector(state => state.settings)
+  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
+
   // states
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false)
 
@@ -52,6 +60,11 @@ function CustomInput({
   const showPassword = useCallback(() => {
     setIsShowPassword(prev => !prev)
   }, [])
+
+  const formatCurrency = (input: string) => {
+    const numericValue = input.replace(/\D/g, '')
+    return new Intl.NumberFormat(locale).format(Number(numericValue))
+  }
 
   return (
     <div
@@ -107,6 +120,26 @@ function CustomInput({
                   ))}
                 </SelectContent>
               </Select>
+            )}
+          />
+        ) : type === 'currency' ? (
+          <Controller
+            name={id}
+            control={control}
+            rules={{ required }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                id={id}
+                className={cn(
+                  'number-input peer block h-full w-full touch-manipulation appearance-none rounded-lg px-2.5 text-sm focus:outline-none focus:ring-0',
+                  errors[id]?.message ? 'border-rose-500' : 'border-dark'
+                )}
+                disabled={disabled}
+                type="text"
+                value={formatCurrency(value || '')}
+                onChange={onChange}
+                {...rest}
+              />
             )}
           />
         ) : (

@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 function WizardPage() {
+  // hooks
   const { data: session } = useSession()
   const user: any = session?.user
 
