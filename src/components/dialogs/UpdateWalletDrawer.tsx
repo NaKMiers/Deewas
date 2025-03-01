@@ -3,13 +3,20 @@ import { IWallet } from '@/models/WalletModel'
 import { updateWalletApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { Separator } from '@radix-ui/react-select'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog'
 import {
   Drawer,
   DrawerClose,
@@ -50,6 +57,7 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
   // states
   const form = watch()
   const [open, setOpen] = useState<boolean>(false)
+  const [openEmojiPicker, setOpenEmojiPicker] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
 
   // validate form
@@ -139,8 +147,11 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
                 Icon <span className="font-normal">(optional)</span>
               </p>
 
-              <Drawer>
-                <DrawerTrigger className="w-full">
+              <Dialog
+                open={openEmojiPicker}
+                onOpenChange={setOpenEmojiPicker}
+              >
+                <DialogTrigger className="w-full">
                   <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
                     {form.icon ? (
                       <span className="block text-[48px] leading-[48px]">{form.icon}</span>
@@ -149,24 +160,27 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
                   </button>
-                </DrawerTrigger>
+                </DialogTrigger>
 
-                <DrawerContent className="">
+                <DialogContent className="px-0">
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
-                    <DrawerHeader>
-                      <DrawerTitle>Select Icon</DrawerTitle>
-                      <DrawerDescription>Icon will be used to represent your wallet</DrawerDescription>
-                    </DrawerHeader>
+                    <DialogHeader className="mb-21/2">
+                      <DialogTitle>Select Icon</DialogTitle>
+                      <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
+                    </DialogHeader>
 
-                    <Picker
-                      data={data}
-                      onEmojiSelect={(emoji: any) => setValue('icon', emoji.native)}
-                    />
-
-                    <Separator className="mt-8" />
+                    <div style={{ pointerEvents: 'auto' }}>
+                      <Picker
+                        data={data}
+                        onEmojiSelect={(emoji: any) => {
+                          setValue('icon', emoji.native)
+                          setOpenEmojiPicker(false)
+                        }}
+                      />
+                    </div>
                   </div>
-                </DrawerContent>
-              </Drawer>
+                </DialogContent>
+              </Dialog>
               <p className="mt-2 text-slate-300">This is how your wallet will appear in the app</p>
             </div>
           </div>

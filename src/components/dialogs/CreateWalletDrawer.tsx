@@ -3,14 +3,20 @@ import { IWallet } from '@/models/WalletModel'
 import { createWalletApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { Dialog } from '@radix-ui/react-dialog'
-import { Separator } from '@radix-ui/react-select'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
 import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog'
 import {
   Drawer,
   DrawerClose,
@@ -22,14 +28,14 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 
-interface CreateWalletDrawerProps {
+interface CreateWalletDialogProps {
   trigger: ReactNode
   update?: (wallet: IWallet) => void
   load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 
-function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWalletDrawerProps) {
+function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWalletDialogProps) {
   // form
   const {
     register,
@@ -126,7 +132,6 @@ function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWal
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
-            {/* Name */}
             <CustomInput
               id="name"
               label="Name"
@@ -138,17 +143,16 @@ function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWal
               onFocus={() => clearErrors('name')}
             />
 
-            {/* Icon */}
             <div className="mt-3 text-xs">
               <p className="font-semibold">
                 Icon <span className="font-normal">(optional)</span>
               </p>
 
-              <Drawer
+              <Dialog
                 open={openEmojiPicker}
                 onOpenChange={setOpenEmojiPicker}
               >
-                <DrawerTrigger className="w-full">
+                <DialogTrigger className="w-full">
                   <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
                     {form.icon ? (
                       <span className="block text-[48px] leading-[48px]">{form.icon}</span>
@@ -157,14 +161,14 @@ function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWal
                     )}
                     <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
                   </button>
-                </DrawerTrigger>
+                </DialogTrigger>
 
-                <DrawerContent>
+                <DialogContent className="px-0">
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
-                    <DrawerHeader>
-                      <DrawerTitle>Select Icon</DrawerTitle>
-                      <DrawerDescription>Icon will be used to represent your wallet</DrawerDescription>
-                    </DrawerHeader>
+                    <DialogHeader className="mb-21/2">
+                      <DialogTitle>Select Icon</DialogTitle>
+                      <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
+                    </DialogHeader>
 
                     <div style={{ pointerEvents: 'auto' }}>
                       <Picker
@@ -175,11 +179,9 @@ function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWal
                         }}
                       />
                     </div>
-
-                    <Separator className="mt-8" />
                   </div>
-                </DrawerContent>
-              </Drawer>
+                </DialogContent>
+              </Dialog>
               <p className="mt-2 text-muted-foreground">
                 This is how your wallet will appear in the app
               </p>
@@ -222,4 +224,4 @@ function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWal
   )
 }
 
-export default CreateWalletDrawer
+export default CreateWalletDialog
