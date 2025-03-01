@@ -1,7 +1,7 @@
 'use client'
 
 import { currencies, languages } from '@/constants/settings'
-import { useAppDispatch } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { setSettings } from '@/lib/reducers/settingsReducer'
 import { cn } from '@/lib/utils'
 import { updateMySettingsApi } from '@/requests'
@@ -24,17 +24,23 @@ interface SettingsBoxProps {
 }
 
 function SettingsBox({ className = '' }: SettingsBoxProps) {
+  const {
+    settings: { currency, language },
+  } = useAppSelector(state => state.settings)
+
   return (
     <div className={cn('grid grid-cols-1 gap-21/2 md:grid-cols-2 md:gap-21', className)}>
       <Box
         type="currency"
         desc="Set your default currency for transactions"
         list={currencies}
+        init={currencies.find(c => c.value === currency)}
       />
       <Box
         type="language"
         desc="Set your default language for the app."
         list={languages}
+        init={languages.find(l => l.value === language)}
       />
     </div>
   )
@@ -44,17 +50,18 @@ interface BoxProps {
   type: string
   desc: string
   list: any[]
+  init?: any
   className?: string
 }
 
-function Box({ type, desc, list, className = '' }: BoxProps) {
+function Box({ type, desc, list, init, className = '' }: BoxProps) {
   // hooks
   const dispatch = useAppDispatch()
 
   // states
   const [open, setOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
-  const [selected, setSelected] = useState<any>(null)
+  const [selected, setSelected] = useState<any>(init)
 
   // handle update settings
   const handleUpdateSettings = useCallback(
