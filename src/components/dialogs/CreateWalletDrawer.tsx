@@ -164,8 +164,9 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
                 </DialogTrigger>
 
                 <DialogContent
-                  className="touch-none px-0"
+                  className="touch-auto px-0"
                   onWheelCapture={e => e.stopPropagation()}
+                  onTouchMove={e => e.stopPropagation()}
                 >
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
