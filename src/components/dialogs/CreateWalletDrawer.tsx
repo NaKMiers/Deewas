@@ -144,7 +144,7 @@ function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWal
                 Icon <span className="font-normal">(optional)</span>
               </p>
 
-              <Dialog
+              <Drawer
                 open={openEmojiPicker}
                 onOpenChange={setOpenEmojiPicker}
               >
@@ -179,7 +179,7 @@ function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWal
                     <Separator className="mt-8" />
                   </div>
                 </DrawerContent>
-              </Dialog>
+              </Drawer>
               <p className="mt-2 text-muted-foreground">
                 This is how your wallet will appear in the app
               </p>
