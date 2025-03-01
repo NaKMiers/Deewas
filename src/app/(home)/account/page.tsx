@@ -40,7 +40,7 @@ function AccountPage() {
   }, [])
 
   return (
-    <div className="flex flex-col gap-21/2 p-21/2 md:gap-21 md:p-21">
+    <div className="flex flex-col gap-21/2 p-21/2 pb-32 md:gap-21 md:p-21">
       {/* Account */}
       <div className="p2 overflow-auto rounded-md border p-2">
         <div className="flex w-full items-center gap-2 pb-2">
@@ -61,7 +61,7 @@ function AccountPage() {
             >
               {user?.email}
               <Image
-                src="/icons/google.png"
+                src={`/icons/${user.authType}.png`}
                 width={18}
                 height={18}
                 alt="google"
