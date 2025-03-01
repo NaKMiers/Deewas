@@ -40,7 +40,6 @@ function TransactionCategoryGroup({
   // store
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   return (
@@ -56,7 +55,7 @@ function TransactionCategoryGroup({
                 checkTranType(category.type).color
               )}
             >
-              {formatCurrency(currency, category.amount, exchangeRates[currency])}
+              {formatCurrency(currency, category.amount)}
             </span>
           </div>
         </div>
@@ -105,7 +104,6 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
   // store
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // states
@@ -149,9 +147,7 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
             ) : (
               <LucideChevronUp size={16} />
             )}
-            <span className="text-sm font-semibold">
-              {formatCurrency(currency, transaction.amount, exchangeRates[currency])}
-            </span>
+            <span className="text-sm font-semibold">{formatCurrency(currency, transaction.amount)}</span>
           </div>
         </div>
 

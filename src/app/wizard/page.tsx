@@ -1,41 +1,20 @@
-import { getMySettingsApi } from '@/requests'
-import { getServerSession } from 'next-auth'
-import Link from 'next/link'
-import authOptions from '../api/auth/[...nextauth]/authOptions'
+'use client'
+
 import SettingsBox from '@/components/SettingsBox'
-import { redirect } from 'next/navigation'
-import { ISettings } from '@/models/SettingsModel'
+import { shortName } from '@/lib/string'
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 
-async function WizardPage() {
-  const session = await getServerSession(authOptions)
-  const user = session?.user
-  let settings: ISettings | null = null
-
-  if (!user) {
-    redirect('/auth/login')
-  }
-
-  try {
-    const { settings: s } = await getMySettingsApi(
-      `?userId=${user._id}`,
-      process.env.NEXT_PUBLIC_APP_URL
-    )
-
-    settings = s
-  } catch (err: any) {
-    console.log(err)
-  }
-
-  if (settings) {
-    redirect('/')
-  }
+function WizardPage() {
+  const { data: session } = useSession()
+  const user: any = session?.user
 
   return (
     <div className="flex h-screen w-screen items-center justify-center gap-4">
       <div className="flex max-w-2xl flex-col gap-4">
         <div>
           <h1 className="text-center text-3xl">
-            Welcome, <span className="ml-2 font-bold">{user.firstName}! 👋</span>
+            Welcome, <span className="ml-2 font-bold">{user && shortName(user)}! 👋</span>
           </h1>
           <h2 className="mt-4 text-center text-base text-muted-foreground">
             Let&apos;s get started by setting up your currency

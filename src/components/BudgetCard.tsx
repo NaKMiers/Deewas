@@ -24,7 +24,6 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
   // store
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // states
@@ -62,7 +61,7 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
           <span>{budget.category.icon}</span>
           <span>{budget.category.name}</span> <div className="h-5 w-0.5 bg-muted-foreground/50" />
           <span className="text-sm font-semibold tracking-tight">
-            {formatCurrency(currency, budget.total, exchangeRates[currency])}
+            {formatCurrency(currency, budget.total)}
           </span>
         </div>
 
@@ -125,7 +124,7 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
             style={{ width: `${progress}%` }}
           />
           <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap font-body text-sm font-semibold tracking-wider">
-            Left {formatCurrency(currency, budget.total - budget.amount, exchangeRates[currency])}
+            Left {formatCurrency(currency, budget.total - budget.amount)}
           </span>
           <div
             className="absolute top-0 h-full w-0.5 -translate-x-1/2 bg-white"

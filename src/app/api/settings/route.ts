@@ -20,16 +20,15 @@ export async function GET(req: NextRequest) {
     let userId = token?._id
 
     if (!userId) {
-      const { searchParams } = new URL(req.nextUrl)
-      userId = searchParams.get('userId')
-    }
-
-    if (!userId) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 404 })
     }
 
     // get user settings
     const settings = await SettingsModel.findOne({ user: userId }).lean()
+
+    if (!settings) {
+      return NextResponse.json({ message: 'Settings not found' }, { status: 404 })
+    }
 
     // return response
     return NextResponse.json({ settings, message: 'Settings are here' }, { status: 200 })

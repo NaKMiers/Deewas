@@ -34,11 +34,6 @@ export async function PUT(req: NextRequest) {
       { new: true }
     ).lean()
 
-    // settings not found
-    if (!settings) {
-      settings = await SettingsModel.create({ user: userId, ...set })
-    }
-
     // return response
     return NextResponse.json({ settings, message: '' }, { status: 200 })
   } catch (err: any) {

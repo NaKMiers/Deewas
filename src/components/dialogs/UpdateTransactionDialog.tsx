@@ -43,7 +43,6 @@ function UpdateTransactionDialog({
   // store
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // form
@@ -61,7 +60,7 @@ function UpdateTransactionDialog({
       walletId: transaction.wallet._id || '',
       name: transaction.name || '',
       categoryId: transaction.category._id || '',
-      amount: (transaction.amount * exchangeRates[currency]).toFixed(2) || '',
+      amount: transaction.amount.toFixed(2) || '',
       date: moment().format('YYYY-MM-DD'),
     },
   })
@@ -129,14 +128,14 @@ function UpdateTransactionDialog({
       console.log('data', {
         ...data,
         date: toUTC(data.date),
-        amount: data.amount / exchangeRates[currency],
+        amount: data.amount,
       })
 
       try {
         const { message } = await updateTransactionApi(transaction._id, {
           ...data,
           date: toUTC(data.date),
-          amount: data.amount / exchangeRates[currency],
+          amount: data.amount,
         })
 
         if (refetch) refetch()
@@ -152,7 +151,7 @@ function UpdateTransactionDialog({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, exchangeRates, currency, transaction._id]
+    [handleValidate, reset, refetch, transaction._id]
   )
 
   return (

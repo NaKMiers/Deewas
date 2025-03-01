@@ -9,9 +9,6 @@ import {
 } from 'lucide-react'
 
 export const shortName = (user: IUser) => {
-  if (user?.firstName && user?.lastName) {
-    return `${user.firstName} ${user.lastName}`
-  }
   if (user?.firstName) {
     return user.firstName
   }
@@ -29,7 +26,7 @@ export const shortName = (user: IUser) => {
 export const formatSymbol = (currency: string): string =>
   currencies.find(c => c.value === currency)?.symbol || ''
 
-export const formatCurrency = (currency: string, amount: number, rate: number): string => {
+export const formatCurrency = (currency: string, amount: number): string => {
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   const formattedAmount = new Intl.NumberFormat(locale, {
@@ -37,7 +34,7 @@ export const formatCurrency = (currency: string, amount: number, rate: number): 
     currency,
     maximumFractionDigits: 2,
     currencyDisplay: 'symbol',
-  }).format(amount * rate)
+  }).format(amount)
 
   return formattedAmount
 }

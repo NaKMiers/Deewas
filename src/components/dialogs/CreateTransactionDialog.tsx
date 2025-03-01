@@ -47,7 +47,6 @@ function CreateTransactionDialog({
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // form
@@ -149,7 +148,7 @@ function CreateTransactionDialog({
         ...data,
         walletId: curWallet._id,
         date: toUTC(data.date),
-        amount: data.amount / exchangeRates[currency],
+        amount: data.amount,
       })
 
       try {
@@ -157,7 +156,7 @@ function CreateTransactionDialog({
           ...data,
           walletId: curWallet._id,
           date: toUTC(data.date),
-          amount: data.amount / exchangeRates[currency],
+          amount: data.amount,
         })
 
         if (refetch) refetch()
@@ -173,7 +172,7 @@ function CreateTransactionDialog({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id, exchangeRates, currency]
+    [handleValidate, reset, refetch, curWallet?._id]
   )
 
   return (

@@ -21,7 +21,6 @@ interface IBudgetTabProps {
 function BudgetTab({ value, begin, end, budgets, refetch, className = '' }: IBudgetTabProps) {
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // values
@@ -36,7 +35,7 @@ function BudgetTab({ value, begin, end, budgets, refetch, className = '' }: IBud
         <div className="flex flex-col gap-21/2">
           <p className="text-sm font-semibold text-muted-foreground">Amount you can spend</p>
           <p className="text-4xl font-semibold text-green-500">
-            {formatCurrency(currency, total - amount, exchangeRates[currency])}
+            {formatCurrency(currency, total - amount)}
           </p>
           <Progress
             value={(amount / total) * 100}
@@ -46,15 +45,13 @@ function BudgetTab({ value, begin, end, budgets, refetch, className = '' }: IBud
 
         <div className="flex w-full items-center justify-evenly gap-1">
           <div className="flex-1">
-            <p className="font-semibold">
-              {formatCompactNumber(formatCurrency(currency, total, exchangeRates[currency]), true)}
-            </p>
+            <p className="font-semibold">{formatCompactNumber(formatCurrency(currency, total), true)}</p>
             <p className="text-sm text-muted-foreground">Total budgets</p>
           </div>
           <div className="h-6 w-0.5 bg-muted-foreground" />
           <div className="flex-1">
             <p className="font-semibold">
-              {formatCompactNumber(formatCurrency(currency, amount, exchangeRates[currency]), true)}
+              {formatCompactNumber(formatCurrency(currency, amount), true)}
             </p>
             <p className="text-sm text-muted-foreground">Total spent</p>
           </div>

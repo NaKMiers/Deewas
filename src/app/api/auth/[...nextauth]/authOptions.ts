@@ -156,12 +156,18 @@ const authOptions = {
             authType: account.provider,
           })
 
-          // initially create personal wallet
-          await WalletModel.create({
-            user: newUser._id,
-            name: 'Personal',
-            icon: '⭐',
-          })
+          await Promise.all([
+            // initially create personal wallet
+            WalletModel.create({
+              user: newUser._id,
+              name: 'Personal',
+              icon: '⭐',
+            }),
+            // initially create settings
+            SettingsModel.create({
+              user: newUser._id,
+            }),
+          ])
         }
 
         return true

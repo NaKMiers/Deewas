@@ -52,7 +52,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
 
   const formatTooltip = useCallback(
     (value: number, name: string) => {
-      const formattedValue = formatCurrency(currency, value, 1)
+      const formattedValue = formatCurrency(currency, value)
       return [`${capitalize(name as string)}: ${formattedValue}`]
     },
     [currency]

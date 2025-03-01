@@ -113,7 +113,7 @@ function CustomInput({
           <Input
             id={id}
             className={cn(
-              'number-input peer block h-full w-full rounded-lg px-2.5 text-sm focus:outline-none focus:ring-0',
+              'number-input peer block h-full w-full touch-manipulation appearance-none rounded-lg px-2.5 text-sm focus:outline-none focus:ring-0',
               errors[id]?.message ? 'border-rose-500' : 'border-dark'
             )}
             disabled={disabled}

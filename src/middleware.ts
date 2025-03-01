@@ -44,12 +44,12 @@ export default async function middleware(req: NextRequest) {
   const token = await getToken({ req })
   const pathname = req.nextUrl.pathname
 
-  // exclude paths
-  const excludePaths = ['/api/settings']
-  const isExclude = excludePaths.includes(pathname)
-  if (isExclude) {
-    return NextResponse.next()
-  }
+  // // exclude paths
+  // const excludePaths = ['/api/settings']
+  // const isExclude = excludePaths.includes(pathname)
+  // if (isExclude) {
+  //   return NextResponse.next()
+  // }
 
   // require unAuth
   const unAuthPaths = ['/auth']

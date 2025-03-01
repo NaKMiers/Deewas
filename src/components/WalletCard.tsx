@@ -207,7 +207,6 @@ function Item({ title, type, value }: CardProps) {
   // store
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // values
@@ -227,9 +226,7 @@ function Item({ title, type, value }: CardProps) {
       <div className="flex flex-col">
         <p className="font-body tracking-wider">{title}</p>
 
-        <span className="text-xl font-semibold">
-          {formatCurrency(currency, exchangeRates[currency], value)}
-        </span>
+        <span className="text-xl font-semibold">{formatCurrency(currency, value)}</span>
       </div>
     </div>
   )

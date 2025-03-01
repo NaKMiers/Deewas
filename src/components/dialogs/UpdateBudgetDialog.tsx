@@ -38,7 +38,6 @@ function UpdateBudgetDialog({ budget, trigger, refetch, className = '' }: Update
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // form
@@ -53,7 +52,7 @@ function UpdateBudgetDialog({ budget, trigger, refetch, className = '' }: Update
   } = useForm<FieldValues>({
     defaultValues: {
       categoryId: budget.category._id || '',
-      total: (budget.total * exchangeRates[currency]).toFixed(2) || '',
+      total: budget.total.toFixed(2) || '',
       begin: moment(budget.begin).toDate(),
       end: moment(budget.end).toDate(),
     },
@@ -140,7 +139,7 @@ function UpdateBudgetDialog({ budget, trigger, refetch, className = '' }: Update
           ...data,
           begin: toUTC(data.begin),
           end: toUTC(data.end),
-          total: data.total / exchangeRates[currency],
+          total: data.total,
         })
 
         if (refetch) refetch()
@@ -156,7 +155,7 @@ function UpdateBudgetDialog({ budget, trigger, refetch, className = '' }: Update
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id, exchangeRates, currency, budget._id]
+    [handleValidate, reset, refetch, curWallet?._id, budget._id]
   )
 
   return (

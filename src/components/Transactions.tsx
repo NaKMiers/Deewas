@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { deleteTransactionApi } from '@/requests/transactionRequests'
 import {
-  Link,
   LucideChevronDown,
   LucideChevronUp,
   LucideEllipsisVertical,
@@ -15,6 +14,7 @@ import {
   LucideTrash,
 } from 'lucide-react'
 import moment from 'moment-timezone'
+import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -22,7 +22,6 @@ import UpdateTransactionDialog from './dialogs/UpdateTransactionDialog'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { useRouter } from 'next/navigation'
 
 interface TransactionsProps {
   transactions: IFullTransaction[]
@@ -79,12 +78,18 @@ function Transactions({ transactions, className = '' }: TransactionsProps) {
       </div>
 
       <div className="mt-2 flex flex-col gap-2 rounded-lg border p-21/2 md:p-21">
-        {transactions.slice(0, +amountShow).map(transaction => (
-          <Transaction
-            transaction={transaction}
-            key={transaction._id}
-          />
-        ))}
+        {transactions.slice(0, +amountShow).length > 0 ? (
+          transactions.slice(0, +amountShow).map(transaction => (
+            <Transaction
+              transaction={transaction}
+              key={transaction._id}
+            />
+          ))
+        ) : (
+          <p className="flex items-center justify-center rounded-lg py-5 text-lg font-semibold text-muted-foreground">
+            No transactions found
+          </p>
+        )}
       </div>
     </div>
   )
@@ -102,7 +107,6 @@ function Transaction({ transaction, refetch, className = '' }: TransactionProps)
   // store
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // states
@@ -162,7 +166,7 @@ function Transaction({ transaction, refetch, className = '' }: TransactionProps)
                 <LucideChevronUp size={16} />
               )}
               <span className="text-sm font-semibold">
-                {formatCurrency(currency, transaction.amount, exchangeRates[currency])}
+                {formatCurrency(currency, transaction.amount)}
               </span>
             </div>
           </div>

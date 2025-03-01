@@ -36,7 +36,6 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // form
@@ -141,7 +140,7 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
           walletId: curWallet._id,
           begin: toUTC(data.begin),
           end: toUTC(data.end),
-          total: data.total / exchangeRates[currency],
+          total: data.total,
         })
 
         if (refetch) refetch()
@@ -157,7 +156,7 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id, exchangeRates, currency]
+    [handleValidate, reset, refetch, curWallet?._id]
   )
 
   return (
@@ -185,68 +184,63 @@ function CreateBudgetDialog({ trigger, refetch, className = '' }: CreateBudgetDi
             icon={<span>{formatSymbol(currency)}</span>}
           />
 
-          <div className="mt-1 flex gap-4">
-            {/* Category */}
-            <div className="flex flex-1 flex-col">
-              <p
-                className={cn(
-                  'mb-1 text-xs font-semibold',
-                  errors.categoryId?.message && 'text-rose-500'
-                )}
-              >
-                Category
-              </p>
-              <div onFocus={() => clearErrors('categoryId')}>
-                <CategoryPicker
-                  onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                  type="expense"
-                />
-              </div>
-              {errors.categoryId?.message && (
-                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {errors.categoryId?.message?.toString()}
-                </span>
-              )}
+          {/* Category */}
+          <div className="mt-1.5 flex flex-1 flex-col">
+            <p
+              className={cn('mb-1 text-xs font-semibold', errors.categoryId?.message && 'text-rose-500')}
+            >
+              Category
+            </p>
+            <div onFocus={() => clearErrors('categoryId')}>
+              <CategoryPicker
+                onChange={(categoryId: string) => setValue('categoryId', categoryId)}
+                type="expense"
+              />
             </div>
+            {errors.categoryId?.message && (
+              <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                {errors.categoryId?.message?.toString()}
+              </span>
+            )}
+          </div>
 
-            {/* Budget */}
-            <div className="flex flex-1 flex-col">
-              <p
-                className={cn(
-                  'mb-1 text-xs font-semibold',
-                  (errors.begin || errors.end)?.message && 'text-rose-500'
-                )}
-              >
-                From - To
-              </p>
-              <div
-                onFocus={() => {
-                  clearErrors('begin')
-                  clearErrors('end')
+          {/* Budget */}
+          <div className="mt-1.5 flex flex-1 flex-col">
+            <p
+              className={cn(
+                'mb-1 text-xs font-semibold',
+                (errors.begin || errors.end)?.message && 'text-rose-500'
+              )}
+            >
+              From - To
+            </p>
+            <div
+              onFocus={() => {
+                clearErrors('begin')
+                clearErrors('end')
+              }}
+            >
+              <DateRangePicker
+                initialDateFrom={dateRange.from}
+                initialDateTo={dateRange.to}
+                showCompare={false}
+                onUpdate={values => {
+                  const { from, to } = values.range
+
+                  if (!from || !to) return
+
+                  setDateRange({ from, to })
+                  setValue('begin', from)
+                  setValue('end', to)
                 }}
-              >
-                <DateRangePicker
-                  initialDateFrom={dateRange.from}
-                  initialDateTo={dateRange.to}
-                  showCompare={false}
-                  onUpdate={values => {
-                    const { from, to } = values.range
-
-                    if (!from || !to) return
-
-                    setDateRange({ from, to })
-                    setValue('begin', from)
-                    setValue('end', to)
-                  }}
-                  className="h-9 w-full"
-                />
-              </div>
-              {(errors.begin || errors.end)?.message && (
-                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {(errors.begin || errors.end)?.message?.toString()}
-                </span>
-              )}
+                className="h-9 w-full"
+              />
             </div>
+            {(errors.begin || errors.end)?.message && (
+              <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                {(errors.begin || errors.end)?.message?.toString()}
+              </span>
+            )}
           </div>
         </div>
 

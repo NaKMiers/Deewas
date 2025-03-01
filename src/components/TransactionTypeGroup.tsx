@@ -28,7 +28,6 @@ function TransactionTypeGroup({
   const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // states
@@ -72,7 +71,7 @@ function TransactionTypeGroup({
 
           <div>
             <span className="text-sm font-semibold tracking-tight">
-              {formatCurrency(currency, total, exchangeRates[currency])}
+              {formatCurrency(currency, total)}
             </span>
           </div>
 

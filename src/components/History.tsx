@@ -25,7 +25,6 @@ function History({ from, to, transactions, refetch, className = '' }: HistoryPro
   // store
   const {
     settings: { currency },
-    exchangeRates,
   } = useAppSelector(state => state.settings)
 
   // states
@@ -158,32 +157,20 @@ function History({ from, to, transactions, refetch, className = '' }: HistoryPro
 
       groupedData.push({
         name: colStart.format(dateFormat),
-        income: parseCurrency(
-          formatCurrency(currency, totalIncomeTransactionValue, exchangeRates[currency])
-        ),
-        expense: parseCurrency(
-          formatCurrency(currency, totalIncomeTransactionValue, exchangeRates[currency])
-        ),
+        income: parseCurrency(formatCurrency(currency, totalIncomeTransactionValue)),
+        expense: parseCurrency(formatCurrency(currency, totalIncomeTransactionValue)),
         balance: parseCurrency(
-          formatCurrency(
-            currency,
-            totalIncomeTransactionValue - totalExpenseTransactionValue,
-            exchangeRates[currency]
-          )
+          formatCurrency(currency, totalIncomeTransactionValue - totalExpenseTransactionValue)
         ),
-        saving: parseCurrency(
-          formatCurrency(currency, totalSavingTransactionValue, exchangeRates[currency])
-        ),
-        invest: parseCurrency(
-          formatCurrency(currency, totalInvestTransactionValue, exchangeRates[currency])
-        ),
+        saving: parseCurrency(formatCurrency(currency, totalSavingTransactionValue)),
+        invest: parseCurrency(formatCurrency(currency, totalInvestTransactionValue)),
       })
 
       iterator.add(1, splitGranularity as moment.unitOfTime.DurationConstructor)
     }
 
     setData(groupedData)
-  }, [from, to, transactions, currency, exchangeRates])
+  }, [from, to, transactions, currency])
 
   return (
     <div className={cn('px-21/2 md:px-21', className)}>
