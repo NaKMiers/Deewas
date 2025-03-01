@@ -76,7 +76,7 @@ function BudgetsPage() {
   }, [getBudgets, curWallet])
 
   return (
-    <div className="p-21/2 pb-32 md:p-21">
+    <div className="container p-21/2 pb-32 md:p-21">
       {!loading && curWallet ? (
         groups.length > 0 ? (
           <Tabs

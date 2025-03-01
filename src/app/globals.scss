@@ -169,6 +169,6 @@
   -moz-appearance: textfield;
 }
 
-.loading {
-  @apply animate-pulse bg-neutral-600;
+.container {
+  @apply mx-auto w-full max-w-[1200px];
 }

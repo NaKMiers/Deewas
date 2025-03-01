@@ -34,8 +34,8 @@ function Navbar() {
   const user: any = session?.user
 
   return (
-    <>
-      <nav className="fixed bottom-0 left-0 flex h-[70px] w-full items-center justify-between gap-0.5 bg-primary pb-2.5 text-secondary">
+    <nav className="fixed bottom-0 left-0 h-[70px] w-full bg-primary pb-2.5 text-secondary">
+      <div className="container flex h-full items-center justify-between gap-0.5">
         <Link
           href="/"
           className="flex flex-1 flex-col items-center justify-center gap-0.5"
@@ -137,8 +137,8 @@ function Navbar() {
           </div>
           <span className="text-xs font-semibold">Account</span>
         </Link>
-      </nav>
-    </>
+      </div>
+    </nav>
   )
 }
 

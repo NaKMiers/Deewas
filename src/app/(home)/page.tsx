@@ -55,7 +55,7 @@ function HomePage() {
   }, [getOverview])
 
   return (
-    <div className="pb-32">
+    <div className="container pb-32">
       <div className="flex items-center justify-end px-21/2 py-4 md:px-21">
         <DateRangePicker
           initialDateFrom={dateRange.from}

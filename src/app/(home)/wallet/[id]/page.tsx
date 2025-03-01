@@ -72,7 +72,7 @@ function WalletPage({ params }: { params: Promise<{ id: string }> }) {
   }, [categories])
 
   return (
-    <div className="p-21/2 md:p-21">
+    <div className="container p-21/2 md:p-21">
       {/* Wallet */}
       <SkeletonWallets
         className="px-0 md:px-0"

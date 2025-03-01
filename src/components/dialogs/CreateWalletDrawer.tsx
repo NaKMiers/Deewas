@@ -164,12 +164,12 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
                 </DialogTrigger>
 
                 <DialogContent
-                  className="px-0"
+                  className="touch-none px-0"
                   onWheelCapture={e => e.stopPropagation()}
                 >
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
-                      <DialogTitle>Select Icon</DialogTitle>
+                      <DialogTitle className="text-center">Select Icon</DialogTitle>
                       <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
                     </DialogHeader>
 

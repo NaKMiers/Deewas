@@ -40,7 +40,7 @@ function AccountPage() {
   }, [])
 
   return (
-    <div className="flex flex-col gap-21/2 p-21/2 pb-32 md:gap-21 md:p-21">
+    <div className="container flex flex-col gap-21/2 p-21/2 pb-32 md:gap-21 md:p-21">
       {/* Account */}
       <div className="p2 overflow-auto rounded-md border p-2">
         <div className="flex w-full items-center gap-2 pb-2">
@@ -83,14 +83,16 @@ function AccountPage() {
           />
         </div>
 
-        <div className="flex overflow-hidden">
-          <Image
-            className="w-full object-contain"
-            src="/images/flash-sale.png"
-            width={300}
-            height={150}
-            alt="flash-sale"
-          />
+        <div className="flex justify-center md:justify-start">
+          <div className="flex max-w-[400px] overflow-hidden">
+            <Image
+              className="w-full object-contain"
+              src="/images/flash-sale.png"
+              width={400}
+              height={150}
+              alt="flash-sale"
+            />
+          </div>
         </div>
       </div>
 
