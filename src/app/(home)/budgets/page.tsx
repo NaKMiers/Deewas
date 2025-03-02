@@ -20,6 +20,7 @@ function BudgetsPage() {
 
   // store
   const { budgets } = useAppSelector(state => state.budget)
+  const { refetching } = useAppSelector(state => state.load)
 
   // states
   const [loading, setLoading] = useState<boolean>(false)
@@ -44,7 +45,7 @@ function BudgetsPage() {
     }
 
     getBudgets()
-  }, [dispatch])
+  }, [dispatch, refetching])
 
   useEffect(() => {
     const groups: {
@@ -130,7 +131,7 @@ function BudgetsPage() {
         trigger={
           <Button
             variant="default"
-            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full"
+            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full md:right-[calc(50%-600px+21px)]"
           >
             <LucidePlus size={24} />
             Create Budget

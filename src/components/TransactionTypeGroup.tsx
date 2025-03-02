@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LucideEllipsisVertical, LucidePlusCircle } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import TransactionCategoryGroup from './TransactionCategoryGroup'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
@@ -33,7 +33,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
   }, [])
 
   return (
-    <div className={cn('mt-21/2 flex flex-col gap-21/2 md:mt-21', className)}>
+    <div className={cn('flex flex-col gap-21/2 md:mt-21', className)}>
       {/* Type Group */}
       <div className="">
         {/* Type Header */}
@@ -120,4 +120,4 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
   )
 }
 
-export default TransactionTypeGroup
+export default memo(TransactionTypeGroup)

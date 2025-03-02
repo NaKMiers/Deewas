@@ -10,6 +10,7 @@ import { formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
 import { differenceInDays } from 'date-fns'
+import { memo } from 'react'
 
 interface IBudgetTabProps {
   value: string
@@ -29,7 +30,7 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
   // values
   const total = budgets.reduce((acc: number, budget: IFullBudget) => acc + budget.total, 0)
   const amount = budgets.reduce((acc: number, budget: IFullBudget) => acc + budget.amount, 0)
-  const daysLeft = differenceInDays(new Date(end), new Date()) + 1
+  const daysLeft = differenceInDays(new Date(end), new Date())
 
   return (
     <TabsContent
@@ -52,29 +53,36 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
         </div>
 
         {currency && (
-          <div className="flex w-full items-center justify-evenly gap-1">
-            {
-              <div className="flex-1">
-                <p className="font-semibold">
-                  {formatCompactNumber(formatCurrency(currency, total), true)}
-                </p>
-                <p className="text-sm text-muted-foreground">Total budgets</p>
-              </div>
-            }
-            <div className="h-6 w-0.5 bg-muted-foreground" />
+          <div className="grid w-full grid-cols-2 items-center justify-evenly gap-1 gap-y-2 md:grid-cols-4">
+            <div className="flex-1">
+              <p className="font-semibold">
+                {formatCompactNumber(formatCurrency(currency, total), true)}
+              </p>
+              <p className="text-sm tracking-tight text-muted-foreground">Total budgets</p>
+            </div>
+            {/* <div className="h-6 w-0.5 bg-muted-foreground" /> */}
             <div className="flex-1">
               <p className="font-semibold">
                 {formatCompactNumber(formatCurrency(currency, amount), true)}
               </p>
-              <p className="text-sm text-muted-foreground">Total spent</p>
+              <p className="text-sm tracking-tight text-muted-foreground">Total spent</p>
             </div>
-            <div className="h-6 w-0.5 bg-muted-foreground" />
+            {/* <div className="h-6 w-0.5 bg-muted-foreground" /> */}
             <div className="flex-1">
               <p className="font-semibold">
                 {daysLeft} day
                 {daysLeft !== 1 && 's'}
               </p>
-              <p className="text-sm text-muted-foreground">End of month</p>
+              <p className="text-sm tracking-tight text-muted-foreground">End of month</p>
+            </div>
+            {/* <div className="h-6 w-0.5 bg-muted-foreground" /> */}
+            <div className="flex-1">
+              <p className="font-semibold">
+                {total - amount > 0
+                  ? formatCurrency(currency, (total - amount) / daysLeft) + '/day'
+                  : formatCurrency(currency, 0)}
+              </p>
+              <p className="text-sm tracking-tight text-muted-foreground">Daily limit</p>
             </div>
           </div>
         )}
@@ -108,4 +116,4 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
   )
 }
 
-export default BudgetTab
+export default memo(BudgetTab)

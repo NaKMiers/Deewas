@@ -13,7 +13,7 @@ function Header() {
 
   return (
     <header className="h-[50px] w-full border-b border-muted-foreground bg-secondary text-primary">
-      <div className="container flex h-full items-center justify-between px-21/2">
+      <div className="container flex h-full items-center justify-between px-21/2 md:px-21">
         <h1 className="text-nowrap font-semibold tracking-wide">Hello {shortName(user)}!👋</h1>
 
         <div className="flex items-center gap-2">

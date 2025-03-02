@@ -4,7 +4,7 @@ import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
-import { deleteWalletApi } from '@/requests'
+import { deleteWalletApi, updateWalletApi } from '@/requests'
 import {
   LucideChevronDown,
   LucideEllipsis,
@@ -13,13 +13,14 @@ import {
   LucideTrash,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateWalletDrawer from './dialogs/UpdateWalletDrawer'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { Switch } from './ui/switch'
 
 interface WalletCardProps {
   wallet: IWallet
@@ -38,6 +39,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [updating, setUpdating] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
+  const [hide, setHide] = useState<boolean>(false)
 
   // delete wallet
   const handleDeleteWallet = useCallback(async () => {
@@ -62,6 +64,26 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
       setDeleting(false)
     }
   }, [wallets, dispatch, wallet._id])
+
+  // toggle hide
+  const handleChangeHide = useCallback(
+    async (value: any) => {
+      setHide(value)
+
+      try {
+        const { wallet: w } = await updateWalletApi(wallet._id, {
+          ...wallet,
+          hide: value,
+        })
+
+        setHide(w.hide)
+        dispatch(updateWallet(w))
+      } catch (err: any) {
+        console.log(err)
+      }
+    },
+    [dispatch, wallet]
+  )
 
   return (
     <Card
@@ -89,6 +111,17 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent onClick={e => e.stopPropagation()}>
+                <Button
+                  variant="ghost"
+                  className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
+                >
+                  <Switch
+                    checked={hide}
+                    onCheckedChange={handleChangeHide}
+                    className="bg-gray-300 data-[state=checked]:bg-violet-500"
+                  />
+                  Hide
+                </Button>
                 <UpdateWalletDrawer
                   update={wallet => dispatch(updateWallet(wallet))}
                   wallet={wallet}
@@ -187,7 +220,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
   )
 }
 
-export default WalletCard
+export default memo(WalletCard)
 
 interface CardProps {
   title: string

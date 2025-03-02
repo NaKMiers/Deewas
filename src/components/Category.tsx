@@ -11,7 +11,7 @@ import {
   LucidePencil,
   LucideTrash,
 } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateCategoryDrawer from './dialogs/UpdateCategoryDrawer'
@@ -152,4 +152,4 @@ function Category({ category, className = '' }: CategoryProps) {
   )
 }
 
-export default Category
+export default memo(Category)

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
 import { LucideLoaderCircle, LucidePlusSquare } from 'lucide-react'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import Category from './Category'
 import { TabsContent } from './ui/tabs'
 
@@ -93,4 +93,4 @@ function CategoryGroup({ categories, type, className = '' }: CategoryGroupProps)
   )
 }
 
-export default CategoryGroup
+export default memo(CategoryGroup)

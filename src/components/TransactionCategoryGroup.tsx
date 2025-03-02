@@ -18,7 +18,7 @@ import {
   LucideTrash,
 } from 'lucide-react'
 import moment from 'moment-timezone'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
@@ -93,7 +93,7 @@ function TransactionCategoryGroup({
   )
 }
 
-export default TransactionCategoryGroup
+export default memo(TransactionCategoryGroup)
 
 interface ITransactionProps {
   transaction: IFullTransaction

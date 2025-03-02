@@ -5,10 +5,10 @@ import { setWallets } from '@/lib/reducers/walletReducer'
 import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
 import { LucideLoaderCircle, LucidePlusCircle } from 'lucide-react'
-import { ReactNode, useState } from 'react'
+import { memo, ReactNode, useState } from 'react'
 import CreateWalletDrawer from './dialogs/CreateWalletDrawer'
 import { Button } from './ui/button'
-import { Carousel, CarouselContent, CarouselItem } from './ui/carousel'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel'
 import { Skeleton } from './ui/skeleton'
 import WalletCard from './WalletCard'
 
@@ -63,7 +63,7 @@ function Wallets({ className = '' }: WalletProps) {
         className="mt-1"
       >
         {wallets.length > 0 ? (
-          <Carousel className="mt-1 w-full px-21/2 md:px-21">
+          <Carousel className="mx-auto mt-1 px-21/2 md:px-21">
             <CarouselContent>
               {wallets.map((wallet: IWallet) => (
                 <CarouselItem
@@ -77,6 +77,9 @@ function Wallets({ className = '' }: WalletProps) {
                 </CarouselItem>
               ))}
             </CarouselContent>
+
+            <CarouselPrevious className="-left-7" />
+            <CarouselNext className="-right-7" />
           </Carousel>
         ) : (
           <div className="mt-1 px-21/2 md:px-21">
@@ -90,7 +93,7 @@ function Wallets({ className = '' }: WalletProps) {
   )
 }
 
-export default Wallets
+export default memo(Wallets)
 
 export function SkeletonWallets({
   loading,

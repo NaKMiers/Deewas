@@ -46,9 +46,10 @@ function TransactionsPage() {
 
   // get my transactions of selected wallet
   const getMyTransactions = useCallback(async () => {
-    if (!wallet) return
+    if (!curWallet) return
 
-    const query = `?walletId=${wallet._id}&from=${toUTC(dateRange.from)}&to=${toUTC(dateRange.to)}`
+    let query = `?from=${toUTC(dateRange.from)}&to=${toUTC(dateRange.to)}`
+    if (wallet) query += `&walletId=${wallet._id}`
 
     // start loading
     setLoading(true)
@@ -63,7 +64,7 @@ function TransactionsPage() {
       // stop loading
       setLoading(false)
     }
-  }, [dispatch, dateRange, wallet])
+  }, [dispatch, dateRange, wallet, curWallet])
 
   // initial fetch
   useEffect(() => {
@@ -122,9 +123,12 @@ function TransactionsPage() {
         </h2>
 
         <WalletSelection
-          update={(wallet: IWallet) => {
+          allowAll
+          update={(wallet: IWallet | null) => {
             setWallet(wallet)
-            dispatch(setCurWallet(wallet))
+            if (wallet) {
+              dispatch(setCurWallet(wallet))
+            }
           }}
         />
       </div>
@@ -217,7 +221,7 @@ function TransactionsPage() {
           trigger={
             <Button
               variant="default"
-              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full"
+              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full md:right-[calc(50%-600px+21px)]"
             >
               <LucidePlus size={24} />
               Add Transaction

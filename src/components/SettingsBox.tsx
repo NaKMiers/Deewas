@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { setSettings } from '@/lib/reducers/settingsReducer'
 import { cn } from '@/lib/utils'
 import { updateMySettingsApi } from '@/requests'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown } from 'react-icons/lu'
 import { Button } from './ui/button'
@@ -68,6 +68,8 @@ function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps
     </div>
   )
 }
+
+export default memo(SettingsBox)
 
 interface BoxProps {
   type: string
@@ -160,5 +162,3 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
     </div>
   )
 }
-
-export default SettingsBox

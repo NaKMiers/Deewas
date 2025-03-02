@@ -17,6 +17,10 @@ const WalletSchema = new Schema(
     icon: {
       type: String,
     },
+    hide: {
+      type: Boolean,
+      default: false,
+    },
     // sync with transaction
     income: {
       type: Number,
@@ -46,10 +50,10 @@ export interface IWallet {
   createdAt: string
   updatedAt: string
 
-  name: string
   user: string
+  name: string
   icon: string
-  type: TransactionType
+  hide: boolean
 
   income: number
   expense: number

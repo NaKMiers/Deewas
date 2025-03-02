@@ -14,15 +14,16 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
 import { LucideChevronsUpDown } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 
 interface WalletSelectionProps {
   initWallet?: IWallet
-  update?: (wallet: IWallet) => void
+  update?: (wallet: any) => void
+  allowAll?: boolean
   className?: string
 }
 
-function WalletSelection({ initWallet, update, className = '' }: WalletSelectionProps) {
+function WalletSelection({ initWallet, update, allowAll, className = '' }: WalletSelectionProps) {
   // store
   const { curWallet, wallets } = useAppSelector(state => state.wallet)
 
@@ -48,7 +49,7 @@ function WalletSelection({ initWallet, update, className = '' }: WalletSelection
           className={cn('flex h-8 gap-2 px-2', className)}
         >
           <p>
-            <span>{wallet?.icon}</span> {wallet?.name}
+            <span>{wallet?.icon || '🔢'}</span> {wallet?.name || 'All wallets'}
           </p>
           <div className="flex flex-1 items-center justify-end">
             <LucideChevronsUpDown size={18} />
@@ -62,6 +63,22 @@ function WalletSelection({ initWallet, update, className = '' }: WalletSelection
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandSeparator />
+            {allowAll && (
+              <CommandItem className="justify-between gap-1 rounded-none p-0 py-px">
+                <Button
+                  variant="ghost"
+                  className="flex w-full justify-start"
+                  onClick={() => {
+                    setOpenWalletSelection(false)
+                    setWallet(null)
+                    if (update) update(null)
+                  }}
+                  disabled={false}
+                >
+                  <span>🔢</span> All wallets
+                </Button>
+              </CommandItem>
+            )}
             {wallets.map((wallet: IWallet) => (
               <CommandItem
                 className="justify-between gap-1 rounded-none p-0 py-px"
@@ -88,4 +105,4 @@ function WalletSelection({ initWallet, update, className = '' }: WalletSelection
   )
 }
 
-export default WalletSelection
+export default memo(WalletSelection)

@@ -2,8 +2,9 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
-import { LucideChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { LucideChevronDown, LucideEye } from 'lucide-react'
+import { Dispatch, memo, SetStateAction, useState } from 'react'
+import { Button } from './ui/button'
 import { Card, CardContent } from './ui/card'
 
 interface OverviewCardProps {
@@ -12,10 +13,11 @@ interface OverviewCardProps {
 
 function OverviewCard({ className = '' }: OverviewCardProps) {
   // store
-  const { wallets } = useAppSelector(state => state.wallet)
+  const wallets = useAppSelector(state => state.wallet.wallets).filter(wallet => !wallet.hide)
 
   // states
   const [collapsed, setCollapsed] = useState<boolean>(false)
+  const [showValue, setShowValue] = useState<boolean>(false)
 
   // values
   const totalIncome = wallets.reduce((acc, wallet) => acc + wallet.income, 0)
@@ -26,7 +28,10 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
 
   return (
     <Card
-      className={cn('cursor-pointer overflow-hidden rounded-none border-0 py-1', className)}
+      className={cn(
+        'cursor-pointer overflow-hidden rounded-b-lg rounded-t-none border px-21/2 py-1 shadow-sm md:px-21',
+        className
+      )}
       onClick={() => setCollapsed(!collapsed)}
     >
       <CardContent className="flex justify-between px-0 pb-2">
@@ -35,6 +40,9 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
             title="Total Balance"
             value={totalBalance}
             type="balance"
+            isEye
+            isShow={showValue}
+            toggle={setShowValue}
           />
           <div
             className={`trans-300 flex flex-col overflow-hidden ${collapsed ? 'max-h-[300px]' : 'max-h-0'}`}
@@ -43,21 +51,25 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
               title="Income"
               value={totalIncome}
               type="income"
+              isShow={showValue}
             />
             <Item
               title="Expense"
               value={totalExpense}
               type="expense"
+              isShow={showValue}
             />
             <Item
               title="Saving"
               value={totalSaving}
               type="saving"
+              isShow={showValue}
             />
             <Item
               title="Invest"
               value={totalInvest}
               type="invest"
+              isShow={showValue}
             />
           </div>
         </div>
@@ -73,15 +85,18 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
   )
 }
 
-export default OverviewCard
+export default memo(OverviewCard)
 
 interface CardProps {
   title: string
   value: number
   type: TransactionType | 'balance'
+  isEye?: boolean
+  isShow?: boolean
+  toggle?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
-function Item({ title, type, value }: CardProps) {
+function Item({ title, type, value, isEye, isShow, toggle, className = '' }: CardProps) {
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -90,13 +105,30 @@ function Item({ title, type, value }: CardProps) {
 
   return (
     currency && (
-      <div className={`flex w-full flex-col px-21/2 py-1`}>
+      <div className={cn('flex w-full flex-col px-21/2 py-1', className)}>
         <div className="flex items-center gap-2">
           <Icon
             size={24}
             className={cn(color)}
           />
-          <span className="text-xl font-semibold">{formatCurrency(currency, value)}</span>
+          {isShow ? (
+            <p className="text-xl font-semibold">{formatCurrency(currency, value)}</p>
+          ) : (
+            <p className="text-xl font-bold tracking-widest">*******</p>
+          )}
+
+          {isEye && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={e => {
+                e.stopPropagation()
+                if (toggle) toggle(prev => !prev)
+              }}
+            >
+              <LucideEye />
+            </Button>
+          )}
         </div>
         <p className={cn('text-sm font-semibold leading-3 tracking-wide text-muted-foreground/80')}>
           {title}

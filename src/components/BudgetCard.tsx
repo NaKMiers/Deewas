@@ -5,7 +5,7 @@ import { IFullBudget } from '@/models/BudgetModel'
 import { deleteBudgetApi } from '@/requests/budgetRequests'
 import { differenceInDays } from 'date-fns'
 import { LucideEllipsis, LucideLoaderCircle, LucidePencil, LucideTrash } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateBudgetDrawer from './dialogs/UpdateBudgetDrawer'
@@ -124,7 +124,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
         <div className="relative h-6 w-full rounded-full bg-primary/10">
           <div
             className={cn('h-full rounded-full', checkLevel(progress).background)}
-            style={{ width: `${progress}%` }}
+            style={{ width: `${progress > 100 ? 100 : progress}%` }}
           />
           {currency && (
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap font-body text-sm font-semibold tracking-wider">
@@ -146,4 +146,4 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
   )
 }
 
-export default BudgetCard
+export default memo(BudgetCard)

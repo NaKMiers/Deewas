@@ -1,5 +1,6 @@
 import { currencies } from '@/constants/settings'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -15,7 +16,7 @@ import {
 } from 'lucide-react'
 import moment from 'moment-timezone'
 import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateTransactionDrawer from './dialogs/UpdateTransactionDrawer'
@@ -30,9 +31,10 @@ interface LatestTransactionsProps {
 function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   // hooks
   const router = useRouter()
+  const dispatch = useAppDispatch()
 
   // store
-  const { refetching } = useAppSelector(state => state.load)
+  const { refetching: rfc } = useAppSelector(state => state.load)
 
   // states
   const [transactions, setTransactions] = useState<IFullTransaction[]>([])
@@ -58,7 +60,7 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   // get latest transactions
   useEffect(() => {
     getLatestTransactions()
-  }, [getLatestTransactions, refetching])
+  }, [getLatestTransactions, rfc])
 
   return (
     <div className={cn('px-21/2 md:px-21', className)}>
@@ -102,9 +104,10 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
           transactions.slice(0, +limit).map(transaction => (
             <Transaction
               transaction={transaction}
-              update={(transaction: IFullTransaction) =>
+              update={(transaction: IFullTransaction) => {
                 setTransactions(transactions.map(t => (t._id === transaction._id ? transaction : t)))
-              }
+                dispatch(refetching())
+              }}
               refetch={() => getLatestTransactions()}
               key={transaction._id}
             />
@@ -119,7 +122,7 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   )
 }
 
-export default LatestTransactions
+export default memo(LatestTransactions)
 
 interface TransactionProps {
   transaction: IFullTransaction

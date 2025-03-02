@@ -1,6 +1,5 @@
 import { cn } from '@/lib/utils'
-import { Separator } from '@radix-ui/react-separator'
-import { ReactNode } from 'react'
+import { memo, ReactNode } from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '../ui/alert-dialog'
+import { Separator } from '../ui/separator'
 
 interface ConfirmDialogProps {
   trigger: ReactNode
@@ -63,4 +63,5 @@ function ConfirmDialog({
     </AlertDialog>
   )
 }
-export default ConfirmDialog
+
+export default memo(ConfirmDialog)

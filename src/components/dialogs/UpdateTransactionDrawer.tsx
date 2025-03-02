@@ -10,7 +10,7 @@ import { IWallet } from '@/models/WalletModel'
 import { updateTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
-import { ReactNode, useCallback, useState } from 'react'
+import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CategoryPicker from '../CategoryPicker'
@@ -306,4 +306,4 @@ function UpdateTransactionDrawer({
   )
 }
 
-export default UpdateTransactionDrawer
+export default memo(UpdateTransactionDrawer)

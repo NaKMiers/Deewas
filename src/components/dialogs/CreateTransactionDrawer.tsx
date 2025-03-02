@@ -11,7 +11,7 @@ import { IWallet } from '@/models/WalletModel'
 import { createTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
-import { ReactNode, useCallback, useState } from 'react'
+import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CategoryPicker from '../CategoryPicker'
@@ -80,6 +80,7 @@ function CreateTransactionDrawer({
     },
   })
   const form = watch()
+  console.log('form', form)
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
@@ -148,6 +149,7 @@ function CreateTransactionDrawer({
   // create transaction
   const handleCreateTransaction: SubmitHandler<FieldValues> = useCallback(
     async data => {
+      console.log('data', data)
       // validate form
       if (!handleValidate(data)) return
 
@@ -381,4 +383,4 @@ function CreateTransactionDrawer({
   )
 }
 
-export default CreateTransactionDrawer
+export default memo(CreateTransactionDrawer)

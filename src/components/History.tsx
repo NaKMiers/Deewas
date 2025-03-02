@@ -4,14 +4,14 @@ import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
 import { getOverviewApi } from '@/requests'
-import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
-import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Chart, { ChartDatum } from './Chart'
 import { Button } from './ui/button'
 import { DateRangePicker } from './ui/DateRangePicker'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 interface HistoryProps {
@@ -32,7 +32,7 @@ function History({ className = '' }: HistoryProps) {
   const [data, setData] = useState<any[]>([])
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: moment().startOf('month').toDate(),
-    to: moment().toDate(),
+    to: moment().endOf('month').toDate(),
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [transactions, setTransactions] = useState<IFullTransaction[]>([])
@@ -275,7 +275,7 @@ function History({ className = '' }: HistoryProps) {
   )
 }
 
-export default History
+export default memo(History)
 
 interface MultiSelectionProps {
   trigger: ReactNode
@@ -295,7 +295,7 @@ export function MultipleSelection({ trigger, list, selected, onChange }: MultiSe
       onOpenChange={setOpen}
     >
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent className="z-10 mt-2 flex flex-col overflow-hidden rounded-sm border border-muted-foreground/50 shadow-md">
+      <PopoverContent className="z-10 mt-2 flex max-w-max flex-col overflow-hidden rounded-lg p-0">
         <Button
           variant="outline"
           className={cn(

@@ -26,10 +26,15 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params
 
     // get data from request body
-    const { name, icon } = await req.json()
+    const { name, icon, hide } = await req.json()
+    console.log('hide', hide)
 
     // update wallet
-    const wallet = await WalletModel.findByIdAndUpdate(id, { name, icon }, { new: true }).lean()
+    const wallet = await WalletModel.findByIdAndUpdate(
+      id,
+      { $set: { name, icon, hide } },
+      { new: true }
+    ).lean()
 
     // return response
     return NextResponse.json({ wallet, message: 'Updated wallet' }, { status: 200 })

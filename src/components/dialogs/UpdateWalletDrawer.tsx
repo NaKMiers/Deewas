@@ -4,7 +4,7 @@ import { updateWalletApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
-import { Dispatch, ReactNode, SetStateAction, useCallback, useState } from 'react'
+import { Dispatch, memo, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CustomInput from '../CustomInput'
@@ -224,4 +224,4 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
   )
 }
 
-export default UpdateWalletDrawer
+export default memo(UpdateWalletDrawer)

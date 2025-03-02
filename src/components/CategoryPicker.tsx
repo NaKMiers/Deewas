@@ -5,9 +5,8 @@ import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
 import { deleteCategoryApi, getMyCategoriesApi } from '@/requests'
-import { Separator } from '@radix-ui/react-select'
 import { LucidePencil, LucidePlusSquare, LucideX } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown, LuLoaderCircle } from 'react-icons/lu'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -31,6 +30,7 @@ import {
   DrawerTrigger,
 } from './ui/drawer'
 import { Skeleton } from './ui/skeleton'
+import { Separator } from './ui/separator'
 
 interface CategoryPickerProps {
   category?: ICategory
@@ -255,4 +255,4 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
   )
 }
 
-export default CategoryPicker
+export default memo(CategoryPicker)
