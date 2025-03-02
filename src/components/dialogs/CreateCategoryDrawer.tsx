@@ -105,8 +105,6 @@ function CreateCategoryDrawer({
       try {
         const { category, message } = await createCategoryApi({ ...data })
 
-        console.log('category', category)
-
         if (update) {
           update(category)
         }

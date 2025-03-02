@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { checkLevel, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -11,16 +11,19 @@ import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateBudgetDrawer from './dialogs/UpdateBudgetDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { deleteBudget, updateBudget } from '@/lib/reducers/budgetReducer'
 
 interface IBudgetCardProps {
   begin: Date | string
   end: Date | string
   budget: IFullBudget
-  refetch?: () => void
   className?: string
 }
 
-function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCardProps) {
+function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
+  // hooks
+  const dispatch = useAppDispatch()
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -39,10 +42,10 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
     toast.loading('Deleting budget...', { id: 'delete-budget' })
 
     try {
-      const { message } = await deleteBudgetApi(budget._id)
+      const { budget: b, message } = await deleteBudgetApi(budget._id)
       toast.success(message, { id: 'delete-budget' })
 
-      if (refetch) refetch()
+      dispatch(deleteBudget(b))
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-budget' })
       console.log(err)
@@ -50,7 +53,7 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
       // stop deleting
       setDeleting(false)
     }
-  }, [refetch, budget._id])
+  }, [dispatch, budget._id])
 
   return (
     <div className={cn('rounded-md border px-3 pb-8 pt-2', className)}>
@@ -77,8 +80,8 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <UpdateBudgetDrawer
+                update={(budget: IFullBudget) => dispatch(updateBudget(budget))}
                 budget={budget}
-                refetch={refetch}
                 trigger={
                   <Button
                     variant="ghost"

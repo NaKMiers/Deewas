@@ -13,16 +13,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dro
 interface ITransactionTypeGroupProps {
   type: TransactionType
   categoryGroups: any[]
-  refetch?: () => void
   className?: string
 }
 
-function TransactionTypeGroup({
-  type,
-  categoryGroups,
-  refetch,
-  className = '',
-}: ITransactionTypeGroupProps) {
+function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransactionTypeGroupProps) {
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -86,7 +80,6 @@ function TransactionTypeGroup({
             <DropdownMenuContent className="max-w-max p-0">
               <CreateTransactionDrawer
                 type={type}
-                refetch={refetch}
                 trigger={
                   <Button
                     variant="ghost"
@@ -116,7 +109,6 @@ function TransactionTypeGroup({
                 <TransactionCategoryGroup
                   category={catGroup.category}
                   transactions={catGroup.transactions}
-                  refetch={refetch}
                   key={index}
                 />
               ))}

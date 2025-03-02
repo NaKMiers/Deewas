@@ -6,6 +6,7 @@ import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/strin
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction } from '@/models/TransactionModel'
+import { IWallet } from '@/models/WalletModel'
 import { updateTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
@@ -27,19 +28,18 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 import WalletSelection from '../WalletSelection'
-import { IWallet } from '@/models/WalletModel'
 
 interface UpdateTransactionDrawerProps {
   transaction: IFullTransaction
   trigger: ReactNode
-  refetch?: () => void
+  update?: (transaction: IFullTransaction) => void
   className?: string
 }
 
 function UpdateTransactionDrawer({
   transaction,
   trigger,
-  refetch,
+  update,
   className = '',
 }: UpdateTransactionDrawerProps) {
   // store
@@ -49,7 +49,6 @@ function UpdateTransactionDrawer({
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // states
-  const [selectedWallet, setSelectedWallet] = useState<IWallet | null>(transaction.wallet)
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
 
@@ -69,7 +68,7 @@ function UpdateTransactionDrawer({
       walletId: transaction.wallet._id || '',
       name: transaction.name || '',
       categoryId: transaction.category._id || '',
-      amount: transaction.amount.toFixed(2) || '',
+      amount: transaction.amount.toString() || '',
       date: moment().format('YYYY-MM-DD'),
     },
   })
@@ -131,20 +130,14 @@ function UpdateTransactionDrawer({
       setSaving(true)
       toast.loading('Updating transaction...', { id: 'update-transaction' })
 
-      console.log('data', {
-        ...data,
-        date: toUTC(data.date),
-        amount: data.amount,
-      })
-
       try {
-        const { message } = await updateTransactionApi(transaction._id, {
+        const { transaction: tx, message } = await updateTransactionApi(transaction._id, {
           ...data,
           date: toUTC(data.date),
           amount: revertAdjustedCurrency(data.amount, locale),
         })
 
-        if (refetch) refetch()
+        if (update) update(tx)
 
         toast.success(message, { id: 'update-transaction' })
         setOpen(false)
@@ -157,7 +150,7 @@ function UpdateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, transaction._id, locale]
+    [handleValidate, reset, update, transaction._id, locale]
   )
 
   return (
@@ -227,14 +220,14 @@ function UpdateTransactionDrawer({
               >
                 Category
               </p>
-              <div onFocus={() => clearErrors('category')}>
+              <div onFocus={() => clearErrors('categoryId')}>
                 <CategoryPicker
                   category={transaction.category}
                   onChange={(categoryId: string) => setValue('categoryId', categoryId)}
                   type={transaction.type}
                 />
               </div>
-              {errors.category?.message && (
+              {errors.categoryId?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
                   {errors.categoryId?.message?.toString()}
                 </span>

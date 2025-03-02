@@ -35,41 +35,45 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // get data from request
     const { name, amount, date } = await req.json()
 
-    console.log('name', name)
-    console.log('amount', amount)
-    console.log('date', date)
-
     // update transaction
-    const transaction = await TransactionModel.findByIdAndUpdate(
+    const oldTx: any = await TransactionModel.findByIdAndUpdate(
       id,
       { $set: { name, amount, date: toUTC(date) } },
-      { new: false }
-    )
+      { new: false } // return old document
+    ).lean()
 
     // check if transaction not found
-    if (!transaction) {
+    if (!oldTx) {
       return NextResponse.json({ message: 'Transaction not found' }, { status: 404 })
     }
 
     // amount is changed
-    if (transaction.amount !== amount) {
-      const diffAmount = amount - transaction.amount
+    if (oldTx.amount !== amount) {
+      const diffAmount = amount - oldTx.amount
 
       await Promise.all([
+        // get new updated transaction
         // update category amount of this transaction
-        CategoryModel.findByIdAndUpdate(transaction.category, { $inc: { amount: diffAmount } }),
+        CategoryModel.findByIdAndUpdate(oldTx.category, { $inc: { amount: diffAmount } }),
         // update wallet amount of this transaction
-        WalletModel.findByIdAndUpdate(transaction.wallet, { $inc: { [transaction.type]: diffAmount } }),
+        WalletModel.findByIdAndUpdate(oldTx.wallet, { $inc: { [oldTx.type]: diffAmount } }),
         // update budgets
         BudgetModel.updateMany(
           {
-            category: transaction.category,
-            begin: { $lte: transaction.date },
-            end: { $gte: transaction.date },
+            category: oldTx.category,
+            begin: { $lte: oldTx.date },
+            end: { $gte: oldTx.date },
           },
           { $inc: { amount: diffAmount } }
         ),
       ])
+    }
+
+    // get new updated transaction
+    const transaction = await TransactionModel.findById(id).populate('category wallet').lean()
+
+    if (!transaction) {
+      return NextResponse.json({ message: 'Transaction not found' }, { status: 404 })
     }
 
     // return response

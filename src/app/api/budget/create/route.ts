@@ -5,8 +5,9 @@ import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Budget, Transaction
+// Models: Budget, Transaction, Category
 import '@/models/BudgetModel'
+import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 
 // [POST]: /budget/create
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
     const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
 
     // create budget
-    const budget = await BudgetModel.create({
+    const bud = await BudgetModel.create({
       user: userId,
       category: categoryId,
       total,
@@ -44,6 +45,13 @@ export async function POST(req: NextRequest) {
       end: toUTC(end),
       amount: totalAmount,
     })
+
+    // get newly created budget
+    const budget = await BudgetModel.findById(bud._id).populate('category').lean()
+
+    if (!budget) {
+      return NextResponse.json({ message: 'Failed to create budget' }, { status: 500 })
+    }
 
     // return response
     return NextResponse.json({ budget, message: 'Created budget' }, { status: 200 })

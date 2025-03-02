@@ -6,7 +6,7 @@ import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/strin
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
-import { TransactionType } from '@/models/TransactionModel'
+import { IFullTransaction, TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { createTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
@@ -35,6 +35,7 @@ interface CreateTransactionDrawerProps {
   category?: ICategory
   trigger: ReactNode
   refetch?: () => void
+  update?: (transaction: IFullTransaction) => void
   className?: string
 }
 
@@ -42,6 +43,7 @@ function CreateTransactionDrawer({
   type,
   category,
   trigger,
+  update,
   refetch,
   className = '',
 }: CreateTransactionDrawerProps) {
@@ -53,7 +55,6 @@ function CreateTransactionDrawer({
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // states
-  const [selectedWallet, setSelectedWallet] = useState<IWallet | null>(curWallet)
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
 
@@ -70,7 +71,7 @@ function CreateTransactionDrawer({
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: selectedWallet?._id || '',
+      walletId: curWallet?._id || '',
       name: '',
       categoryId: category?._id || '',
       amount: '',
@@ -155,13 +156,14 @@ function CreateTransactionDrawer({
       toast.loading('Creating transaction...', { id: 'create-transaction' })
 
       try {
-        const { message } = await createTransactionApi({
+        const { transaction, message } = await createTransactionApi({
           ...data,
           date: toUTC(data.date),
           amount: revertAdjustedCurrency(data.amount, locale),
         })
 
         if (refetch) refetch()
+        if (update) update(transaction)
 
         toast.success(message, { id: 'create-transaction' })
         setOpen(false)
@@ -174,7 +176,7 @@ function CreateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, locale]
+    [handleValidate, reset, refetch, update, locale]
   )
 
   return (
@@ -200,11 +202,22 @@ function CreateTransactionDrawer({
           <div className="flex flex-col gap-3">
             {/* Wallet */}
             <div>
-              <p className="mb-1 text-xs font-semibold">Wallet</p>
-              <WalletSelection
-                className="w-full justify-normal"
-                update={(wallet: IWallet) => setValue('walletId', wallet._id)}
-              />
+              <p
+                className={cn('mb-1 text-xs font-semibold', errors.walletId?.message && 'text-rose-500')}
+              >
+                Wallet
+              </p>
+              <div onFocus={() => clearErrors('walletId')}>
+                <WalletSelection
+                  className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
+                  update={(wallet: IWallet) => setValue('walletId', wallet._id)}
+                />
+              </div>
+              {errors.walletId?.message && (
+                <span className="ml-1 block text-xs italic text-rose-400">
+                  {errors.walletId?.message?.toString()}
+                </span>
+              )}
             </div>
 
             {/* Name */}
@@ -275,21 +288,21 @@ function CreateTransactionDrawer({
               >
                 Category
               </p>
-              <div onFocus={() => clearErrors('category')}>
+              <div onFocus={() => clearErrors('categoryId')}>
                 <CategoryPicker
                   category={category}
                   onChange={(categoryId: string) => setValue('categoryId', categoryId)}
                   type={form.type}
                 />
               </div>
-              {errors.category?.message && (
+              {errors.categoryId?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
                   {errors.categoryId?.message?.toString()}
                 </span>
               )}
             </div>
 
-            {/* Transaction */}
+            {/* Date */}
             <div className="mt-1.5 flex flex-1 flex-col">
               <p className="mb-1 text-xs font-semibold">Date</p>
               <div onFocus={() => clearErrors('date')}>
@@ -302,6 +315,13 @@ function CreateTransactionDrawer({
                   </DrawerTrigger>
 
                   <DrawerContent className="w-full overflow-hidden rounded-md p-0 outline-none">
+                    <DrawerHeader>
+                      <DrawerTitle className="text-center">Select Date</DrawerTitle>
+                      <DrawerDescription className="text-center">
+                        When did this transaction happen?
+                      </DrawerDescription>
+                    </DrawerHeader>
+
                     <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                       <Calendar
                         mode="single"

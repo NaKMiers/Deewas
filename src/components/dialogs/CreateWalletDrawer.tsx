@@ -94,8 +94,6 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
       try {
         const { wallet, message } = await createWalletApi(data)
 
-        console.log('wallet', wallet)
-
         if (update) {
           update(wallet)
         }

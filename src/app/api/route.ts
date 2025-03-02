@@ -4,9 +4,10 @@ import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Transaction, Category
+// Models: Transaction, Category, Wallet
 import '@/models/CategoryModel'
 import '@/models/TransactionModel'
+import '@/models/WalletModel'
 
 // [GET]: /
 export async function GET(req: NextRequest) {

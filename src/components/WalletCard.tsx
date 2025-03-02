@@ -31,6 +31,9 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
   const router = useRouter()
   const dispatch = useAppDispatch()
 
+  // store
+  const { wallets } = useAppSelector(state => state.wallet)
+
   // states
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [updating, setUpdating] = useState<boolean>(false)
@@ -45,7 +48,11 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
     try {
       const { wallet: w, message } = await deleteWalletApi(wallet._id)
 
-      dispatch(deleteWallet(w))
+      if (wallets.length > 1) {
+        dispatch(deleteWallet(w))
+      } else {
+        dispatch(updateWallet(w))
+      }
       toast.success(message, { id: 'delete-wallet' })
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-wallet' })
@@ -54,7 +61,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
       // stop deleting
       setDeleting(false)
     }
-  }, [dispatch, wallet._id])
+  }, [wallets, dispatch, wallet._id])
 
   return (
     <Card
@@ -99,8 +106,12 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
 
                 <ConfirmDialog
                   label="Delete Wallet"
-                  desc="Are you sure you want to delete this wallet?"
-                  confirmLabel="Delete"
+                  desc={
+                    wallets.length > 1
+                      ? 'Are you sure you want to delete this wallet?'
+                      : 'Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe. Are you sure you want to do this?'
+                  }
+                  confirmLabel={wallets.length > 1 ? 'Delete' : 'Clear'}
                   onConfirm={handleDeleteWallet}
                   trigger={
                     <Button

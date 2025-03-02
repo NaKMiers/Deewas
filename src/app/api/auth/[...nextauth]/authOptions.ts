@@ -39,7 +39,7 @@ const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any) {
-        console.log('- Credentials -', credentials)
+        console.log('- Credentials -')
 
         // check if credentials is empty
         if (!credentials?.usernameOrEmail || !credentials?.password) {
@@ -170,8 +170,6 @@ const authOptions = {
               ...category,
               user: newUser._id,
             }))
-
-          console.log('categories', categories.length)
 
           await Promise.all([
             // initially create personal wallet

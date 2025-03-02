@@ -8,9 +8,10 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import WalletSelection from '@/components/WalletSelection'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { addTransaction, setTransactions } from '@/lib/reducers/transactionReducer'
 import { setCurWallet } from '@/lib/reducers/walletReducer'
 import { toUTC } from '@/lib/time'
-import { IFullTransaction } from '@/models/TransactionModel'
+import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { getMyTransactionsApi } from '@/requests/transactionRequests'
 import { differenceInDays } from 'date-fns'
@@ -18,6 +19,7 @@ import { LucidePlus, LucideSearch } from 'lucide-react'
 import moment from 'moment-timezone'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { LuX } from 'react-icons/lu'
 
 function TransactionsPage() {
   // hooks
@@ -25,6 +27,7 @@ function TransactionsPage() {
 
   // store
   const { curWallet } = useAppSelector(state => state.wallet)
+  const { transactions } = useAppSelector(state => state.transaction)
 
   // states
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
@@ -34,17 +37,51 @@ function TransactionsPage() {
   const [wallet, setWallet] = useState<IWallet | null>(curWallet)
   const [groups, setGroups] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
+  const [search, setSearch] = useState<string>('')
 
   // initially set wallet
   useEffect(() => {
     curWallet && setWallet(curWallet)
   }, [curWallet])
 
-  // group transactions
-  const handleGroupTransactions = useCallback((transactions: IFullTransaction[]) => {
+  // get my transactions of selected wallet
+  const getMyTransactions = useCallback(async () => {
+    if (!wallet) return
+
+    const query = `?walletId=${wallet._id}&from=${toUTC(dateRange.from)}&to=${toUTC(dateRange.to)}`
+
+    // start loading
+    setLoading(true)
+
+    try {
+      const { transactions } = await getMyTransactionsApi(query)
+      dispatch(setTransactions(transactions))
+    } catch (err: any) {
+      console.log(err)
+      toast.error('Failed to fetch transactions')
+    } finally {
+      // stop loading
+      setLoading(false)
+    }
+  }, [dispatch, dateRange, wallet])
+
+  // initial fetch
+  useEffect(() => {
+    getMyTransactions()
+  }, [getMyTransactions])
+
+  // auto group categories by type
+  useEffect(() => {
     const groups: any = {}
 
-    transactions.forEach((transaction: IFullTransaction) => {
+    const filteredTransactions = transactions.filter((transaction: IFullTransaction) => {
+      const { category, name, type, amount } = transaction
+      const key = (category.name + category.icon + name + type + amount).toLowerCase()
+
+      return key.includes(search.toLowerCase())
+    })
+
+    filteredTransactions.forEach((transaction: IFullTransaction) => {
       const type = transaction.type
 
       if (!groups[type]) {
@@ -74,34 +111,7 @@ function TransactionsPage() {
     }
 
     setGroups(Object.entries(groups))
-  }, [])
-
-  // get my transactions of selected wallet
-  const getMyTransactions = useCallback(async () => {
-    if (!wallet) return
-
-    const query = `?walletId=${wallet._id}&from=${toUTC(dateRange.from)}&to=${toUTC(dateRange.to)}`
-    console.log('query', query)
-
-    // start loading
-    setLoading(true)
-
-    try {
-      const { transactions } = await getMyTransactionsApi(query)
-      handleGroupTransactions(transactions)
-    } catch (err: any) {
-      console.log(err)
-      toast.error('Failed to fetch transactions')
-    } finally {
-      // stop loading
-      setLoading(false)
-    }
-  }, [handleGroupTransactions, dateRange, wallet])
-
-  // initial fetch
-  useEffect(() => {
-    getMyTransactions()
-  }, [getMyTransactions])
+  }, [transactions, search])
 
   return (
     <div className="container pb-32">
@@ -139,10 +149,10 @@ function TransactionsPage() {
         />
       </div>
 
-      {/* Search & Date Range */}
+      {/* Search  */}
       <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
         {/* Search */}
-        <div className="flex w-full overflow-hidden rounded-md shadow-sm">
+        <div className="relative flex w-full overflow-hidden rounded-md shadow-sm">
           <Button
             variant="outline"
             size="icon"
@@ -152,9 +162,21 @@ function TransactionsPage() {
           </Button>
 
           <Input
-            className="rounded-l-none border border-l-0 text-sm !ring-0"
+            className="rounded-l-none border border-l-0 pr-10 text-sm !ring-0"
             placeholder="Search..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
+
+          {search.trim() && (
+            <Button
+              variant="ghost"
+              className="absolute right-0 top-1/2 -translate-y-1/2"
+              size="icon"
+            >
+              <LuX />
+            </Button>
+          )}
         </div>
       </div>
 
@@ -167,7 +189,6 @@ function TransactionsPage() {
                 type={type}
                 categoryGroups={Object.entries(group).map(g => g[1])}
                 key={type}
-                refetch={getMyTransactions}
               />
             ))
           ) : (
@@ -190,18 +211,20 @@ function TransactionsPage() {
       )}
 
       {/* Create Transaction */}
-      <CreateTransactionDrawer
-        refetch={getMyTransactions}
-        trigger={
-          <Button
-            variant="default"
-            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full"
-          >
-            <LucidePlus size={24} />
-            Add Transaction
-          </Button>
-        }
-      />
+      {curWallet && (
+        <CreateTransactionDrawer
+          update={(transaction: ITransaction) => dispatch(addTransaction(transaction))}
+          trigger={
+            <Button
+              variant="default"
+              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full"
+            >
+              <LucidePlus size={24} />
+              Add Transaction
+            </Button>
+          }
+        />
+      )}
     </div>
   )
 }

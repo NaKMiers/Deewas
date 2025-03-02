@@ -23,6 +23,7 @@ const charts = ['line', 'bar', 'area', 'radar']
 
 function History({ className = '' }: HistoryProps) {
   // store
+  const { refetching } = useAppSelector(state => state.load)
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
@@ -52,28 +53,28 @@ function History({ className = '' }: HistoryProps) {
   )
 
   // get history
-  useEffect(() => {
-    const getOverview = async () => {
-      // start loading
-      setLoading(true)
+  const getOverview = useCallback(async () => {
+    // start loading
+    setLoading(true)
 
-      try {
-        const from = toUTC(dateRange.from)
-        const to = toUTC(dateRange.to)
+    try {
+      const from = toUTC(dateRange.from)
+      const to = toUTC(dateRange.to)
 
-        const { transactions } = await getOverviewApi(`?from=${from}&to=${to}`)
-        setTransactions(transactions)
-        console.log('transactions', transactions)
-      } catch (err: any) {
-        console.log(err)
-      } finally {
-        // stop loading
-        setLoading(false)
-      }
+      const { transactions } = await getOverviewApi(`?from=${from}&to=${to}`)
+      setTransactions(transactions)
+    } catch (err: any) {
+      console.log(err)
+    } finally {
+      // stop loading
+      setLoading(false)
     }
-
-    getOverview()
   }, [dateRange])
+
+  // initially get history
+  useEffect(() => {
+    getOverview()
+  }, [getOverview, refetching])
 
   // auto update chart data
   useEffect(() => {

@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { TabsContent } from '@/components/ui/tabs'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { addBudget } from '@/lib/reducers/budgetReducer'
 import { formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -15,11 +16,13 @@ interface IBudgetTabProps {
   begin: Date | string
   end: Date | string
   budgets: IFullBudget[]
-  refetch?: () => void
   className?: string
 }
 
-function BudgetTab({ value, begin, end, budgets, refetch, className = '' }: IBudgetTabProps) {
+function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabProps) {
+  // hooks
+  const dispatch = useAppDispatch()
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -78,7 +81,7 @@ function BudgetTab({ value, begin, end, budgets, refetch, className = '' }: IBud
 
         {/* MARK: Create Budget */}
         <CreateBudgetDrawer
-          refetch={refetch}
+          update={(budget: IFullBudget) => dispatch(addBudget(budget))}
           trigger={
             <Button
               variant="default"
@@ -97,7 +100,6 @@ function BudgetTab({ value, begin, end, budgets, refetch, className = '' }: IBud
             begin={begin}
             end={end}
             budget={budget}
-            refetch={refetch}
             key={budget._id}
           />
         ))}

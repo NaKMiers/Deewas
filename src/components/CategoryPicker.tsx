@@ -66,7 +66,6 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
 
     try {
       const { categories } = await getMyCategoriesApi()
-      console.log('categories', categories)
 
       setCategories(categories)
     } catch (err: any) {

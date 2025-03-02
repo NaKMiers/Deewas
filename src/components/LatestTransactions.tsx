@@ -23,39 +23,42 @@ import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
-interface TransactionsProps {
+interface LatestTransactionsProps {
   className?: string
 }
 
-function Transactions({ className = '' }: TransactionsProps) {
+function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   // hooks
   const router = useRouter()
+
+  // store
+  const { refetching } = useAppSelector(state => state.load)
 
   // states
   const [transactions, setTransactions] = useState<IFullTransaction[]>([])
   const [limit, setLimit] = useState<string>('10')
   const [loading, setLoading] = useState<boolean>(false)
 
+  const getLatestTransactions = useCallback(async () => {
+    // start loading
+    setLoading(true)
+
+    try {
+      const { transactions } = await getMyTransactionsApi(`?sort=date&orderBy=-1&limit=${limit}`)
+      setTransactions(transactions)
+    } catch (err: any) {
+      toast.error(err.message)
+      console.log(err)
+    } finally {
+      // stop loading
+      setLoading(false)
+    }
+  }, [limit])
+
   // get latest transactions
   useEffect(() => {
-    const getLatestTransactions = async () => {
-      // start loading
-      setLoading(true)
-
-      try {
-        const { transactions } = await getMyTransactionsApi(`?sort=date&orderBy=-1&limit=${limit}`)
-        setTransactions(transactions)
-      } catch (err: any) {
-        toast.error(err.message)
-        console.log(err)
-      } finally {
-        // stop loading
-        setLoading(false)
-      }
-    }
-
     getLatestTransactions()
-  }, [limit])
+  }, [getLatestTransactions, refetching])
 
   return (
     <div className={cn('px-21/2 md:px-21', className)}>
@@ -99,6 +102,10 @@ function Transactions({ className = '' }: TransactionsProps) {
           transactions.slice(0, +limit).map(transaction => (
             <Transaction
               transaction={transaction}
+              update={(transaction: IFullTransaction) =>
+                setTransactions(transactions.map(t => (t._id === transaction._id ? transaction : t)))
+              }
+              refetch={() => getLatestTransactions()}
               key={transaction._id}
             />
           ))
@@ -112,15 +119,17 @@ function Transactions({ className = '' }: TransactionsProps) {
   )
 }
 
-export default Transactions
+export default LatestTransactions
 
 interface TransactionProps {
   transaction: IFullTransaction
+  update?: (transaction: IFullTransaction) => void
+  remove?: (transaction: IFullTransaction) => void
   refetch?: () => void
   className?: string
 }
 
-function Transaction({ transaction, refetch, className = '' }: TransactionProps) {
+function Transaction({ transaction, update, remove, refetch, className = '' }: TransactionProps) {
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -134,9 +143,10 @@ function Transaction({ transaction, refetch, className = '' }: TransactionProps)
     toast.loading('Deleting transaction...', { id: 'delete-transaction' })
 
     try {
-      const { message } = await deleteTransactionApi(transaction._id)
+      const { transaction: tx, message } = await deleteTransactionApi(transaction._id)
       toast.success(message, { id: 'delete-transaction' })
 
+      if (remove) remove(tx)
       if (refetch) refetch()
     } catch (err: any) {
       toast.error('Failed to delete transaction', { id: 'delete-transaction' })
@@ -145,7 +155,7 @@ function Transaction({ transaction, refetch, className = '' }: TransactionProps)
       // stop loading
       setDeleting(false)
     }
-  }, [refetch, transaction._id])
+  }, [remove, refetch, transaction._id])
 
   return (
     <div className={cn('flex w-full items-start gap-1', className)}>
@@ -201,7 +211,7 @@ function Transaction({ transaction, refetch, className = '' }: TransactionProps)
               <DropdownMenuContent>
                 <UpdateTransactionDrawer
                   transaction={transaction}
-                  refetch={refetch}
+                  update={update}
                   trigger={
                     <Button
                       variant="ghost"

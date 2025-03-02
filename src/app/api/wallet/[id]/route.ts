@@ -1,10 +1,10 @@
 import { connectDatabase } from '@/config/database'
+import CategoryModel from '@/models/CategoryModel'
 import WalletModel from '@/models/WalletModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-import CategoryModel from '@/models/CategoryModel'
 
-// Models:
+// Models: Wallet, Category
 import '@/models/CategoryModel'
 import '@/models/WalletModel'
 

@@ -5,24 +5,48 @@ import CreateBudgetDrawer from '@/components/dialogs/CreateBudgetDrawer'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { addBudget, setBudgets } from '@/lib/reducers/budgetReducer'
 import { formatTimeRange } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
 import { getMyBudgetsApi } from '@/requests/budgetRequests'
 import { LucidePlus } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 
 function BudgetsPage() {
+  // hooks
+  const dispatch = useAppDispatch()
+
   // store
-  const { curWallet } = useAppSelector(state => state.wallet)
+  const { budgets } = useAppSelector(state => state.budget)
 
   // states
-  const [groups, setGroups] = useState<any[]>([])
   const [loading, setLoading] = useState<boolean>(false)
+  const [groups, setGroups] = useState<any[]>([])
 
-  const groupBudgets = useCallback((budgets: IFullBudget[]) => {
+  // initial fetch
+  useEffect(() => {
+    const getBudgets = async () => {
+      // start loading
+      setLoading(true)
+
+      try {
+        const { budgets } = await getMyBudgetsApi()
+
+        dispatch(setBudgets(budgets))
+      } catch (err: any) {
+        console.log(err)
+      } finally {
+        // stop loading
+        setLoading(false)
+      }
+    }
+
+    getBudgets()
+  }, [dispatch])
+
+  useEffect(() => {
     const groups: {
       [key: string]: {
         begin: string
@@ -46,38 +70,11 @@ function BudgetsPage() {
     })
 
     setGroups(Object.entries(groups))
-  }, [])
-
-  const getBudgets = useCallback(async () => {
-    if (!curWallet) {
-      return toast.error('Select your wallet to see budgets')
-    }
-
-    // start loading
-    setLoading(true)
-
-    try {
-      const { budgets } = await getMyBudgetsApi(`?walletId=${curWallet._id}`)
-      console.log('budgets:', budgets)
-      groupBudgets(budgets)
-    } catch (err: any) {
-      console.log(err)
-    } finally {
-      // stop loading
-      setLoading(false)
-    }
-  }, [groupBudgets, curWallet])
-
-  // initial fetch
-  useEffect(() => {
-    if (curWallet) {
-      getBudgets()
-    }
-  }, [getBudgets, curWallet])
+  }, [budgets])
 
   return (
     <div className="container p-21/2 pb-32 md:p-21">
-      {!loading && curWallet ? (
+      {!loading ? (
         groups.length > 0 ? (
           <Tabs
             defaultValue={groups[0]?.[0]}
@@ -103,7 +100,6 @@ function BudgetsPage() {
                 begin={begin}
                 end={end}
                 budgets={budgets}
-                refetch={getBudgets}
                 key={key}
               />
             ))}
@@ -130,7 +126,7 @@ function BudgetsPage() {
 
       {/* MARK: Create Transaction */}
       <CreateBudgetDrawer
-        refetch={getBudgets}
+        update={(budget: IFullBudget) => dispatch(addBudget(budget))}
         trigger={
           <Button
             variant="default"

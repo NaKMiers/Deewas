@@ -47,8 +47,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
       deletable: false,
     }).select('_id')
 
-    console.log('uncategorizedCategory', uncategorizedCategory)
-
     if (!uncategorizedCategory) {
       return NextResponse.json({ message: 'Failed to delete category' }, { status: 404 })
     }

@@ -30,11 +30,11 @@ import {
 interface UpdateBudgetDrawerProps {
   budget: IFullBudget
   trigger: ReactNode
-  refetch?: () => void
+  update?: (budget: IFullBudget) => void
   className?: string
 }
 
-function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: UpdateBudgetDrawerProps) {
+function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateBudgetDrawerProps) {
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
@@ -52,7 +52,7 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
   } = useForm<FieldValues>({
     defaultValues: {
       categoryId: budget.category._id || '',
-      total: budget.total.toFixed(2) || '',
+      total: budget.total.toString() || '',
       begin: moment(budget.begin).toDate(),
       end: moment(budget.end).toDate(),
     },
@@ -131,14 +131,14 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
       toast.loading('Updating budget...', { id: 'update-budget' })
 
       try {
-        const { message } = await updateBudgetApi(budget._id, {
+        const { budget: b, message } = await updateBudgetApi(budget._id, {
           ...data,
           begin: toUTC(data.begin),
           end: toUTC(data.end),
           total: revertAdjustedCurrency(data.total, locale),
         })
 
-        if (refetch) refetch()
+        if (update) update(b)
 
         toast.success(message, { id: 'update-budget' })
         setOpen(false)
@@ -151,7 +151,7 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, budget._id, locale]
+    [handleValidate, reset, update, budget._id, locale]
   )
 
   return (

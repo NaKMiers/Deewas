@@ -6,7 +6,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 function Loading() {
   // hooks
-  const isPageLoading = useAppSelector(state => state.modal.isPageLoading)
+  const isPageLoading = useAppSelector(state => state.load.isPageLoading)
 
   return (
     <div

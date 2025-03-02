@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { currencies } from '@/constants/settings'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { addTransaction, deleteTransaction, updateTransaction } from '@/lib/reducers/transactionReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -27,16 +28,17 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dro
 interface ITransactionCategoryGroupProps {
   category: ICategory
   transactions: IFullTransaction[]
-  refetch?: () => void
   className?: string
 }
 
 function TransactionCategoryGroup({
   category,
   transactions,
-  refetch,
   className = '',
 }: ITransactionCategoryGroupProps) {
+  // hooks
+  const dispatch = useAppDispatch()
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -63,7 +65,7 @@ function TransactionCategoryGroup({
         {/* New Transaction for category */}
         <CreateTransactionDrawer
           category={category}
-          refetch={refetch}
+          update={(transaction: IFullTransaction) => dispatch(addTransaction(transaction))}
           trigger={
             <Button
               variant="outline"
@@ -81,7 +83,6 @@ function TransactionCategoryGroup({
         <div className="flex flex-col gap-0 border-l">
           {transactions.map(transaction => (
             <Transaction
-              refetch={refetch}
               transaction={transaction}
               key={transaction._id}
             />
@@ -95,12 +96,14 @@ function TransactionCategoryGroup({
 export default TransactionCategoryGroup
 
 interface ITransactionProps {
-  refetch?: () => void
   transaction: IFullTransaction
   className?: string
 }
 
-function Transaction({ transaction, refetch, className = '' }: ITransactionProps) {
+function Transaction({ transaction, className = '' }: ITransactionProps) {
+  // hooks
+  const dispatch = useAppDispatch()
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -114,10 +117,10 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
     toast.loading('Deleting transaction...', { id: 'delete-transaction' })
 
     try {
-      const { message } = await deleteTransactionApi(transaction._id)
+      const { transaction: tx, message } = await deleteTransactionApi(transaction._id)
       toast.success(message, { id: 'delete-transaction' })
 
-      if (refetch) refetch()
+      dispatch(deleteTransaction(tx))
     } catch (err: any) {
       toast.error('Failed to delete transaction', { id: 'delete-transaction' })
       console.log(err)
@@ -125,7 +128,7 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
       // stop loading
       setDeleting(false)
     }
-  }, [refetch, transaction._id])
+  }, [dispatch, transaction._id])
 
   return (
     <div className={cn('flex w-full items-center justify-between gap-2 pl-2', className)}>
@@ -166,7 +169,7 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
             <DropdownMenuContent>
               <UpdateTransactionDrawer
                 transaction={transaction}
-                refetch={refetch}
+                update={(transaction: IFullTransaction) => dispatch(updateTransaction(transaction))}
                 trigger={
                   <Button
                     variant="ghost"

@@ -45,12 +45,14 @@ function WalletSelection({ initWallet, update, className = '' }: WalletSelection
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className={cn('h-8 gap-2 px-2', className)}
+          className={cn('flex h-8 gap-2 px-2', className)}
         >
           <p>
             <span>{wallet?.icon}</span> {wallet?.name}
           </p>
-          <LucideChevronsUpDown size={18} />
+          <div className="flex flex-1 items-center justify-end">
+            <LucideChevronsUpDown size={18} />
+          </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className={cn('w-full p-0 shadow-md')}>
@@ -69,7 +71,6 @@ function WalletSelection({ initWallet, update, className = '' }: WalletSelection
                   variant="ghost"
                   className="flex w-full justify-start"
                   onClick={() => {
-                    console.log('wallet', wallet)
                     setOpenWalletSelection(false)
                     setWallet(wallet)
                     if (update) update(wallet)

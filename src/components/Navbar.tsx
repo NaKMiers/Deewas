@@ -11,7 +11,14 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { useAppDispatch } from '@/hooks/reduxHook'
+import { addBudget } from '@/lib/reducers/budgetReducer'
+import { addCategory } from '@/lib/reducers/categoryReduce'
+import { refetching } from '@/lib/reducers/loadReducer'
+import { addTransaction } from '@/lib/reducers/transactionReducer'
 import { addWallet } from '@/lib/reducers/walletReducer'
+import { IFullBudget } from '@/models/BudgetModel'
+import { ICategory } from '@/models/CategoryModel'
+import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import {
   LucideArrowLeftRight,
@@ -75,6 +82,29 @@ function Navbar() {
               </DrawerHeader>
 
               <div className="my-1 flex flex-col gap-2 px-4">
+                <CreateTransactionDrawer
+                  update={(transaction: IFullTransaction) => {
+                    dispatch(addTransaction(transaction))
+                    dispatch(refetching())
+                  }}
+                  trigger={
+                    <Button variant="outline">
+                      <LucideArrowLeftRight />
+                      Create Transaction
+                    </Button>
+                  }
+                />
+
+                <CreateBudgetDrawer
+                  update={(budget: IFullBudget) => dispatch(addBudget(budget))}
+                  trigger={
+                    <Button variant="outline">
+                      <LucideChartPie />
+                      Create Budget
+                    </Button>
+                  }
+                />
+
                 <CreateWalletDrawer
                   update={(wallet: IWallet) => dispatch(addWallet(wallet))}
                   trigger={
@@ -86,28 +116,11 @@ function Navbar() {
                 />
 
                 <CreateCategoryDrawer
+                  update={(category: ICategory) => dispatch(addCategory(category))}
                   trigger={
                     <Button variant="outline">
                       <LucideBookCopy />
                       Create Category
-                    </Button>
-                  }
-                />
-
-                <CreateTransactionDrawer
-                  trigger={
-                    <Button variant="outline">
-                      <LucideArrowLeftRight />
-                      Create Transaction
-                    </Button>
-                  }
-                />
-
-                <CreateBudgetDrawer
-                  trigger={
-                    <Button variant="outline">
-                      <LucideChartPie />
-                      Create Budget
                     </Button>
                   }
                 />

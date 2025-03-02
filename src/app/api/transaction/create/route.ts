@@ -32,15 +32,8 @@ export async function POST(req: NextRequest) {
     // get data from request
     const { walletId, categoryId, name, amount, date, type } = await req.json()
 
-    console.log('walletId', walletId)
-    console.log('categoryId', categoryId)
-    console.log('name', name)
-    console.log('amount', amount)
-    console.log('date', date)
-    console.log('type', type)
-
     // create transaction
-    const transaction = await TransactionModel.create({
+    const newTx = await TransactionModel.create({
       user: userId,
       wallet: walletId,
       category: categoryId,
@@ -50,10 +43,10 @@ export async function POST(req: NextRequest) {
       type,
     })
 
-    console.log('amount', amount)
-
     // update category amount and wallet
-    await Promise.all([
+    const [transaction] = await Promise.all([
+      // get new transaction
+      TransactionModel.findById(newTx._id).populate('category wallet'),
       // update category amount
       CategoryModel.findByIdAndUpdate(categoryId, { $inc: { amount } }),
       // update wallet

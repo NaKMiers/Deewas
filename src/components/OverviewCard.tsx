@@ -98,7 +98,7 @@ function Item({ title, type, value }: CardProps) {
           />
           <span className="text-xl font-semibold">{formatCurrency(currency, value)}</span>
         </div>
-        <p className={cn('text-sm font-semibold leading-3 tracking-wide text-muted-foreground')}>
+        <p className={cn('text-sm font-semibold leading-3 tracking-wide text-muted-foreground/80')}>
           {title}
         </p>
       </div>

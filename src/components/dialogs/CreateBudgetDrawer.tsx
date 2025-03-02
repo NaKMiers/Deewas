@@ -25,14 +25,15 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
+import { IFullBudget } from '@/models/BudgetModel'
 
 interface CreateBudgetDrawerProps {
   trigger: ReactNode
-  refetch?: () => void
+  update?: (budget: IFullBudget) => void
   className?: string
 }
 
-function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDrawerProps) {
+function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDrawerProps) {
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -131,14 +132,14 @@ function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDr
       toast.loading('Creating transaction...', { id: 'create-transaction' })
 
       try {
-        const { message } = await createBudgetApi({
+        const { budget, message } = await createBudgetApi({
           ...data,
           begin: toUTC(data.begin),
           end: toUTC(data.end),
           total: revertAdjustedCurrency(data.total, locale),
         })
 
-        if (refetch) refetch()
+        if (update) update(budget)
 
         toast.success(message, { id: 'create-transaction' })
         setOpen(false)
@@ -151,7 +152,7 @@ function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDr
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, locale]
+    [handleValidate, reset, update, locale]
   )
 
   return (

@@ -3,6 +3,9 @@ import SettingsModel from '@/models/SettingsModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Models: Settings
+import '@/models/SettingsModel'
+
 // [PUT]: /settings/update
 export async function PUT(req: NextRequest) {
   console.log('- Update My Settings -')

@@ -102,8 +102,6 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
 
         toast.success(`Setting ${type} successfully`, { id: `update-${type}` })
 
-        console.log('settings', settings)
-
         dispatch(setSettings(settings))
       } catch (err: any) {
         toast.error(err.message, { id: `update-${type}` })

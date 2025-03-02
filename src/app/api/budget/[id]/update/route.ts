@@ -5,8 +5,9 @@ import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Budget, Transaction
+// Models: Budget, Transaction, Category
 import '@/models/BudgetModel'
+import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 
 // [PUT]: /budget/:id/update
@@ -51,7 +52,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
         },
       },
       { new: true }
-    ).lean()
+    )
+      .populate('category')
+      .lean()
 
     // return response
     return NextResponse.json({ budget, message: 'Updated budget' }, { status: 200 })

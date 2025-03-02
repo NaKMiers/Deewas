@@ -1,10 +1,10 @@
 import { connectDatabase } from '@/config/database'
 import SettingsModel from '@/models/SettingsModel'
 import { NextRequest, NextResponse } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
 // Models: Settings
 import '@/models/SettingsModel'
-import { getToken } from 'next-auth/jwt'
 
 export const dynamic = 'force-dynamic'
 

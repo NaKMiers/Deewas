@@ -58,7 +58,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     ])
 
     // return response
-    return NextResponse.json({ message: 'Deleted transaction' }, { status: 200 })
+    return NextResponse.json({ transaction, message: 'Deleted transaction' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

@@ -1,16 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit'
-import modalReducer from './reducers/modalReducer'
-import settingsReducer from './reducers/settingsReducer'
-import walletReducer from './reducers/walletReducer'
+import budgetReducer from './reducers/budgetReducer'
 import categoryReduce from './reducers/categoryReduce'
+import loadReducer from './reducers/loadReducer'
+import settingsReducer from './reducers/settingsReducer'
+import transactionReducer from './reducers/transactionReducer'
+import walletReducer from './reducers/walletReducer'
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      modal: modalReducer,
+      load: loadReducer,
+      settings: settingsReducer,
       wallet: walletReducer,
       category: categoryReduce,
-      settings: settingsReducer,
+      transaction: transactionReducer,
+      budget: budgetReducer,
     },
     devTools: process.env.NODE_ENV !== 'production',
   })

@@ -2,7 +2,7 @@
 
 import History from '@/components/History'
 import OverviewCard from '@/components/OverviewCard'
-import Transactions from '@/components/Transactions'
+import LatestTransactions from '@/components/LatestTransactions'
 import { Separator } from '@/components/ui/separator'
 import Wallets from '@/components/Wallets'
 
@@ -21,7 +21,7 @@ function HomePage() {
 
       <Separator className="my-8 h-0" />
 
-      <Transactions />
+      <LatestTransactions />
     </div>
   )
 }
