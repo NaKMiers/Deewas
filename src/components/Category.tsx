@@ -1,122 +1,34 @@
-import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
-import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
-import UpdateCategoryDrawer from '@/components/dialogs/UpdateCategoryDrawer'
-import { Button } from '@/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { setWalletCategories } from '@/lib/reducers/walletReducer'
+import { deleteCategory, updateCategory } from '@/lib/reducers/categoryReduce'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
-import { TransactionType } from '@/models/TransactionModel'
-import { IWallet } from '@/models/WalletModel'
 import { deleteCategoryApi } from '@/requests'
 import {
+  LucideChartPie,
   LucideEllipsisVertical,
   LucideLoaderCircle,
   LucidePencil,
-  LucidePlusSquare,
   LucideTrash,
 } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
-
-interface WalletCategoriesProps {
-  wallet: IWallet
-  categories: ICategory[]
-  type: TransactionType
-}
-
-function WalletCategories({ wallet, categories, type }: WalletCategoriesProps) {
-  // hooks
-  const dispatch = useAppDispatch()
-
-  // store
-  const { walletCategories } = useAppSelector(state => state.wallet)
-
-  // states
-  const [creating, setCreating] = useState<boolean>(false)
-
-  // values
-  const { Icon, border, background } = checkTranType(type)
-
-  // sort by name
-  categories = categories.sort((a, b) => a.name.localeCompare(b.name))
-
-  return (
-    <div className="rounded-lg border border-neutral-300 bg-secondary text-primary">
-      <div className="flex items-center gap-21/2 border-b border-slate-200/30 p-2.5">
-        <div
-          className={cn(
-            'flex h-10 w-10 items-center justify-center rounded-md border-2',
-            border,
-            background
-          )}
-        >
-          <Icon
-            size={24}
-            className="text-white"
-          />
-        </div>
-        <div className="flex flex-1 flex-col">
-          <p className="text-sm font-semibold capitalize md:text-2xl">{type} Categories</p>
-          <p className="text-xs font-semibold text-muted-foreground">Sorted by name</p>
-        </div>
-        <CreateCategoryDrawer
-          type={type}
-          update={category => dispatch(setWalletCategories([category, ...walletCategories]))}
-          load={setCreating}
-          trigger={
-            <Button
-              disabled={creating}
-              variant="default"
-              className="flex h-8 flex-shrink-0 items-center gap-1.5 rounded-md px-2 text-xs font-semibold md:px-4"
-            >
-              {!creating ? (
-                <>
-                  <LucidePlusSquare />
-                  New Category
-                </>
-              ) : (
-                <LucideLoaderCircle className="animate-spin" />
-              )}
-            </Button>
-          }
-        />
-      </div>
-
-      <div className="flex flex-col gap-1 p-21/2">
-        {categories.length > 0 ? (
-          categories.map(category => (
-            <WalletCategory
-              category={category}
-              key={category._id}
-            />
-          ))
-        ) : (
-          <div className="flex w-full items-center justify-center border-t p-21/2 text-center text-lg font-semibold text-muted-foreground md:p-21">
-            No categories found!
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-export default WalletCategories
+import ConfirmDialog from './dialogs/ConfirmDialog'
+import UpdateCategoryDrawer from './dialogs/UpdateCategoryDrawer'
+import { Button } from './ui/button'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 
 // MARK: WalletCategory
-interface WalletCategoryProps {
+interface CategoryProps {
   category: ICategory
   className?: string
 }
 
-function WalletCategory({ category, className = '' }: WalletCategoryProps) {
+function Category({ category, className = '' }: CategoryProps) {
   // hooks
   const dispatch = useAppDispatch()
 
   // store
-  const { walletCategories: categories } = useAppSelector(state => state.wallet)
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
@@ -136,7 +48,7 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
       const { category: w, message } = await deleteCategoryApi(category._id)
       toast.success(message, { id: 'delete-category' })
 
-      dispatch(setWalletCategories(categories.filter((cat: any) => cat._id !== w._id)))
+      dispatch(deleteCategory(w))
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-category' })
       console.log(err)
@@ -144,7 +56,7 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
       // stop deleting
       setDeleting(false)
     }
-  }, [dispatch, categories, category._id])
+  }, [dispatch, category._id])
 
   return (
     <div
@@ -185,15 +97,17 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                <Button
+                  variant="ghost"
+                  className="flex h-8 w-full items-center justify-start gap-2 px-2 text-orange-500"
+                >
+                  <LucideChartPie size={16} />
+                  Set Budget
+                </Button>
+
                 <UpdateCategoryDrawer
                   category={category}
-                  update={category =>
-                    dispatch(
-                      setWalletCategories(
-                        categories.map((cat: any) => (cat._id === category._id ? category : cat))
-                      )
-                    )
-                  }
+                  update={(category: ICategory) => dispatch(updateCategory(category))}
                   load={setUpdating}
                   trigger={
                     <Button
@@ -237,3 +151,5 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
     </div>
   )
 }
+
+export default Category

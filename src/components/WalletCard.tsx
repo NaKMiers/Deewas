@@ -61,7 +61,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
       className={cn('cursor-pointer overflow-hidden', className)}
       onClick={() => {
         dispatch(setCurWallet(wallet))
-        router.push(`/wallet/${wallet._id}`)
+        router.push(`/transactions`)
       }}
     >
       <CardHeader className="py-21/2">

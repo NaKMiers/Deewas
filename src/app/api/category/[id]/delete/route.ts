@@ -28,9 +28,16 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     const { id } = await params
 
     // find category
-    let category: any = await CategoryModel.findById(id).select('type amount').lean()
+    let category: any = await CategoryModel.findById(id).lean()
+
+    // check if category exists
     if (!category) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 })
+    }
+
+    // check if category is deletable
+    if (category.deletable === false) {
+      return NextResponse.json({ message: 'Cannot delete default category' }, { status: 400 })
     }
 
     // get uncategorized category of this type

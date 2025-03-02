@@ -11,7 +11,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { deleteAllDataApi } from '@/requests'
-import { LucideInfo, LucideLoaderCircle, LucideShieldQuestion, Moon, Sun } from 'lucide-react'
+import {
+  LucideBookCopy,
+  LucideChevronRight,
+  LucideInfo,
+  LucideLoaderCircle,
+  LucideShieldQuestion,
+  Moon,
+  Sun,
+} from 'lucide-react'
 import moment from 'moment-timezone'
 import { signOut, useSession } from 'next-auth/react'
 import { useTheme } from 'next-themes'
@@ -104,7 +112,25 @@ function AccountPage() {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 rounded-md border p-21/2 md:p-21">
+      {/* Categories & Wallets */}
+      <div className="flex flex-col rounded-md border px-21/2 py-2 md:px-21">
+        <Link
+          href="/categories"
+          className="flex h-8 items-center gap-2 text-sm"
+        >
+          <LucideBookCopy
+            size={18}
+            className="cursor-pointer"
+          />
+          Categories
+          <div className="flex flex-1 items-center justify-end">
+            <LucideChevronRight size={18} />
+          </div>
+        </Link>
+      </div>
+
+      {/* Theme */}
+      <div className="flex items-center gap-2 rounded-md border px-21/2 py-2 md:px-21">
         <span className="font-semibold">Theme</span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -129,7 +155,7 @@ function AccountPage() {
       <SettingsBox isRequireInit />
 
       {/* More */}
-      <div className="flex flex-col rounded-lg border px-21/2 py-2">
+      <div className="flex flex-col rounded-lg border px-21/2 py-2 md:px-21">
         <Link
           href="/"
           className="flex h-8 items-center gap-2 text-sm"

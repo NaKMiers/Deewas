@@ -1,11 +1,10 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel from '@/models/CategoryModel'
+import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Category, Transaction
+// Models: Category
 import '@/models/CategoryModel'
-import '@/models/TransactionModel'
 
 // [PUT]: /category/:id/update
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -26,15 +25,17 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // get category id from request params
     const { id } = await params
 
-    // get category to check if category type is changed
-    let cat: any = await CategoryModel.findById(id).select('user type')
-
     // get data from request body
-    const { name, icon, type } = await req.json()
+    const { name, icon } = await req.json()
 
     // update category
-    const category = CategoryModel.findByIdAndUpdate(id, { name, icon, type }, { new: true }).lean()
+    const category: ICategory | null = (await CategoryModel.findByIdAndUpdate(
+      id,
+      { $set: { name, icon } },
+      { new: true }
+    ).lean()) as any
 
+    // check if category exists
     if (!category) {
       return NextResponse.json({ message: 'Category not found' }, { status: 404 })
     }
