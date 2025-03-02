@@ -17,11 +17,6 @@ const WalletSchema = new Schema(
     icon: {
       type: String,
     },
-    deleted: {
-      type: Boolean,
-      default: false,
-    },
-
     // sync with transaction
     income: {
       type: Number,
@@ -43,8 +38,6 @@ const WalletSchema = new Schema(
   { timestamps: true }
 )
 
-// indexed
-
 const WalletModel = mongoose.models.wallet || mongoose.model('wallet', WalletSchema)
 export default WalletModel
 
@@ -57,7 +50,6 @@ export interface IWallet {
   user: string
   icon: string
   type: TransactionType
-  delete: boolean
 
   income: number
   expense: number

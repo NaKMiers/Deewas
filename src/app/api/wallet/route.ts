@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     }
 
     // get user wallets
-    const wallets = await WalletModel.find({ user: userId, deleted: false }).lean()
+    const wallets = await WalletModel.find({ user: userId }).lean()
 
     // return response
     return NextResponse.json({ wallets, message: 'Wallets are here' }, { status: 200 })

@@ -46,13 +46,11 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
   const { resolvedTheme } = useTheme()
 
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   const formatTooltip = useCallback(
     (value: number, name: string) => {
-      const formattedValue = formatCurrency(currency, value)
+      const formattedValue = currency ? formatCurrency(currency, value) : 0
       return [`${capitalize(name as string)}: ${formattedValue}`]
     },
     [currency]

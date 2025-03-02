@@ -1,7 +1,8 @@
 'use client'
 
+import { currencies } from '@/constants/settings'
 import { useAppSelector } from '@/hooks/reduxHook'
-import { checkTranType, formatSymbol } from '@/lib/string'
+import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction } from '@/models/TransactionModel'
@@ -25,7 +26,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import WalletSelection from '../WalletSelection'
+import { IWallet } from '@/models/WalletModel'
 
 interface UpdateTransactionDrawerProps {
   transaction: IFullTransaction
@@ -41,9 +43,15 @@ function UpdateTransactionDrawer({
   className = '',
 }: UpdateTransactionDrawerProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
+
+  // values
+  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
+
+  // states
+  const [selectedWallet, setSelectedWallet] = useState<IWallet | null>(transaction.wallet)
+  const [open, setOpen] = useState<boolean>(false)
+  const [saving, setSaving] = useState<boolean>(false)
 
   // form
   const {
@@ -53,6 +61,7 @@ function UpdateTransactionDrawer({
     setError,
     setValue,
     watch,
+    control,
     clearErrors,
     reset,
   } = useForm<FieldValues>({
@@ -66,9 +75,6 @@ function UpdateTransactionDrawer({
   })
 
   const form = watch()
-  const [open, setOpen] = useState<boolean>(false)
-  const [saving, setSaving] = useState<boolean>(false)
-
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     data => {
@@ -135,7 +141,7 @@ function UpdateTransactionDrawer({
         const { message } = await updateTransactionApi(transaction._id, {
           ...data,
           date: toUTC(data.date),
-          amount: data.amount,
+          amount: revertAdjustedCurrency(data.amount, locale),
         })
 
         if (refetch) refetch()
@@ -151,7 +157,7 @@ function UpdateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, transaction._id]
+    [handleValidate, reset, refetch, transaction._id, locale]
   )
 
   return (
@@ -164,17 +170,29 @@ function UpdateTransactionDrawer({
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>
+            <DrawerTitle className="text-center">
               Update{' '}
               {transaction.type && (
                 <span className={cn(checkTranType(transaction.type).color)}>{transaction.type}</span>
               )}{' '}
               transaction
             </DrawerTitle>
-            <DrawerDescription>Transactions keep track of your finances effectively.</DrawerDescription>
+            <DrawerDescription className="text-center">
+              Transactions keep track of your finances effectively.
+            </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
+            {/* Wallet */}
+            <div>
+              <p className="mb-1 text-xs font-semibold">Wallet</p>
+              <WalletSelection
+                className="w-full justify-normal"
+                initWallet={transaction.wallet}
+                update={(wallet: IWallet) => setValue('walletId', wallet._id)}
+              />
+            </div>
+
             <CustomInput
               id="name"
               label="Name"
@@ -185,16 +203,19 @@ function UpdateTransactionDrawer({
               onFocus={() => clearErrors('name')}
             />
 
-            <CustomInput
-              id="amount"
-              label="Amount"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="number"
-              onFocus={() => clearErrors('amount')}
-              icon={<span>{formatSymbol(currency)}</span>}
-            />
+            {currency && (
+              <CustomInput
+                id="amount"
+                label="Amount"
+                disabled={saving}
+                register={register}
+                errors={errors}
+                type="currency"
+                control={control}
+                onFocus={() => clearErrors('amount')}
+                icon={<span>{formatSymbol(currency)}</span>}
+              />
+            )}
 
             {/* Category */}
             <div className="mt-1.5 flex flex-1 flex-col">

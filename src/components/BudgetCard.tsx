@@ -22,9 +22,7 @@ interface IBudgetCardProps {
 
 function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCardProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -60,9 +58,11 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
         <div className="flex items-center gap-2 text-sm font-semibold">
           <span>{budget.category.icon}</span>
           <span>{budget.category.name}</span> <div className="h-5 w-0.5 bg-muted-foreground/50" />
-          <span className="text-sm font-semibold tracking-tight">
-            {formatCurrency(currency, budget.total)}
-          </span>
+          {currency && (
+            <span className="text-sm font-semibold tracking-tight">
+              {formatCurrency(currency, budget.total)}
+            </span>
+          )}
         </div>
 
         {!deleting ? (
@@ -123,9 +123,11 @@ function BudgetCard({ begin, end, budget, refetch, className = '' }: IBudgetCard
             className={cn('h-full rounded-full', checkLevel(progress).background)}
             style={{ width: `${progress}%` }}
           />
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap font-body text-sm font-semibold tracking-wider">
-            Left {formatCurrency(currency, budget.total - budget.amount)}
-          </span>
+          {currency && (
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap font-body text-sm font-semibold tracking-wider">
+              Left {formatCurrency(currency, budget.total - budget.amount)}
+            </span>
+          )}
           <div
             className="absolute top-0 h-full w-0.5 -translate-x-1/2 bg-white"
             style={{ left: (spent / length) * 100 + '%' }}

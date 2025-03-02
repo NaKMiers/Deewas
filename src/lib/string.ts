@@ -121,3 +121,20 @@ export const checkLevel = (level: number) => {
   if (level <= 80) return levels.medium
   return levels.hard
 }
+
+export const adjustCurrency = (input: string, locale: string) => {
+  const numericValue = input.replace(/\D/g, '')
+  return new Intl.NumberFormat(locale).format(Number(numericValue))
+}
+
+export const revertAdjustedCurrency = (input: string, locale: string) => {
+  const formatter = new Intl.NumberFormat(locale)
+  const parts = formatter.formatToParts(1234.56)
+
+  const groupSeparator = parts.find(p => p.type === 'group')?.value || ','
+  const decimalSeparator = parts.find(p => p.type === 'decimal')?.value || '.'
+
+  return (
+    Number(input.replace(new RegExp(`\\${groupSeparator}`, 'g'), '').replace(decimalSeparator, '.')) || 0
+  )
+}

@@ -50,6 +50,8 @@ export async function POST(req: NextRequest) {
       type,
     })
 
+    console.log('amount', amount)
+
     // update category amount and wallet
     await Promise.all([
       // update category amount

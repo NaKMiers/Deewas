@@ -1,0 +1,90 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import {
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '@/components/ui/command'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useAppSelector } from '@/hooks/reduxHook'
+import { cn } from '@/lib/utils'
+import { IWallet } from '@/models/WalletModel'
+import { LucideChevronsUpDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+interface WalletSelectionProps {
+  initWallet?: IWallet
+  update?: (wallet: IWallet) => void
+  className?: string
+}
+
+function WalletSelection({ initWallet, update, className = '' }: WalletSelectionProps) {
+  // store
+  const { curWallet, wallets } = useAppSelector(state => state.wallet)
+
+  // states
+  const [openWalletSelection, setOpenWalletSelection] = useState<boolean>(false)
+  const [wallet, setWallet] = useState<IWallet | null>(initWallet || curWallet)
+
+  // auto select wallet
+  useEffect(() => {
+    if (!initWallet && curWallet) {
+      curWallet && setWallet(curWallet)
+    }
+  }, [initWallet, curWallet])
+
+  return (
+    <Popover
+      open={openWalletSelection}
+      onOpenChange={setOpenWalletSelection}
+    >
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn('h-8 gap-2 px-2', className)}
+        >
+          <p>
+            <span>{wallet?.icon}</span> {wallet?.name}
+          </p>
+          <LucideChevronsUpDown size={18} />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className={cn('w-full p-0 shadow-md')}>
+        {/* Search Bar */}
+        <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+          <CommandInput placeholder="Find a wallet..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandSeparator />
+            {wallets.map((wallet: IWallet) => (
+              <CommandItem
+                className="justify-between gap-1 rounded-none p-0 py-px"
+                key={wallet._id}
+              >
+                <Button
+                  variant="ghost"
+                  className="flex w-full justify-start"
+                  onClick={() => {
+                    console.log('wallet', wallet)
+                    setOpenWalletSelection(false)
+                    setWallet(wallet)
+                    if (update) update(wallet)
+                  }}
+                  disabled={false}
+                >
+                  <span>{wallet.icon}</span> {wallet.name}
+                </Button>
+              </CommandItem>
+            ))}
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+export default WalletSelection

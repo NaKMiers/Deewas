@@ -20,28 +20,51 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
 interface SettingsBoxProps {
+  isRequireInit?: boolean
   className?: string
 }
 
-function SettingsBox({ className = '' }: SettingsBoxProps) {
-  const {
-    settings: { currency, language },
-  } = useAppSelector(state => state.settings)
+function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps) {
+  const { settings } = useAppSelector(state => state.settings)
+  const currency = settings?.currency
+  const language = settings?.language
 
   return (
     <div className={cn('grid grid-cols-1 gap-21/2 md:grid-cols-2 md:gap-21', className)}>
-      <Box
-        type="currency"
-        desc="Set your default currency for transactions"
-        list={currencies}
-        init={currencies.find(c => c.value === currency)}
-      />
-      <Box
-        type="language"
-        desc="Set your default language for the app."
-        list={languages}
-        init={languages.find(l => l.value === language)}
-      />
+      {isRequireInit ? (
+        currency ? (
+          <Box
+            type="currency"
+            desc="Set your default currency for transactions"
+            list={currencies}
+            init={currencies.find(c => c.value === currency)}
+          />
+        ) : null
+      ) : (
+        <Box
+          type="currency"
+          desc="Set your default currency for transactions"
+          list={currencies}
+          init={currencies.find(c => c.value === currency)}
+        />
+      )}
+      {isRequireInit ? (
+        language ? (
+          <Box
+            type="language"
+            desc="Set your default language for the app."
+            list={languages}
+            init={languages.find(l => l.value === language)}
+          />
+        ) : null
+      ) : (
+        <Box
+          type="language"
+          desc="Set your default language for the app."
+          list={languages}
+          init={languages.find(l => l.value === language)}
+        />
+      )}
     </div>
   )
 }

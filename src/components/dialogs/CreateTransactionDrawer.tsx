@@ -1,11 +1,13 @@
 'use client'
 
+import { currencies } from '@/constants/settings'
 import { useAppSelector } from '@/hooks/reduxHook'
-import { checkTranType, formatSymbol } from '@/lib/string'
+import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
+import { IWallet } from '@/models/WalletModel'
 import { createTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
@@ -17,17 +19,6 @@ import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
 import { Calendar } from '../ui/calendar'
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
-import {
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -37,6 +28,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
+import WalletSelection from '../WalletSelection'
 
 interface CreateTransactionDrawerProps {
   type?: TransactionType
@@ -54,10 +46,16 @@ function CreateTransactionDrawer({
   className = '',
 }: CreateTransactionDrawerProps) {
   // store
-  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
+  const { curWallet } = useAppSelector(state => state.wallet)
+
+  // values
+  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
+
+  // states
+  const [selectedWallet, setSelectedWallet] = useState<IWallet | null>(curWallet)
+  const [open, setOpen] = useState<boolean>(false)
+  const [saving, setSaving] = useState<boolean>(false)
 
   // form
   const {
@@ -72,7 +70,7 @@ function CreateTransactionDrawer({
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: curWallet?._id,
+      walletId: selectedWallet?._id || '',
       name: '',
       categoryId: category?._id || '',
       amount: '',
@@ -80,15 +78,21 @@ function CreateTransactionDrawer({
       type: category?.type || type || '',
     },
   })
-
   const form = watch()
-  const [open, setOpen] = useState<boolean>(false)
-  const [saving, setSaving] = useState<boolean>(false)
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
     data => {
       let isValid = true
+
+      // wallet is required
+      if (!data.walletId) {
+        setError('walletId', {
+          type: 'manual',
+          message: 'Wallet is required',
+        })
+        isValid = false
+      }
 
       // name is required
       if (!data.name) {
@@ -143,10 +147,6 @@ function CreateTransactionDrawer({
   // create transaction
   const handleCreateTransaction: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!curWallet?._id) {
-        return toast.error('Please select a wallet to continue')
-      }
-
       // validate form
       if (!handleValidate(data)) return
 
@@ -154,19 +154,11 @@ function CreateTransactionDrawer({
       setSaving(true)
       toast.loading('Creating transaction...', { id: 'create-transaction' })
 
-      console.log('data', {
-        ...data,
-        walletId: curWallet._id,
-        date: toUTC(data.date),
-        amount: data.amount,
-      })
-
       try {
         const { message } = await createTransactionApi({
           ...data,
-          walletId: curWallet._id,
           date: toUTC(data.date),
-          amount: data.amount,
+          amount: revertAdjustedCurrency(data.amount, locale),
         })
 
         if (refetch) refetch()
@@ -182,7 +174,7 @@ function CreateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id]
+    [handleValidate, reset, refetch, locale]
   )
 
   return (
@@ -195,15 +187,26 @@ function CreateTransactionDrawer({
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>
+            <DrawerTitle className="text-center">
               Create{' '}
               {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
               transaction
             </DrawerTitle>
-            <DrawerDescription>Transactions keep track of your finances effectively.</DrawerDescription>
+            <DrawerDescription className="text-center">
+              Transactions keep track of your finances effectively.
+            </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
+            {/* Wallet */}
+            <div>
+              <p className="mb-1 text-xs font-semibold">Wallet</p>
+              <WalletSelection
+                className="w-full justify-normal"
+                update={(wallet: IWallet) => setValue('walletId', wallet._id)}
+              />
+            </div>
+
             {/* Name */}
             <CustomInput
               id="name"
@@ -216,17 +219,19 @@ function CreateTransactionDrawer({
             />
 
             {/* Amount */}
-            <CustomInput
-              id="amount"
-              label="Amount"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="currency"
-              control={control}
-              onFocus={() => clearErrors('amount')}
-              icon={<span>{formatSymbol(currency)}</span>}
-            />
+            {currency && (
+              <CustomInput
+                id="amount"
+                label="Amount"
+                disabled={saving}
+                register={register}
+                errors={errors}
+                type="currency"
+                control={control}
+                onFocus={() => clearErrors('amount')}
+                icon={<span>{formatSymbol(currency)}</span>}
+              />
+            )}
 
             {/* Type */}
             {!category && !type && (

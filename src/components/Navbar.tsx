@@ -10,6 +10,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import { useAppDispatch } from '@/hooks/reduxHook'
+import { addWallet } from '@/lib/reducers/walletReducer'
+import { IWallet } from '@/models/WalletModel'
 import {
   LucideArrowLeftRight,
   LucideBookCopy,
@@ -32,6 +35,7 @@ function Navbar() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
+  const dispatch = useAppDispatch()
 
   return (
     <nav className="fixed bottom-0 left-0 h-[70px] w-full bg-primary pb-2.5 text-secondary">
@@ -62,14 +66,17 @@ function Navbar() {
           <DrawerContent>
             <div className="mx-auto w-full max-w-sm">
               <DrawerHeader>
-                <DrawerTitle className="flex items-center justify-center gap-2">
+                <DrawerTitle className="text-center">
                   <p className="font-semibold">Welcome to Deewas</p>
                 </DrawerTitle>
-                <DrawerDescription>Take control of your daily finances</DrawerDescription>
+                <DrawerDescription className="text-center">
+                  Take control of your daily finances
+                </DrawerDescription>
               </DrawerHeader>
 
               <div className="my-1 flex flex-col gap-2 px-4">
                 <CreateWalletDrawer
+                  update={(wallet: IWallet) => dispatch(addWallet(wallet))}
                   trigger={
                     <Button variant="outline">
                       <LucideWalletCards />

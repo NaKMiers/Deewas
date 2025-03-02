@@ -1,7 +1,8 @@
 'use client'
 
+import { currencies } from '@/constants/settings'
 import { useAppSelector } from '@/hooks/reduxHook'
-import { formatSymbol } from '@/lib/string'
+import { formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -35,10 +36,10 @@ interface UpdateBudgetDrawerProps {
 
 function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: UpdateBudgetDrawerProps) {
   // store
-  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
   const {
     settings: { currency },
   } = useAppSelector(state => state.settings)
+  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // form
   const {
@@ -47,6 +48,7 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
     formState: { errors },
     setError,
     setValue,
+    control,
     clearErrors,
     reset,
   } = useForm<FieldValues>({
@@ -123,10 +125,6 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
   // update transaction
   const handleUpdateBudget: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!curWallet?._id) {
-        return toast.error('Please select a wallet to continue')
-      }
-
       // validate form
       if (!handleValidate(data)) return
 
@@ -139,7 +137,7 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
           ...data,
           begin: toUTC(data.begin),
           end: toUTC(data.end),
-          total: data.total,
+          total: revertAdjustedCurrency(data.total, locale),
         })
 
         if (refetch) refetch()
@@ -155,7 +153,7 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id, budget._id]
+    [handleValidate, reset, refetch, budget._id, locale]
   )
 
   return (
@@ -168,8 +166,10 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>Update Budget</DrawerTitle>
-            <DrawerDescription>Budget helps you manage money wisely</DrawerDescription>
+            <DrawerTitle className="text-center">Update Budget</DrawerTitle>
+            <DrawerDescription className="text-center">
+              Budget helps you manage money wisely
+            </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
@@ -179,7 +179,8 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
               disabled={saving}
               register={register}
               errors={errors}
-              type="number"
+              type="currency"
+              control={control}
               onFocus={() => clearErrors('total')}
               icon={<span>{formatSymbol(currency)}</span>}
             />

@@ -163,7 +163,7 @@ function CounterItem({ max, value, size = 25, className }: CounterItem) {
       >
         {[...Array.from({ length: max + 1 }, (_, i) => max - i), max].map((n, i) => (
           <span
-            className="ml-0.5 h-full flex-shrink-0 rounded-sm bg-secondary px-0.5 text-primary"
+            className="ml-0.5 flex h-full flex-shrink-0 items-center justify-center rounded-sm bg-secondary px-0.5 text-sm font-semibold text-primary"
             key={i}
           >
             {n}

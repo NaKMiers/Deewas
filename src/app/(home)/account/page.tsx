@@ -4,10 +4,17 @@ import Countdown from '@/components/Countdown'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import SettingsBox from '@/components/SettingsBox'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { deleteAllDataApi } from '@/requests'
-import { LucideInfo, LucideLoaderCircle, LucideShieldQuestion } from 'lucide-react'
+import { LucideInfo, LucideLoaderCircle, LucideShieldQuestion, Moon, Sun } from 'lucide-react'
 import moment from 'moment-timezone'
 import { signOut, useSession } from 'next-auth/react'
+import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -17,6 +24,7 @@ function AccountPage() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
+  const { theme, resolvedTheme, setTheme } = useTheme()
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -73,7 +81,7 @@ function AccountPage() {
       </div>
 
       {/* Ads */}
-      <div className="flex flex-col gap-2 rounded-md border p-2 shadow-lg">
+      <div className="flex flex-col gap-2 rounded-md border p-2">
         <div className="flex justify-between gap-2">
           <span className="font-semibold">Flash Sale</span>
           <Countdown
@@ -96,21 +104,42 @@ function AccountPage() {
         </div>
       </div>
 
+      <div className="flex items-center gap-2 rounded-md border p-21/2 md:p-21">
+        <span className="font-semibold">Theme</span>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="justify-normal rounded-md border p-21/2 text-sm font-semibold capitalize md:p-21"
+            >
+              {resolvedTheme === 'light' ? <Sun /> : <Moon />}
+              {theme}
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
       {/* Settings */}
-      <SettingsBox />
+      <SettingsBox isRequireInit />
 
       {/* More */}
-      <div className="flex flex-col rounded-lg border p-2">
+      <div className="flex flex-col rounded-lg border px-21/2 py-2">
         <Link
           href="/"
-          className="flex h-8 items-center gap-2"
+          className="flex h-8 items-center gap-2 text-sm"
         >
           <LucideInfo size={18} />
           About
         </Link>
         <Link
           href="/"
-          className="flex h-8 items-center gap-2"
+          className="flex h-8 items-center gap-2 text-sm"
         >
           <LucideShieldQuestion size={18} />
           Help & Support

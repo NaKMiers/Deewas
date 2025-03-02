@@ -1,7 +1,8 @@
 'use client'
 
+import { currencies } from '@/constants/settings'
 import { useAppSelector } from '@/hooks/reduxHook'
-import { formatSymbol } from '@/lib/string'
+import { formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { createBudgetApi } from '@/requests/budgetRequests'
@@ -33,10 +34,10 @@ interface CreateBudgetDrawerProps {
 
 function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDrawerProps) {
   // store
-  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
+
+  // values
+  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // form
   const {
@@ -45,11 +46,11 @@ function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDr
     formState: { errors },
     setError,
     setValue,
+    control,
     clearErrors,
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: curWallet?._id,
       categoryId: '',
       total: '',
       begin: moment().startOf('month').toDate(),
@@ -122,10 +123,6 @@ function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDr
   // create transaction
   const handleCreateBudget: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!curWallet?._id) {
-        return toast.error('Please select a wallet to continue')
-      }
-
       // validate form
       if (!handleValidate(data)) return
 
@@ -136,10 +133,9 @@ function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDr
       try {
         const { message } = await createBudgetApi({
           ...data,
-          walletId: curWallet._id,
           begin: toUTC(data.begin),
           end: toUTC(data.end),
-          total: data.total,
+          total: revertAdjustedCurrency(data.total, locale),
         })
 
         if (refetch) refetch()
@@ -155,7 +151,7 @@ function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDr
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, curWallet?._id]
+    [handleValidate, reset, refetch, locale]
   )
 
   return (
@@ -168,21 +164,26 @@ function CreateBudgetDrawer({ trigger, refetch, className = '' }: CreateBudgetDr
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>Create Budget</DrawerTitle>
-            <DrawerDescription>Budget helps you manage money wisely</DrawerDescription>
+            <DrawerTitle className="text-center">Create Budget</DrawerTitle>
+            <DrawerDescription className="text-center">
+              Budget helps you manage money wisely
+            </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
-            <CustomInput
-              id="total"
-              label="Total"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="number"
-              onFocus={() => clearErrors('total')}
-              icon={<span>{formatSymbol(currency)}</span>}
-            />
+            {currency && (
+              <CustomInput
+                id="total"
+                label="Total"
+                disabled={saving}
+                register={register}
+                errors={errors}
+                onFocus={() => clearErrors('total')}
+                type="currency"
+                control={control}
+                icon={<span>{formatSymbol(currency)}</span>}
+              />
+            )}
 
             {/* Category */}
             <div className="mt-1.5 flex flex-1 flex-col">

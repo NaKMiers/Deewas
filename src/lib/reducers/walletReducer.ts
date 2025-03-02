@@ -16,11 +16,17 @@ export const wallet = createSlice({
     setWallets: (state, action: PayloadAction<any>) => {
       state.wallets = action.payload
     },
+    addWallet: (state, action: PayloadAction<any>) => {
+      state.wallets = [action.payload, ...state.wallets]
+    },
     updateWallet: (state, action: PayloadAction<any>) => {
       state.wallets = state.wallets.map((w: any) => (w._id === action.payload._id ? action.payload : w))
       if (state.curWallet?._id === action.payload._id) {
         state.curWallet = action.payload
       }
+    },
+    deleteWallet: (state, action: PayloadAction<any>) => {
+      state.wallets = state.wallets.filter((w: any) => w._id !== action.payload._id)
     },
     setCurWallet: (state, action: PayloadAction<any>) => {
       state.curWallet = action.payload
@@ -39,6 +45,14 @@ export const wallet = createSlice({
   },
 })
 
-export const { setWallets, setCurWallet, updateWallet, setLoading, setWallet, setWalletCategories } =
-  wallet.actions
+export const {
+  setWallets,
+  setCurWallet,
+  addWallet,
+  updateWallet,
+  deleteWallet,
+  setLoading,
+  setWallet,
+  setWalletCategories,
+} = wallet.actions
 export default wallet.reducer

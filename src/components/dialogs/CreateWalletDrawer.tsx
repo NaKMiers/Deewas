@@ -127,8 +127,10 @@ function CreateWalletDialog({ trigger, update, load, className = '' }: CreateWal
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>Create wallet</DrawerTitle>
-            <DrawerDescription>Wallets are used to group your categories</DrawerDescription>
+            <DrawerTitle className="text-center">Create wallet</DrawerTitle>
+            <DrawerDescription className="text-center">
+              Wallets are used to group your categories
+            </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">

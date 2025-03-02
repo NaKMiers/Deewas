@@ -31,25 +31,20 @@ export async function GET(req: NextRequest) {
     const walletId = searchParams.get('walletId')
     const from = searchParams.get('from')
     const to = searchParams.get('to')
+    const sort = searchParams.get('sort') || 'date'
+    const orderBy = parseInt(searchParams.get('orderBy') || '-1', 10) as 1 | -1
+    const limit = searchParams.get('limit') || Infinity
 
-    console.log('Wallet ID:', walletId)
-
-    if (!from || !to) {
-      return NextResponse.json({ message: 'Invalid date range' }, { status: 400 })
-    }
+    const filter: any = { user: userId }
+    if (walletId) filter.wallet = walletId
+    if (from) filter.date = { $gte: toUTC(from) }
+    if (to) filter.date = { ...filter.date, $lte: toUTC(to) }
 
     // MARK: Overview
-    const transactions = await TransactionModel.find({
-      user: userId,
-      wallet: walletId,
-      deleted: false,
-      date: {
-        $gte: toUTC(from),
-        $lte: toUTC(to),
-      },
-    })
+    const transactions = await TransactionModel.find(filter)
       .populate('wallet category')
-      .sort({ date: -1 })
+      .sort({ [sort]: orderBy })
+      .limit(+limit)
       .lean()
 
     // return response

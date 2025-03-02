@@ -32,9 +32,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     const { id } = await params
 
     // delete transaction
-    const transaction: any = await TransactionModel.findByIdAndUpdate(id, {
-      $set: { deleted: true },
-    }).lean()
+    const transaction: any = await TransactionModel.findByIdAndDelete(id).lean()
 
     // check if transaction not found
     if (!transaction) {
@@ -48,7 +46,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
       WalletModel.findByIdAndUpdate(transaction.wallet, {
         $inc: { [transaction.type]: -transaction.amount },
       }),
-      // update bugdets
+      // update budgets
       BudgetModel.updateMany(
         {
           category: transaction.category,

@@ -1,5 +1,5 @@
-import { useAppSelector } from '@/hooks/reduxHook'
-import { setCurWallet, updateWallet } from '@/lib/reducers/walletReducer'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { deleteWallet, setCurWallet, updateWallet } from '@/lib/reducers/walletReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
@@ -8,15 +8,13 @@ import { deleteWalletApi } from '@/requests'
 import {
   LucideChevronDown,
   LucideEllipsis,
-  LucideForward,
   LucideLoaderCircle,
   LucidePencil,
   LucideTrash,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { Dispatch, SetStateAction, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
-import { useDispatch } from 'react-redux'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateWalletDrawer from './dialogs/UpdateWalletDrawer'
 import { Button } from './ui/button'
@@ -25,17 +23,13 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dro
 
 interface WalletCardProps {
   wallet: IWallet
-  update?: Dispatch<SetStateAction<IWallet[]>>
   className?: string
 }
 
-function WalletCard({ wallet, update, className = '' }: WalletCardProps) {
+function WalletCard({ wallet, className = '' }: WalletCardProps) {
   // hooks
   const router = useRouter()
-  const dispatch = useDispatch()
-
-  // store
-  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
+  const dispatch = useAppDispatch()
 
   // states
   const [collapsed, setCollapsed] = useState<boolean>(false)
@@ -50,11 +44,9 @@ function WalletCard({ wallet, update, className = '' }: WalletCardProps) {
 
     try {
       const { wallet: w, message } = await deleteWalletApi(wallet._id)
-      toast.success(message, { id: 'delete-wallet' })
 
-      if (update) {
-        update(prev => prev.filter(w => w._id !== wallet._id))
-      }
+      dispatch(deleteWallet(w))
+      toast.success(message, { id: 'delete-wallet' })
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-wallet' })
       console.log(err)
@@ -62,136 +54,125 @@ function WalletCard({ wallet, update, className = '' }: WalletCardProps) {
       // stop deleting
       setDeleting(false)
     }
-  }, [update, wallet._id])
+  }, [dispatch, wallet._id])
 
   return (
-    <div className={cn(className)}>
-      <Card
-        className={cn(
-          'cursor-pointer overflow-hidden',
-          curWallet?._id === wallet._id && 'border-2 border-primary'
-        )}
-        onClick={() => dispatch(setCurWallet(wallet))}
-      >
-        <CardHeader className="py-21/2">
-          <CardTitle className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-lg">
-              <span>{wallet.icon}</span>
-              <span>{wallet.name}</span>
-            </div>
-
-            {!deleting && !updating ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                  >
-                    <LucideEllipsis />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <Button
-                    variant="ghost"
-                    className="flex h-8 w-full items-center justify-start gap-2 px-2"
-                    onClick={() => router.push(`/wallet/${wallet._id}`)}
-                  >
-                    <LucideForward size={16} />
-                    View
-                  </Button>
-
-                  <UpdateWalletDrawer
-                    update={wallet => dispatch(updateWallet(wallet))}
-                    wallet={wallet}
-                    load={setUpdating}
-                    trigger={
-                      <Button
-                        variant="ghost"
-                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
-                      >
-                        <LucidePencil size={16} />
-                        Edit
-                      </Button>
-                    }
-                  />
-
-                  <ConfirmDialog
-                    label="Delete Wallet"
-                    desc="Are you sure you want to delete this wallet?"
-                    confirmLabel="Delete"
-                    onConfirm={handleDeleteWallet}
-                    trigger={
-                      <Button
-                        variant="ghost"
-                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
-                      >
-                        <LucideTrash size={16} />
-                        Delete
-                      </Button>
-                    }
-                  />
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                disabled
-                variant="ghost"
-                size="icon"
-              >
-                <LucideLoaderCircle className="animate-spin" />
-              </Button>
-            )}
-          </CardTitle>
-        </CardHeader>
-
-        <CardContent className="flex flex-col gap-2 px-4 pb-2">
-          <Item
-            title="Balance"
-            value={wallet.income - wallet.expense}
-            type="balance"
-          />
-          <div
-            className={`trans-300 flex flex-col gap-2 overflow-hidden ${collapsed ? 'max-h-[300px]' : 'max-h-0'}`}
-          >
-            <Item
-              title="Income"
-              value={wallet.income}
-              type="income"
-            />
-            <Item
-              title="Expense"
-              value={wallet.expense}
-              type="expense"
-            />
-            <Item
-              title="Saving"
-              value={wallet.saving}
-              type="saving"
-            />
-            <Item
-              title="Invest"
-              value={wallet.invest}
-              type="invest"
-            />
+    <Card
+      className={cn('cursor-pointer overflow-hidden', className)}
+      onClick={() => {
+        dispatch(setCurWallet(wallet))
+        router.push(`/wallet/${wallet._id}`)
+      }}
+    >
+      <CardHeader className="py-21/2">
+        <CardTitle className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-lg">
+            <span>{wallet.icon}</span>
+            <span>{wallet.name}</span>
           </div>
-        </CardContent>
 
-        <Button
-          className={cn(
-            'flex h-6 w-full items-center justify-center rounded-none bg-primary py-1 text-secondary'
+          {!deleting && !updating ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                >
+                  <LucideEllipsis />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent onClick={e => e.stopPropagation()}>
+                <UpdateWalletDrawer
+                  update={wallet => dispatch(updateWallet(wallet))}
+                  wallet={wallet}
+                  load={setUpdating}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
+                    >
+                      <LucidePencil size={16} />
+                      Edit
+                    </Button>
+                  }
+                />
+
+                <ConfirmDialog
+                  label="Delete Wallet"
+                  desc="Are you sure you want to delete this wallet?"
+                  confirmLabel="Delete"
+                  onConfirm={handleDeleteWallet}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
+                    >
+                      <LucideTrash size={16} />
+                      Delete
+                    </Button>
+                  }
+                />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              disabled
+              variant="ghost"
+              size="icon"
+            >
+              <LucideLoaderCircle className="animate-spin" />
+            </Button>
           )}
-          onClick={e => {
-            e.stopPropagation()
-            setCollapsed(!collapsed)
-          }}
+        </CardTitle>
+      </CardHeader>
+
+      <CardContent className="flex flex-col gap-2 px-4 pb-2">
+        <Item
+          title="Balance"
+          value={wallet.income - wallet.expense}
+          type="balance"
+        />
+        <div
+          className={`trans-300 flex flex-col gap-2 overflow-hidden ${collapsed ? 'max-h-[300px]' : 'max-h-0'}`}
         >
-          <LucideChevronDown
-            size={18}
-            className={`trans-200 ${collapsed ? 'rotate-180' : ''}`}
+          <Item
+            title="Income"
+            value={wallet.income}
+            type="income"
           />
-        </Button>
-      </Card>
-    </div>
+          <Item
+            title="Expense"
+            value={wallet.expense}
+            type="expense"
+          />
+          <Item
+            title="Saving"
+            value={wallet.saving}
+            type="saving"
+          />
+          <Item
+            title="Invest"
+            value={wallet.invest}
+            type="invest"
+          />
+        </div>
+      </CardContent>
+
+      <Button
+        className={cn(
+          'flex h-6 w-full items-center justify-center rounded-none bg-primary py-1 text-secondary'
+        )}
+        onClick={e => {
+          e.stopPropagation()
+          setCollapsed(!collapsed)
+        }}
+      >
+        <LucideChevronDown
+          size={18}
+          className={`trans-200 ${collapsed ? 'rotate-180' : ''}`}
+        />
+      </Button>
+    </Card>
   )
 }
 
@@ -205,9 +186,7 @@ interface CardProps {
 }
 function Item({ title, type, value }: CardProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // values
   const { Icon, background, border } = checkTranType(type)
@@ -226,7 +205,7 @@ function Item({ title, type, value }: CardProps) {
       <div className="flex flex-col">
         <p className="font-body tracking-wider">{title}</p>
 
-        <span className="text-xl font-semibold">{formatCurrency(currency, value)}</span>
+        <span className="text-xl font-semibold">{currency && formatCurrency(currency, value)}</span>
       </div>
     </div>
   )

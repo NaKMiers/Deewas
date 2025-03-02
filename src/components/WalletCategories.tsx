@@ -63,7 +63,6 @@ function WalletCategories({ wallet, categories, type }: WalletCategoriesProps) {
           <p className="text-xs font-semibold text-muted-foreground">Sorted by name</p>
         </div>
         <CreateCategoryDrawer
-          walletId={wallet._id}
           type={type}
           update={category => dispatch(setWalletCategories([category, ...walletCategories]))}
           load={setCreating}
@@ -118,9 +117,7 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
 
   // store
   const { walletCategories: categories } = useAppSelector(state => state.wallet)
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
   const [updating, setUpdating] = useState<boolean>(false)
@@ -173,7 +170,9 @@ function WalletCategory({ category, className = '' }: WalletCategoryProps) {
           <p className="text-sm font-semibold">{category.name}</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-body font-bold">{formatCurrency(currency, category.amount)}</span>
+          {currency && (
+            <span className="font-body font-bold">{formatCurrency(currency, category.amount)}</span>
+          )}
           {!updating && !deleting ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

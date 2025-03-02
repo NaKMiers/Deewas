@@ -2,35 +2,39 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { formatCurrency, parseCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
-import { ITransaction } from '@/models/TransactionModel'
+import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
+import { getOverviewApi } from '@/requests'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
+import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import Chart, { ChartDatum } from './Chart'
 import { Button } from './ui/button'
+import { DateRangePicker } from './ui/DateRangePicker'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 interface HistoryProps {
-  from: Date | string
-  to: Date | string
-  transactions: ITransaction[]
-  refetch?: () => void
   className?: string
 }
 
 const types = ['balance', 'income', 'expense', 'saving', 'invest']
 const charts = ['line', 'bar', 'area', 'radar']
 
-function History({ from, to, transactions, refetch, className = '' }: HistoryProps) {
+function History({ className = '' }: HistoryProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
   const [chart, setChart] = useState<string>(charts[0])
   const [selectedTypes, setSelectedTypes] = useState<string[]>(types)
   const [data, setData] = useState<any[]>([])
+  const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
+    from: moment().startOf('month').toDate(),
+    to: moment().toDate(),
+  })
+  const [loading, setLoading] = useState<boolean>(false)
+  const [transactions, setTransactions] = useState<IFullTransaction[]>([])
 
   const findMaxKey = useCallback(
     (data: ITransaction[]) => {
@@ -47,8 +51,34 @@ function History({ from, to, transactions, refetch, className = '' }: HistoryPro
     [selectedTypes]
   )
 
+  // get history
+  useEffect(() => {
+    const getOverview = async () => {
+      // start loading
+      setLoading(true)
+
+      try {
+        const from = toUTC(dateRange.from)
+        const to = toUTC(dateRange.to)
+
+        const { transactions } = await getOverviewApi(`?from=${from}&to=${to}`)
+        setTransactions(transactions)
+        console.log('transactions', transactions)
+      } catch (err: any) {
+        console.log(err)
+      } finally {
+        // stop loading
+        setLoading(false)
+      }
+    }
+
+    getOverview()
+  }, [dateRange])
+
   // auto update chart data
   useEffect(() => {
+    if (!transactions.length || !currency) return
+
     let incomes = transactions.filter(t => t.type === 'income')
     let expenses = transactions.filter(t => t.type === 'expense')
     let savings = transactions.filter(t => t.type === 'saving')
@@ -60,8 +90,8 @@ function History({ from, to, transactions, refetch, className = '' }: HistoryPro
     // 1 month >= x > 1 days -> split charts into cols of days
     // 1 day >= x > 1 hours -> split charts into cols of hours
 
-    const start = toUTC(moment(from).startOf('day').toDate())
-    const end = toUTC(moment(to).endOf('day').toDate())
+    const start = toUTC(moment(dateRange.from).startOf('day').toDate())
+    const end = toUTC(moment(dateRange.to).endOf('day').toDate())
 
     const duration = moment(end).diff(moment(start), 'seconds')
     const oneDayInSeconds = 24 * 60 * 60
@@ -170,13 +200,29 @@ function History({ from, to, transactions, refetch, className = '' }: HistoryPro
     }
 
     setData(groupedData)
-  }, [from, to, transactions, currency])
+  }, [dateRange, transactions, currency])
 
   return (
     <div className={cn('px-21/2 md:px-21', className)}>
       {/* Top */}
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold">History</h2>
+
+        <DateRangePicker
+          initialDateFrom={dateRange.from}
+          initialDateTo={dateRange.to}
+          showCompare={false}
+          onUpdate={values => {
+            const { from, to } = values.range
+
+            if (!from || !to) return
+            if (differenceInDays(to, from) > +90) {
+              toast.error(`The selected date range is too large. Max allowed range is ${90} days!`)
+              return
+            }
+            setDateRange({ from, to })
+          }}
+        />
       </div>
 
       <div className="mt-1.5 rounded-lg border border-muted-foreground/50 px-0">

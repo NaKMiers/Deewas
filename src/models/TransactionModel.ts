@@ -45,18 +45,9 @@ const TransactionSchema = new Schema(
       enum: ['income', 'expense', 'saving', 'invest'],
       required: true,
     },
-    deleted: {
-      type: Boolean,
-      default: false,
-    },
   },
   { timestamps: true }
 )
-
-// indexed
-TransactionSchema.index({ user: 1 })
-TransactionSchema.index({ wallet: 1 })
-TransactionSchema.index({ category: 1 })
 
 const TransactionModel = mongoose.models.transaction || mongoose.model('transaction', TransactionSchema)
 export default TransactionModel
@@ -73,7 +64,6 @@ export interface ITransaction {
   name: string
   amount: number
   date: string
-  deleted: boolean
 }
 
 export type TransactionType = 'income' | 'expense' | 'saving' | 'invest'

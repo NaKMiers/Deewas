@@ -1,12 +1,10 @@
+import { ISettings } from '@/models/SettingsModel'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export const settings = createSlice({
   name: 'settings',
   initialState: {
-    settings: {
-      currency: 'USD',
-      language: 'en',
-    } as any,
+    settings: null as ISettings | null,
     loading: false as boolean,
     exchangeRates: { USD: 1 } as any,
   },

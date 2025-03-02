@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import WalletModel from '@/models/WalletModel'
-import { NextRequest, NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Wallet
 import '@/models/WalletModel'
@@ -24,14 +24,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // get wallet id from request params
     const { id } = await params
-
-    // check authorization
-    let walletUserId: any = await WalletModel.findById(id).distinct('user')
-    walletUserId = walletUserId[0].toString()
-
-    if (walletUserId !== userId) {
-      return NextResponse.json({ message: 'You are not allowed to update this wallet' }, { status: 401 })
-    }
 
     // get data from request body
     const { name, icon } = await req.json()

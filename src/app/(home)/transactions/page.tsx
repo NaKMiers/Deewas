@@ -3,43 +3,42 @@
 import CreateTransactionDrawer from '@/components/dialogs/CreateTransactionDrawer'
 import TransactionTypeGroup from '@/components/TransactionTypeGroup'
 import { Button } from '@/components/ui/button'
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from '@/components/ui/command'
 import { DateRangePicker } from '@/components/ui/DateRangePicker'
 import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAppSelector } from '@/hooks/reduxHook'
+import WalletSelection from '@/components/WalletSelection'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { setCurWallet } from '@/lib/reducers/walletReducer'
 import { toUTC } from '@/lib/time'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { getMyTransactionsApi } from '@/requests/transactionRequests'
 import { differenceInDays } from 'date-fns'
-import { LucideChevronsUpDown, LucidePlus, LucideSearch } from 'lucide-react'
+import { LucidePlus, LucideSearch } from 'lucide-react'
 import moment from 'moment-timezone'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 function TransactionsPage() {
+  // hooks
+  const dispatch = useAppDispatch()
+
   // store
-  const { curWallet, wallets } = useAppSelector(state => state.wallet)
+  const { curWallet } = useAppSelector(state => state.wallet)
 
   // states
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: moment().startOf('month').toDate(), // default is current month
     to: moment().toDate(),
   })
-
-  const [wallet, setWallet] = useState<IWallet | null>(null)
+  const [wallet, setWallet] = useState<IWallet | null>(curWallet)
   const [groups, setGroups] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
-  const [openWalletSelection, setOpenWalletSelection] = useState<boolean>(false)
+
+  // initially set wallet
+  useEffect(() => {
+    curWallet && setWallet(curWallet)
+  }, [curWallet])
 
   // group transactions
   const handleGroupTransactions = useCallback((transactions: IFullTransaction[]) => {
@@ -77,18 +76,12 @@ function TransactionsPage() {
     setGroups(Object.entries(groups))
   }, [])
 
-  // auto set wallet
-  useEffect(() => {
-    if (curWallet) {
-      setWallet(curWallet)
-    }
-  }, [curWallet])
-
   // get my transactions of selected wallet
   const getMyTransactions = useCallback(async () => {
     if (!wallet) return
 
     const query = `?walletId=${wallet._id}&from=${toUTC(dateRange.from)}&to=${toUTC(dateRange.to)}`
+    console.log('query', query)
 
     // start loading
     setLoading(true)
@@ -118,51 +111,12 @@ function TransactionsPage() {
           Transactions <span className="text-muted-foreground/50">of wallet</span>
         </h2>
 
-        <Popover
-          open={openWalletSelection}
-          onOpenChange={setOpenWalletSelection}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="h-8 gap-2 px-2"
-            >
-              <p>
-                <span>{wallet?.icon}</span> {wallet?.name}
-              </p>
-              <LucideChevronsUpDown size={18} />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0 shadow-md">
-            {/* Search Bar */}
-            <Command className="rounded-lg border shadow-md md:min-w-[450px]">
-              <CommandInput placeholder="Find a wallet..." />
-              <CommandList>
-                <CommandEmpty>No results found.</CommandEmpty>
-                <CommandSeparator />
-                {wallets.map((wallet: IWallet) => (
-                  <CommandItem
-                    className="justify-between gap-1 rounded-none p-0 py-px"
-                    key={wallet._id}
-                  >
-                    <Button
-                      variant="ghost"
-                      className="flex w-full justify-start"
-                      onClick={() => {
-                        console.log('wallet', wallet)
-                        setOpenWalletSelection(false)
-                        setWallet(wallet)
-                      }}
-                      disabled={false}
-                    >
-                      <span>{wallet.icon}</span> {wallet.name}
-                    </Button>
-                  </CommandItem>
-                ))}
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+        <WalletSelection
+          update={(wallet: IWallet) => {
+            setWallet(wallet)
+            dispatch(setCurWallet(wallet))
+          }}
+        />
       </div>
 
       {/* Date Range */}

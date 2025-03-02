@@ -1,10 +1,12 @@
 import { connectDatabase } from '@/config/database'
 import CategoryModel from '@/models/CategoryModel'
+import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-// Models: Category
+// Models: Category, Transaction
 import '@/models/CategoryModel'
+import '@/models/TransactionModel'
 
 // [DELETE]: /category/:id/delete
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -25,22 +27,44 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get category id form params
     const { id } = await params
 
-    // get category user id to check authorization
-    const categoryUserId = await CategoryModel.findById(id).distinct('user').lean()
-
-    // check authorization
-    if (categoryUserId[0].toString() !== userId) {
-      return NextResponse.json(
-        { message: 'You are now allowed to delete this category' },
-        { status: 401 }
-      )
+    // find category
+    let category: any = await CategoryModel.findById(id).select('type amount').lean()
+    if (!category) {
+      return NextResponse.json({ message: 'Category not found' }, { status: 404 })
     }
 
-    // "soft" delete category
-    let category = await CategoryModel.findByIdAndUpdate(id, { $set: { deleted: true } }).lean()
+    // get uncategorized category of this type
+    const uncategorizedCategory = await CategoryModel.findOne({
+      user: userId,
+      type: category.type,
+      deletable: false,
+    }).select('_id')
+
+    console.log('uncategorizedCategory', uncategorizedCategory)
+
+    if (!uncategorizedCategory) {
+      return NextResponse.json({ message: 'Failed to delete category' }, { status: 404 })
+    }
+
+    await Promise.all([
+      // delete category
+      CategoryModel.findByIdAndDelete(id),
+      // move all transactions to uncategorized category
+      TransactionModel.updateMany(
+        { user: userId, category: id },
+        { $set: { category: uncategorizedCategory._id } }
+      ),
+      // update total amount of uncategorized category
+      CategoryModel.findByIdAndUpdate(uncategorizedCategory._id, {
+        $inc: { amount: category.amount },
+      }),
+    ])
 
     // return response
-    return NextResponse.json({ category, message: 'Deleted category' }, { status: 200 })
+    return NextResponse.json(
+      { category, message: `Deleted ${category.icon} ${category.name} category` },
+      { status: 200 }
+    )
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

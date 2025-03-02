@@ -35,7 +35,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const transactions = await TransactionModel.find({
       category: categoryId,
       date: { $gte: toUTC(begin), $lte: toUTC(end) },
-      deleted: false,
     }).lean()
     const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
 

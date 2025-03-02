@@ -30,8 +30,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params
 
     // find wallet
-    const wallet = await WalletModel.findOne({ _id: id, user: userId, deleted: false }).lean()
-    const categories = await CategoryModel.find({ wallet: id, deleted: false, user: userId }).lean()
+    const wallet = await WalletModel.findOne({ _id: id, user: userId }).lean()
+    const categories = await CategoryModel.find({ wallet: id, user: userId }).lean()
 
     // check if wallet exist
     if (!wallet) {

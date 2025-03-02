@@ -59,7 +59,6 @@ function UpdateCategoryDrawer({
     defaultValues: {
       name: category.name || '',
       icon: category.icon || '',
-      type: category.type || '',
     },
   })
 
@@ -134,14 +133,18 @@ function UpdateCategoryDrawer({
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>
+            <DrawerTitle className="text-center">
               Update{' '}
-              {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+              {category.type && (
+                <span className={cn(checkTranType(category.type).color)}>{category.type}</span>
+              )}{' '}
               category
             </DrawerTitle>
-            <DrawerDescription>
+            <DrawerDescription className="text-center">
               Categories are used to group your{' '}
-              {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
+              {category.type && (
+                <span className={cn(checkTranType(category.type).color)}>{category.type}</span>
+              )}{' '}
               transactions
             </DrawerDescription>
           </DrawerHeader>
@@ -156,38 +159,6 @@ function UpdateCategoryDrawer({
               type="text"
               onFocus={() => clearErrors('name')}
             />
-
-            <CustomInput
-              id="type"
-              label="Type"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="select"
-              control={control}
-              options={[
-                {
-                  label: 'Expense',
-                  value: 'expense',
-                },
-                {
-                  label: 'Income',
-                  value: 'income',
-                },
-                {
-                  label: 'Saving',
-                  value: 'saving',
-                },
-                {
-                  label: 'Invest',
-                  value: 'invest',
-                },
-              ]}
-              onFocus={() => clearErrors('type')}
-            />
-            <p className="-mt-2 pl-1 text-xs italic text-muted-foreground text-yellow-400">
-              When you change type, all transaction&apos;s type of this category will be changed!
-            </p>
 
             <div className="mt-3 text-xs">
               <p className="font-semibold">
@@ -217,7 +188,7 @@ function UpdateCategoryDrawer({
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
                       <DialogTitle className="text-center">Select Icon</DialogTitle>
-                      <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
+                      <DialogDescription>Icon will be used to represent your category</DialogDescription>
                     </DialogHeader>
 
                     <Picker
@@ -237,7 +208,7 @@ function UpdateCategoryDrawer({
           </div>
 
           <DrawerFooter className="mb-21 px-0">
-            <div className="mx-auto w-full max-w-sm px-21/2">
+            <div className="mt-3 flex items-center justify-end gap-21/2">
               <DrawerClose>
                 <Button
                   variant="secondary"

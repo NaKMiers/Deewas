@@ -72,7 +72,6 @@ function Wallets({ className = '' }: WalletProps) {
                 >
                   <WalletCard
                     wallet={wallet}
-                    update={setWallets}
                     className="p"
                   />
                 </CarouselItem>

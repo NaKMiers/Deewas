@@ -46,7 +46,7 @@ export async function DELETE(req: NextRequest) {
     // initially create personal wallet
     await WalletModel.create({
       user: userId,
-      name: 'Personal',
+      name: 'Cash',
       icon: '⭐',
     })
 

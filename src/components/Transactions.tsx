@@ -4,7 +4,7 @@ import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction } from '@/models/TransactionModel'
-import { deleteTransactionApi } from '@/requests/transactionRequests'
+import { deleteTransactionApi, getMyTransactionsApi } from '@/requests/transactionRequests'
 import {
   LucideChevronDown,
   LucideChevronUp,
@@ -24,21 +24,38 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dro
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
 interface TransactionsProps {
-  transactions: IFullTransaction[]
-  refetch?: () => void
   className?: string
 }
 
-function Transactions({ transactions, className = '' }: TransactionsProps) {
+function Transactions({ className = '' }: TransactionsProps) {
   // hooks
   const router = useRouter()
 
   // states
-  const [amountShow, setAmountShow] = useState<string>('10')
+  const [transactions, setTransactions] = useState<IFullTransaction[]>([])
+  const [limit, setLimit] = useState<string>('10')
+  const [loading, setLoading] = useState<boolean>(false)
 
+  // get latest transactions
   useEffect(() => {
-    setAmountShow('10')
-  }, [transactions])
+    const getLatestTransactions = async () => {
+      // start loading
+      setLoading(true)
+
+      try {
+        const { transactions } = await getMyTransactionsApi(`?sort=date&orderBy=-1&limit=${limit}`)
+        setTransactions(transactions)
+      } catch (err: any) {
+        toast.error(err.message)
+        console.log(err)
+      } finally {
+        // stop loading
+        setLoading(false)
+      }
+    }
+
+    getLatestTransactions()
+  }, [limit])
 
   return (
     <div className={cn('px-21/2 md:px-21', className)}>
@@ -48,8 +65,8 @@ function Transactions({ transactions, className = '' }: TransactionsProps) {
           <h2 className="text-lg font-bold">Latest</h2>
 
           <Select
-            value={amountShow}
-            onValueChange={setAmountShow}
+            value={limit}
+            onValueChange={setLimit}
           >
             <SelectTrigger className="h-8 max-w-max gap-1.5 text-sm">
               <SelectValue placeholder="Select a fruit" />
@@ -78,8 +95,8 @@ function Transactions({ transactions, className = '' }: TransactionsProps) {
       </div>
 
       <div className="mt-2 flex flex-col gap-2 rounded-lg border p-21/2 md:p-21">
-        {transactions.slice(0, +amountShow).length > 0 ? (
-          transactions.slice(0, +amountShow).map(transaction => (
+        {transactions.slice(0, +limit).length > 0 ? (
+          transactions.slice(0, +limit).map(transaction => (
             <Transaction
               transaction={transaction}
               key={transaction._id}
@@ -105,9 +122,7 @@ interface TransactionProps {
 
 function Transaction({ transaction, refetch, className = '' }: TransactionProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -152,24 +167,26 @@ function Transaction({ transaction, refetch, className = '' }: TransactionProps)
 
         {/* Right */}
         <div className="flex items-center gap-1">
-          <div className="flex flex-col items-end">
-            <p className="text-xs text-muted-foreground">
-              {formatDate(
-                moment(transaction.date).toDate(),
-                currencies.find(c => c.value === currency)?.locale
-              )}
-            </p>
-            <div className={cn('flex items-center gap-1', checkTranType(transaction.type).color)}>
-              {transaction.type === 'expense' ? (
-                <LucideChevronDown size={16} />
-              ) : (
-                <LucideChevronUp size={16} />
-              )}
-              <span className="text-sm font-semibold">
-                {formatCurrency(currency, transaction.amount)}
-              </span>
+          {currency && (
+            <div className="flex flex-col items-end">
+              <p className="text-xs text-muted-foreground">
+                {formatDate(
+                  moment(transaction.date).toDate(),
+                  currencies.find(c => c.value === currency)?.locale
+                )}
+              </p>
+              <div className={cn('flex items-center gap-1', checkTranType(transaction.type).color)}>
+                {transaction.type === 'expense' ? (
+                  <LucideChevronDown size={16} />
+                ) : (
+                  <LucideChevronUp size={16} />
+                )}
+                <span className="text-sm font-semibold">
+                  {formatCurrency(currency, transaction.amount)}
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
           {!deleting ? (
             <DropdownMenu>

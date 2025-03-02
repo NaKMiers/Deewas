@@ -23,11 +23,10 @@ export async function POST(req: NextRequest) {
     }
 
     // get data from request body
-    const { name, icon, type, walletId } = await req.json()
+    const { name, icon, type } = await req.json()
 
     // create category
     const category = await CategoryModel.create({
-      wallet: walletId,
       user: userId,
       name,
       icon,

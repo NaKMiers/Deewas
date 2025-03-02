@@ -38,26 +38,26 @@ function TransactionCategoryGroup({
   className = '',
 }: ITransactionCategoryGroupProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   return (
     <div className={cn('flex flex-col', className)}>
       <div className="flex items-center justify-between gap-2 py-0.5">
         <div className="flex items-start gap-2">
           <span>{category.icon}</span>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">{category.name}</span>
-            <span
-              className={cn(
-                '-mb-1 -mt-0.5 ml-0.5 text-xs tracking-tight',
-                checkTranType(category.type).color
-              )}
-            >
-              {formatCurrency(currency, category.amount)}
-            </span>
-          </div>
+          {currency && (
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold">{category.name}</span>
+              <span
+                className={cn(
+                  '-mb-1 -mt-0.5 ml-0.5 text-xs tracking-tight',
+                  checkTranType(category.type).color
+                )}
+              >
+                {formatCurrency(currency, category.amount)}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* New Transaction for category */}
@@ -102,9 +102,7 @@ interface ITransactionProps {
 
 function Transaction({ transaction, refetch, className = '' }: ITransactionProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -134,22 +132,26 @@ function Transaction({ transaction, refetch, className = '' }: ITransactionProps
       <p className="text-sm font-semibold">{transaction.name}</p>
 
       <div className="flex items-center gap-1">
-        <div className="flex flex-col items-end">
-          <p className="text-xs text-muted-foreground">
-            {formatDate(
-              moment(transaction.date).toDate(),
-              currencies.find(c => c.value === currency)?.locale
-            )}
-          </p>
-          <div className={cn('flex items-center gap-1', checkTranType(transaction.type).color)}>
-            {transaction.type === 'expense' ? (
-              <LucideChevronDown size={16} />
-            ) : (
-              <LucideChevronUp size={16} />
-            )}
-            <span className="text-sm font-semibold">{formatCurrency(currency, transaction.amount)}</span>
+        {currency && (
+          <div className="flex flex-col items-end">
+            <p className="text-xs text-muted-foreground">
+              {formatDate(
+                moment(transaction.date).toDate(),
+                currencies.find(c => c.value === currency)?.locale
+              )}
+            </p>
+            <div className={cn('flex items-center gap-1', checkTranType(transaction.type).color)}>
+              {transaction.type === 'expense' ? (
+                <LucideChevronDown size={16} />
+              ) : (
+                <LucideChevronUp size={16} />
+              )}
+              <span className="text-sm font-semibold">
+                {formatCurrency(currency, transaction.amount)}
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
         {!deleting ? (
           <DropdownMenu>

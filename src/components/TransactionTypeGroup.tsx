@@ -1,11 +1,10 @@
-import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
 import { Button } from '@/components/ui/button'
 import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
 import { AnimatePresence, motion } from 'framer-motion'
-import { LucideEllipsisVertical, LucidePlus, LucidePlusCircle } from 'lucide-react'
+import { LucideEllipsisVertical, LucidePlusCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import TransactionCategoryGroup from './TransactionCategoryGroup'
@@ -25,10 +24,7 @@ function TransactionTypeGroup({
   className = '',
 }: ITransactionTypeGroupProps) {
   // store
-  const curWallet: any = useAppSelector(state => state.wallet.curWallet)
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
   const [open, setOpen] = useState<boolean>(true)
@@ -70,9 +66,11 @@ function TransactionTypeGroup({
           </div>
 
           <div>
-            <span className="text-sm font-semibold tracking-tight">
-              {formatCurrency(currency, total)}
-            </span>
+            {currency && (
+              <span className="text-sm font-semibold tracking-tight">
+                {formatCurrency(currency, total)}
+              </span>
+            )}
           </div>
 
           <DropdownMenu>
@@ -122,23 +120,6 @@ function TransactionTypeGroup({
                   key={index}
                 />
               ))}
-
-              {/* Add Category */}
-              {curWallet && (
-                <CreateCategoryDrawer
-                  walletId={curWallet._id}
-                  type={type}
-                  trigger={
-                    <Button
-                      variant="secondary"
-                      className="h-8 text-xs font-semibold"
-                    >
-                      <LucidePlus size={24} />
-                      Add Category
-                    </Button>
-                  }
-                />
-              )}
             </motion.div>
           )}
         </AnimatePresence>

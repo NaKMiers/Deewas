@@ -1,5 +1,6 @@
 import { currencies } from '@/constants/settings'
 import { useAppSelector } from '@/hooks/reduxHook'
+import { adjustCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { memo, ReactNode, useCallback, useState } from 'react'
 import { Controller, FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
@@ -48,9 +49,7 @@ function CustomInput({
   ...rest
 }: InputProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // states
@@ -60,11 +59,6 @@ function CustomInput({
   const showPassword = useCallback(() => {
     setIsShowPassword(prev => !prev)
   }, [])
-
-  const formatCurrency = (input: string) => {
-    const numericValue = input.replace(/\D/g, '')
-    return new Intl.NumberFormat(locale).format(Number(numericValue))
-  }
 
   return (
     <div
@@ -136,7 +130,7 @@ function CustomInput({
                 )}
                 disabled={disabled}
                 type="text"
-                value={formatCurrency(value || '')}
+                value={adjustCurrency(value || '', locale)}
                 onChange={onChange}
                 {...rest}
               />

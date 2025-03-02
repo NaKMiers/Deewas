@@ -25,24 +25,19 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get wallet id form params
     const { id } = await params
 
-    let [walletUserId, walletCount] = await Promise.all([
-      // get wallet user id to check authorization
-      WalletModel.findById(id).distinct('user').lean(),
-      // prevent delete final wallet
-      WalletModel.countDocuments({ user: userId, deleted: false }).lean(),
-    ])
-
-    // check authorization
-    if (walletUserId[0].toString() !== userId) {
-      return NextResponse.json({ message: 'You are now allowed to delete this wallet' }, { status: 401 })
-    }
+    // count wallets
+    const walletCount = await WalletModel.countDocuments({ user: userId }).lean()
 
     if (walletCount <= 1) {
       return NextResponse.json({ message: 'You cannot delete your final wallet' }, { status: 400 })
     }
 
-    // "soft" delete wallet
-    let wallet = await WalletModel.findByIdAndUpdate(id, { $set: { deleted: true } }).lean()
+    // delete wallet
+    let wallet = await WalletModel.findByIdAndDelete(id).lean()
+
+    if (!wallet) {
+      return NextResponse.json({ message: 'Wallet not found' }, { status: 404 })
+    }
 
     // return response
     return NextResponse.json({ wallet, message: 'Deleted wallet' }, { status: 200 })

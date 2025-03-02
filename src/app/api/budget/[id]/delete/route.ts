@@ -25,8 +25,13 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get budget id from params
     const { id } = await params
 
-    // "soft" delete budget
-    const budget = await BudgetModel.findByIdAndUpdate(id, { $set: { deleted: true } }, { new: true })
+    // delete budget
+    const budget = await BudgetModel.findByIdAndDelete(id)
+
+    // check if budget exists
+    if (!budget) {
+      return NextResponse.json({ message: 'Budget not found' }, { status: 404 })
+    }
 
     // return response
     return NextResponse.json({ budget, message: 'Deleted budget' }, { status: 200 })

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import { TransactionType } from './TransactionModel'
 import { IUser } from './UserModel'
-import { IWallet } from './WalletModel'
 const Schema = mongoose.Schema
 
 const CategorySchema = new Schema(
@@ -10,11 +9,6 @@ const CategorySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'user',
       index: true,
-    },
-    wallet: {
-      type: Schema.Types.ObjectId,
-      ref: 'wallet',
-      required: true,
     },
     name: {
       type: String,
@@ -28,9 +22,9 @@ const CategorySchema = new Schema(
       enum: ['income', 'expense', 'saving', 'invest'],
       required: true,
     },
-    deleted: {
+    deletable: {
       type: Boolean,
-      default: false,
+      default: true,
     },
 
     // sync with transaction
@@ -42,9 +36,8 @@ const CategorySchema = new Schema(
   { timestamps: true }
 )
 
-// indexed
-CategorySchema.index({ user: 1 })
-CategorySchema.index({ wallet: 1 })
+CategorySchema.index({ user: 1, name: 1, type: 1 }, { unique: true })
+CategorySchema.index({ user: 1, type: 1, deletable: 1 }, { unique: true })
 
 const CategoryModel = mongoose.models.category || mongoose.model('category', CategorySchema)
 export default CategoryModel
@@ -54,14 +47,12 @@ export interface ICategory {
   createdAt: string
   updatedAt: string
 
-  wallet: string
   name: string
   user: string
   icon: string
   type: TransactionType
-  deleted: boolean
-
   amount: number
+  deletable: boolean
 }
 
-export type IFullCategory = ICategory & { user: IUser; wallet: IWallet }
+export type IFullCategory = ICategory & { user: IUser }

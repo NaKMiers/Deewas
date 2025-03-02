@@ -26,20 +26,18 @@ export async function POST(req: NextRequest) {
     }
 
     // get data from request body
-    const { categoryId, walletId, total, begin, end } = await req.json()
+    const { categoryId, total, begin, end } = await req.json()
 
     // calculate total amount of transactions of category from begin to end of budget
     const transactions = await TransactionModel.find({
       category: categoryId,
       date: { $gte: toUTC(begin), $lte: toUTC(end) },
-      deleted: false,
     }).lean()
     const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
 
     // create budget
     const budget = await BudgetModel.create({
       user: userId,
-      wallet: walletId,
       category: categoryId,
       total,
       begin: toUTC(begin),

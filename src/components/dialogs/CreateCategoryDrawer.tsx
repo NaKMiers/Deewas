@@ -1,4 +1,3 @@
-import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
@@ -32,7 +31,6 @@ import {
 } from '../ui/drawer'
 
 interface CreateCategoryDrawerProps {
-  walletId?: string
   type?: TransactionType
   update?: (category: ICategory) => void
   trigger: ReactNode
@@ -41,7 +39,6 @@ interface CreateCategoryDrawerProps {
 }
 
 function CreateCategoryDrawer({
-  walletId,
   type,
   trigger,
   update,
@@ -67,17 +64,11 @@ function CreateCategoryDrawer({
     },
   })
 
-  // store
-  const { curWallet } = useAppSelector(state => state.wallet)
-
   // states
   const form = watch()
   const [open, setOpen] = useState<boolean>(false)
   const [openEmojiPicker, setOpenEmojiPicker] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
-
-  // values
-  walletId = walletId || curWallet?._id
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
@@ -101,8 +92,6 @@ function CreateCategoryDrawer({
   // create category
   const handleCreateCategory: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      if (!walletId) return
-
       // validate form
       if (!handleValidate(data)) return
 
@@ -114,7 +103,7 @@ function CreateCategoryDrawer({
       toast.loading('Creating category...', { id: 'create-category' })
 
       try {
-        const { category, message } = await createCategoryApi({ ...data, walletId })
+        const { category, message } = await createCategoryApi({ ...data })
 
         console.log('category', category)
 
@@ -136,7 +125,7 @@ function CreateCategoryDrawer({
         }
       }
     },
-    [handleValidate, load, reset, update, walletId]
+    [handleValidate, load, reset, update]
   )
 
   return (
@@ -149,12 +138,12 @@ function CreateCategoryDrawer({
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle>
+            <DrawerTitle className="text-center">
               Create{' '}
               {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
               category
             </DrawerTitle>
-            <DrawerDescription>
+            <DrawerDescription className="text-center">
               Categories are used to group your{' '}
               {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
               transactions
@@ -231,7 +220,7 @@ function CreateCategoryDrawer({
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
                       <DialogTitle className="text-center">Select Icon</DialogTitle>
-                      <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
+                      <DialogDescription>Icon will be used to represent your category</DialogDescription>
                     </DialogHeader>
 
                     <Picker

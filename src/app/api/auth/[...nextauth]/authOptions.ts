@@ -1,11 +1,19 @@
 import { connectDatabase } from '@/config/database'
+import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
 import bcrypt from 'bcrypt'
 import { SessionStrategy } from 'next-auth'
 
+// Models: Wallet, Category, Settings, User
+import '@/models/CategoryModel'
+import '@/models/SettingsModel'
+import '@/models/UserModel'
+import '@/models/WalletModel'
+
 // Providers
+import { initCategories } from '@/constants/categories'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
@@ -156,17 +164,28 @@ const authOptions = {
             authType: account.provider,
           })
 
+          const categories = Object.values(initCategories)
+            .flat()
+            .map(category => ({
+              ...category,
+              user: newUser._id,
+            }))
+
+          console.log('categories', categories.length)
+
           await Promise.all([
             // initially create personal wallet
             WalletModel.create({
               user: newUser._id,
-              name: 'Personal',
+              name: 'Cash',
               icon: '⭐',
             }),
             // initially create settings
             SettingsModel.create({
               user: newUser._id,
             }),
+            // Insert default categories
+            CategoryModel.insertMany(categories),
           ])
         }
 

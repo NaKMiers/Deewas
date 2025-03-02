@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import { ICategory } from './CategoryModel'
 import { IUser } from './UserModel'
-import { IWallet } from './WalletModel'
 const Schema = mongoose.Schema
 
 const BudgetSchema = new Schema(
@@ -10,11 +9,6 @@ const BudgetSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'user',
       index: true,
-    },
-    wallet: {
-      type: Schema.Types.ObjectId,
-      ref: 'wallet',
-      required: true,
     },
     category: {
       type: Schema.Types.ObjectId,
@@ -41,10 +35,6 @@ const BudgetSchema = new Schema(
       type: Date,
       required: true,
     },
-    deleted: {
-      type: Boolean,
-      default: false,
-    },
 
     // sync with transaction
     amount: {
@@ -55,11 +45,6 @@ const BudgetSchema = new Schema(
   },
   { timestamps: true }
 )
-
-// indexed
-BudgetSchema.index({ user: 1 })
-BudgetSchema.index({ wallet: 1 })
-BudgetSchema.index({ category: 1 })
 
 // category-begin-end unique
 BudgetSchema.index({ category: 1, begin: 1, end: 1 }, { unique: true })
@@ -73,7 +58,6 @@ export interface IBudget {
   updatedAt: string
 
   user: string
-  wallet: string
   category: string
 
   total: number
@@ -83,4 +67,4 @@ export interface IBudget {
   amount: number
 }
 
-export type IFullBudget = IBudget & { user: IUser; wallet: IWallet; category: ICategory }
+export type IFullBudget = IBudget & { user: IUser; category: ICategory }
