@@ -36,9 +36,7 @@ interface UpdateBudgetDrawerProps {
 
 function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: UpdateBudgetDrawerProps) {
   // store
-  const {
-    settings: { currency },
-  } = useAppSelector(state => state.settings)
+  const currency = useAppSelector(state => state.settings.settings?.currency)
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // form
@@ -173,17 +171,19 @@ function UpdateBudgetDrawer({ budget, trigger, refetch, className = '' }: Update
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
-            <CustomInput
-              id="total"
-              label="Total"
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="currency"
-              control={control}
-              onFocus={() => clearErrors('total')}
-              icon={<span>{formatSymbol(currency)}</span>}
-            />
+            {currency && (
+              <CustomInput
+                id="total"
+                label="Total"
+                disabled={saving}
+                register={register}
+                errors={errors}
+                type="currency"
+                control={control}
+                onFocus={() => clearErrors('total')}
+                icon={<span>{formatSymbol(currency)}</span>}
+              />
+            )}
 
             <div className="mt-1 flex gap-4">
               {/* Category */}

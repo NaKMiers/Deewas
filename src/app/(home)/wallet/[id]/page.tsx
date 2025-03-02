@@ -113,7 +113,6 @@ function WalletPage({ params }: { params: Promise<{ id: string }> }) {
       {/* Create Category Float Button */}
       {wallet?._id && (
         <CreateCategoryDrawer
-          walletId={wallet._id}
           update={category => dispatch(setWalletCategories([category, ...categories]))}
           trigger={
             <Button
