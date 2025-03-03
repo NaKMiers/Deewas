@@ -11,7 +11,7 @@ export * from './categoryRequests'
 export * from './settingsRequests'
 
 // [GET]: /
-export const getOverviewApi = async (
+export const getHistoryApi = async (
   query: string = '',
   prefix: string = '',
   option: RequestInit = { next: { revalidate: 0 } }

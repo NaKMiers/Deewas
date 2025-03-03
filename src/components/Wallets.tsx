@@ -60,10 +60,10 @@ function Wallets({ className = '' }: WalletProps) {
       {/* Wallet List */}
       <SkeletonWallets
         loading={loading}
-        className="mt-1"
+        className="mt-2"
       >
         {wallets.length > 0 ? (
-          <Carousel className="mx-auto mt-1 px-21/2 md:px-21">
+          <Carousel className="mx-auto mt-2 px-21/2 md:px-21">
             <CarouselContent>
               {wallets.map((wallet: IWallet) => (
                 <CarouselItem

@@ -12,12 +12,14 @@ import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
 import { getMyCategoriesApi } from '@/requests'
 import { LucidePlus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 function CategoriesPage() {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('categoriesPage')
 
   // store
   const { categories } = useAppSelector(state => state.category)
@@ -36,7 +38,7 @@ function CategoriesPage() {
         const { categories } = await getMyCategoriesApi()
         dispatch(setCategories(categories))
       } catch (err: any) {
-        toast.error('Failed to get wallet')
+        toast.error(t('Failed to get wallet'))
         console.error(err)
       } finally {
         // stop loading
@@ -45,7 +47,7 @@ function CategoriesPage() {
     }
 
     getCategories()
-  }, [dispatch])
+  }, [dispatch, t])
 
   // auto group categories by type
   useEffect(() => {
@@ -102,7 +104,7 @@ function CategoriesPage() {
         ) : (
           <div className="flex items-center justify-center rounded-md border border-muted-foreground/50 px-21/2 py-7">
             <p className="text-center text-lg font-semibold text-muted-foreground/50">
-              You don&apos;t have any categories yet. Create one now!
+              {t("You don't have any categories yet, create one now!")}
             </p>
           </div>
         )
@@ -128,7 +130,7 @@ function CategoriesPage() {
             className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full"
           >
             <LucidePlus size={24} />
-            Create Category
+            {t('Create Category')}
           </Button>
         }
       />

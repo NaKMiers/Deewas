@@ -12,11 +12,13 @@ import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
 import { getMyBudgetsApi } from '@/requests/budgetRequests'
 import { LucidePlus } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
 function BudgetsPage() {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('budgetPage')
 
   // store
   const { budgets } = useAppSelector(state => state.budget)
@@ -108,7 +110,7 @@ function BudgetsPage() {
         ) : (
           <div className="flex items-center justify-center rounded-md border border-muted-foreground/50 px-21/2 py-7">
             <p className="text-center text-lg font-semibold text-muted-foreground/50">
-              You don&apos;t have any budgets yet. Create one now!
+              {t("You don't have any budgets yet, create one now!")}
             </p>
           </div>
         )
@@ -131,10 +133,10 @@ function BudgetsPage() {
         trigger={
           <Button
             variant="default"
-            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full md:right-[calc(50%-600px+21px)]"
+            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-600px+21px)]"
           >
             <LucidePlus size={24} />
-            Create Budget
+            {t('Create Budget')}
           </Button>
         }
       />

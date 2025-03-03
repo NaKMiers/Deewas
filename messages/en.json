@@ -1,0 +1,87 @@
+{
+  "metaData": {
+    "title": "Deewas",
+    "description": "Personal Expenses Manager With Powerful AI Features And Simple User Interface"
+  },
+  "loginPage": {
+    "Login - Deewas": "Login - Deewas",
+    "Login to Deewas": "Login to Deewas",
+    "Welcome back, please login to continue!": "Welcome back, please login to continue!",
+    "or": "or",
+    "Username / Email": "Username / Email",
+    "Password": "Password",
+    "Forgot Password?": "Forgot Password?",
+    "Login": "Login",
+    "Don't have an account?": "Don't have an account?",
+    "Register": "Register",
+    "Logging in": "Logging in",
+    "Login Successfully!": "Login Successfully!",
+    "Login Failed": "Login Failed"
+  },
+  "registerPage": {
+    "Register - Deewas": "Register - Deewas",
+    "Register to Deewas": "Register to Deewas",
+    "Welcome! Please fill in the details to get started": "Welcome! Please fill in the details to get started",
+    "or": "or",
+    "Username": "Username",
+    "Email": "Email",
+    "Password": "Password",
+    "Register": "Register",
+    "Already have an account?": "Already have an account?",
+    "Login": "Login",
+    "Registering": "Registering",
+    "Register Successfully": "Register Successfully!",
+    "Failed to register": "Failed to register",
+    "Username must be at least 5 characters": "Username must be at least 5 characters",
+    "Invalid email": "Invalid email",
+    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number"
+  },
+  "accountPage": {
+    "Deleting all data": "Deleting all data",
+    "Free Account": "Free Account",
+    "Flash Sale": "Flash Sale",
+    "Categories": "Categories",
+    "Theme": "Theme",
+    "Light": "Light",
+    "Dark": "Dark",
+    "System": "System",
+    "About": "About",
+    "Help & Support": "Help & Support",
+    "Delete All Data": "Delete All Data",
+    "Are you sure you want to delete all your data? This action is irreversible": "Are you sure you want to delete all your data? This action is irreversible",
+    "Delete": "Delete",
+    "Cancel": "Cancel",
+    "Log Out": "Log Out",
+    "Are you sure you want to log out?": "Are you sure you want to log out?"
+  },
+  "budgetPage": {
+    "You don't have any budgets yet, create one now!": "You don't have any budgets yet, create one now!",
+    "Create Budget": "Create Budget"
+  },
+  "categoriesPage": {
+    "Failed to get wallet": "Failed to get wallet",
+    "You don't have any categories yet, create one now!": "You don't have any categories yet, create one now!",
+    "Create Category": "Create Category"
+  },
+  "transactionPage": {
+    "Failed to fetch transactions": "Failed to fetch transactions",
+    "Transactions": "Transactions",
+    "of wallet": "of wallet",
+    "The selected date range is too large": "The selected date range is too large",
+    "Max allowed range is": "Max allowed range is",
+    "days!": "days!",
+    "Search": "Search",
+    "No transactions found for this wallet, just add one now!": "No transactions found for this wallet, just add one now!",
+    "Add Transaction": "Add Transaction"
+  },
+  "wizardPage": {
+    "Welcome": "Welcome",
+    "Let's get started by setting up your currency": "Let's get started by setting up your currency",
+    "You can change these setting at any time": "You can change these setting at any time",
+    "I'm done! Take me to the dashboard": "I'm done! Take me to the dashboard"
+  },
+  "header": {
+    "Hello": "Hello",
+    "Upgrade": "Upgrade"
+  }
+}

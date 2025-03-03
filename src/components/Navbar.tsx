@@ -31,12 +31,12 @@ import {
 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import Link from 'next/link'
 import CreateBudgetDrawer from './dialogs/CreateBudgetDrawer'
 import CreateCategoryDrawer from './dialogs/CreateCategoryDrawer'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import CreateWalletDrawer from './dialogs/CreateWalletDrawer'
 import { Button } from './ui/button'
+import { Link } from '@/i18n/navigation'
 
 function Navbar() {
   // hooks

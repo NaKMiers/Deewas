@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { useRouter } from '@/i18n/navigation'
 import { deleteWallet, setCurWallet, updateWallet } from '@/lib/reducers/walletReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
@@ -12,7 +13,7 @@ import {
   LucidePencil,
   LucideTrash,
 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -30,6 +31,7 @@ interface WalletCardProps {
 function WalletCard({ wallet, className = '' }: WalletCardProps) {
   // hooks
   const router = useRouter()
+  const locale = useLocale()
   const dispatch = useAppDispatch()
 
   // store
@@ -90,7 +92,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
       className={cn('cursor-pointer overflow-hidden', className)}
       onClick={() => {
         dispatch(setCurWallet(wallet))
-        router.push(`/transactions`)
+        router.push('/transactions', { locale })
       }}
     >
       <CardHeader className="py-21/2">

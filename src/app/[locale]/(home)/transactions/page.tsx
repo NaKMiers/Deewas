@@ -17,6 +17,7 @@ import { getMyTransactionsApi } from '@/requests/transactionRequests'
 import { differenceInDays } from 'date-fns'
 import { LucidePlus, LucideSearch } from 'lucide-react'
 import moment from 'moment-timezone'
+import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuX } from 'react-icons/lu'
@@ -24,6 +25,7 @@ import { LuX } from 'react-icons/lu'
 function TransactionsPage() {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('transactionPage')
 
   // store
   const { curWallet } = useAppSelector(state => state.wallet)
@@ -59,12 +61,12 @@ function TransactionsPage() {
       dispatch(setTransactions(transactions))
     } catch (err: any) {
       console.log(err)
-      toast.error('Failed to fetch transactions')
+      toast.error(t('Failed to fetch transactions'))
     } finally {
       // stop loading
       setLoading(false)
     }
-  }, [dispatch, dateRange, wallet, curWallet])
+  }, [dispatch, dateRange, wallet, curWallet, t])
 
   // initial fetch
   useEffect(() => {
@@ -119,7 +121,7 @@ function TransactionsPage() {
       {/* Top */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4 md:px-21">
         <h2 className="text-lg font-bold">
-          Transactions <span className="text-muted-foreground/50">of wallet</span>
+          {t('Transactions')} <span className="text-muted-foreground/50">{'of wallet'}</span>
         </h2>
 
         <WalletSelection
@@ -144,7 +146,9 @@ function TransactionsPage() {
 
             if (!from || !to) return
             if (differenceInDays(to, from) > +90) {
-              toast.error(`The selected date range is too large. Max allowed range is ${90} days!`)
+              toast.error(
+                `${t('The selected date range is too large')}. ${t('Max allowed range is')} ${90} ${t('days!')}`
+              )
               return
             }
 
@@ -167,7 +171,7 @@ function TransactionsPage() {
 
           <Input
             className="rounded-l-none border border-l-0 pr-10 text-sm !ring-0"
-            placeholder="Search..."
+            placeholder={t('Search') + '...'}
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -198,7 +202,7 @@ function TransactionsPage() {
           ) : (
             <div className="flex items-center justify-center rounded-md border border-muted-foreground/50 px-2 py-7">
               <p className="text-center text-lg font-semibold text-muted-foreground/50">
-                No transactions found for this wallet. Just add one now!
+                {t('No transactions found for this wallet, just add one now!')}
               </p>
             </div>
           )}
@@ -221,10 +225,10 @@ function TransactionsPage() {
           trigger={
             <Button
               variant="default"
-              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full md:right-[calc(50%-600px+21px)]"
+              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-600px+21px)]"
             >
               <LucidePlus size={24} />
-              Add Transaction
+              {t('Add Transaction')}
             </Button>
           }
         />

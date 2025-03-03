@@ -4,13 +4,13 @@ import CustomInput from '@/components/CustomInput'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useAppDispatch } from '@/hooks/reduxHook'
+import { Link, useRouter } from '@/i18n/navigation'
 import { setPageLoading } from '@/lib/reducers/loadReducer'
 import { cn } from '@/lib/utils'
 import { signIn } from 'next-auth/react'
+import { useLocale, useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -19,7 +19,9 @@ function LoginPage() {
   // hooks
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const locale = useLocale()
   const { setTheme, resolvedTheme } = useTheme()
+  const t = useTranslations('loginPage')
 
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -44,7 +46,7 @@ function LoginPage() {
       // start loading
       setIsLoading(true)
 
-      toast.loading('Logging in...', { id: 'login' })
+      toast.loading(t('Logging in') + '...', { id: 'login' })
 
       try {
         // send request to server
@@ -52,10 +54,10 @@ function LoginPage() {
 
         if (res?.ok) {
           // show success message
-          toast.success('Login Successfully!', { id: 'login' })
+          toast.success(t('Login Successfully!'), { id: 'login' })
 
           // redirect to home page
-          router.push('/wizard')
+          router.push('/wizard', { locale })
         }
 
         if (res?.error) {
@@ -72,13 +74,13 @@ function LoginPage() {
         setIsLoading(false)
       }
     },
-    [setError, router]
+    [setError, router, locale, t]
   )
 
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = 'Login - Deewas'
+    document.title = t('Login - Deewas')
     dispatch(setPageLoading(false))
 
     const handleKeydown = (e: KeyboardEvent) => {
@@ -92,7 +94,7 @@ function LoginPage() {
     return () => {
       window.removeEventListener('keydown', handleKeydown)
     }
-  }, [handleSubmit, onSubmit, dispatch])
+  }, [handleSubmit, onSubmit, dispatch, t])
 
   return (
     <div className="flex h-screen w-full items-center justify-center p-2">
@@ -109,10 +111,10 @@ function LoginPage() {
             className="text-center text-lg font-semibold"
             onClick={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
           >
-            Login to Deewas
+            {t('Login to Deewas')}
           </h1>
           <p className="text-center text-sm text-muted-foreground">
-            Welcome back, please login to continue!
+            {t('Welcome back, please login to continue!')}
           </p>
 
           <Separator className="my-8 h-0" />
@@ -121,7 +123,7 @@ function LoginPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('google', { callbackUrl: '/wizard' })}
+              onClick={() => signIn('google', { callbackUrl: `/${locale}/wizard` })}
             >
               <Image
                 src="/icons/google.png"
@@ -133,7 +135,7 @@ function LoginPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('apple', { callbackUrl: '/wizard' })}
+              onClick={() => signIn('apple', { callbackUrl: `/${locale}/wizard` })}
             >
               <Image
                 src="/icons/apple.png"
@@ -145,7 +147,7 @@ function LoginPage() {
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"
-              onClick={() => signIn('facebook', { callbackUrl: '/wizard' })}
+              onClick={() => signIn('facebook', { callbackUrl: `/${locale}/wizard` })}
             >
               <Image
                 src="/icons/facebook.png"
@@ -158,14 +160,14 @@ function LoginPage() {
 
           <div className="my-6 flex items-center gap-3">
             <div className="h-px w-full border border-neutral-300/30" />{' '}
-            <span className="text-sm text-muted-foreground">or</span>
+            <span className="text-sm text-muted-foreground">{t('or')}</span>
             <div className="h-px w-full border border-neutral-300/30" />
           </div>
 
           <div className="flex flex-col gap-3">
             <CustomInput
               id="usernameOrEmail"
-              label="Username / Email"
+              label={t('Username / Email')}
               disabled={isLoading}
               register={register}
               errors={errors}
@@ -176,7 +178,7 @@ function LoginPage() {
 
             <CustomInput
               id="password"
-              label="Password"
+              label={t('Password')}
               disabled={isLoading}
               register={register}
               errors={errors}
@@ -191,7 +193,7 @@ function LoginPage() {
               href="/auth/forgot-password"
               className="mt-2 block text-right text-sm underline underline-offset-2"
             >
-              Forgot password?
+              {t('Forgot Password?')}
             </Link>
           </div>
 
@@ -201,18 +203,18 @@ function LoginPage() {
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
           >
-            Login
+            {t('Login')}
           </Button>
         </div>
 
         <div className="border-y border-slate-300 bg-neutral-100">
           <p className="px-2 py-5 text-center text-sm text-black">
-            Don&apos;t have an account?{' '}
+            {t("Don't have an account?")}{' '}
             <Link
               href="/auth/register"
               className="font-semibold underline-offset-1 hover:underline"
             >
-              Register
+              {t('Register')}
             </Link>
           </p>
         </div>

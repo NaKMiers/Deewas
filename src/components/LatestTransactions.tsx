@@ -1,5 +1,6 @@
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { useRouter } from '@/i18n/navigation'
 import { refetching } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate } from '@/lib/time'
@@ -15,7 +16,8 @@ import {
   LucideTrash,
 } from 'lucide-react'
 import moment from 'moment-timezone'
-import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
+import { useLocale } from 'next-intl'
 import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -32,6 +34,9 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   // hooks
   const router = useRouter()
   const dispatch = useAppDispatch()
+  const locale = useLocale()
+  const { data: session } = useSession()
+  const user = session?.user
 
   // store
   const { refetching: rfc } = useAppSelector(state => state.load)
@@ -42,6 +47,8 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   const [loading, setLoading] = useState<boolean>(false)
 
   const getLatestTransactions = useCallback(async () => {
+    if (!user) return
+
     // start loading
     setLoading(true)
 
@@ -55,7 +62,7 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
       // stop loading
       setLoading(false)
     }
-  }, [limit])
+  }, [user, limit])
 
   // get latest transactions
   useEffect(() => {
@@ -93,7 +100,7 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
         <Button
           variant="outline"
           className="h-8"
-          onClick={() => router.push('/transactions')}
+          onClick={() => router.push('/transactions', { locale })}
         >
           All
         </Button>

@@ -3,24 +3,25 @@
 import { shortName } from '@/lib/string'
 import { LucideBell } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
-import { useRouter } from 'next/navigation'
 
 function Header() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
-  const router = useRouter()
-  console.log('router', router)
+  const t = useTranslations('header')
 
   return (
     <header className="h-[50px] w-full border-b border-muted-foreground bg-secondary text-primary">
       <div className="container flex h-full items-center justify-between px-21/2 md:px-21">
-        <h1 className="text-nowrap font-semibold tracking-wide">Hello {shortName(user)}!👋</h1>
+        <h1 className="text-nowrap font-semibold tracking-wide">
+          {t('Hello')} {shortName(user)}!👋
+        </h1>
 
         <div className="flex items-center gap-2">
-          <Button className="relative h-8">Upgrade</Button>
+          <Button className="relative h-8">{t('Upgrade')}</Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

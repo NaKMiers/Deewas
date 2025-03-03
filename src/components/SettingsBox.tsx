@@ -2,9 +2,11 @@
 
 import { currencies, languages } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { usePathname, useRouter } from '@/i18n/navigation'
 import { setSettings } from '@/lib/reducers/settingsReducer'
 import { cn } from '@/lib/utils'
 import { updateMySettingsApi } from '@/requests'
+import { useLocale } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown } from 'react-icons/lu'
@@ -28,6 +30,7 @@ function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps
   const { settings } = useAppSelector(state => state.settings)
   const currency = settings?.currency
   const language = settings?.language
+  const locale = useLocale()
 
   return (
     <div className={cn('grid grid-cols-1 gap-21/2 md:grid-cols-2 md:gap-21', className)}>
@@ -54,7 +57,7 @@ function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps
             type="language"
             desc="Set your default language for the app."
             list={languages}
-            init={languages.find(l => l.value === language)}
+            init={languages.find(l => l.value === locale)}
           />
         ) : null
       ) : (
@@ -62,7 +65,7 @@ function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps
           type="language"
           desc="Set your default language for the app."
           list={languages}
-          init={languages.find(l => l.value === language)}
+          init={languages.find(l => l.value === locale)}
         />
       )}
     </div>
@@ -82,6 +85,8 @@ interface BoxProps {
 function Box({ type, desc, list, init, className = '' }: BoxProps) {
   // hooks
   const dispatch = useAppDispatch()
+  const pathname = usePathname()
+  const router = useRouter()
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -116,6 +121,14 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
     [dispatch, type]
   )
 
+  // handle change language
+  const handleChangeLanguage = useCallback(
+    (nextLocale: string) => {
+      router.push(pathname, { locale: nextLocale })
+    },
+    [router, pathname]
+  )
+
   return (
     <div className={cn('relative w-full items-center justify-center rounded-lg border p-21', className)}>
       <p className="font-bold capitalize">{type}</p>
@@ -145,7 +158,11 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
               {list.map((item, index) => (
                 <CommandItem
                   onSelect={() => {
-                    handleUpdateSettings(item.value)
+                    if (type === 'language') {
+                      handleChangeLanguage(item.value)
+                    } else {
+                      handleUpdateSettings(item.value)
+                    }
                     setSelected(item)
                     setOpen(false)
                   }}

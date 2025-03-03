@@ -3,7 +3,7 @@ import { formatCurrency, parseCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
-import { getOverviewApi } from '@/requests'
+import { getHistoryApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
 import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
@@ -13,6 +13,7 @@ import { Button } from './ui/button'
 import { DateRangePicker } from './ui/DateRangePicker'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import { useSession } from 'next-auth/react'
 
 interface HistoryProps {
   className?: string
@@ -22,6 +23,10 @@ const types = ['balance', 'income', 'expense', 'saving', 'invest']
 const charts = ['line', 'bar', 'area', 'radar']
 
 function History({ className = '' }: HistoryProps) {
+  // hooks
+  const { data: session } = useSession()
+  const user = session?.user
+
   // store
   const { refetching } = useAppSelector(state => state.load)
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -53,7 +58,9 @@ function History({ className = '' }: HistoryProps) {
   )
 
   // get history
-  const getOverview = useCallback(async () => {
+  const getHistory = useCallback(async () => {
+    if (!user) return
+
     // start loading
     setLoading(true)
 
@@ -61,7 +68,7 @@ function History({ className = '' }: HistoryProps) {
       const from = toUTC(dateRange.from)
       const to = toUTC(dateRange.to)
 
-      const { transactions } = await getOverviewApi(`?from=${from}&to=${to}`)
+      const { transactions } = await getHistoryApi(`?from=${from}&to=${to}`)
       setTransactions(transactions)
     } catch (err: any) {
       console.log(err)
@@ -69,12 +76,12 @@ function History({ className = '' }: HistoryProps) {
       // stop loading
       setLoading(false)
     }
-  }, [dateRange])
+  }, [user, dateRange])
 
   // initially get history
   useEffect(() => {
-    getOverview()
-  }, [getOverview, refetching])
+    getHistory()
+  }, [getHistory, refetching])
 
   // auto update chart data
   useEffect(() => {

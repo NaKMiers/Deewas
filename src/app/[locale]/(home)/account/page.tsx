@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { Link } from '@/i18n/navigation'
 import { deleteAllDataApi } from '@/requests'
 import {
   LucideBookCopy,
@@ -22,9 +23,9 @@ import {
 } from 'lucide-react'
 import moment from 'moment-timezone'
 import { signOut, useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 
@@ -32,6 +33,7 @@ function AccountPage() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
+  const t = useTranslations('accountPage')
   const { theme, resolvedTheme, setTheme } = useTheme()
 
   // states
@@ -41,7 +43,7 @@ function AccountPage() {
   const handleDeleteData = useCallback(async () => {
     // start loading
     setDeleting(true)
-    toast.loading('Deleting all data...', { id: 'delete-all-data' })
+    toast.loading(t('Deleting all data') + '...', { id: 'delete-all-data' })
 
     try {
       const { message } = await deleteAllDataApi()
@@ -53,7 +55,7 @@ function AccountPage() {
       // stop loading
       setDeleting(false)
     }
-  }, [])
+  }, [t])
 
   return (
     <div className="container flex flex-col gap-21/2 p-21/2 pb-32 md:gap-21 md:p-21">
@@ -85,13 +87,13 @@ function AccountPage() {
             </p>
           </div>
         </div>
-        <div className="border-t py-2 text-center font-semibold capitalize">Free Account</div>
+        <div className="border-t py-2 text-center font-semibold capitalize">{t('Free Account')}</div>
       </div>
 
       {/* Ads */}
       <div className="flex flex-col gap-2 rounded-md border p-2">
         <div className="flex justify-between gap-2">
-          <span className="font-semibold">Flash Sale</span>
+          <span className="font-semibold">{t('Flash Sale')}</span>
           <Countdown
             timeType="once"
             start={moment().startOf('day').toISOString()}
@@ -122,7 +124,7 @@ function AccountPage() {
             size={18}
             className="cursor-pointer"
           />
-          Categories
+          {t('Categories')}
           <div className="flex flex-1 items-center justify-end">
             <LucideChevronRight size={18} />
           </div>
@@ -131,7 +133,7 @@ function AccountPage() {
 
       {/* Theme */}
       <div className="flex items-center gap-2 rounded-md border px-21/2 py-2 md:px-21">
-        <span className="font-semibold">Theme</span>
+        <span className="font-semibold">{t('Theme')}</span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -144,9 +146,9 @@ function AccountPage() {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="start">
-            <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('light')}>{t('Light')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('dark')}>{t('Dark')}</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme('system')}>{t('System')}</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -161,23 +163,23 @@ function AccountPage() {
           className="flex h-8 items-center gap-2 text-sm"
         >
           <LucideInfo size={18} />
-          About
+          {t('About')}
         </Link>
         <Link
           href="/"
           className="flex h-8 items-center gap-2 text-sm"
         >
           <LucideShieldQuestion size={18} />
-          Help & Support
+          {t('Help & Support')}
         </Link>
       </div>
 
       {/* Danger */}
       <ConfirmDialog
-        label="Delete All Data"
-        desc=" Are you sure you want to delete all your data? This action is irreversible."
-        confirmLabel="Delete"
-        cancelLabel="Cancel"
+        label={t('Delete All Data')}
+        desc={t('Are you sure you want to delete all your data? This action is irreversible.')}
+        confirmLabel={t('Delete')}
+        cancelLabel={t('Cancel')}
         onConfirm={handleDeleteData}
         trigger={
           !deleting ? (
@@ -185,7 +187,7 @@ function AccountPage() {
               variant="outline"
               className="mt-8 w-full border-rose-500 text-sm font-semibold capitalize text-rose-500"
             >
-              Delete All Data
+              {t('Delete All Data')}
             </Button>
           ) : (
             <Button
@@ -200,9 +202,9 @@ function AccountPage() {
       />
 
       <ConfirmDialog
-        label="Log Out"
-        desc="Are you sure you want to log out?"
-        confirmLabel="Log Out"
+        label={t('Log Out')}
+        desc={t('Are you sure you want to log out?')}
+        confirmLabel={t('Log Out')}
         cancelLabel="Cancel"
         onConfirm={signOut}
         trigger={
@@ -210,7 +212,7 @@ function AccountPage() {
             variant="outline"
             className="mt-8 w-full border-rose-500 text-sm font-semibold capitalize text-rose-500"
           >
-            Log Out
+            {t('Log Out')}
           </Button>
         }
       />
