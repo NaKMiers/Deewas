@@ -8,7 +8,7 @@ import { LucideLoaderCircle, LucidePlusCircle } from 'lucide-react'
 import { memo, ReactNode, useState } from 'react'
 import CreateWalletDrawer from './dialogs/CreateWalletDrawer'
 import { Button } from './ui/button'
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel'
+import { Carousel, CarouselContent, CarouselItem } from './ui/carousel'
 import { Skeleton } from './ui/skeleton'
 import WalletCard from './WalletCard'
 
@@ -67,7 +67,10 @@ function Wallets({ className = '' }: WalletProps) {
             <CarouselContent>
               {wallets.map((wallet: IWallet) => (
                 <CarouselItem
-                  className={cn('md:basis-1/2 lg:basis-1/3', className)}
+                  className={cn(
+                    'basis-[calc(100%-40px)] md:basis-[calc(50%-40px)] lg:basis-1/3',
+                    className
+                  )}
                   key={wallet._id}
                 >
                   <WalletCard
@@ -77,9 +80,6 @@ function Wallets({ className = '' }: WalletProps) {
                 </CarouselItem>
               ))}
             </CarouselContent>
-
-            <CarouselPrevious className="-left-7" />
-            <CarouselNext className="-right-7" />
           </Carousel>
         ) : (
           <div className="mt-1 px-21/2 md:px-21">

@@ -5,11 +5,14 @@ import { LucideBell } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { useRouter } from 'next/navigation'
 
 function Header() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
+  const router = useRouter()
+  console.log('router', router)
 
   return (
     <header className="h-[50px] w-full border-b border-muted-foreground bg-secondary text-primary">

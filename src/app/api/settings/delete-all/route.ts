@@ -7,6 +7,7 @@ import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Wallet, Category, Budget, Transaction
+import { initCategories } from '@/constants/categories'
 import '@/models/BudgetModel'
 import '@/models/CategoryModel'
 import '@/models/TransactionModel'
@@ -34,21 +35,30 @@ export async function DELETE(req: NextRequest) {
         user: userId,
         // delete all categories
       }),
-      CategoryModel.deleteMany(
-        { user: userId }
-        // delete al budgets
-      ),
+      CategoryModel.deleteMany({ user: userId }),
       BudgetModel.deleteMany({ user: userId }),
       // delete all wallets
       WalletModel.deleteMany({ user: userId }),
     ])
 
-    // initially create personal wallet
-    await WalletModel.create({
-      user: userId,
-      name: 'Cash',
-      icon: '⭐',
-    })
+    const categories = Object.values(initCategories)
+      .flat()
+      .map(category => ({
+        ...category,
+        user: userId,
+      }))
+
+    await Promise.all([
+      // initially create personal wallet
+      WalletModel.create({
+        user: userId,
+        name: 'Cash',
+        icon: '⭐',
+      }),
+
+      // Insert default categories
+      CategoryModel.insertMany(categories),
+    ])
 
     // return response
     return NextResponse.json({ message: 'All data deleted successfully' }, { status: 200 })
