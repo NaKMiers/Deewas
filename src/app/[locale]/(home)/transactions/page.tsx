@@ -118,8 +118,8 @@ function TransactionsPage() {
 
   return (
     <div className="container pb-32">
-      {/* Top */}
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4 md:px-21">
+      {/* MARK: Top */}
+      <div className="md:px-21 flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4">
         <h2 className="text-lg font-bold">
           {t('Transactions')} <span className="text-muted-foreground/50">{'of wallet'}</span>
         </h2>
@@ -135,8 +135,8 @@ function TransactionsPage() {
         />
       </div>
 
-      {/* Date Range */}
-      <div className="mb-21/2 flex items-center justify-end px-21/2 md:px-21">
+      {/* MARK: Date Range */}
+      <div className="md:px-21 mb-21/2 flex items-center justify-end px-21/2">
         <DateRangePicker
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
@@ -157,8 +157,8 @@ function TransactionsPage() {
         />
       </div>
 
-      {/* Search  */}
-      <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
+      {/* MARK: Search  */}
+      <div className="md:px-21 mb-21/2 flex items-center justify-end gap-2 px-21/2">
         {/* Search */}
         <div className="relative flex w-full overflow-hidden rounded-md shadow-sm">
           <Button
@@ -188,9 +188,9 @@ function TransactionsPage() {
         </div>
       </div>
 
-      {/* Groups */}
+      {/* MARK: Groups */}
       {!loading ? (
-        <div className="flex flex-col gap-2 px-21/2 md:px-21">
+        <div className="md:px-21 flex flex-col gap-2 px-21/2">
           {groups.length > 0 ? (
             groups.map(([type, group]) => (
               <TransactionTypeGroup
@@ -208,7 +208,7 @@ function TransactionsPage() {
           )}
         </div>
       ) : (
-        <div className="flex flex-col gap-2 px-21/2 md:px-21">
+        <div className="md:px-21 flex flex-col gap-2 px-21/2">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton
               className="h-[300px]"
@@ -218,14 +218,14 @@ function TransactionsPage() {
         </div>
       )}
 
-      {/* Create Transaction */}
+      {/* MARK: Create Transaction */}
       {curWallet && (
         <CreateTransactionDrawer
           update={(transaction: ITransaction) => dispatch(addTransaction(transaction))}
           trigger={
             <Button
               variant="default"
-              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-600px+21px)]"
+              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]"
             >
               <LucidePlus size={24} />
               {t('Add Transaction')}

@@ -76,7 +76,7 @@ function BudgetsPage() {
   }, [budgets])
 
   return (
-    <div className="container p-21/2 pb-32 md:p-21">
+    <div className="md:p-21 container p-21/2 pb-32">
       {!loading ? (
         groups.length > 0 ? (
           <Tabs
@@ -133,7 +133,7 @@ function BudgetsPage() {
         trigger={
           <Button
             variant="default"
-            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-600px+21px)]"
+            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]"
           >
             <LucidePlus size={24} />
             {t('Create Budget')}

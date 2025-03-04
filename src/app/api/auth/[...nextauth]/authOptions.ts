@@ -124,68 +124,70 @@ const authOptions = {
         // connect to database
         await connectDatabase()
 
-        if (account && account.provider != 'credentials') {
-          if (!user || !profile) {
-            return false
-          }
-
-          // get data for authentication
-          const email = user.email
-          const avatar = user.image
-          let firstName: string = ''
-          let lastName: string = ''
-
-          if (account.provider === 'google') {
-            firstName = profile.given_name
-            lastName = profile.family_name
-          } else if (account.provider === 'github') {
-            firstName = profile.name
-            lastName = ''
-          }
-
-          // get user from database to check exist
-          const existingUser: any = await UserModel.findOneAndUpdate(
-            { email },
-            { $set: { avatar } },
-            { new: true }
-          ).lean()
-
-          // check whether user exists
-          if (existingUser) {
-            return true
-          }
-
-          // create new user with google information (auto verified email)
-          const newUser = await UserModel.create({
-            email,
-            avatar,
-            firstName,
-            lastName,
-            authType: account.provider,
-          })
-
-          const categories = Object.values(initCategories)
-            .flat()
-            .map(category => ({
-              ...category,
-              user: newUser._id,
-            }))
-
-          await Promise.all([
-            // initially create personal wallet
-            WalletModel.create({
-              user: newUser._id,
-              name: 'Cash',
-              icon: '⭐',
-            }),
-            // initially create settings
-            SettingsModel.create({
-              user: newUser._id,
-            }),
-            // Insert default categories
-            CategoryModel.insertMany(categories),
-          ])
+        if (!account || account.provider === 'credentials') {
+          return true
         }
+
+        if (!user || !profile) {
+          return false
+        }
+
+        // get data for authentication
+        const email = user.email
+        const avatar = user.image
+        let firstName: string = ''
+        let lastName: string = ''
+
+        if (account.provider === 'google') {
+          firstName = profile.given_name
+          lastName = profile.family_name
+        } else if (account.provider === 'github') {
+          firstName = profile.name
+          lastName = ''
+        }
+
+        // get user from database to check exist
+        const existingUser: any = await UserModel.findOneAndUpdate(
+          { email },
+          { $set: { avatar } },
+          { new: true }
+        ).lean()
+
+        // check whether user exists
+        if (existingUser) {
+          return true
+        }
+
+        // create new user with google information (auto verified email)
+        const newUser = await UserModel.create({
+          email,
+          avatar,
+          firstName,
+          lastName,
+          authType: account.provider,
+        })
+
+        const categories = Object.values(initCategories)
+          .flat()
+          .map(category => ({
+            ...category,
+            user: newUser._id,
+          }))
+
+        await Promise.all([
+          // initially create personal wallet
+          WalletModel.create({
+            user: newUser._id,
+            name: 'Cash',
+            icon: '⭐',
+          }),
+          // initially create settings
+          SettingsModel.create({
+            user: newUser._id,
+          }),
+          // Insert default categories
+          CategoryModel.insertMany(categories),
+        ])
 
         return true
       } catch (err: any) {

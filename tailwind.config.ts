@@ -18,9 +18,6 @@ export default {
         21: '21px',
         '21/2': '10.5px',
       },
-      maxWidth: {
-        1200: '1200px',
-      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -102,7 +99,11 @@ export default {
       },
     },
     screens: {
-      xl: '1200px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px',
     },
   },
   safelist: [

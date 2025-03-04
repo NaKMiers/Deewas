@@ -29,7 +29,7 @@ function Wallets({ className = '' }: WalletProps) {
   return (
     <div className={cn(className)}>
       {/* Top */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-21/2 md:px-21">
+      <div className="md:px-21 flex flex-wrap items-center justify-between gap-2 px-21/2">
         <h2 className="text-lg font-bold">Wallets</h2>
 
         <CreateWalletDrawer
@@ -63,14 +63,17 @@ function Wallets({ className = '' }: WalletProps) {
         className="mt-2"
       >
         {wallets.length > 0 ? (
-          <Carousel className="mx-auto mt-2 px-21/2 md:px-21">
-            <CarouselContent>
+          <Carousel className="md:px-21 mx-auto mt-2 px-21/2">
+            <CarouselContent
+              className={cn(
+                wallets.length > 1 && 'sm:pr-0 lg:pr-0 pr-10',
+                wallets.length > 2 && 'sm:pr-10 lg:pr-0 pr-10',
+                wallets.length > 3 && 'sm:pr-10 lg:pr-10 pr-10'
+              )}
+            >
               {wallets.map((wallet: IWallet) => (
                 <CarouselItem
-                  className={cn(
-                    'basis-[calc(100%-40px)] md:basis-[calc(50%-40px)] lg:basis-1/3',
-                    className
-                  )}
+                  className={cn('basic-full sm:basis-1/2 lg:basis-1/3', className)}
                   key={wallet._id}
                 >
                   <WalletCard
@@ -82,7 +85,7 @@ function Wallets({ className = '' }: WalletProps) {
             </CarouselContent>
           </Carousel>
         ) : (
-          <div className="mt-1 px-21/2 md:px-21">
+          <div className="md:px-21 mt-1 px-21/2">
             <div className="flex w-full items-center justify-center rounded-md border px-2 py-6 text-lg font-bold text-muted-foreground/50">
               No wallets found.
             </div>
