@@ -189,16 +189,6 @@ function UpdateTransactionDrawer({
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
-            {/* Wallet */}
-            <div>
-              <p className="mb-1 text-xs font-semibold">{t('Wallet')}</p>
-              <WalletSelection
-                className="w-full justify-normal"
-                initWallet={transaction.wallet}
-                update={(wallet: IWallet) => setValue('walletId', wallet._id)}
-              />
-            </div>
-
             <CustomInput
               id="name"
               label={t('Name')}
@@ -243,6 +233,21 @@ function UpdateTransactionDrawer({
               {errors.categoryId?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
                   {errors.categoryId?.message?.toString()}
+                </span>
+              )}
+            </div>
+
+            {/* Wallet */}
+            <div className="mt-1.5">
+              <p className="mb-1 text-xs font-semibold">{t('Wallet')}</p>
+              <WalletSelection
+                className="w-full justify-normal"
+                initWallet={transaction.wallet}
+                update={(wallet: IWallet) => setValue('walletId', wallet._id)}
+              />
+              {errors.walletId?.message && (
+                <span className="ml-1 block text-xs italic text-rose-400">
+                  {errors.walletId?.message?.toString()}
                 </span>
               )}
             </div>

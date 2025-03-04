@@ -119,7 +119,7 @@ function TransactionsPage() {
   return (
     <div className="container pb-32">
       {/* MARK: Top */}
-      <div className="md:px-21 flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4 md:px-21">
         <h2 className="text-lg font-bold">
           {t('Transactions')} <span className="text-muted-foreground/50">{t('of wallet')}</span>
         </h2>
@@ -136,7 +136,7 @@ function TransactionsPage() {
       </div>
 
       {/* MARK: Date Range */}
-      <div className="md:px-21 mb-21/2 flex items-center justify-end px-21/2">
+      <div className="mb-21/2 flex items-center justify-end px-21/2 md:px-21">
         <DateRangePicker
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
@@ -158,7 +158,7 @@ function TransactionsPage() {
       </div>
 
       {/* MARK: Search  */}
-      <div className="md:px-21 mb-21/2 flex items-center justify-end gap-2 px-21/2">
+      <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
         {/* Search */}
         <div className="relative flex w-full overflow-hidden rounded-md shadow-sm">
           <Button
@@ -170,7 +170,7 @@ function TransactionsPage() {
           </Button>
 
           <Input
-            className="rounded-l-none border border-l-0 pr-10 text-base !ring-0"
+            className="rounded-l-none border border-l-0 pr-10 text-base !ring-0 md:text-sm"
             placeholder={t('Search') + '...'}
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -181,6 +181,7 @@ function TransactionsPage() {
               variant="ghost"
               className="absolute right-0 top-1/2 -translate-y-1/2"
               size="icon"
+              onClick={() => setSearch('')}
             >
               <LuX />
             </Button>
@@ -190,7 +191,7 @@ function TransactionsPage() {
 
       {/* MARK: Groups */}
       {!loading ? (
-        <div className="md:px-21 flex flex-col gap-2 px-21/2">
+        <div className="flex flex-col gap-2 px-21/2 md:px-21">
           {groups.length > 0 ? (
             groups.map(([type, group]) => (
               <TransactionTypeGroup
@@ -208,7 +209,7 @@ function TransactionsPage() {
           )}
         </div>
       ) : (
-        <div className="md:px-21 flex flex-col gap-2 px-21/2">
+        <div className="flex flex-col gap-2 px-21/2 md:px-21">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton
               className="h-[300px]"

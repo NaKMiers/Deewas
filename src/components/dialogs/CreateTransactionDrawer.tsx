@@ -207,26 +207,6 @@ function CreateTransactionDrawer({
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
-            {/* MARK: Wallet */}
-            <div>
-              <p
-                className={cn('mb-1 text-xs font-semibold', errors.walletId?.message && 'text-rose-500')}
-              >
-                {t('Wallet')}
-              </p>
-              <div onFocus={() => clearErrors('walletId')}>
-                <WalletSelection
-                  className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
-                  update={(wallet: IWallet) => setValue('walletId', wallet._id)}
-                />
-              </div>
-              {errors.walletId?.message && (
-                <span className="ml-1 block text-xs italic text-rose-400">
-                  {errors.walletId?.message?.toString()}
-                </span>
-              )}
-            </div>
-
             {/* MARK: Name */}
             <CustomInput
               id="name"
@@ -305,6 +285,26 @@ function CreateTransactionDrawer({
               {errors.categoryId?.message && (
                 <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
                   {errors.categoryId?.message?.toString()}
+                </span>
+              )}
+            </div>
+
+            {/* MARK: Wallet */}
+            <div className="mt-1.5">
+              <p
+                className={cn('mb-1 text-xs font-semibold', errors.walletId?.message && 'text-rose-500')}
+              >
+                {t('Wallet')}
+              </p>
+              <div onFocus={() => clearErrors('walletId')}>
+                <WalletSelection
+                  className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
+                  update={(wallet: IWallet) => setValue('walletId', wallet._id)}
+                />
+              </div>
+              {errors.walletId?.message && (
+                <span className="ml-1 block text-xs italic text-rose-400">
+                  {errors.walletId?.message?.toString()}
                 </span>
               )}
             </div>

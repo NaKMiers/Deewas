@@ -392,7 +392,8 @@
   },
   "walletSelection": {
     "No results found": "Không tìm thấy kết quả",
-    "All wallets": "Tất cả ví"
+    "All wallets": "Tất cả ví",
+    "Find a wallet": "Tìm kiếm ví"
   },
   "dateRangePicker": {
     "Today": "Hôm nay",

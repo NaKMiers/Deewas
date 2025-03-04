@@ -149,7 +149,10 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
 
               {/* Search Bar */}
               <Command className="rounded-lg border shadow-md">
-                <CommandInput placeholder={t('Find a category') + '...'} />
+                <CommandInput
+                  className="text-base md:text-sm"
+                  placeholder={t('Find a category') + '...'}
+                />
 
                 {/* MARK: Create Category */}
                 <CreateCategoryDrawer

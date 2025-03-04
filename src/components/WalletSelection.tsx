@@ -62,8 +62,11 @@ function WalletSelection({ initWallet, update, allowAll, className = '' }: Walle
       </PopoverTrigger>
       <PopoverContent className={cn('w-full p-0 shadow-md')}>
         {/* Search Bar */}
-        <Command className="md:min-w-[450px] rounded-lg border shadow-md">
-          <CommandInput placeholder="Find a wallet..." />
+        <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+          <CommandInput
+            className="text-base md:text-sm"
+            placeholder={t('Find a wallet') + '...'}
+          />
           <CommandList>
             <CommandEmpty>{t('No results found')}.</CommandEmpty>
             <CommandSeparator />
