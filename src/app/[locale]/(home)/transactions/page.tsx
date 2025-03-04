@@ -170,7 +170,7 @@ function TransactionsPage() {
           </Button>
 
           <Input
-            className="rounded-l-none border border-l-0 pr-10 text-sm !ring-0"
+            className="rounded-l-none border border-l-0 pr-10 !ring-0"
             placeholder={t('Search') + '...'}
             value={search}
             onChange={e => setSearch(e.target.value)}
