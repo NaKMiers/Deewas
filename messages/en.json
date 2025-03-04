@@ -42,8 +42,11 @@
     "Flash Sale": "Flash Sale",
     "Categories": "Categories",
     "Theme": "Theme",
+    "light": "light",
     "Light": "Light",
+    "dark": "dark",
     "Dark": "Dark",
+    "system": "system",
     "System": "System",
     "About": "About",
     "Help & Support": "Help & Support",
@@ -76,7 +79,7 @@
   },
   "wizardPage": {
     "Welcome": "Welcome",
-    "Let's get started by setting up your currency": "Let's get started by setting up your currency",
+    "Let's start with some simple settings": "Let's start with some simple settings",
     "You can change these setting at any time": "You can change these setting at any time",
     "I'm done! Take me to the dashboard": "I'm done! Take me to the dashboard"
   },
