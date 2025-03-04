@@ -62,7 +62,7 @@ const UserSchema = new Schema(
       type: String,
       default: '',
     },
-    deleted: {
+    initiated: {
       type: Boolean,
       default: false,
     },
@@ -107,7 +107,7 @@ export interface IUser {
   avatar: string
   firstName: string
   lastName: string
-  deleted: boolean
+  initiated: boolean
 }
 
 export type TAuthType = 'local' | 'google' | 'facebook' | 'apple'

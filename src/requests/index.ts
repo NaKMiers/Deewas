@@ -10,6 +10,9 @@ export * from './categoryRequests'
 // Settings
 export * from './settingsRequests'
 
+// User
+export * from './userRequests'
+
 // [GET]: /
 export const getHistoryApi = async (
   query: string = '',

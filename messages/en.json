@@ -405,5 +405,14 @@
     "Last Month": "Last Month",
     "Update": "Update",
     "Cancel": "Cancel"
+  },
+  "settingsBox": {
+    "Set your default currency": "Set your default currency",
+    "Set your default language": "Set your default language",
+    "Find a": "Find a",
+    "currency": "currency",
+    "language": "language",
+    "Select": "Select",
+    "No results found": "No results found"
   }
 }

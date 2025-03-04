@@ -406,5 +406,14 @@
     "Last Month": "Tháng trước",
     "Update": "Áp dụng",
     "Cancel": "Hủy"
+  },
+  "settingsBox": {
+    "Set your default currency": "Thiết lập tiền tệ mặc định",
+    "Set your default language": "Thiết lập ngôn ngữ mặc định",
+    "Find a": "Tìm kiếm",
+    "currency": "tiền tề",
+    "language": "ngôn ngữ",
+    "Select": "Chọn",
+    "No results found": "Không tìm thấy kết quả"
   }
 }

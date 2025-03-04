@@ -6,7 +6,7 @@ import { usePathname, useRouter } from '@/i18n/navigation'
 import { setSettings } from '@/lib/reducers/settingsReducer'
 import { cn } from '@/lib/utils'
 import { updateMySettingsApi } from '@/requests'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown } from 'react-icons/lu'
@@ -22,15 +22,19 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
 interface SettingsBoxProps {
-  isRequireInit?: boolean
   className?: string
+  isRequireInit?: boolean
 }
 
-function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps) {
+function SettingsBox({ isRequireInit, className = '' }: SettingsBoxProps) {
+  // hooks
+  const locale = useLocale()
+  const t = useTranslations('settingsBox')
+
+  // store
   const { settings } = useAppSelector(state => state.settings)
   const currency = settings?.currency
-  const language = settings?.language
-  const locale = useLocale()
+  console.log('currency:', currency)
 
   return (
     <div className={cn('md:grid-cols-2 md:gap-21 grid grid-cols-1 gap-21/2', className)}>
@@ -38,7 +42,7 @@ function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps
         currency ? (
           <Box
             type="currency"
-            desc="Set your default currency for transactions"
+            desc={t('Set your default currency')}
             list={currencies}
             init={currencies.find(c => c.value === currency)}
           />
@@ -46,28 +50,17 @@ function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps
       ) : (
         <Box
           type="currency"
-          desc="Set your default currency for transactions"
+          desc={t('Set your default currency')}
           list={currencies}
-          init={currencies.find(c => c.value === currency)}
+          init={currencies.find(c => c.value === 'USD')}
         />
       )}
-      {isRequireInit ? (
-        language ? (
-          <Box
-            type="language"
-            desc="Set your default language for the app."
-            list={languages}
-            init={languages.find(l => l.value === locale)}
-          />
-        ) : null
-      ) : (
-        <Box
-          type="language"
-          desc="Set your default language for the app."
-          list={languages}
-          init={languages.find(l => l.value === locale)}
-        />
-      )}
+      <Box
+        type="language"
+        desc={t('Set your default language')}
+        list={languages}
+        init={languages.find(l => l.value === locale)}
+      />
     </div>
   )
 }
@@ -87,6 +80,7 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   const router = useRouter()
+  const t = useTranslations('settingsBox')
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -131,7 +125,7 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
 
   return (
     <div className={cn('relative w-full items-center justify-center rounded-lg border p-21', className)}>
-      <p className="font-bold capitalize">{type}</p>
+      <p className="font-bold capitalize">{t(type)}</p>
       <p className="mb-3 text-sm text-muted-foreground">{desc}</p>
 
       <Popover
@@ -143,7 +137,7 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
             variant="outline"
             className="w-full justify-between"
           >
-            <p className="capitalize">{selected ? selected.label : `Select ${type}`}</p>
+            <p>{selected ? selected.label : `${t('Select')} ${t(type)}`}</p>
 
             <LuChevronsUpDown size={18} />
           </Button>
@@ -151,9 +145,9 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
         <PopoverContent className="w-full p-0 shadow-md">
           {/* Search Bar */}
           <Command className="md:min-w-[450px] rounded-lg border shadow-md">
-            <CommandInput placeholder={`Find a ${type}...`} />
+            <CommandInput placeholder={`${t('Find a')} ${t(type)}...`} />
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandEmpty>{t('No results found')}.</CommandEmpty>
               <CommandSeparator />
               {list.map((item, index) => (
                 <CommandItem
