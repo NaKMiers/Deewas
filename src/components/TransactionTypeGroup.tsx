@@ -37,7 +37,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
   }, [])
 
   return (
-    <div className={cn('md:mt-21 flex flex-col gap-21/2', className)}>
+    <div className={cn('flex flex-col gap-21/2 md:mt-21', className)}>
       {/* Type Group */}
       <div className="">
         {/* Type Header */}
@@ -59,7 +59,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
           </div>
 
           <div className="flex flex-1 flex-col">
-            <p className="md:text-2xl text-sm font-semibold capitalize">{type + 's'}</p>
+            <p className="text-sm font-semibold capitalize md:text-2xl">{type + 's'}</p>
             <p className="text-xs font-semibold text-muted-foreground">Sorted by date</p>
           </div>
 

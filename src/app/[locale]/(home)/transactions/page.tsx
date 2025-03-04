@@ -8,10 +8,10 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import WalletSelection from '@/components/WalletSelection'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { addTransaction, setTransactions } from '@/lib/reducers/transactionReducer'
+import { setTransactions } from '@/lib/reducers/transactionReducer'
 import { setCurWallet } from '@/lib/reducers/walletReducer'
 import { toUTC } from '@/lib/time'
-import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
+import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { getMyTransactionsApi } from '@/requests/transactionRequests'
 import { differenceInDays } from 'date-fns'
@@ -30,6 +30,7 @@ function TransactionsPage() {
   // store
   const { curWallet } = useAppSelector(state => state.wallet)
   const { transactions } = useAppSelector(state => state.transaction)
+  const { refetching: rfc } = useAppSelector(state => state.load)
 
   // states
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
@@ -71,7 +72,7 @@ function TransactionsPage() {
   // initial fetch
   useEffect(() => {
     getMyTransactions()
-  }, [getMyTransactions])
+  }, [getMyTransactions, rfc])
 
   // auto group categories by type
   useEffect(() => {
@@ -222,7 +223,6 @@ function TransactionsPage() {
       {/* MARK: Create Transaction */}
       {curWallet && (
         <CreateTransactionDrawer
-          update={(transaction: ITransaction) => dispatch(addTransaction(transaction))}
           trigger={
             <Button
               variant="default"

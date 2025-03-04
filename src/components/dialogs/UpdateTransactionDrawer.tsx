@@ -1,7 +1,8 @@
 'use client'
 
 import { currencies } from '@/constants/settings'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -45,6 +46,7 @@ function UpdateTransactionDrawer({
 }: UpdateTransactionDrawerProps) {
   // hooks
   const t = useTranslations('updateTransactionDrawer')
+  const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -151,6 +153,7 @@ function UpdateTransactionDrawer({
         })
 
         if (update) update(tx)
+        dispatch(refetching())
 
         toast.success(message, { id: 'update-transaction' })
         setOpen(false)
@@ -163,7 +166,7 @@ function UpdateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, transaction._id, locale, t]
+    [handleValidate, reset, update, dispatch, transaction._id, locale, t]
   )
 
   return (

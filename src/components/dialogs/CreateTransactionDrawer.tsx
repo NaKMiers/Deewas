@@ -1,7 +1,8 @@
 'use client'
 
 import { currencies } from '@/constants/settings'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -11,6 +12,7 @@ import { IWallet } from '@/models/WalletModel'
 import { createTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
+import { useTranslations } from 'next-intl'
 import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -29,8 +31,6 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 import WalletSelection from '../WalletSelection'
-import { useTranslations } from 'next-intl'
-import { Separator } from '../ui/separator'
 
 interface CreateTransactionDrawerProps {
   type?: TransactionType
@@ -51,6 +51,7 @@ function CreateTransactionDrawer({
 }: CreateTransactionDrawerProps) {
   // hooks
   const t = useTranslations('createTransactionDrawer')
+  const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -169,6 +170,8 @@ function CreateTransactionDrawer({
           amount: revertAdjustedCurrency(data.amount, locale),
         })
 
+        dispatch(refetching())
+
         if (refetch) refetch()
         if (update) update(transaction)
 
@@ -183,7 +186,7 @@ function CreateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, update, locale, t]
+    [handleValidate, reset, refetch, update, dispatch, locale, t]
   )
 
   return (
