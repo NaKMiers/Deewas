@@ -128,21 +128,23 @@ function Category({ category, className = '' }: CategoryProps) {
                   }
                 />
 
-                <ConfirmDialog
-                  label="Delete Wallet"
-                  desc="Are you sure you want to delete this wallet?"
-                  confirmLabel="Delete"
-                  onConfirm={handleDeleteCategory}
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
-                    >
-                      <LucideTrash size={16} />
-                      {t('Delete')}
-                    </Button>
-                  }
-                />
+                {category.deletable && (
+                  <ConfirmDialog
+                    label="Delete Wallet"
+                    desc="Are you sure you want to delete this wallet?"
+                    confirmLabel="Delete"
+                    onConfirm={handleDeleteCategory}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
+                      >
+                        <LucideTrash size={16} />
+                        {t('Delete')}
+                      </Button>
+                    }
+                  />
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
