@@ -20,7 +20,7 @@ function WizardPage() {
             {t('Welcome')}, <span className="ml-2 font-bold">{user && shortName(user)}! 👋</span>
           </h1>
           <h2 className="mt-4 text-center text-base text-muted-foreground">
-            {t("Let's get started by setting up your currency")}
+            {t("Let's start with some simple settings")}
           </h2>
           <h3 className="mt-2 text-center text-sm text-muted-foreground">
             {t('You can change these setting at any time')}
@@ -37,7 +37,7 @@ function WizardPage() {
           href="/"
           className="trans-200 border-light text-dark hover:text-light flex h-10 w-full items-center justify-center rounded-md border-2 text-center text-sm font-semibold"
         >
-          {"I'm done! Take me to the dashboard"}
+          {t("I'm done! Take me to the dashboard")}
         </Link>
       </div>
     </div>

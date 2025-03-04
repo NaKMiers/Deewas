@@ -4,6 +4,7 @@ import { updateWalletApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Dispatch, memo, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -37,6 +38,9 @@ interface UpdateWalletDrawerProps {
 }
 
 function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: UpdateWalletDrawerProps) {
+  // hooks
+  const t = useTranslations('updateWalletDrawer')
+
   // form
   const {
     register,
@@ -69,14 +73,14 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
       if (!data.name) {
         setError('name', {
           type: 'manual',
-          message: 'Name is required',
+          message: t('Name is required'),
         })
         isValid = false
       }
 
       return isValid
     },
-    [setError]
+    [setError, t]
   )
 
   // update wallet
@@ -90,7 +94,7 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
       if (load) {
         load(true)
       }
-      toast.loading('Updating wallet...', { id: 'update-wallet' })
+      toast.loading(t('Updating wallet') + '...', { id: 'update-wallet' })
 
       try {
         const { wallet: w, message } = await updateWalletApi(wallet._id, data)
@@ -113,7 +117,7 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
         }
       }
     },
-    [handleValidate, reset, update, load, wallet._id]
+    [handleValidate, reset, update, load, wallet._id, t]
   )
 
   return (
@@ -126,16 +130,16 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle className="text-center">Update wallet</DrawerTitle>
+            <DrawerTitle className="text-center">{t('Update wallet')}</DrawerTitle>
             <DrawerDescription className="text-center">
-              Wallets are used to group your categories
+              {t('Wallets are used to group your transactions by source of funds')}
             </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
             <CustomInput
               id="name"
-              label="Name"
+              label={t('Name')}
               disabled={saving}
               register={register}
               errors={errors}
@@ -146,7 +150,7 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
 
             <div className="mt-3 text-xs">
               <p className="font-semibold">
-                Icon <span className="font-normal">(optional)</span>
+                Icon <span className="font-normal">({t('optional')})</span>
               </p>
 
               <Dialog
@@ -160,7 +164,7 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
                     ) : (
                       <LucideCircleOff size={48} />
                     )}
-                    <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t('Click to select')}</p>
                   </button>
                 </DialogTrigger>
 
@@ -171,8 +175,10 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
                 >
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
-                      <DialogTitle className="text-center">Select Icon</DialogTitle>
-                      <DialogDescription>Icon will be used to represent your wallet</DialogDescription>
+                      <DialogTitle className="text-center">{t('Select Icon')}</DialogTitle>
+                      <DialogDescription>
+                        {t('Icon will be used to represent your wallet')}
+                      </DialogDescription>
                     </DialogHeader>
 
                     <Picker
@@ -185,7 +191,9 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
                   </div>
                 </DialogContent>
               </Dialog>
-              <p className="mt-2 text-slate-300">This is how your wallet will appear in the app</p>
+              <p className="mt-2 text-slate-300">
+                {t('This is how your wallet will appear in the app')}
+              </p>
             </div>
           </div>
 
@@ -199,7 +207,7 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
                     reset()
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DrawerClose>
               <Button
@@ -213,7 +221,7 @@ function UpdateWalletDrawer({ wallet, trigger, update, load, className = '' }: U
                     className="animate-spin text-slate-400"
                   />
                 ) : (
-                  'Save'
+                  t('Save')
                 )}
               </Button>
             </div>

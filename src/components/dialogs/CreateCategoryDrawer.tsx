@@ -6,6 +6,7 @@ import { createCategoryApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Dispatch, memo, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -45,6 +46,9 @@ function CreateCategoryDrawer({
   load,
   className = '',
 }: CreateCategoryDrawerProps) {
+  // hooks
+  const t = useTranslations('createCategoryDrawer')
+
   // form
   const {
     register,
@@ -79,14 +83,14 @@ function CreateCategoryDrawer({
       if (!data.name.trim()) {
         setError('name', {
           type: 'manual',
-          message: 'Name is required',
+          message: t('Name is required'),
         })
         isValid = false
       }
 
       return isValid
     },
-    [setError]
+    [setError, t]
   )
 
   // create category
@@ -100,7 +104,7 @@ function CreateCategoryDrawer({
       if (load) {
         load(true)
       }
-      toast.loading('Creating category...', { id: 'create-category' })
+      toast.loading(t('Creating category') + '...', { id: 'create-category' })
 
       try {
         const { category, message } = await createCategoryApi({ ...data })
@@ -123,7 +127,7 @@ function CreateCategoryDrawer({
         }
       }
     },
-    [handleValidate, load, reset, update]
+    [handleValidate, load, reset, update, t]
   )
 
   return (
@@ -137,21 +141,21 @@ function CreateCategoryDrawer({
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
             <DrawerTitle className="text-center">
-              Create{' '}
-              {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
-              category
+              {t('Create')}{' '}
+              {form.type && <span className={cn(checkTranType(form.type).color)}>{t(form.type)}</span>}{' '}
+              {t('category')}
             </DrawerTitle>
             <DrawerDescription className="text-center">
-              Categories are used to group your{' '}
-              {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
-              transactions
+              {t('Categories are used to group your')}{' '}
+              {form.type && <span className={cn(checkTranType(form.type).color)}>{t(form.type)}</span>}{' '}
+              {t('transactions')}
             </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
             <CustomInput
               id="name"
-              label="Name"
+              label={t('Name')}
               disabled={saving}
               register={register}
               errors={errors}
@@ -162,7 +166,7 @@ function CreateCategoryDrawer({
             {!type && (
               <CustomInput
                 id="type"
-                label="Type"
+                label={t('Type')}
                 disabled={saving}
                 register={register}
                 errors={errors}
@@ -170,19 +174,19 @@ function CreateCategoryDrawer({
                 control={control}
                 options={[
                   {
-                    label: 'Expense',
+                    label: t('Expense'),
                     value: 'expense',
                   },
                   {
-                    label: 'Income',
+                    label: t('Income'),
                     value: 'income',
                   },
                   {
-                    label: 'Saving',
+                    label: t('Saving'),
                     value: 'saving',
                   },
                   {
-                    label: 'Invest',
+                    label: t('Invest'),
                     value: 'invest',
                   },
                 ]}
@@ -192,7 +196,7 @@ function CreateCategoryDrawer({
 
             <div className="mt-3 text-xs">
               <p className="font-semibold">
-                Icon <span className="font-normal">(optional)</span>
+                Icon <span className="font-normal">({t('optional')})</span>
               </p>
 
               <Dialog
@@ -206,7 +210,7 @@ function CreateCategoryDrawer({
                     ) : (
                       <LucideCircleOff size={48} />
                     )}
-                    <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t('Click to select')}</p>
                   </button>
                 </DialogTrigger>
 
@@ -217,8 +221,10 @@ function CreateCategoryDrawer({
                 >
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
-                      <DialogTitle className="text-center">Select Icon</DialogTitle>
-                      <DialogDescription>Icon will be used to represent your category</DialogDescription>
+                      <DialogTitle className="text-center">{t('Select Icon')}</DialogTitle>
+                      <DialogDescription className="text-center">
+                        {t('Icon will be used to represent your category')}
+                      </DialogDescription>
                     </DialogHeader>
 
                     <Picker
@@ -233,7 +239,7 @@ function CreateCategoryDrawer({
               </Dialog>
 
               <p className="mt-2 text-muted-foreground">
-                This is how your category will appear in the app
+                {t('This is how your category will appear in the app')}
               </p>
             </div>
           </div>
@@ -249,7 +255,7 @@ function CreateCategoryDrawer({
                     reset()
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DrawerClose>
               <Button
@@ -263,7 +269,7 @@ function CreateCategoryDrawer({
                     className="animate-spin text-muted-foreground"
                   />
                 ) : (
-                  'Save'
+                  t('Save')
                 )}
               </Button>
             </div>

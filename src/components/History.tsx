@@ -14,18 +14,20 @@ import { DateRangePicker } from './ui/DateRangePicker'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 
 interface HistoryProps {
   className?: string
 }
 
-const types = ['balance', 'income', 'expense', 'saving', 'invest']
-const charts = ['line', 'bar', 'area', 'radar']
-
 function History({ className = '' }: HistoryProps) {
   // hooks
   const { data: session } = useSession()
   const user = session?.user
+  const t = useTranslations('history')
+
+  const types = [t('balance'), t('income'), t('expense'), t('saving'), t('invest')]
+  const charts = [t('line'), t('bar'), t('area'), t('radar')]
 
   // store
   const { refetching } = useAppSelector(state => state.load)
@@ -211,12 +213,13 @@ function History({ className = '' }: HistoryProps) {
   }, [dateRange, transactions, currency])
 
   return (
-    <div className={cn('px-21/2 md:px-21', className)}>
+    <div className={cn('md:px-21 px-21/2', className)}>
       {/* Top */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold">History</h2>
+        <h2 className="text-lg font-bold">{t('History')}</h2>
 
         <DateRangePicker
+          locale="vi"
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
           showCompare={false}
@@ -241,7 +244,7 @@ function History({ className = '' }: HistoryProps) {
                 variant="outline"
                 className="h-9 px-21/2 text-sm font-semibold"
               >
-                {selectedTypes.length} {selectedTypes.length !== 1 ? 'types' : 'type'}
+                {selectedTypes.length} {selectedTypes.length !== 1 ? t('types') : t('type')}
               </Button>
             }
             list={types}
@@ -292,6 +295,9 @@ interface MultiSelectionProps {
 }
 
 export function MultipleSelection({ trigger, list, selected, onChange }: MultiSelectionProps) {
+  // hooks
+  const t = useTranslations('multipleSelection')
+
   // states
   const [open, setOpen] = useState<boolean>(false)
   const isObjectItem = typeof list[0] === 'object'
@@ -311,7 +317,7 @@ export function MultipleSelection({ trigger, list, selected, onChange }: MultiSe
           )}
           onClick={selected.length === list.length ? () => onChange([]) : () => onChange(list)}
         >
-          <span className="text-nowrap">All</span>
+          <span className="text-nowrap">{t('All')}</span>
         </Button>
         {list.map((item, index) => (
           <Button

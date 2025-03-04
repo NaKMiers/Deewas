@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -37,6 +37,7 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   const locale = useLocale()
   const { data: session } = useSession()
   const user = session?.user
+  const t = useTranslations('latestTransactions')
 
   // store
   const { refetching: rfc } = useAppSelector(state => state.load)
@@ -70,11 +71,11 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   }, [getLatestTransactions, rfc])
 
   return (
-    <div className={cn('px-21/2 md:px-21', className)}>
+    <div className={cn('md:px-21 px-21/2', className)}>
       {/* Top */}
       <div className="flex items-center justify-between gap-1">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold">Latest</h2>
+          <h2 className="text-lg font-bold">{t('Latest')}</h2>
 
           <Select
             value={limit}
@@ -102,11 +103,11 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
           className="h-8"
           onClick={() => router.push('/transactions', { locale })}
         >
-          All
+          {t('All')}
         </Button>
       </div>
 
-      <div className="mt-2 flex flex-col gap-2 rounded-lg border p-21/2 md:p-21">
+      <div className="md:p-21 mt-2 flex flex-col gap-2 rounded-lg border p-21/2">
         {transactions.slice(0, +limit).length > 0 ? (
           transactions.slice(0, +limit).map(transaction => (
             <Transaction
@@ -140,6 +141,9 @@ interface TransactionProps {
 }
 
 function Transaction({ transaction, update, remove, refetch, className = '' }: TransactionProps) {
+  // hooks
+  const t = useTranslations('transaction')
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -150,7 +154,7 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
   const handleDeleteTransaction = useCallback(async () => {
     // start loading
     setDeleting(true)
-    toast.loading('Deleting transaction...', { id: 'delete-transaction' })
+    toast.loading(t('Deleting transaction') + '...', { id: 'delete-transaction' })
 
     try {
       const { transaction: tx, message } = await deleteTransactionApi(transaction._id)
@@ -159,13 +163,13 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
       if (remove) remove(tx)
       if (refetch) refetch()
     } catch (err: any) {
-      toast.error('Failed to delete transaction', { id: 'delete-transaction' })
+      toast.error(t('Failed to delete transaction'), { id: 'delete-transaction' })
       console.log(err)
     } finally {
       // stop loading
       setDeleting(false)
     }
-  }, [remove, refetch, transaction._id])
+  }, [remove, refetch, transaction._id, t])
 
   return (
     <div className={cn('flex w-full items-start gap-1', className)}>
@@ -174,7 +178,7 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
 
       {/* Content */}
       <div className="flex w-full items-center justify-between gap-2">
-        {/* Left */}
+        {/* MARK: Left */}
         <div className="flex flex-col">
           <p className="text-xs font-semibold tracking-wide text-muted-foreground">
             {transaction.category.name}
@@ -185,7 +189,7 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
           </div>
         </div>
 
-        {/* Right */}
+        {/* MARK: Right */}
         <div className="flex items-center gap-1">
           {currency && (
             <div className="flex flex-col items-end">
@@ -219,6 +223,7 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                {/* MARK: Update */}
                 <UpdateTransactionDrawer
                   transaction={transaction}
                   update={update}
@@ -228,14 +233,15 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
                       className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
                     >
                       <LucidePencil size={16} />
-                      Edit
+                      {t('Edit')}
                     </Button>
                   }
                 />
 
+                {/* MARK: Delete */}
                 <ConfirmDialog
-                  label="Delete Transaction"
-                  desc="Are you sure you want to delete this transaction?"
+                  label={t('Delete Transaction')}
+                  desc={t('Are you sure you want to delete this transaction?')}
                   confirmLabel="Delete"
                   onConfirm={handleDeleteTransaction}
                   trigger={
@@ -244,7 +250,7 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
                       className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
                     >
                       <LucideTrash size={16} />
-                      Delete
+                      {t('Delete')}
                     </Button>
                   }
                 />

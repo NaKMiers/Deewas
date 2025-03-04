@@ -14,6 +14,7 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
 import { LucideChevronsUpDown } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { memo, useEffect, useState } from 'react'
 
 interface WalletSelectionProps {
@@ -24,6 +25,9 @@ interface WalletSelectionProps {
 }
 
 function WalletSelection({ initWallet, update, allowAll, className = '' }: WalletSelectionProps) {
+  // hooks
+  const t = useTranslations('walletSelection')
+
   // store
   const { curWallet, wallets } = useAppSelector(state => state.wallet)
 
@@ -58,10 +62,10 @@ function WalletSelection({ initWallet, update, allowAll, className = '' }: Walle
       </PopoverTrigger>
       <PopoverContent className={cn('w-full p-0 shadow-md')}>
         {/* Search Bar */}
-        <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+        <Command className="md:min-w-[450px] rounded-lg border shadow-md">
           <CommandInput placeholder="Find a wallet..." />
           <CommandList>
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{t('No results found')}.</CommandEmpty>
             <CommandSeparator />
             {allowAll && (
               <CommandItem className="justify-between gap-1 rounded-none p-0 py-px">
@@ -75,7 +79,7 @@ function WalletSelection({ initWallet, update, allowAll, className = '' }: Walle
                   }}
                   disabled={false}
                 >
-                  <span>🔢</span> All wallets
+                  <span>🔢</span> {t('All wallets')}
                 </Button>
               </CommandItem>
             )}

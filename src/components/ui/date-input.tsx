@@ -199,24 +199,6 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
     <div className="flex items-center rounded-lg border px-1 text-sm">
       <input
         type="text"
-        ref={monthRef}
-        max={12}
-        maxLength={2}
-        value={date.month.toString()}
-        onChange={handleInputChange('month')}
-        onKeyDown={handleKeyDown('month')}
-        onFocus={e => {
-          if (window.innerWidth > 1024) {
-            e.target.select()
-          }
-        }}
-        onBlur={handleBlur('month')}
-        className="w-6 border-none bg-transparent p-0 text-center outline-none"
-        placeholder="M"
-      />
-      <span className="-mx-px opacity-20">/</span>
-      <input
-        type="text"
         ref={dayRef}
         max={31}
         maxLength={2}
@@ -231,6 +213,24 @@ const DateInput: React.FC<DateInputProps> = ({ value, onChange }) => {
         onBlur={handleBlur('day')}
         className="w-7 border-none bg-transparent p-0 text-center outline-none"
         placeholder="D"
+      />
+      <span className="-mx-px opacity-20">/</span>
+      <input
+        type="text"
+        ref={monthRef}
+        max={12}
+        maxLength={2}
+        value={date.month.toString()}
+        onChange={handleInputChange('month')}
+        onKeyDown={handleKeyDown('month')}
+        onFocus={e => {
+          if (window.innerWidth > 1024) {
+            e.target.select()
+          }
+        }}
+        onBlur={handleBlur('month')}
+        className="w-6 border-none bg-transparent p-0 text-center outline-none"
+        placeholder="M"
       />
       <span className="-mx-px opacity-20">/</span>
       <input

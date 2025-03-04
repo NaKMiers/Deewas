@@ -2,6 +2,8 @@
 
 import { cn } from '@/lib/utils'
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons'
+import * as locales from 'date-fns/locale'
+import { useLocale, useTranslations } from 'next-intl'
 import { type FC, JSX, useEffect, useRef, useState } from 'react'
 import { Button } from './button'
 import { Calendar } from './calendar'
@@ -275,25 +277,29 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
     preset: string
     label: string
     isSelected: boolean
-  }): JSX.Element => (
-    <Button
-      className={cn(isSelected && 'pointer-events-none')}
-      variant="ghost"
-      onClick={() => {
-        setPreset(preset)
-      }}
-    >
-      <>
-        <span className={cn('pr-2 opacity-0', isSelected && 'opacity-70')}>
-          <CheckIcon
-            width={18}
-            height={18}
-          />
-        </span>
-        {label}
-      </>
-    </Button>
-  )
+  }): JSX.Element => {
+    const t = useTranslations('dateRangePicker')
+
+    return (
+      <Button
+        className={cn(isSelected && 'pointer-events-none')}
+        variant="ghost"
+        onClick={() => {
+          setPreset(preset)
+        }}
+      >
+        <>
+          <span className={cn('pr-2 opacity-0', isSelected && 'opacity-70')}>
+            <CheckIcon
+              width={18}
+              height={18}
+            />
+          </span>
+          {t(label)}
+        </>
+      </Button>
+    )
+  }
 
   // Helper function to check if two date ranges are equal
   const areRangesEqual = (a?: DateRange, b?: DateRange): boolean => {
@@ -307,6 +313,12 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
       openedRangeCompareRef.current = rangeCompare
     }
   }, [isOpen])
+
+  const lc = useLocale() // locale
+  const getLocale = (lc: string): locales.Locale => {
+    return (locales as Record<string, locales.Locale>)[lc] || locales.enUS
+  }
+  const t = useTranslations('dateRangePicker')
 
   return (
     <Drawer
@@ -350,7 +362,7 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
           <div className="flex py-2">
             <div className="flex">
               <div className="flex flex-col">
-                <div className="flex flex-col items-center justify-end gap-2 px-3 pb-4 lg:flex-row lg:items-start lg:pb-0">
+                <div className="lg:flex-row lg:items-start lg:pb-0 flex flex-col items-center justify-end gap-2 px-3 pb-4">
                   {showCompare && (
                     <div className="flex items-center space-x-2 py-1 pr-4">
                       <Switch
@@ -481,6 +493,7 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
                 )}
                 <div className="flex justify-center">
                   <Calendar
+                    locale={getLocale(lc)}
                     mode="range"
                     onSelect={(value: { from?: Date; to?: Date } | undefined) => {
                       if (value?.from != null) {
@@ -521,7 +534,7 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
                 }}
                 variant="outline"
               >
-                Cancel
+                {t('Cancel')}
               </Button>
               <Button
                 onClick={() => {
@@ -534,7 +547,7 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
                   }
                 }}
               >
-                Update
+                {t('Update')}
               </Button>
             </div>
           </DrawerFooter>

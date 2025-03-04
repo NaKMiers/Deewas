@@ -1,17 +1,18 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { deleteBudget, updateBudget } from '@/lib/reducers/budgetReducer'
 import { checkLevel, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
 import { deleteBudgetApi } from '@/requests/budgetRequests'
 import { differenceInDays } from 'date-fns'
 import { LucideEllipsis, LucideLoaderCircle, LucidePencil, LucideTrash } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateBudgetDrawer from './dialogs/UpdateBudgetDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
-import { deleteBudget, updateBudget } from '@/lib/reducers/budgetReducer'
 
 interface IBudgetCardProps {
   begin: Date | string
@@ -23,6 +24,7 @@ interface IBudgetCardProps {
 function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('budgetCard')
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -39,7 +41,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
   const handleDeleteBudget = useCallback(async () => {
     // start deleting
     setDeleting(true)
-    toast.loading('Deleting budget...', { id: 'delete-budget' })
+    toast.loading(t('Deleting budget') + '...', { id: 'delete-budget' })
 
     try {
       const { budget: b, message } = await deleteBudgetApi(budget._id)
@@ -53,7 +55,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
       // stop deleting
       setDeleting(false)
     }
-  }, [dispatch, budget._id])
+  }, [dispatch, budget._id, t])
 
   return (
     <div className={cn('rounded-md border px-3 pb-8 pt-2', className)}>
@@ -88,15 +90,15 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
                     className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
                   >
                     <LucidePencil size={16} />
-                    Edit
+                    {t('Edit')}
                   </Button>
                 }
               />
 
               <ConfirmDialog
-                label="Delete Budget"
-                desc="Are you sure you want to delete this budget?"
-                confirmLabel="Delete"
+                label={t('Delete Budget')}
+                desc={t('Are you sure you want to delete this budget?')}
+                confirmLabel={t('Delete')}
                 onConfirm={handleDeleteBudget}
                 trigger={
                   <Button
@@ -104,7 +106,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
                     className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
                   >
                     <LucideTrash size={16} />
-                    Delete
+                    {t('Delete')}
                   </Button>
                 }
               />
@@ -128,7 +130,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
           />
           {currency && (
             <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap font-body text-sm font-semibold tracking-wider">
-              Left {formatCurrency(currency, budget.total - budget.amount)}
+              {t('Left')} {formatCurrency(currency, budget.total - budget.amount)}
             </span>
           )}
           <div
@@ -136,7 +138,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
             style={{ left: (spent / length) * 100 + '%' }}
           >
             <div className="absolute left-1/2 top-7 -translate-x-1/2 rounded-sm bg-primary/10 px-0.5 py-0.5 text-[10px]">
-              Today
+              {t('Today')}
               <div className="absolute bottom-full left-1/2 h-0 w-0 -translate-x-1/2 border-x-4 border-b-4 border-x-transparent border-b-neutral-800 text-xs"></div>
             </div>
           </div>

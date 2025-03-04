@@ -64,11 +64,6 @@ export const initCategories = {
       type: 'expense',
     },
     {
-      name: 'Shopping',
-      icon: '🛍️',
-      type: 'expense',
-    },
-    {
       name: 'Health',
       icon: '🏥',
       type: 'expense',

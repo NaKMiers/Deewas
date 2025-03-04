@@ -6,6 +6,7 @@ import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
 import { deleteCategoryApi, getMyCategoriesApi } from '@/requests'
 import { LucidePencil, LucidePlusSquare, LucideX } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown, LuLoaderCircle } from 'react-icons/lu'
@@ -29,8 +30,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from './ui/drawer'
-import { Skeleton } from './ui/skeleton'
 import { Separator } from './ui/separator'
+import { Skeleton } from './ui/skeleton'
 
 interface CategoryPickerProps {
   category?: ICategory
@@ -41,6 +42,9 @@ interface CategoryPickerProps {
 }
 
 function CategoryPicker({ category, type, isExcept, onChange, className = '' }: CategoryPickerProps) {
+  // hooks
+  const t = useTranslations('categoryPicker')
+
   // states
   const [open, setOpen] = useState<boolean>(false)
   const [categories, setCategories] = useState<ICategory[]>([])
@@ -70,12 +74,12 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
       setCategories(categories)
     } catch (err: any) {
       console.error(err)
-      toast.error('Failed to get categories')
+      toast.error(t('Failed to get categories'))
     } finally {
       // stop loading
       setGetting(false)
     }
-  }, [])
+  }, [t])
 
   // initially get user categories
   useEffect(() => {
@@ -125,7 +129,7 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
                   <span>{selectedCategory.icon}</span> {selectedCategory.name}
                 </p>
               ) : (
-                'Select Category'
+                t('Select Category')
               )}{' '}
               <LuChevronsUpDown size={18} />
             </Button>
@@ -137,15 +141,17 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
           <DrawerContent className="w-full p-0 shadow-md">
             <div className="mx-auto w-full max-w-sm px-21/2">
               <DrawerHeader>
-                <DrawerTitle className="text-center">Select Category</DrawerTitle>
+                <DrawerTitle className="text-center">{t('Select Category')}</DrawerTitle>
                 <DrawerDescription className="text-center">
-                  Wallets are used to group your categories
+                  {t('Categories are used to group your transactions')}
                 </DrawerDescription>
               </DrawerHeader>
 
               {/* Search Bar */}
               <Command className="rounded-lg border shadow-md">
-                <CommandInput placeholder="Find a category..." />
+                <CommandInput placeholder={t('Find a category') + '...'} />
+
+                {/* MARK: Create Category */}
                 <CreateCategoryDrawer
                   update={category => {
                     // update categories picker list
@@ -165,12 +171,12 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
                       className="mb-0.5 flex w-full justify-start gap-2 rounded-none text-left text-sm"
                     >
                       <LucidePlusSquare size={18} />
-                      Create Category
+                      {t('Create Category')}
                     </Button>
                   }
                 />
                 <CommandList>
-                  <CommandEmpty>No results found.</CommandEmpty>
+                  <CommandEmpty>{t('No results found')}.</CommandEmpty>
                   <CommandSeparator autoFocus={false} />
                   {categories
                     .filter(c => c.type === type)
@@ -195,7 +201,7 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
                           <span>{category.icon}</span> {category.name}
                         </Button>
 
-                        {/* Update Category */}
+                        {/* MARK: Update Category */}
                         {category.deletable && (
                           <UpdateCategoryDrawer
                             category={category}
@@ -213,13 +219,13 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
                           />
                         )}
 
-                        {/* Delete Category */}
+                        {/* MARK: Delete Category */}
                         {category.deletable && (
                           <ConfirmDialog
-                            label="Delete category"
-                            desc={`Are you sure you want to delete ${category.name} category?`}
-                            confirmLabel="Delete"
-                            cancelLabel="Cancel"
+                            label={t('Delete category')}
+                            desc={`${t('Are you sure you want to delete')} ${category.name}?`}
+                            confirmLabel={t('Delete')}
+                            cancelLabel={t('Cancel')}
                             onConfirm={() => handleDeleteCategory(category._id)}
                             disabled={deleting === category._id}
                             className="!h-auto !w-auto"

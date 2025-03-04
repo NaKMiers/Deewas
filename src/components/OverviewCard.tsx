@@ -3,6 +3,7 @@ import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
 import { LucideChevronDown, LucideEye } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import { Button } from './ui/button'
 import { Card, CardContent } from './ui/card'
@@ -12,6 +13,9 @@ interface OverviewCardProps {
 }
 
 function OverviewCard({ className = '' }: OverviewCardProps) {
+  // hooks
+  const t = useTranslations('overviewCard')
+
   // store
   const wallets = useAppSelector(state => state.wallet.wallets).filter(wallet => !wallet.hide)
 
@@ -29,7 +33,7 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
   return (
     <Card
       className={cn(
-        'cursor-pointer overflow-hidden rounded-b-lg rounded-t-none border px-21/2 py-1 shadow-sm md:px-21',
+        'md:px-21 cursor-pointer overflow-hidden rounded-b-lg rounded-t-none border px-21/2 py-1 shadow-sm',
         className
       )}
       onClick={() => setCollapsed(!collapsed)}
@@ -37,7 +41,7 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
       <CardContent className="flex justify-between px-0 pb-2">
         <div>
           <Item
-            title="Total Balance"
+            title={t('Total Balance')}
             value={totalBalance}
             type="balance"
             isEye
@@ -48,25 +52,25 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
             className={`trans-300 flex flex-col overflow-hidden ${collapsed ? 'max-h-[300px]' : 'max-h-0'}`}
           >
             <Item
-              title="Income"
+              title={t('Income')}
               value={totalIncome}
               type="income"
               isShow={showValue}
             />
             <Item
-              title="Expense"
+              title={t('Expense')}
               value={totalExpense}
               type="expense"
               isShow={showValue}
             />
             <Item
-              title="Saving"
+              title={t('Saving')}
               value={totalSaving}
               type="saving"
               isShow={showValue}
             />
             <Item
-              title="Invest"
+              title={t('Invest')}
               value={totalInvest}
               type="invest"
               isShow={showValue}

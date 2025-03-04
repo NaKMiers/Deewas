@@ -10,6 +10,7 @@ import { formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
 import { differenceInDays } from 'date-fns'
+import { useLocale, useTranslations } from 'next-intl'
 import { memo } from 'react'
 
 interface IBudgetTabProps {
@@ -23,6 +24,8 @@ interface IBudgetTabProps {
 function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabProps) {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('budgetTab')
+  const locale = useLocale()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -38,9 +41,9 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
       className={cn(className)}
     >
       {/* Budget Overview */}
-      <Card className="flex flex-col items-center justify-center gap-21 rounded-md px-21/2 py-21 text-center md:px-21">
+      <Card className="md:px-21 flex flex-col items-center justify-center gap-21 rounded-md px-21/2 py-21 text-center">
         <div className="flex flex-col gap-21/2">
-          <p className="text-sm font-semibold text-muted-foreground">Amount you can spend</p>
+          <p className="text-sm font-semibold text-muted-foreground">{t('Amount you can spend')}</p>
           {currency && (
             <p className="text-4xl font-semibold text-green-500">
               {formatCurrency(currency, total - amount)}
@@ -53,36 +56,33 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
         </div>
 
         {currency && (
-          <div className="grid w-full grid-cols-2 items-center justify-evenly gap-1 gap-y-2 md:grid-cols-4">
+          <div className="md:grid-cols-4 grid w-full grid-cols-2 items-center justify-evenly gap-1 gap-y-2">
             <div className="flex-1">
               <p className="font-semibold">
                 {formatCompactNumber(formatCurrency(currency, total), true)}
               </p>
-              <p className="text-sm tracking-tight text-muted-foreground">Total budgets</p>
+              <p className="text-sm tracking-tight text-muted-foreground">{t('Total budgets')}</p>
             </div>
-            {/* <div className="h-6 w-0.5 bg-muted-foreground" /> */}
             <div className="flex-1">
               <p className="font-semibold">
                 {formatCompactNumber(formatCurrency(currency, amount), true)}
               </p>
-              <p className="text-sm tracking-tight text-muted-foreground">Total spent</p>
+              <p className="text-sm tracking-tight text-muted-foreground">{t('Total spent')}</p>
             </div>
-            {/* <div className="h-6 w-0.5 bg-muted-foreground" /> */}
             <div className="flex-1">
               <p className="font-semibold">
-                {daysLeft} day
-                {daysLeft !== 1 && 's'}
+                {daysLeft} {t('day')}
+                {daysLeft !== 1 && locale === 'en' && 's'}
               </p>
-              <p className="text-sm tracking-tight text-muted-foreground">End of month</p>
+              <p className="text-sm tracking-tight text-muted-foreground">{t('End of month')}</p>
             </div>
-            {/* <div className="h-6 w-0.5 bg-muted-foreground" /> */}
             <div className="flex-1">
               <p className="font-semibold">
                 {total - amount > 0
-                  ? formatCurrency(currency, (total - amount) / daysLeft) + '/day'
+                  ? formatCurrency(currency, (total - amount) / daysLeft) + '/' + t('day')
                   : formatCurrency(currency, 0)}
               </p>
-              <p className="text-sm tracking-tight text-muted-foreground">Daily limit</p>
+              <p className="text-sm tracking-tight text-muted-foreground">{t('Daily limit')}</p>
             </div>
           </div>
         )}
@@ -95,7 +95,7 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
               variant="default"
               className="rounded-full"
             >
-              Create Budget
+              {t('Create Budget')}
             </Button>
           }
         />

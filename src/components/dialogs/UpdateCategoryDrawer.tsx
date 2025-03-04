@@ -5,6 +5,7 @@ import { updateCategoryApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Dispatch, memo, ReactNode, SetStateAction, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -44,6 +45,9 @@ function UpdateCategoryDrawer({
   load,
   className = '',
 }: UpdateCategoryDrawerProps) {
+  // hooks
+  const t = useTranslations('updateCategoryDrawer')
+
   // form
   const {
     register,
@@ -51,7 +55,6 @@ function UpdateCategoryDrawer({
     formState: { errors },
     setError,
     setValue,
-    control,
     clearErrors,
     watch,
     reset,
@@ -77,14 +80,14 @@ function UpdateCategoryDrawer({
       if (!data.name.trim()) {
         setError('name', {
           type: 'manual',
-          message: 'Name is required',
+          message: t('Name is required'),
         })
         isValid = false
       }
 
       return isValid
     },
-    [setError]
+    [setError, t]
   )
 
   // update category
@@ -97,7 +100,7 @@ function UpdateCategoryDrawer({
       if (load) {
         load(true)
       }
-      toast.loading('Updating category...', { id: 'update-category' })
+      toast.loading(t('Updating category') + '...', { id: 'update-category' })
 
       try {
         const { category: c, message } = await updateCategoryApi(category._id, { ...data })
@@ -120,7 +123,7 @@ function UpdateCategoryDrawer({
         }
       }
     },
-    [handleValidate, load, reset, update, category._id]
+    [handleValidate, load, reset, update, category._id, t]
   )
 
   return (
@@ -134,25 +137,25 @@ function UpdateCategoryDrawer({
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
             <DrawerTitle className="text-center">
-              Update{' '}
+              {t('Update')}{' '}
               {category.type && (
-                <span className={cn(checkTranType(category.type).color)}>{category.type}</span>
+                <span className={cn(checkTranType(category.type).color)}>{t(category.type)}</span>
               )}{' '}
-              category
+              {t('category')}
             </DrawerTitle>
             <DrawerDescription className="text-center">
-              Categories are used to group your{' '}
+              {t('Categories are used to group your')}{' '}
               {category.type && (
-                <span className={cn(checkTranType(category.type).color)}>{category.type}</span>
+                <span className={cn(checkTranType(category.type).color)}>{t(category.type)}</span>
               )}{' '}
-              transactions
+              {t('transactions')}
             </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
             <CustomInput
               id="name"
-              label="Name"
+              label={t('Name')}
               disabled={saving}
               register={register}
               errors={errors}
@@ -162,7 +165,7 @@ function UpdateCategoryDrawer({
 
             <div className="mt-3 text-xs">
               <p className="font-semibold">
-                Icon <span className="font-normal">(optional)</span>
+                Icon <span className="font-normal">({t('optional')})</span>
               </p>
 
               <Dialog
@@ -176,7 +179,7 @@ function UpdateCategoryDrawer({
                     ) : (
                       <LucideCircleOff size={48} />
                     )}
-                    <p className="mt-1 text-xs text-muted-foreground">Click to select</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t('Click to select')}</p>
                   </button>
                 </DialogTrigger>
 
@@ -187,8 +190,10 @@ function UpdateCategoryDrawer({
                 >
                   <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                     <DialogHeader className="mb-21/2">
-                      <DialogTitle className="text-center">Select Icon</DialogTitle>
-                      <DialogDescription>Icon will be used to represent your category</DialogDescription>
+                      <DialogTitle className="text-center">{t('Select Icon')}</DialogTitle>
+                      <DialogDescription className="text-center">
+                        {t('Icon will be used to represent your category')}
+                      </DialogDescription>
                     </DialogHeader>
 
                     <Picker
@@ -202,7 +207,7 @@ function UpdateCategoryDrawer({
                 </DialogContent>
               </Dialog>
               <p className="mt-2 text-muted-foreground">
-                This is how your category will appear in the app
+                {t('This is how your category will appear in the app')}
               </p>
             </div>
           </div>
@@ -218,7 +223,7 @@ function UpdateCategoryDrawer({
                     reset()
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DrawerClose>
               <Button
@@ -232,7 +237,7 @@ function UpdateCategoryDrawer({
                     className="animate-spin text-muted-foreground"
                   />
                 ) : (
-                  'Save'
+                  t('Save')
                 )}
               </Button>
             </div>

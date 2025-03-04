@@ -18,6 +18,7 @@ import {
   LucideTrash,
 } from 'lucide-react'
 import moment from 'moment-timezone'
+import { useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -38,6 +39,7 @@ function TransactionCategoryGroup({
 }: ITransactionCategoryGroupProps) {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('transactionCategoryGroup')
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -72,7 +74,7 @@ function TransactionCategoryGroup({
               className="flex h-7 items-center gap-1.5 rounded-md px-2 text-xs"
             >
               <LucidePlusSquare />
-              Add Transaction
+              {t('Add Transaction')}
             </Button>
           }
         />
@@ -82,7 +84,7 @@ function TransactionCategoryGroup({
       <div className="my-1.5 pl-2">
         <div className="flex flex-col gap-0 border-l">
           {transactions.map(transaction => (
-            <Transaction
+            <TransactionItem
               transaction={transaction}
               key={transaction._id}
             />
@@ -100,9 +102,10 @@ interface ITransactionProps {
   className?: string
 }
 
-function Transaction({ transaction, className = '' }: ITransactionProps) {
+function TransactionItem({ transaction, className = '' }: ITransactionProps) {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('transactionItem')
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -114,7 +117,7 @@ function Transaction({ transaction, className = '' }: ITransactionProps) {
   const handleDeleteTransaction = useCallback(async () => {
     // start loading
     setDeleting(true)
-    toast.loading('Deleting transaction...', { id: 'delete-transaction' })
+    toast.loading(t('Deleting transaction') + '...', { id: 'delete-transaction' })
 
     try {
       const { transaction: tx, message } = await deleteTransactionApi(transaction._id)
@@ -122,13 +125,13 @@ function Transaction({ transaction, className = '' }: ITransactionProps) {
 
       dispatch(deleteTransaction(tx))
     } catch (err: any) {
-      toast.error('Failed to delete transaction', { id: 'delete-transaction' })
+      toast.error(t('Failed to delete transaction'), { id: 'delete-transaction' })
       console.log(err)
     } finally {
       // stop loading
       setDeleting(false)
     }
-  }, [dispatch, transaction._id])
+  }, [dispatch, transaction._id, t])
 
   return (
     <div className={cn('flex w-full items-center justify-between gap-2 pl-2', className)}>
@@ -176,15 +179,15 @@ function Transaction({ transaction, className = '' }: ITransactionProps) {
                     className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
                   >
                     <LucidePencil size={16} />
-                    Edit
+                    {t('Edit')}
                   </Button>
                 }
               />
 
               <ConfirmDialog
-                label="Delete Transaction"
-                desc="Are you sure you want to delete this transaction?"
-                confirmLabel="Delete"
+                label={t('Delete Transaction')}
+                desc={t('Are you sure you want to delete this transaction?')}
+                confirmLabel={t('Delete')}
                 onConfirm={handleDeleteTransaction}
                 trigger={
                   <Button
@@ -192,7 +195,7 @@ function Transaction({ transaction, className = '' }: ITransactionProps) {
                     className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
                   >
                     <LucideTrash size={16} />
-                    Delete
+                    {t('Delete')}
                   </Button>
                 }
               />

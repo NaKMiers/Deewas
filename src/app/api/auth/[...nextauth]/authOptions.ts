@@ -71,7 +71,7 @@ const authOptions = {
           throw new Error('Incorrect username or email')
         }
 
-        // // exclude password from user who have just logined
+        // // exclude password from user who have just logged in
         const { password: _, avatar: image, ...otherDetails } = user
 
         // return to session callback
@@ -174,19 +174,20 @@ const authOptions = {
             user: newUser._id,
           }))
 
+        // Insert default categories
+        await CategoryModel.insertMany(categories)
+
         await Promise.all([
-          // initially create personal wallet
+          // create initial wallet
           WalletModel.create({
             user: newUser._id,
             name: 'Cash',
-            icon: '⭐',
+            icon: '💰',
           }),
           // initially create settings
           SettingsModel.create({
             user: newUser._id,
           }),
-          // Insert default categories
-          CategoryModel.insertMany(categories),
         ])
 
         return true

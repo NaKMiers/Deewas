@@ -13,7 +13,7 @@ import {
   LucidePencil,
   LucideTrash,
 } from 'lucide-react'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
@@ -33,6 +33,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
   const router = useRouter()
   const locale = useLocale()
   const dispatch = useAppDispatch()
+  const t = useTranslations('walletCard')
 
   // store
   const { wallets } = useAppSelector(state => state.wallet)
@@ -47,7 +48,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
   const handleDeleteWallet = useCallback(async () => {
     // start deleting
     setDeleting(true)
-    toast.loading('Deleting wallet...', { id: 'delete-wallet' })
+    toast.loading(t('Deleting wallet') + '...', { id: 'delete-wallet' })
 
     try {
       const { wallet: w, message } = await deleteWalletApi(wallet._id)
@@ -65,7 +66,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
       // stop deleting
       setDeleting(false)
     }
-  }, [wallets, dispatch, wallet._id])
+  }, [dispatch, wallet._id, wallets, , t])
 
   // toggle hide
   const handleChangeHide = useCallback(
@@ -113,6 +114,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent onClick={e => e.stopPropagation()}>
+                {/* MARK: Hide */}
                 <Button
                   variant="ghost"
                   className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
@@ -122,8 +124,10 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
                     onCheckedChange={handleChangeHide}
                     className="bg-gray-300 data-[state=checked]:bg-violet-500"
                   />
-                  Hide
+                  {t('Hide')}
                 </Button>
+
+                {/* MARK: Edit */}
                 <UpdateWalletDrawer
                   update={wallet => dispatch(updateWallet(wallet))}
                   wallet={wallet}
@@ -134,17 +138,18 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
                       className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
                     >
                       <LucidePencil size={16} />
-                      Edit
+                      {t('Edit')}
                     </Button>
                   }
                 />
 
+                {/* MARK: Delete */}
                 <ConfirmDialog
-                  label="Delete Wallet"
+                  label={t('Delete Wallet')}
                   desc={
                     wallets.length > 1
-                      ? 'Are you sure you want to delete this wallet?'
-                      : 'Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe. Are you sure you want to do this?'
+                      ? t('Are you sure you want to delete this wallet?')
+                      : t('deleteOnlyWalletMessage')
                   }
                   confirmLabel={wallets.length > 1 ? 'Delete' : 'Clear'}
                   onConfirm={handleDeleteWallet}
@@ -154,7 +159,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
                       className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
                     >
                       <LucideTrash size={16} />
-                      Delete
+                      {t('Delete')}
                     </Button>
                   }
                 />
@@ -172,9 +177,10 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
         </CardTitle>
       </CardHeader>
 
+      {/* Content */}
       <CardContent className="flex flex-col gap-2 px-4 pb-2">
         <Item
-          title="Balance"
+          title={t('Balance')}
           value={wallet.income - wallet.expense}
           type="balance"
         />
@@ -182,28 +188,29 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
           className={`trans-300 flex flex-col gap-2 overflow-hidden ${collapsed ? 'max-h-[300px]' : 'max-h-0'}`}
         >
           <Item
-            title="Income"
+            title={t('Income')}
             value={wallet.income}
             type="income"
           />
           <Item
-            title="Expense"
+            title={t('Expense')}
             value={wallet.expense}
             type="expense"
           />
           <Item
-            title="Saving"
+            title={t('Saving')}
             value={wallet.saving}
             type="saving"
           />
           <Item
-            title="Invest"
+            title={t('Invest')}
             value={wallet.invest}
             type="invest"
           />
         </div>
       </CardContent>
 
+      {/* Collapse Button */}
       <Button
         className={cn(
           'flex h-6 w-full items-center justify-center rounded-none bg-primary py-1 text-secondary'

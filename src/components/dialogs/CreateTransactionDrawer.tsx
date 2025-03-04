@@ -29,6 +29,8 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 import WalletSelection from '../WalletSelection'
+import { useTranslations } from 'next-intl'
+import { Separator } from '../ui/separator'
 
 interface CreateTransactionDrawerProps {
   type?: TransactionType
@@ -47,6 +49,9 @@ function CreateTransactionDrawer({
   refetch,
   className = '',
 }: CreateTransactionDrawerProps) {
+  // hooks
+  const t = useTranslations('createTransactionDrawer')
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
   const { curWallet } = useAppSelector(state => state.wallet)
@@ -76,7 +81,7 @@ function CreateTransactionDrawer({
       categoryId: category?._id || '',
       amount: '',
       date: moment().format('YYYY-MM-DD'),
-      type: category?.type || type || '',
+      type: category?.type || type || 'expense',
     },
   })
   const form = watch()
@@ -91,7 +96,7 @@ function CreateTransactionDrawer({
       if (!data.walletId) {
         setError('walletId', {
           type: 'manual',
-          message: 'Wallet is required',
+          message: t('Wallet is required'),
         })
         isValid = false
       }
@@ -100,7 +105,7 @@ function CreateTransactionDrawer({
       if (!data.name) {
         setError('name', {
           type: 'manual',
-          message: 'Name is required',
+          message: t('Name is required'),
         })
         isValid = false
       }
@@ -109,7 +114,7 @@ function CreateTransactionDrawer({
       if (!data.amount) {
         setError('amount', {
           type: 'manual',
-          message: 'Amount is required',
+          message: t('Amount is required'),
         })
         isValid = false
       }
@@ -118,7 +123,7 @@ function CreateTransactionDrawer({
       if (!data.type) {
         setError('type', {
           type: 'manual',
-          message: 'Type is required',
+          message: t('Type is required'),
         })
         isValid = false
       }
@@ -127,7 +132,7 @@ function CreateTransactionDrawer({
       if (!data.categoryId) {
         setError('categoryId', {
           type: 'manual',
-          message: 'Category is required',
+          message: t('Category is required'),
         })
         isValid = false
       }
@@ -136,14 +141,14 @@ function CreateTransactionDrawer({
       if (!data.date) {
         setError('date', {
           type: 'manual',
-          message: 'Date is required',
+          message: t('Date is required'),
         })
         isValid = false
       }
 
       return isValid
     },
-    [setError]
+    [setError, t]
   )
 
   // create transaction
@@ -155,7 +160,7 @@ function CreateTransactionDrawer({
 
       // start loading
       setSaving(true)
-      toast.loading('Creating transaction...', { id: 'create-transaction' })
+      toast.loading(t('Creating transaction') + '...', { id: 'create-transaction' })
 
       try {
         const { transaction, message } = await createTransactionApi({
@@ -171,14 +176,14 @@ function CreateTransactionDrawer({
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error('Failed to create transaction', { id: 'create-transaction' })
+        toast.error(t('Failed to create transaction'), { id: 'create-transaction' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, update, locale]
+    [handleValidate, reset, refetch, update, locale, t]
   )
 
   return (
@@ -192,22 +197,22 @@ function CreateTransactionDrawer({
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
             <DrawerTitle className="text-center">
-              Create{' '}
-              {form.type && <span className={cn(checkTranType(form.type).color)}>{form.type}</span>}{' '}
-              transaction
+              {t('Create')}{' '}
+              {form.type && <span className={cn(checkTranType(form.type).color)}>{t(form.type)}</span>}{' '}
+              {t('transaction')}
             </DrawerTitle>
             <DrawerDescription className="text-center">
-              Transactions keep track of your finances effectively.
+              {t('Transactions keep track of your finances effectively')}
             </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
-            {/* Wallet */}
+            {/* MARK: Wallet */}
             <div>
               <p
                 className={cn('mb-1 text-xs font-semibold', errors.walletId?.message && 'text-rose-500')}
               >
-                Wallet
+                {t('Wallet')}
               </p>
               <div onFocus={() => clearErrors('walletId')}>
                 <WalletSelection
@@ -222,10 +227,10 @@ function CreateTransactionDrawer({
               )}
             </div>
 
-            {/* Name */}
+            {/* MARK: Name */}
             <CustomInput
               id="name"
-              label="Name"
+              label={t('Name')}
               disabled={saving}
               register={register}
               errors={errors}
@@ -233,11 +238,11 @@ function CreateTransactionDrawer({
               onFocus={() => clearErrors('name')}
             />
 
-            {/* Amount */}
+            {/* MARK: Amount */}
             {currency && (
               <CustomInput
                 id="amount"
-                label="Amount"
+                label={t('Amount')}
                 disabled={saving}
                 register={register}
                 errors={errors}
@@ -248,11 +253,11 @@ function CreateTransactionDrawer({
               />
             )}
 
-            {/* Type */}
+            {/* MARK: Type */}
             {!category && !type && (
               <CustomInput
                 id="type"
-                label="Type"
+                label={t('Type')}
                 disabled={saving}
                 register={register}
                 errors={errors}
@@ -260,19 +265,19 @@ function CreateTransactionDrawer({
                 control={control}
                 options={[
                   {
-                    label: 'Expense',
+                    label: t('Expense'),
                     value: 'expense',
                   },
                   {
-                    label: 'Income',
+                    label: t('Income'),
                     value: 'income',
                   },
                   {
-                    label: 'Saving',
+                    label: t('Saving'),
                     value: 'saving',
                   },
                   {
-                    label: 'Invest',
+                    label: t('Invest'),
                     value: 'invest',
                   },
                 ]}
@@ -280,7 +285,7 @@ function CreateTransactionDrawer({
               />
             )}
 
-            {/* Category */}
+            {/* MARK: Category */}
             <div className="mt-1.5 flex flex-1 flex-col">
               <p
                 className={cn(
@@ -288,7 +293,7 @@ function CreateTransactionDrawer({
                   errors.categoryId?.message && 'text-rose-500'
                 )}
               >
-                Category
+                {t('Category')}
               </p>
               <div onFocus={() => clearErrors('categoryId')}>
                 <CategoryPicker
@@ -304,9 +309,9 @@ function CreateTransactionDrawer({
               )}
             </div>
 
-            {/* Date */}
+            {/* MARK: Date */}
             <div className="mt-1.5 flex flex-1 flex-col">
-              <p className="mb-1 text-xs font-semibold">Date</p>
+              <p className="mb-1 text-xs font-semibold">{t('Date')}</p>
               <div onFocus={() => clearErrors('date')}>
                 <Drawer>
                   <DrawerTrigger className="w-full">
@@ -318,9 +323,9 @@ function CreateTransactionDrawer({
 
                   <DrawerContent className="w-full overflow-hidden rounded-md p-0 outline-none">
                     <DrawerHeader>
-                      <DrawerTitle className="text-center">Select Date</DrawerTitle>
+                      <DrawerTitle className="text-center">{t('Select Date')}</DrawerTitle>
                       <DrawerDescription className="text-center">
-                        When did this transaction happen?
+                        {t('When did this transaction happen?')}
                       </DrawerDescription>
                     </DrawerHeader>
 
@@ -335,6 +340,8 @@ function CreateTransactionDrawer({
                         initialFocus
                       />
                     </div>
+
+                    <div className="pt-8" />
                   </DrawerContent>
                 </Drawer>
               </div>
@@ -346,6 +353,7 @@ function CreateTransactionDrawer({
             </div>
           </div>
 
+          {/* MARK: Footer */}
           <DrawerFooter className="mb-21 px-0">
             <div className="mt-3 flex items-center justify-end gap-21/2">
               <DrawerClose>
@@ -357,7 +365,7 @@ function CreateTransactionDrawer({
                     reset()
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DrawerClose>
               <Button
@@ -372,7 +380,7 @@ function CreateTransactionDrawer({
                     className="animate-spin text-muted-foreground"
                   />
                 ) : (
-                  'Save'
+                  t('Save')
                 )}
               </Button>
             </div>

@@ -26,14 +26,20 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 import { IFullBudget } from '@/models/BudgetModel'
+import { useTranslations } from 'next-intl'
+import { ICategory } from '@/models/CategoryModel'
 
 interface CreateBudgetDrawerProps {
   trigger: ReactNode
   update?: (budget: IFullBudget) => void
+  initCategory?: ICategory
   className?: string
 }
 
-function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDrawerProps) {
+function CreateBudgetDrawer({ trigger, initCategory, update, className = '' }: CreateBudgetDrawerProps) {
+  // hooks
+  const t = useTranslations('createBudgetDrawer')
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -52,7 +58,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      categoryId: '',
+      categoryId: initCategory?._id || '',
       total: '',
       begin: moment().startOf('month').toDate(),
       end: moment().endOf('month').toDate(),
@@ -75,7 +81,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
       if (!data.total) {
         setError('total', {
           type: 'manual',
-          message: 'Amount is required',
+          message: t('Amount is required'),
         })
         isValid = false
       }
@@ -84,7 +90,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
       if (data.total <= 0) {
         setError('total', {
           type: 'manual',
-          message: 'Amount must be greater than 0',
+          message: t('Amount must be greater than 0'),
         })
         isValid = false
       }
@@ -93,7 +99,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
       if (!data.categoryId) {
         setError('categoryId', {
           type: 'manual',
-          message: 'Category is required',
+          message: t('Category is required'),
         })
         isValid = false
       }
@@ -102,7 +108,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
       if (!data.begin) {
         setError('begin', {
           type: 'manual',
-          message: 'From and To date is required',
+          message: t('From and To date is required'),
         })
         isValid = false
       }
@@ -111,17 +117,17 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
       if (!data.end) {
         setError('end', {
           type: 'manual',
-          message: 'From and To date is required',
+          message: t('From and To date is required'),
         })
         isValid = false
       }
 
       return isValid
     },
-    [setError]
+    [setError, t]
   )
 
-  // create transaction
+  // create budget
   const handleCreateBudget: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form
@@ -129,7 +135,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
 
       // start loading
       setSaving(true)
-      toast.loading('Creating transaction...', { id: 'create-transaction' })
+      toast.loading(t('Creating budget') + '...', { id: 'create-budget' })
 
       try {
         const { budget, message } = await createBudgetApi({
@@ -141,18 +147,18 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
 
         if (update) update(budget)
 
-        toast.success(message, { id: 'create-transaction' })
+        toast.success(message, { id: 'create-budget' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error('Failed to create transaction', { id: 'create-transaction' })
+        toast.error(t('Failed to create budget'), { id: 'create-budget' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, locale]
+    [handleValidate, reset, update, locale, t]
   )
 
   return (
@@ -164,18 +170,20 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
 
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
+          {/* MARK: Header */}
           <DrawerHeader>
-            <DrawerTitle className="text-center">Create Budget</DrawerTitle>
+            <DrawerTitle className="text-center">{t('Create Budget')}</DrawerTitle>
             <DrawerDescription className="text-center">
-              Budget helps you manage money wisely
+              {t('Budget helps you manage money wisely')}
             </DrawerDescription>
           </DrawerHeader>
 
+          {/* MARK: Total */}
           <div className="flex flex-col gap-3">
             {currency && (
               <CustomInput
                 id="total"
-                label="Total"
+                label={t('Total')}
                 disabled={saving}
                 register={register}
                 errors={errors}
@@ -186,7 +194,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
               />
             )}
 
-            {/* Category */}
+            {/* MARK: Category */}
             <div className="mt-1.5 flex flex-1 flex-col">
               <p
                 className={cn(
@@ -194,10 +202,11 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
                   errors.categoryId?.message && 'text-rose-500'
                 )}
               >
-                Category
+                {t('Category')}
               </p>
               <div onFocus={() => clearErrors('categoryId')}>
                 <CategoryPicker
+                  category={initCategory}
                   onChange={(categoryId: string) => setValue('categoryId', categoryId)}
                   type="expense"
                 />
@@ -209,7 +218,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
               )}
             </div>
 
-            {/* Budget */}
+            {/* MARK: Budget */}
             <div className="mt-1.5 flex flex-1 flex-col">
               <p
                 className={cn(
@@ -217,7 +226,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
                   (errors.begin || errors.end)?.message && 'text-rose-500'
                 )}
               >
-                From - To
+                {t('From - To')}
               </p>
               <div
                 onFocus={() => {
@@ -249,6 +258,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
             </div>
           </div>
 
+          {/* MARK: Drawer Footer */}
           <DrawerFooter className="mb-21 px-0">
             <div className="mt-3 flex items-center justify-end gap-21/2">
               <DrawerClose>
@@ -260,7 +270,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
                     reset()
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DrawerClose>
               <Button
@@ -275,7 +285,7 @@ function CreateBudgetDrawer({ trigger, update, className = '' }: CreateBudgetDra
                     className="animate-spin text-muted-foreground"
                   />
                 ) : (
-                  'Save'
+                  t('Save')
                 )}
               </Button>
             </div>

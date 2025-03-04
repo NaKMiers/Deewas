@@ -141,7 +141,7 @@ function AccountPage() {
               className="md:p-21 justify-normal rounded-md border p-21/2 text-sm font-semibold capitalize"
             >
               {resolvedTheme === 'light' ? <Sun /> : <Moon />}
-              {theme}
+              {t(theme)}
             </Button>
           </DropdownMenuTrigger>
 

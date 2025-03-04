@@ -121,7 +121,7 @@ function TransactionsPage() {
       {/* MARK: Top */}
       <div className="md:px-21 flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4">
         <h2 className="text-lg font-bold">
-          {t('Transactions')} <span className="text-muted-foreground/50">{'of wallet'}</span>
+          {t('Transactions')} <span className="text-muted-foreground/50">{t('of wallet')}</span>
         </h2>
 
         <WalletSelection

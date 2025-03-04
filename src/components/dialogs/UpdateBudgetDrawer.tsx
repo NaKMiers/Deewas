@@ -9,6 +9,7 @@ import { IFullBudget } from '@/models/BudgetModel'
 import { updateBudgetApi } from '@/requests/budgetRequests'
 import { LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
+import { useTranslations } from 'next-intl'
 import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -35,6 +36,9 @@ interface UpdateBudgetDrawerProps {
 }
 
 function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateBudgetDrawerProps) {
+  // hooks
+  const t = useTranslations('updateBudgetDrawer')
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
@@ -74,7 +78,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
       if (!data.total) {
         setError('total', {
           type: 'manual',
-          message: 'Amount is required',
+          message: t('Amount is required'),
         })
         isValid = false
       }
@@ -83,7 +87,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
       if (data.total <= 0) {
         setError('total', {
           type: 'manual',
-          message: 'Amount must be greater than 0',
+          message: t('Amount must be greater than 0'),
         })
         isValid = false
       }
@@ -92,7 +96,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
       if (!data.categoryId) {
         setError('categoryId', {
           type: 'manual',
-          message: 'Category is required',
+          message: t('Category is required'),
         })
         isValid = false
       }
@@ -101,7 +105,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
       if (!data.begin) {
         setError('begin', {
           type: 'manual',
-          message: 'From and To date is required',
+          message: t('From and To date is required'),
         })
         isValid = false
       }
@@ -110,14 +114,14 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
       if (!data.end) {
         setError('end', {
           type: 'manual',
-          message: 'From and To date is required',
+          message: t('From and To date is required'),
         })
         isValid = false
       }
 
       return isValid
     },
-    [setError]
+    [setError, t]
   )
 
   // update transaction
@@ -128,7 +132,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
 
       // start loading
       setSaving(true)
-      toast.loading('Updating budget...', { id: 'update-budget' })
+      toast.loading(t('Updating budget') + '...', { id: 'update-budget' })
 
       try {
         const { budget: b, message } = await updateBudgetApi(budget._id, {
@@ -144,14 +148,14 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error('Failed to update budget', { id: 'update-budget' })
+        toast.error(t('Failed to update budget'), { id: 'update-budget' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, budget._id, locale]
+    [handleValidate, reset, update, budget._id, locale, t]
   )
 
   return (
@@ -164,9 +168,9 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle className="text-center">Update Budget</DrawerTitle>
+            <DrawerTitle className="text-center">{t('Update Budget')}</DrawerTitle>
             <DrawerDescription className="text-center">
-              Budget helps you manage money wisely
+              {t('Budget helps you manage money wisely')}
             </DrawerDescription>
           </DrawerHeader>
 
@@ -174,7 +178,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
             {currency && (
               <CustomInput
                 id="total"
-                label="Total"
+                label={t('Total')}
                 disabled={saving}
                 register={register}
                 errors={errors}
@@ -185,70 +189,68 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
               />
             )}
 
-            <div className="mt-1 flex gap-4">
-              {/* Category */}
-              <div className="flex flex-1 flex-col">
-                <p
-                  className={cn(
-                    'mb-1 text-xs font-semibold',
-                    errors.categoryId?.message && 'text-rose-500'
-                  )}
-                >
-                  Category
-                </p>
-                <div onFocus={() => clearErrors('categoryId')}>
-                  <CategoryPicker
-                    category={budget.category}
-                    isExcept
-                    onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                    type="expense"
-                  />
-                </div>
-                {errors.categoryId?.message && (
-                  <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                    {errors.categoryId?.message?.toString()}
-                  </span>
+            {/* Category */}
+            <div className="mt-1.5 flex flex-1 flex-col">
+              <p
+                className={cn(
+                  'mb-1 text-xs font-semibold',
+                  errors.categoryId?.message && 'text-rose-500'
                 )}
+              >
+                {t('Category')}
+              </p>
+              <div onFocus={() => clearErrors('categoryId')}>
+                <CategoryPicker
+                  category={budget.category}
+                  isExcept
+                  onChange={(categoryId: string) => setValue('categoryId', categoryId)}
+                  type="expense"
+                />
               </div>
+              {errors.categoryId?.message && (
+                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                  {errors.categoryId?.message?.toString()}
+                </span>
+              )}
+            </div>
 
-              {/* Budget */}
-              <div className="flex flex-1 flex-col">
-                <p
-                  className={cn(
-                    'mb-1 text-xs font-semibold',
-                    (errors.begin || errors.end)?.message && 'text-rose-500'
-                  )}
-                >
-                  From - To
-                </p>
-                <div
-                  onFocus={() => {
-                    clearErrors('begin')
-                    clearErrors('end')
+            {/* Budget */}
+            <div className="mt-1.5 flex flex-1 flex-col">
+              <p
+                className={cn(
+                  'mb-1 text-xs font-semibold',
+                  (errors.begin || errors.end)?.message && 'text-rose-500'
+                )}
+              >
+                {t('From - To')}
+              </p>
+              <div
+                onFocus={() => {
+                  clearErrors('begin')
+                  clearErrors('end')
+                }}
+              >
+                <DateRangePicker
+                  initialDateFrom={dateRange.from}
+                  initialDateTo={dateRange.to}
+                  showCompare={false}
+                  onUpdate={values => {
+                    const { from, to } = values.range
+
+                    if (!from || !to) return
+
+                    setDateRange({ from, to })
+                    setValue('begin', from)
+                    setValue('end', to)
                   }}
-                >
-                  <DateRangePicker
-                    initialDateFrom={dateRange.from}
-                    initialDateTo={dateRange.to}
-                    showCompare={false}
-                    onUpdate={values => {
-                      const { from, to } = values.range
-
-                      if (!from || !to) return
-
-                      setDateRange({ from, to })
-                      setValue('begin', from)
-                      setValue('end', to)
-                    }}
-                    className="h-9 w-full"
-                  />
-                </div>
-                {(errors.begin || errors.end)?.message && (
-                  <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                    {(errors.begin || errors.end)?.message?.toString()}
-                  </span>
-                )}
+                  className="h-9 w-full"
+                />
               </div>
+              {(errors.begin || errors.end)?.message && (
+                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
+                  {(errors.begin || errors.end)?.message?.toString()}
+                </span>
+              )}
             </div>
           </div>
 
@@ -263,7 +265,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
                     reset()
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DrawerClose>
               <Button
@@ -278,7 +280,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
                     className="animate-spin text-muted-foreground"
                   />
                 ) : (
-                  'Save'
+                  t('Save')
                 )}
               </Button>
             </div>

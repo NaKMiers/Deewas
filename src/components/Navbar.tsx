@@ -11,6 +11,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { useAppDispatch } from '@/hooks/reduxHook'
+import { Link } from '@/i18n/navigation'
 import { addBudget } from '@/lib/reducers/budgetReducer'
 import { addCategory } from '@/lib/reducers/categoryReduce'
 import { refetching } from '@/lib/reducers/loadReducer'
@@ -30,38 +31,44 @@ import {
   LucideWalletCards,
 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { memo } from 'react'
 import CreateBudgetDrawer from './dialogs/CreateBudgetDrawer'
 import CreateCategoryDrawer from './dialogs/CreateCategoryDrawer'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import CreateWalletDrawer from './dialogs/CreateWalletDrawer'
 import { Button } from './ui/button'
-import { Link } from '@/i18n/navigation'
 
 function Navbar() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
   const dispatch = useAppDispatch()
+  const t = useTranslations('navbar')
 
   return (
     <nav className="fixed bottom-0 left-0 h-[70px] w-full bg-primary pb-2.5 text-secondary">
-      <div className="container flex h-full items-center justify-between gap-0.5">
+      <div className="container flex h-full items-center justify-between gap-0.5 text-center">
+        {/* Home */}
         <Link
           href="/"
           className="flex flex-1 flex-col items-center justify-center gap-0.5"
         >
           <LucideHouse size={18} />
-          <span className="text-xs font-semibold">Home</span>
+          <span className="text-xs font-semibold">{t('Home')}</span>
         </Link>
+
+        {/* Transactions */}
         <Link
           href="/transactions"
           className="flex flex-1 flex-col items-center justify-center gap-0.5"
         >
           <LucideWallet size={18} />
-          <span className="text-xs font-semibold">Transactions</span>
+          <span className="text-xs font-semibold">{t('Transactions')}</span>
         </Link>
 
+        {/* Creations */}
         <Drawer>
           <DrawerTrigger asChild>
             <button className="flex flex-1 flex-col items-center justify-center gap-0.5">
@@ -74,10 +81,10 @@ function Navbar() {
             <div className="mx-auto w-full max-w-sm">
               <DrawerHeader>
                 <DrawerTitle className="text-center">
-                  <p className="font-semibold">Welcome to Deewas</p>
+                  <p className="font-semibold">{t('Welcome to Deewas')}</p>
                 </DrawerTitle>
                 <DrawerDescription className="text-center">
-                  Take control of your daily finances
+                  {t('Take control of your daily finances')}
                 </DrawerDescription>
               </DrawerHeader>
 
@@ -90,7 +97,7 @@ function Navbar() {
                   trigger={
                     <Button variant="outline">
                       <LucideArrowLeftRight />
-                      Create Transaction
+                      {t('Create Transaction')}
                     </Button>
                   }
                 />
@@ -100,7 +107,7 @@ function Navbar() {
                   trigger={
                     <Button variant="outline">
                       <LucideChartPie />
-                      Create Budget
+                      {t('Create Budget')}
                     </Button>
                   }
                 />
@@ -110,7 +117,7 @@ function Navbar() {
                   trigger={
                     <Button variant="outline">
                       <LucideWalletCards />
-                      Create Wallet
+                      {t('Create Wallet')}
                     </Button>
                   }
                 />
@@ -120,7 +127,7 @@ function Navbar() {
                   trigger={
                     <Button variant="outline">
                       <LucideBookCopy />
-                      Create Category
+                      {t('Create Category')}
                     </Button>
                   }
                 />
@@ -128,20 +135,23 @@ function Navbar() {
 
               <DrawerFooter>
                 <DrawerClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button variant="outline">{t('Cancel')}</Button>
                 </DrawerClose>
               </DrawerFooter>
             </div>
           </DrawerContent>
         </Drawer>
 
+        {/* Budget */}
         <Link
           href="/budgets"
           className="flex flex-1 flex-col items-center justify-center gap-0.5"
         >
           <LucideChartPie size={18} />
-          <span className="text-xs font-semibold">Budget</span>
+          <span className="text-xs font-semibold">{t('Budgets')}</span>
         </Link>
+
+        {/* Account */}
         <Link
           href="/account"
           className="flex flex-1 flex-col items-center justify-center gap-0.5"
@@ -155,11 +165,11 @@ function Navbar() {
               alt="account"
             />
           </div>
-          <span className="text-xs font-semibold">Account</span>
+          <span className="text-xs font-semibold">{t('Account')}</span>
         </Link>
       </div>
     </nav>
   )
 }
 
-export default Navbar
+export default memo(Navbar)

@@ -17,8 +17,10 @@ import ConfirmDialog from './dialogs/ConfirmDialog'
 import UpdateCategoryDrawer from './dialogs/UpdateCategoryDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { useTranslations } from 'next-intl'
+import CreateBudgetDrawer from './dialogs/CreateBudgetDrawer'
 
-// MARK: WalletCategory
+// MARK: Category
 interface CategoryProps {
   category: ICategory
   className?: string
@@ -27,6 +29,7 @@ interface CategoryProps {
 function Category({ category, className = '' }: CategoryProps) {
   // hooks
   const dispatch = useAppDispatch()
+  const t = useTranslations('category')
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -42,7 +45,7 @@ function Category({ category, className = '' }: CategoryProps) {
   const handleDeleteCategory = useCallback(async () => {
     // start deleting
     setDeleting(true)
-    toast.loading('Deleting category...', { id: 'delete-category' })
+    toast.loading(t('Deleting category') + '...', { id: 'delete-category' })
 
     try {
       const { category: w, message } = await deleteCategoryApi(category._id)
@@ -56,7 +59,7 @@ function Category({ category, className = '' }: CategoryProps) {
       // stop deleting
       setDeleting(false)
     }
-  }, [dispatch, category._id])
+  }, [dispatch, category._id, t])
 
   return (
     <div
@@ -97,13 +100,18 @@ function Category({ category, className = '' }: CategoryProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <Button
-                  variant="ghost"
-                  className="flex h-8 w-full items-center justify-start gap-2 px-2 text-orange-500"
-                >
-                  <LucideChartPie size={16} />
-                  Set Budget
-                </Button>
+                <CreateBudgetDrawer
+                  initCategory={category}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-orange-500"
+                    >
+                      <LucideChartPie size={16} />
+                      {t('Set Budget')}
+                    </Button>
+                  }
+                />
 
                 <UpdateCategoryDrawer
                   category={category}
@@ -115,7 +123,7 @@ function Category({ category, className = '' }: CategoryProps) {
                       className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
                     >
                       <LucidePencil size={16} />
-                      Edit
+                      {t('Edit')}
                     </Button>
                   }
                 />
@@ -131,7 +139,7 @@ function Category({ category, className = '' }: CategoryProps) {
                       className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
                     >
                       <LucideTrash size={16} />
-                      Delete
+                      {t('Delete')}
                     </Button>
                   }
                 />

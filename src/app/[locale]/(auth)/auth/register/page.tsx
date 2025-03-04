@@ -23,7 +23,7 @@ function RegisterPage() {
   const router = useRouter()
   const locale = useLocale()
   const { setTheme, resolvedTheme } = useTheme()
-  const t = useTranslations()
+  const t = useTranslations('registerPage')
 
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -166,12 +166,12 @@ function RegisterPage() {
             {t('Register to Deewas')}
           </h1>
           <p className="text-center text-sm text-muted-foreground">
-            {t('Welcome! Please fill in the details to get started.')}
+            {t('Welcome! Please fill in the details to get started')}
           </p>
 
           <Separator className="my-8" />
 
-          <div className="grid grid-cols-1 items-center justify-center gap-2 md:grid-cols-3">
+          <div className="md:grid-cols-3 grid grid-cols-1 items-center justify-center gap-2">
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"

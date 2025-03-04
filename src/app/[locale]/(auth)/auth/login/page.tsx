@@ -119,7 +119,7 @@ function LoginPage() {
 
           <Separator className="my-8 h-0" />
 
-          <div className="grid grid-cols-1 items-center justify-center gap-2 md:grid-cols-3">
+          <div className="md:grid-cols-3 grid grid-cols-1 items-center justify-center gap-2">
             <Button
               variant={resolvedTheme === 'light' ? 'outline' : 'default'}
               className="h-8"

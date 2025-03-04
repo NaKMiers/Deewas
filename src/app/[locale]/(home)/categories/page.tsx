@@ -38,7 +38,7 @@ function CategoriesPage() {
         const { categories } = await getMyCategoriesApi()
         dispatch(setCategories(categories))
       } catch (err: any) {
-        toast.error(t('Failed to get wallet'))
+        toast.error(t('Failed to get categories'))
         console.error(err)
       } finally {
         // stop loading
@@ -66,7 +66,7 @@ function CategoriesPage() {
   }, [categories])
 
   return (
-    <div className="container p-21/2 pb-32 md:p-21">
+    <div className="md:p-21 container p-21/2 pb-32">
       {/* Top */}
       <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-bold">Categories</h2>

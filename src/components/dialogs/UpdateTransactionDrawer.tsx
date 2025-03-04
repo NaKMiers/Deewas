@@ -10,6 +10,7 @@ import { IWallet } from '@/models/WalletModel'
 import { updateTransactionApi } from '@/requests/transactionRequests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
+import { useTranslations } from 'next-intl'
 import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -42,6 +43,9 @@ function UpdateTransactionDrawer({
   update,
   className = '',
 }: UpdateTransactionDrawerProps) {
+  // hooks
+  const t = useTranslations('updateTransactionDrawer')
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -79,11 +83,20 @@ function UpdateTransactionDrawer({
     data => {
       let isValid = true
 
+      // wallet is required
+      if (!data.walletId) {
+        setError('walletId', {
+          type: 'manual',
+          message: t('Wallet is required'),
+        })
+        isValid = false
+      }
+
       // name is required
       if (!data.name) {
         setError('name', {
           type: 'manual',
-          message: 'Name is required',
+          message: t('Name is required'),
         })
         isValid = false
       }
@@ -92,7 +105,7 @@ function UpdateTransactionDrawer({
       if (!data.amount) {
         setError('amount', {
           type: 'manual',
-          message: 'Amount is required',
+          message: t('Amount is required'),
         })
         isValid = false
       }
@@ -101,7 +114,7 @@ function UpdateTransactionDrawer({
       if (!data.categoryId) {
         setError('categoryId', {
           type: 'manual',
-          message: 'Category is required',
+          message: t('Category is required'),
         })
         isValid = false
       }
@@ -110,14 +123,14 @@ function UpdateTransactionDrawer({
       if (!data.date) {
         setError('date', {
           type: 'manual',
-          message: 'Date is required',
+          message: t('Date is required'),
         })
         isValid = false
       }
 
       return isValid
     },
-    [setError]
+    [setError, t]
   )
 
   // update transaction
@@ -128,7 +141,7 @@ function UpdateTransactionDrawer({
 
       // start loading
       setSaving(true)
-      toast.loading('Updating transaction...', { id: 'update-transaction' })
+      toast.loading(t('Updating transaction') + '...', { id: 'update-transaction' })
 
       try {
         const { transaction: tx, message } = await updateTransactionApi(transaction._id, {
@@ -143,14 +156,14 @@ function UpdateTransactionDrawer({
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error('Failed to update transaction', { id: 'update-transaction' })
+        toast.error(t('Failed to update transaction'), { id: 'update-transaction' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, transaction._id, locale]
+    [handleValidate, reset, update, transaction._id, locale, t]
   )
 
   return (
@@ -164,21 +177,21 @@ function UpdateTransactionDrawer({
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
             <DrawerTitle className="text-center">
-              Update{' '}
+              {t('Update')}{' '}
               {transaction.type && (
-                <span className={cn(checkTranType(transaction.type).color)}>{transaction.type}</span>
+                <span className={cn(checkTranType(transaction.type).color)}>{t(transaction.type)}</span>
               )}{' '}
-              transaction
+              {t('transaction')}
             </DrawerTitle>
             <DrawerDescription className="text-center">
-              Transactions keep track of your finances effectively.
+              {t('Transactions keep track of your finances effectively')}
             </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
             {/* Wallet */}
             <div>
-              <p className="mb-1 text-xs font-semibold">Wallet</p>
+              <p className="mb-1 text-xs font-semibold">{t('Wallet')}</p>
               <WalletSelection
                 className="w-full justify-normal"
                 initWallet={transaction.wallet}
@@ -188,7 +201,7 @@ function UpdateTransactionDrawer({
 
             <CustomInput
               id="name"
-              label="Name"
+              label={t('Name')}
               disabled={saving}
               register={register}
               errors={errors}
@@ -199,7 +212,7 @@ function UpdateTransactionDrawer({
             {currency && (
               <CustomInput
                 id="amount"
-                label="Amount"
+                label={t('Amount')}
                 disabled={saving}
                 register={register}
                 errors={errors}
@@ -218,7 +231,7 @@ function UpdateTransactionDrawer({
                   errors.categoryId?.message && 'text-rose-500'
                 )}
               >
-                Category
+                {t('Category')}
               </p>
               <div onFocus={() => clearErrors('categoryId')}>
                 <CategoryPicker
@@ -234,9 +247,9 @@ function UpdateTransactionDrawer({
               )}
             </div>
 
-            {/* Transaction */}
+            {/* Date */}
             <div className="mt-1.5 flex flex-1 flex-col">
-              <p className="mb-1 text-xs font-semibold">Date</p>
+              <p className="mb-1 text-xs font-semibold">{t('Date')}</p>
               <div onFocus={() => clearErrors('date')}>
                 <Drawer>
                   <DrawerTrigger className="w-full">
@@ -247,6 +260,13 @@ function UpdateTransactionDrawer({
                   </DrawerTrigger>
 
                   <DrawerContent className="w-full overflow-hidden rounded-md p-0 outline-none">
+                    <DrawerHeader>
+                      <DrawerTitle className="text-center">{t('Select Date')}</DrawerTitle>
+                      <DrawerDescription className="text-center">
+                        {t('When did this transaction happen?')}
+                      </DrawerDescription>
+                    </DrawerHeader>
+
                     <div className="mx-auto flex w-full max-w-sm flex-col items-center px-21/2">
                       <Calendar
                         mode="single"
@@ -258,6 +278,8 @@ function UpdateTransactionDrawer({
                         initialFocus
                       />
                     </div>
+
+                    <div className="pt-8" />
                   </DrawerContent>
                 </Drawer>
               </div>
@@ -280,7 +302,7 @@ function UpdateTransactionDrawer({
                     reset()
                   }}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DrawerClose>
               <Button
@@ -295,7 +317,7 @@ function UpdateTransactionDrawer({
                     className="animate-spin text-muted-foreground"
                   />
                 ) : (
-                  'Save'
+                  t('Save')
                 )}
               </Button>
             </div>

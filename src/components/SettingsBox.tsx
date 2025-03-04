@@ -33,7 +33,7 @@ function SettingsBox({ isRequireInit = false, className = '' }: SettingsBoxProps
   const locale = useLocale()
 
   return (
-    <div className={cn('grid grid-cols-1 gap-21/2 md:grid-cols-2 md:gap-21', className)}>
+    <div className={cn('md:grid-cols-2 md:gap-21 grid grid-cols-1 gap-21/2', className)}>
       {isRequireInit ? (
         currency ? (
           <Box
@@ -150,7 +150,7 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
         </PopoverTrigger>
         <PopoverContent className="w-full p-0 shadow-md">
           {/* Search Bar */}
-          <Command className="rounded-lg border shadow-md md:min-w-[450px]">
+          <Command className="md:min-w-[450px] rounded-lg border shadow-md">
             <CommandInput placeholder={`Find a ${type}...`} />
             <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>

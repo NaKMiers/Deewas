@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LucideEllipsisVertical, LucidePlusCircle } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { memo, useEffect, useState } from 'react'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import TransactionCategoryGroup from './TransactionCategoryGroup'
@@ -17,6 +18,9 @@ interface ITransactionTypeGroupProps {
 }
 
 function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransactionTypeGroupProps) {
+  // hooks
+  const t = useTranslations('transactionTypeGroup')
+
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
@@ -33,7 +37,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
   }, [])
 
   return (
-    <div className={cn('flex flex-col gap-21/2 md:mt-21', className)}>
+    <div className={cn('md:mt-21 flex flex-col gap-21/2', className)}>
       {/* Type Group */}
       <div className="">
         {/* Type Header */}
@@ -55,7 +59,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
           </div>
 
           <div className="flex flex-1 flex-col">
-            <p className="text-sm font-semibold capitalize md:text-2xl">{type + 's'}</p>
+            <p className="md:text-2xl text-sm font-semibold capitalize">{type + 's'}</p>
             <p className="text-xs font-semibold text-muted-foreground">Sorted by date</p>
           </div>
 
@@ -86,7 +90,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
                     className="flex h-8 w-full items-center justify-start gap-2 px-2 font-normal"
                   >
                     <LucidePlusCircle size={16} />
-                    Add Transaction
+                    {t('Add Transaction')}
                   </Button>
                 }
               />
