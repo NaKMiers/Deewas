@@ -15,6 +15,22 @@ export const getMyTransactionsApi = async (
   return await res.json()
 }
 
+// [GET]: /transaction/history
+export const getHistoryApi = async (
+  query: string = '',
+  prefix: string = '',
+  option: RequestInit = { next: { revalidate: 0 } }
+) => {
+  const res = await fetch(`${prefix}/api/transaction/history${query}`, option)
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [POST]: /transaction/create
 export const createTransactionApi = async (data: any) => {
   const res = await fetch('/api/transaction/create', {

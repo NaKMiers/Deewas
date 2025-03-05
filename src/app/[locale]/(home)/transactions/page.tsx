@@ -13,7 +13,7 @@ import { setCurWallet } from '@/lib/reducers/walletReducer'
 import { toUTC } from '@/lib/time'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
-import { getMyTransactionsApi } from '@/requests/transactionRequests'
+import { getMyTransactionsApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import { LucidePlus, LucideSearch } from 'lucide-react'
 import moment from 'moment-timezone'
@@ -60,6 +60,7 @@ function TransactionsPage() {
     try {
       const { transactions } = await getMyTransactionsApi(query)
       dispatch(setTransactions(transactions))
+      console.log('transactions', transactions.length)
     } catch (err: any) {
       console.log(err)
       toast.error(t('Failed to fetch transactions'))

@@ -1,17 +1,18 @@
 import { Button } from '@/components/ui/button'
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { addTransaction, deleteTransaction, updateTransaction } from '@/lib/reducers/transactionReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
-import { formatDate } from '@/lib/time'
+import { formatDate, toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { IFullTransaction } from '@/models/TransactionModel'
-import { deleteTransactionApi } from '@/requests/transactionRequests'
 import {
   LucideChevronDown,
   LucideChevronUp,
   LucideEllipsisVertical,
+  LucideLayers2,
   LucideLoaderCircle,
   LucidePencil,
   LucidePlusSquare,
@@ -25,6 +26,7 @@ import ConfirmDialog from './dialogs/ConfirmDialog'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import UpdateTransactionDrawer from './dialogs/UpdateTransactionDrawer'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { createTransactionApi, deleteTransactionApi } from '@/requests'
 
 interface ITransactionCategoryGroupProps {
   category: ICategory
@@ -112,6 +114,7 @@ function TransactionItem({ transaction, className = '' }: ITransactionProps) {
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
+  const [duplicating, setDuplicating] = useState<boolean>(false)
 
   // delete transaction
   const handleDeleteTransaction = useCallback(async () => {
@@ -123,7 +126,7 @@ function TransactionItem({ transaction, className = '' }: ITransactionProps) {
       const { transaction: tx, message } = await deleteTransactionApi(transaction._id)
       toast.success(message, { id: 'delete-transaction' })
 
-      dispatch(deleteTransaction(tx))
+      dispatch(refetching())
     } catch (err: any) {
       toast.error(t('Failed to delete transaction'), { id: 'delete-transaction' })
       console.log(err)
@@ -132,6 +135,31 @@ function TransactionItem({ transaction, className = '' }: ITransactionProps) {
       setDeleting(false)
     }
   }, [dispatch, transaction._id, t])
+
+  // duplicate transaction
+  const handleDuplicateTransaction = useCallback(async () => {
+    // start loading
+    setDuplicating(true)
+    toast.loading(t('Duplicating transaction') + '...', { id: 'duplicate-transaction' })
+
+    try {
+      const { transaction: tx, message } = await createTransactionApi({
+        ...transaction,
+        walletId: transaction.wallet._id,
+        categoryId: transaction.category._id,
+        date: toUTC(moment().toDate()),
+      })
+
+      toast.success(message, { id: 'duplicate-transaction' })
+      dispatch(refetching())
+    } catch (err: any) {
+      toast.error(t('Failed to duplicate transaction'), { id: 'duplicate-transaction' })
+      console.log(err)
+    } finally {
+      // stop loading
+      setDuplicating(false)
+    }
+  }, [dispatch, transaction, t])
 
   return (
     <div className={cn('flex w-full items-center justify-between gap-2 pl-2', className)}>
@@ -159,7 +187,7 @@ function TransactionItem({ transaction, className = '' }: ITransactionProps) {
           </div>
         )}
 
-        {!deleting ? (
+        {!deleting && !duplicating ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -170,6 +198,25 @@ function TransactionItem({ transaction, className = '' }: ITransactionProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              {/* MARK: Duplicate */}
+              <ConfirmDialog
+                label={t('Duplicate Transaction')}
+                desc={t('Are you sure you want to duplicate this transaction?')}
+                confirmLabel={t('Duplicate')}
+                cancelLabel={t('Cancel')}
+                onConfirm={handleDuplicateTransaction}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
+                  >
+                    <LucideLayers2 size={16} />
+                    {t('Duplicate')}
+                  </Button>
+                }
+              />
+
+              {/* MARK: Update */}
               <UpdateTransactionDrawer
                 transaction={transaction}
                 update={(transaction: IFullTransaction) => dispatch(updateTransaction(transaction))}
@@ -184,6 +231,7 @@ function TransactionItem({ transaction, className = '' }: ITransactionProps) {
                 }
               />
 
+              {/* MARK: Delete */}
               <ConfirmDialog
                 label={t('Delete Transaction')}
                 desc={t('Are you sure you want to delete this transaction?')}

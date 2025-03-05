@@ -34,21 +34,12 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // get data from request
     const { name, amount, date, walletId } = await req.json()
-
-    console.log('id:', id)
-    console.log('name:', name)
-    console.log('amount:', amount)
-    console.log('date:', date)
-    console.log('walletId:', walletId)
-
     // update transaction
     const oldTx: any = await TransactionModel.findByIdAndUpdate(
       id,
       { $set: { wallet: walletId, name, amount, date: toUTC(date) } },
       { new: false } // return old document
     ).lean()
-
-    console.log('oldTx:', oldTx)
 
     // check if transaction not found
     if (!oldTx) {

@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { deleteCategory, updateCategory } from '@/lib/reducers/categoryReduce'
+import { updateCategory } from '@/lib/reducers/categoryReduce'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
@@ -11,14 +12,15 @@ import {
   LucidePencil,
   LucideTrash,
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
+import CreateBudgetDrawer from './dialogs/CreateBudgetDrawer'
+import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import UpdateCategoryDrawer from './dialogs/UpdateCategoryDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
-import { useTranslations } from 'next-intl'
-import CreateBudgetDrawer from './dialogs/CreateBudgetDrawer'
 
 // MARK: Category
 interface CategoryProps {
@@ -51,7 +53,8 @@ function Category({ category, className = '' }: CategoryProps) {
       const { category: w, message } = await deleteCategoryApi(category._id)
       toast.success(message, { id: 'delete-category' })
 
-      dispatch(deleteCategory(w))
+      // dispatch(deleteCategory(w))
+      dispatch(refetching())
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-category' })
       console.log(err)
@@ -100,19 +103,39 @@ function Category({ category, className = '' }: CategoryProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <CreateBudgetDrawer
-                  initCategory={category}
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-orange-500"
-                    >
-                      <LucideChartPie size={16} />
-                      {t('Set Budget')}
-                    </Button>
-                  }
-                />
+                {/* MARK: Create Transaction */}
+                {category.type === 'expense' && (
+                  <CreateTransactionDrawer
+                    category={category}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2"
+                      >
+                        <LucideChartPie size={16} />
+                        {t('Add Transaction')}
+                      </Button>
+                    }
+                  />
+                )}
 
+                {/* MARK: Set Budget */}
+                {category.type === 'expense' && (
+                  <CreateBudgetDrawer
+                    initCategory={category}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-orange-500"
+                      >
+                        <LucideChartPie size={16} />
+                        {t('Set Budget')}
+                      </Button>
+                    }
+                  />
+                )}
+
+                {/* MARK: Update */}
                 <UpdateCategoryDrawer
                   category={category}
                   update={(category: ICategory) => dispatch(updateCategory(category))}
@@ -128,6 +151,7 @@ function Category({ category, className = '' }: CategoryProps) {
                   }
                 />
 
+                {/* MARK: Delete */}
                 {category.deletable && (
                   <ConfirmDialog
                     label="Delete Wallet"

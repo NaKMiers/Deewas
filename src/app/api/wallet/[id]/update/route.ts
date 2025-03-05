@@ -27,7 +27,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // get data from request body
     const { name, icon, hide } = await req.json()
-    console.log('hide', hide)
 
     // update wallet
     const wallet = await WalletModel.findByIdAndUpdate(

@@ -274,6 +274,7 @@
   },
   "category": {
     "Deleting category": "Đang xóa danh mục",
+    "Add Transaction": "Thêm giao dịch",
     "Set Budget": "Lập ngân sách",
     "Edit": "Sửa",
     "Delete": "Xóa"
@@ -314,7 +315,14 @@
   },
   "multipleSelection": {
     "All": "Tất Cả",
-    "all": "tất cả"
+    "all": "tất cả",
+    "types": "loại",
+    "type": "loại",
+    "balance": "số dư",
+    "income": "thu nhập",
+    "expense": "chi tiêu",
+    "saving": "tiết kiệm",
+    "invest": "đầu tư"
   },
   "latestTransactions": {
     "Latest": "Giao dịch gần đây",
@@ -322,11 +330,16 @@
   },
   "transaction": {
     "Deleting transaction": "Đang xóa giao dịch",
+    "Duplicating transaction": "Đang nhân bản giao dịch",
     "Failed to delete transaction": "Không thể xóa giao dịch",
     "Edit": "Sửa",
     "Delete": "Xóa",
-    "Delete Transaction": "Xóa giao dịchdịch",
-    "Are you sure you want to delete this transaction?": "Bạn có chắc muốn xóa giao dịch này không?"
+    "Cancel": "Hủy",
+    "Duplicate": "Nhân bản",
+    "Delete Transaction": "Xóa giao dịch",
+    "Duplicate Transaction": "Nhân bản giao dịch",
+    "Are you sure you want to delete this transaction?": "Bạn có chắc muốn xóa giao dịch này không?",
+    "Are you sure you want to duplicate this transaction?": "Bạn có chắc muốn nhân bản giao dịch này không?"
   },
   "navbar": {
     "Home": "Trang chủ",
@@ -357,14 +370,28 @@
   },
   "transactionItem": {
     "Deleting transaction": "Đang xóa giao dịch",
+    "Duplicating transaction": "Đang nhân bản giao dịch",
     "Failed to delete transaction": "Không thể xóa giao dịch",
-    "Edit": "Chỉnh sửa",
+    "Failed to duplicate transaction": "Không thể nhân bản giao dịch",
+    "Edit": "Sửa",
     "Delete": "Xóa",
+    "Cancel": "Hủy",
+    "Duplicate": "Nhân bản",
     "Delete Transaction": "Xóa giao dịch",
-    "Are you sure you want to delete this transaction?": "Bạn có chắc chắn muốn xóa giao dịch này không?"
+    "Duplicate Transaction": "Nhân bản giao dịch",
+    "Are you sure you want to delete this transaction?": "Bạn có chắc muốn xóa giao dịch này không?",
+    "Are you sure you want to duplicate this transaction?": "Bạn có chắc muốn nhân bản giao dịch này không?"
   },
   "transactionTypeGroup": {
-    "Add Transaction": "Thêm giao dịch"
+    "Add Transaction": "Thêm giao dịch",
+    "incomes": "thu nhập",
+    "Incomes": "Thu nhập",
+    "expenses": "chi tiêu",
+    "Expenses": "Chi tiêu",
+    "savings": "tiết kiệm",
+    "Savings": "Tiết kiệm",
+    "invests": "đầu tư",
+    "Invests": "Đầu tư"
   },
   "wallets": {
     "Wallets": "Ví của bạn",
@@ -409,8 +436,8 @@
     "Cancel": "Hủy"
   },
   "settingsBox": {
-    "Set your default currency": "Thiết lập tiền tệ mặc định",
-    "Set your default language": "Thiết lập ngôn ngữ mặc định",
+    "Set your currency": "Thiết lập tiền tệ",
+    "Set your language": "Thiết lập ngôn ngữ",
     "Find a": "Tìm kiếm",
     "currency": "tiền tề",
     "language": "ngôn ngữ",

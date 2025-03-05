@@ -58,7 +58,7 @@ function AccountPage() {
   }, [t])
 
   return (
-    <div className="md:gap-21 md:p-21 container flex flex-col gap-21/2 p-21/2 pb-32">
+    <div className="container flex flex-col gap-21/2 px-21/2 pb-32 pt-21/2 md:gap-21 md:px-21 md:pt-21">
       {/* Account */}
       <div className="p2 overflow-auto rounded-md border p-2">
         <div className="flex w-full items-center gap-2 pb-2">
@@ -101,7 +101,7 @@ function AccountPage() {
           />
         </div>
 
-        <div className="md:justify-start flex justify-center">
+        <div className="flex justify-center md:justify-start">
           <div className="flex max-w-[400px] overflow-hidden">
             <Image
               className="w-full object-contain"
@@ -115,7 +115,7 @@ function AccountPage() {
       </div>
 
       {/* Categories & Wallets */}
-      <div className="md:px-21 flex flex-col rounded-md border px-21/2 py-2">
+      <div className="flex flex-col rounded-md border px-21/2 py-2 md:px-21">
         <Link
           href="/categories"
           className="flex h-8 items-center gap-2 text-sm"
@@ -132,13 +132,13 @@ function AccountPage() {
       </div>
 
       {/* Theme */}
-      <div className="md:px-21 flex items-center gap-2 rounded-md border px-21/2 py-2">
+      <div className="flex items-center gap-2 rounded-md border px-21/2 py-2 md:px-21">
         <span className="font-semibold">{t('Theme')}</span>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="md:p-21 justify-normal rounded-md border p-21/2 text-sm font-semibold capitalize"
+              className="justify-normal rounded-md border p-21/2 text-sm font-semibold capitalize md:p-21"
             >
               {resolvedTheme === 'light' ? <Sun /> : <Moon />}
               {t(theme)}
@@ -157,7 +157,7 @@ function AccountPage() {
       <SettingsBox isRequireInit />
 
       {/* More */}
-      <div className="md:px-21 flex flex-col rounded-lg border px-21/2 py-2">
+      <div className="flex flex-col rounded-lg border px-21/2 py-2 md:px-21">
         <Link
           href="/"
           className="flex h-8 items-center gap-2 text-sm"

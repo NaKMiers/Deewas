@@ -11,7 +11,7 @@ import '@/models/WalletModel'
 
 // [GET]: /
 export async function GET(req: NextRequest) {
-  console.log('- Get Overview - ')
+  console.log('- Get History - ')
 
   try {
     // connect to database

@@ -17,8 +17,6 @@ export async function PUT(req: NextRequest) {
     const token = await getToken({ req })
     const userId = token?._id
 
-    console.log('userId:', userId)
-
     // check if user is logged in
     if (!userId) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
@@ -29,8 +27,6 @@ export async function PUT(req: NextRequest) {
 
     const set: any = {}
     if (initiated) set.initiated = initiated
-
-    console.log('set:', set)
 
     // update user
     await UserModel.findByIdAndUpdate(userId, { $set: set })

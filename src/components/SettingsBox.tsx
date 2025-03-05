@@ -34,7 +34,6 @@ function SettingsBox({ isRequireInit, className = '' }: SettingsBoxProps) {
   // store
   const { settings } = useAppSelector(state => state.settings)
   const currency = settings?.currency
-  console.log('currency:', currency)
 
   return (
     <div className={cn('grid grid-cols-1 gap-21/2 md:grid-cols-2 md:gap-21', className)}>
@@ -42,7 +41,7 @@ function SettingsBox({ isRequireInit, className = '' }: SettingsBoxProps) {
         currency ? (
           <Box
             type="currency"
-            desc={t('Set your default currency')}
+            desc={t('Set your currency')}
             list={currencies}
             init={currencies.find(c => c.value === currency)}
           />
@@ -50,14 +49,14 @@ function SettingsBox({ isRequireInit, className = '' }: SettingsBoxProps) {
       ) : (
         <Box
           type="currency"
-          desc={t('Set your default currency')}
+          desc={t('Set your currency')}
           list={currencies}
           init={currencies.find(c => c.value === 'USD')}
         />
       )}
       <Box
         type="language"
-        desc={t('Set your default language')}
+        desc={t('Set your language')}
         list={languages}
         init={languages.find(l => l.value === locale)}
       />
@@ -146,6 +145,7 @@ function Box({ type, desc, list, init, className = '' }: BoxProps) {
           {/* Search Bar */}
           <Command className="rounded-lg border shadow-md md:min-w-[450px]">
             <CommandInput
+              autoFocus={false}
               className="text-base md:text-sm"
               placeholder={`${t('Find a')} ${t(type)}...`}
             />

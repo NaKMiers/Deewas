@@ -64,6 +64,7 @@ function WalletSelection({ initWallet, update, allowAll, className = '' }: Walle
         {/* Search Bar */}
         <Command className="rounded-lg border shadow-md md:min-w-[450px]">
           <CommandInput
+            autoFocus={false}
             className="text-base md:text-sm"
             placeholder={t('Find a wallet') + '...'}
           />

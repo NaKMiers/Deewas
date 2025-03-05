@@ -48,7 +48,7 @@ function Navbar() {
   const t = useTranslations('navbar')
 
   return (
-    <nav className="fixed bottom-0 left-0 h-[70px] w-full bg-primary pb-2.5 text-secondary">
+    <nav className="fixed bottom-0 left-0 z-50 h-[70px] w-full bg-primary pb-2.5 text-secondary">
       <div className="container flex h-full items-center justify-between gap-0.5 text-center">
         {/* Home */}
         <Link

@@ -59,7 +59,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
           </div>
 
           <div className="flex flex-1 flex-col">
-            <p className="text-sm font-semibold capitalize md:text-2xl">{type + 's'}</p>
+            <p className="text-sm font-semibold capitalize md:text-2xl">{t(type + 's')}</p>
             <p className="text-xs font-semibold text-muted-foreground">Sorted by date</p>
           </div>
 

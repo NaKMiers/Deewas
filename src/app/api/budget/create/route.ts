@@ -4,6 +4,7 @@ import BudgetModel from '@/models/BudgetModel'
 import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
+import CategoryModel from '@/models/CategoryModel'
 
 // Models: Budget, Transaction, Category
 import '@/models/BudgetModel'
@@ -28,6 +29,13 @@ export async function POST(req: NextRequest) {
 
     // get data from request body
     const { categoryId, total, begin, end } = await req.json()
+
+    // check if category is an expense
+    const category: any = await CategoryModel.findById(categoryId).select('type').lean()
+
+    if (!category || category.type !== 'expense') {
+      return NextResponse.json({ message: 'Category is not an expense' }, { status: 400 })
+    }
 
     // calculate total amount of transactions of category from begin to end of budget
     const transactions = await TransactionModel.find({

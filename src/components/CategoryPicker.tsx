@@ -121,6 +121,7 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
           {!getting ? (
             <Button
               variant="outline"
+              disabled={!((!category || isExcept) && type)}
               className="w-full justify-between"
               onClick={() => !category && !type && toast.error('Please select type before category')}
             >
@@ -150,6 +151,7 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
               {/* Search Bar */}
               <Command className="rounded-lg border shadow-md">
                 <CommandInput
+                  autoFocus={false}
                   className="text-base md:text-sm"
                   placeholder={t('Find a category') + '...'}
                 />
@@ -180,7 +182,7 @@ function CategoryPicker({ category, type, isExcept, onChange, className = '' }: 
                 />
                 <CommandList>
                   <CommandEmpty>{t('No results found')}.</CommandEmpty>
-                  <CommandSeparator autoFocus={false} />
+                  <CommandSeparator />
                   {categories
                     .filter(c => c.type === type)
                     .map(category => (

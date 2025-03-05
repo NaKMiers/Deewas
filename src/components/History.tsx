@@ -3,7 +3,6 @@ import { formatCurrency, parseCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
-import { getHistoryApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
 import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
@@ -15,6 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { getHistoryApi } from '@/requests'
 
 interface HistoryProps {
   className?: string
@@ -26,8 +26,8 @@ function History({ className = '' }: HistoryProps) {
   const user = session?.user
   const t = useTranslations('history')
 
-  const types = [t('balance'), t('income'), t('expense'), t('saving'), t('invest')]
-  const charts = [t('line'), t('bar'), t('area'), t('radar')]
+  const types = ['balance', 'income', 'expense', 'saving', 'invest']
+  const charts = ['line', 'bar', 'area', 'radar']
 
   // store
   const { refetching } = useAppSelector(state => state.load)
@@ -71,6 +71,7 @@ function History({ className = '' }: HistoryProps) {
       const to = toUTC(dateRange.to)
 
       const { transactions } = await getHistoryApi(`?from=${from}&to=${to}`)
+      console.log('transactions', transactions)
       setTransactions(transactions)
     } catch (err: any) {
       console.log(err)
@@ -213,7 +214,7 @@ function History({ className = '' }: HistoryProps) {
   }, [dateRange, transactions, currency])
 
   return (
-    <div className={cn('md:px-21 px-21/2', className)}>
+    <div className={cn('px-21/2 md:px-21', className)}>
       {/* Top */}
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold">{t('History')}</h2>
@@ -266,7 +267,7 @@ function History({ className = '' }: HistoryProps) {
                   value={chart}
                   className="cursor-pointer capitalize"
                 >
-                  {chart}
+                  {t(chart)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -345,7 +346,7 @@ export function MultipleSelection({ trigger, list, selected, onChange }: MultiSe
             }}
             key={index}
           >
-            <p className="text-nowrap capitalize">{isObjectItem ? item.name : item}</p>
+            <p className="text-nowrap capitalize">{isObjectItem ? t(item.name) : t(item)}</p>
           </Button>
         ))}
       </PopoverContent>

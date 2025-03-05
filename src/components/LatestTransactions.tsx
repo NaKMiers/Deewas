@@ -3,14 +3,15 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
 import { refetching } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
-import { formatDate } from '@/lib/time'
+import { formatDate, toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction } from '@/models/TransactionModel'
-import { deleteTransactionApi, getMyTransactionsApi } from '@/requests/transactionRequests'
+import { createTransactionApi, deleteTransactionApi, getMyTransactionsApi } from '@/requests'
 import {
   LucideChevronDown,
   LucideChevronUp,
   LucideEllipsisVertical,
+  LucideLayers2,
   LucideLoaderCircle,
   LucidePencil,
   LucideTrash,
@@ -71,7 +72,7 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
   }, [getLatestTransactions, rfc])
 
   return (
-    <div className={cn('md:px-21 px-21/2', className)}>
+    <div className={cn('px-21/2 md:px-21', className)}>
       {/* Top */}
       <div className="flex items-center justify-between gap-1">
         <div className="flex items-center gap-2">
@@ -107,7 +108,7 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
         </Button>
       </div>
 
-      <div className="md:p-21 mt-2 flex flex-col gap-2 rounded-lg border p-21/2">
+      <div className="mt-2 flex flex-col gap-2 rounded-lg border p-21/2 md:p-21">
         {transactions.slice(0, +limit).length > 0 ? (
           transactions.slice(0, +limit).map(transaction => (
             <Transaction
@@ -149,12 +150,13 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
+  const [duplicating, setDuplicating] = useState<boolean>(false)
 
   // delete transaction
   const handleDeleteTransaction = useCallback(async () => {
     // start loading
-    setDeleting(true)
-    toast.loading(t('Deleting transaction') + '...', { id: 'delete-transaction' })
+    setDuplicating(true)
+    toast.loading(t('Duplicating transaction') + '...', { id: 'delete-transaction' })
 
     try {
       const { transaction: tx, message } = await deleteTransactionApi(transaction._id)
@@ -167,9 +169,34 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
       console.log(err)
     } finally {
       // stop loading
-      setDeleting(false)
+      setDuplicating(false)
     }
   }, [remove, refetch, transaction._id, t])
+
+  // duplicate transaction
+  const handleDuplicateTransaction = useCallback(async () => {
+    // start loading
+    setDeleting(true)
+    toast.loading(t('Duplicating transaction') + '...', { id: 'duplicate-transaction' })
+
+    try {
+      const { transaction: tx, message } = await createTransactionApi({
+        ...transaction,
+        walletId: transaction.wallet._id,
+        categoryId: transaction.category._id,
+        date: toUTC(moment().toDate()),
+      })
+
+      toast.success(message, { id: 'duplicate-transaction' })
+      if (refetch) refetch()
+    } catch (err: any) {
+      toast.error(t('Failed to duplicate transaction'), { id: 'duplicate-transaction' })
+      console.log(err)
+    } finally {
+      // stop loading
+      setDeleting(false)
+    }
+  }, [refetch, transaction, t])
 
   return (
     <div className={cn('flex w-full items-start gap-1', className)}>
@@ -223,6 +250,24 @@ function Transaction({ transaction, update, remove, refetch, className = '' }: T
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                {/* MARK: Duplicate */}
+                <ConfirmDialog
+                  label={t('Duplicate Transaction')}
+                  desc={t('Are you sure you want to duplicate this transaction?')}
+                  confirmLabel={t('Duplicate')}
+                  cancelLabel={t('Cancel')}
+                  onConfirm={handleDuplicateTransaction}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
+                    >
+                      <LucideLayers2 size={16} />
+                      {t('Duplicate')}
+                    </Button>
+                  }
+                />
+
                 {/* MARK: Update */}
                 <UpdateTransactionDrawer
                   transaction={transaction}

@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { IFullTransaction, TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
-import { createTransactionApi } from '@/requests/transactionRequests'
+import { createTransactionApi } from '@/requests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
 import { useTranslations } from 'next-intl'
@@ -86,7 +86,6 @@ function CreateTransactionDrawer({
     },
   })
   const form = watch()
-  console.log('form', form)
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
@@ -155,7 +154,6 @@ function CreateTransactionDrawer({
   // create transaction
   const handleCreateTransaction: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      console.log('data', data)
       // validate form
       if (!handleValidate(data)) return
 

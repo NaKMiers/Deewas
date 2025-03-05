@@ -273,6 +273,7 @@
   },
   "category": {
     "Deleting category": "Deleting category",
+    "Add Transaction": "Add Transaction",
     "Set Budget": "Set Budget",
     "Edit": "Edit",
     "Delete": "Delete"
@@ -313,7 +314,14 @@
   },
   "multipleSelection": {
     "All": "All",
-    "all": "all"
+    "all": "all",
+    "types": "types",
+    "type": "type",
+    "balance": "balance",
+    "income": "income",
+    "expense": "expense",
+    "saving": "saving",
+    "invest": "invest"
   },
   "latestTransactions": {
     "Latest": "Latest",
@@ -321,11 +329,16 @@
   },
   "transaction": {
     "Deleting transaction": "Deleting transaction",
+    "Duplicating transaction": "Duplicating transaction",
     "Failed to delete transaction": "Failed to delete transaction",
     "Edit": "Edit",
     "Delete": "Delete",
+    "Cancel": "Cancel",
+    "Duplicate": "Duplicate",
     "Delete Transaction": "Delete Transaction",
-    "Are you sure you want to delete this transaction?": "Are you sure you want to delete this transaction?"
+    "Duplicate Transaction": "Duplicate Transaction",
+    "Are you sure you want to delete this transaction?": "Are you sure you want to delete this transaction?",
+    "Are you sure you want to duplicate this transaction?": "Are you sure you want to duplicate this transaction?"
   },
   "navbar": {
     "Home": "Home",
@@ -356,14 +369,28 @@
   },
   "transactionItem": {
     "Deleting transaction": "Deleting transaction",
+    "Duplicating transaction": "Duplicating transaction",
     "Failed to delete transaction": "Failed to delete transaction",
+    "Failed to duplicate transaction": "Failed to duplicate transaction",
     "Edit": "Edit",
     "Delete": "Delete",
+    "Cancel": "Cancel",
+    "Duplicate": "Duplicate",
     "Delete Transaction": "Delete Transaction",
-    "Are you sure you want to delete this transaction?": "Are you sure you want to delete this transaction?"
+    "Duplicate Transaction": "Duplicate Transaction",
+    "Are you sure you want to delete this transaction?": "Are you sure you want to delete this transaction?",
+    "Are you sure you want to duplicate this transaction?": "Are you sure you want to duplicate this transaction?"
   },
   "transactionTypeGroup": {
-    "Add Transaction": "Add Transaction"
+    "Add Transaction": "Add Transaction",
+    "incomes": "incomes",
+    "Incomes": "Incomes",
+    "expenses": "expenses",
+    "Expenses": "Expenses",
+    "savings": "savings",
+    "Savings": "Savings",
+    "invests": "invests",
+    "Invests": "Invests"
   },
   "wallets": {
     "Wallets": "Wallets",
@@ -408,8 +435,8 @@
     "Cancel": "Cancel"
   },
   "settingsBox": {
-    "Set your default currency": "Set your default currency",
-    "Set your default language": "Set your default language",
+    "Set your currency": "Set your currency",
+    "Set your language": "Set your language",
     "Find a": "Find a",
     "currency": "currency",
     "language": "language",

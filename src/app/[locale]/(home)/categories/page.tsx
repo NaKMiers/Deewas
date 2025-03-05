@@ -23,6 +23,7 @@ function CategoriesPage() {
 
   // store
   const { categories } = useAppSelector(state => state.category)
+  const { refetching: rfc } = useAppSelector(state => state.load)
 
   // states
   const [loading, setLoading] = useState<boolean>(false)
@@ -47,7 +48,7 @@ function CategoriesPage() {
     }
 
     getCategories()
-  }, [dispatch, t])
+  }, [dispatch, t, rfc])
 
   // auto group categories by type
   useEffect(() => {
@@ -66,7 +67,7 @@ function CategoriesPage() {
   }, [categories])
 
   return (
-    <div className="md:p-21 container p-21/2 pb-32">
+    <div className="container px-21/2 pb-32 pt-21/2 md:px-21 md:pt-21">
       {/* Top */}
       <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-bold">Categories</h2>
