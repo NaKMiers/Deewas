@@ -81,10 +81,10 @@ export async function POST(req: NextRequest) {
       }),
 
       // update from wallet
-      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { transfer: -amount } }),
+      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { transfer: -amount } }),
 
       // update to wallet
-      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { transfer: amount } }),
+      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { transfer: amount } }),
     ])
 
     // return response

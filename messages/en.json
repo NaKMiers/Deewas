@@ -409,7 +409,9 @@
     "savings": "savings",
     "Savings": "Savings",
     "invests": "invests",
-    "Invests": "Invests"
+    "Invests": "Invests",
+    "transfers": "transfers",
+    "Transfers": "Transfers"
   },
   "wallets": {
     "Wallets": "Wallets",

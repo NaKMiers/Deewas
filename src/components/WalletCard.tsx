@@ -243,7 +243,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
           />
           <Item
             title={t('Transfer')}
-            value={wallet.invest}
+            value={wallet.transfer}
             type="transfer"
           />
         </div>
