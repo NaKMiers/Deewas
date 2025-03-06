@@ -130,12 +130,6 @@ You can only do something related to personal expenses management. If the user w
 Never reply user longer than 50 words
 `
 
-export interface Hub {
-  climate: Record<'low' | 'high', number>
-  lights: Array<{ name: string; status: boolean }>
-  locks: Array<{ name: string; isLocked: boolean }>
-}
-
 const sendMessage = async (message: string) => {
   'use server'
 
@@ -163,16 +157,11 @@ const sendMessage = async (message: string) => {
       </button>
     ),
     text: async function* ({ content, done }) {
-      try {
-        if (done) {
-          console.log('Stream is done, closing contentStream.')
-          contentStream.done()
-          messages.done([...(messages.get() as CoreMessage[]), { role: 'assistant', content }])
-        } else {
-          contentStream.update(content)
-        }
-      } catch (error) {
-        console.error('Error updating contentStream:', error)
+      if (done) {
+        contentStream.done()
+        messages.done([...(messages.get() as CoreMessage[]), { role: 'assistant', content }])
+      } else {
+        contentStream.update(content)
       }
       return textComponent
     },
@@ -246,60 +235,50 @@ const sendMessage = async (message: string) => {
         generate: async function* ({ name }) {
           const toolCallId = generateId()
 
-          try {
-            const { wallets }: { wallets: any[] } = await getWallets(userId)
+          const { wallets }: { wallets: any[] } = await getWallets(userId)
+          const wallet = wallets.find(wallet => wallet.name.toLowerCase() === name.toLowerCase())
 
-            const wallet = wallets.find(wallet => wallet.name.toLowerCase() === name.toLowerCase())
-
-            if (!wallet) {
-              return (
-                <Message
-                  role="assistant"
-                  content={`❌ No wallet found with name "${name}"`}
-                />
-              )
-            }
-
-            messages.done([
-              ...(messages.get() as CoreMessage[]),
-              {
-                role: 'assistant',
-                content: [
-                  {
-                    type: 'tool-call',
-                    toolCallId,
-                    toolName: 'get_wallet',
-                    args: { name },
-                  },
-                ],
-              },
-              {
-                role: 'tool',
-                content: [
-                  {
-                    type: 'tool-result',
-                    toolName: 'get_wallet',
-                    toolCallId,
-                    result: `Wallet is shown on the screen`,
-                  },
-                ],
-              },
-            ])
-
+          if (!wallet) {
             return (
               <Message
                 role="assistant"
-                content={<WalletCard wallet={wallet} />}
-              />
-            )
-          } catch (err: any) {
-            return (
-              <Message
-                role="assistant"
-                content={`❌ Failed to get wallet: ${err.message}`}
+                content={`❌ No wallet found with name "${name}"`}
               />
             )
           }
+
+          messages.done([
+            ...(messages.get() as CoreMessage[]),
+            {
+              role: 'assistant',
+              content: [
+                {
+                  type: 'tool-call',
+                  toolCallId,
+                  toolName: 'get_wallet',
+                  args: { name },
+                },
+              ],
+            },
+            {
+              role: 'tool',
+              content: [
+                {
+                  type: 'tool-result',
+                  toolName: 'get_wallet',
+                  toolCallId,
+                  result: `Wallet is shown on the screen`,
+                },
+              ],
+            },
+          ])
+
+          return (
+            <Message
+              role="assistant"
+              content={<WalletCard wallet={wallet} />}
+            />
+          )
         },
       },
       create_wallet: {
