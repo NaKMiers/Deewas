@@ -382,7 +382,9 @@
     "saving": "tiết kiệm",
     "Saving": "Tiết kiệm",
     "invest": "đầu tư",
-    "Invest": "Đầu tư"
+    "Invest": "Đầu tư",
+    "transfer": "chuyển tiền",
+    "Transfer": "Chuyển tiền"
   },
   "transactionCategoryGroup": {
     "Add Transaction": "Thêm giao dịch"

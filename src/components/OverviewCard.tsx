@@ -26,14 +26,15 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
   // values
   const totalIncome = wallets.reduce((acc, wallet) => acc + wallet.income, 0)
   const totalExpense = wallets.reduce((acc, wallet) => acc + wallet.expense, 0)
-  const totalBalance = totalIncome - totalExpense
   const totalSaving = wallets.reduce((acc, wallet) => acc + wallet.saving, 0)
   const totalInvest = wallets.reduce((acc, wallet) => acc + wallet.invest, 0)
+  const totalTransfer = wallets.reduce((acc, wallet) => acc + wallet.transfer, 0)
+  const totalBalance = totalIncome + totalSaving + totalInvest + totalTransfer - totalExpense
 
   return (
     <Card
       className={cn(
-        'md:px-21 cursor-pointer overflow-hidden rounded-b-lg rounded-t-none border px-21/2 py-1 shadow-sm',
+        'cursor-pointer overflow-hidden rounded-b-lg rounded-t-none border px-21/2 py-1 shadow-sm md:px-21',
         className
       )}
       onClick={() => setCollapsed(!collapsed)}
@@ -73,6 +74,12 @@ function OverviewCard({ className = '' }: OverviewCardProps) {
               title={t('Invest')}
               value={totalInvest}
               type="invest"
+              isShow={showValue}
+            />
+            <Item
+              title={t('Transfer')}
+              value={totalTransfer}
+              type="transfer"
               isShow={showValue}
             />
           </div>

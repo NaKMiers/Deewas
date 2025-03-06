@@ -381,7 +381,9 @@
     "saving": "saving",
     "Saving": "Saving",
     "invest": "invest",
-    "Invest": "Invest"
+    "Invest": "Invest",
+    "transfer": "transfer",
+    "Transfer": "Transfer"
   },
   "transactionCategoryGroup": {
     "Add Transaction": "Add Transaction"

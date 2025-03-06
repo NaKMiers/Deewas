@@ -224,7 +224,7 @@ function TransferFundDrawer({
                   errors.toWalletId?.message && 'text-rose-500'
                 )}
               >
-                {t('From Wallet')}
+                {t('To Wallet')}
               </p>
               <div onFocus={() => clearErrors('toWalletId')}>
                 <WalletSelection

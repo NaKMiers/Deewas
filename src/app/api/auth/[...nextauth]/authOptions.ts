@@ -82,6 +82,7 @@ const authOptions = {
     // ...add providers here
   ],
   callbacks: {
+    // MARK: JWT
     async jwt({ token, user, trigger, session }: any) {
       console.log('- JWT -')
 
@@ -110,6 +111,7 @@ const authOptions = {
       return token
     },
 
+    // MARK: Session
     async session({ session, token }: any) {
       console.log('- Session -')
       session.user = token
@@ -117,6 +119,7 @@ const authOptions = {
       return session
     },
 
+    // MARK: Sign In
     async signIn({ user, account, profile }: any) {
       console.log('- Sign In -')
 
@@ -158,6 +161,7 @@ const authOptions = {
           return true
         }
 
+        // MARK: Create new user and init data
         // create new user with google information (auto verified email)
         const newUser = await UserModel.create({
           email,
