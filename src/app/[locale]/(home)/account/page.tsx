@@ -10,7 +10,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useAppDispatch } from '@/hooks/reduxHook'
 import { Link } from '@/i18n/navigation'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { deleteAllDataApi } from '@/requests'
 import {
   LucideBookCopy,
@@ -35,6 +37,7 @@ function AccountPage() {
   const user: any = session?.user
   const t = useTranslations('accountPage')
   const { theme, resolvedTheme, setTheme } = useTheme()
+  const dispatch = useAppDispatch()
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -48,6 +51,8 @@ function AccountPage() {
     try {
       const { message } = await deleteAllDataApi()
       toast.success(message, { id: 'delete-all-data' })
+
+      dispatch(refetching())
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-all-data' })
       console.log(err)
@@ -55,7 +60,7 @@ function AccountPage() {
       // stop loading
       setDeleting(false)
     }
-  }, [t])
+  }, [dispatch, t])
 
   return (
     <div className="container flex flex-col gap-21/2 px-21/2 pb-32 pt-21/2 md:gap-21 md:px-21 md:pt-21">

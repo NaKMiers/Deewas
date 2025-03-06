@@ -38,6 +38,10 @@ const WalletSchema = new Schema(
       type: Number,
       default: 0,
     },
+    transfer: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 )
@@ -59,6 +63,7 @@ export interface IWallet {
   expense: number
   saving: number
   invest: number
+  transfer: number
 }
 
 export type IFullWallet = IWallet & { user: IUser }

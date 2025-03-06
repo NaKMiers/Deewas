@@ -7,16 +7,20 @@ import { TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { deleteWalletApi, updateWalletApi } from '@/requests'
 import {
+  LucideArrowRightLeft,
   LucideChevronDown,
   LucideEllipsis,
   LucideLoaderCircle,
   LucidePencil,
+  LucidePlus,
   LucideTrash,
 } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
+import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
+import TransferFundDrawer from './dialogs/TransferFundDrawer'
 import UpdateWalletDrawer from './dialogs/UpdateWalletDrawer'
 import { Button } from './ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
@@ -127,6 +131,36 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
                   {t('Hide')}
                 </Button>
 
+                {/* MARK: Transfer */}
+                {wallets.length > 1 && (
+                  <TransferFundDrawer
+                    initFromWallet={wallet}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-indigo-500"
+                      >
+                        <LucideArrowRightLeft size={16} />
+                        {t('Transfer')}
+                      </Button>
+                    }
+                  />
+                )}
+
+                {/* MARK: Add Transaction */}
+                <CreateTransactionDrawer
+                  initWallet={wallet}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2"
+                    >
+                      <LucidePlus size={16} />
+                      {t('Add Transaction')}
+                    </Button>
+                  }
+                />
+
                 {/* MARK: Edit */}
                 <UpdateWalletDrawer
                   update={wallet => dispatch(updateWallet(wallet))}
@@ -181,11 +215,11 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
       <CardContent className="flex flex-col gap-2 px-4 pb-2">
         <Item
           title={t('Balance')}
-          value={wallet.income - wallet.expense}
+          value={wallet.income + wallet.saving + wallet.invest + wallet.transfer - wallet.expense}
           type="balance"
         />
         <div
-          className={`trans-300 flex flex-col gap-2 overflow-hidden ${collapsed ? 'max-h-[300px]' : 'max-h-0'}`}
+          className={`trans-300 flex flex-col gap-2 overflow-hidden ${collapsed ? 'max-h-[400px]' : 'max-h-0'}`}
         >
           <Item
             title={t('Income')}
@@ -206,6 +240,11 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
             title={t('Invest')}
             value={wallet.invest}
             type="invest"
+          />
+          <Item
+            title={t('Transfer')}
+            value={wallet.invest}
+            type="transfer"
           />
         </div>
       </CardContent>

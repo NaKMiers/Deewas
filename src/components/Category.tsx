@@ -106,7 +106,7 @@ function Category({ category, className = '' }: CategoryProps) {
                 {/* MARK: Create Transaction */}
                 {category.type === 'expense' && (
                   <CreateTransactionDrawer
-                    category={category}
+                    initCategory={category}
                     trigger={
                       <Button
                         variant="ghost"

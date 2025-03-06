@@ -1,7 +1,9 @@
 import { currencies } from '@/constants/settings'
 import { IUser } from '@/models/UserModel'
 import {
+  LucideArrowRightLeft,
   LucideChartNoAxesCombined,
+  LucideForward,
   LucideHandCoins,
   LucideTrendingDown,
   LucideTrendingUp,
@@ -95,6 +97,13 @@ export const tranOptions = {
     background: 'bg-sky-950',
     border: 'border-sky-500',
     hex: '#0ea5e9',
+  },
+  transfer: {
+    Icon: LucideArrowRightLeft,
+    color: 'text-indigo-500',
+    background: 'bg-indigo-950',
+    border: 'border-indigo-500',
+    hex: '#6366f1',
   },
 }
 

@@ -68,7 +68,7 @@ function TransactionCategoryGroup({
 
         {/* New Transaction for category */}
         <CreateTransactionDrawer
-          category={category}
+          initCategory={category}
           update={(transaction: IFullTransaction) => dispatch(addTransaction(transaction))}
           trigger={
             <Button

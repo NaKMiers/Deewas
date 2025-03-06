@@ -254,6 +254,25 @@
     "Cancel": "Hủy",
     "Save": "Lưu"
   },
+  "TransferFundDrawer": {
+    "Source wallet is required": "Vui lòng chọn ví nguồn",
+    "Destination wallet is required": "Vui lòng chọn ví đích",
+    "Source wallet and destination wallet must be different": "Ví nguồn và ví đích phải khác nhau",
+    "Amount is required": "Số tiền không được trống",
+    "Date is required": "Vui lòng chọn ngày chuyển",
+    "Transferring": "Đang chuyển",
+    "Failed to transfer": "Không thể chuyển",
+    "Transfer Fund": "Chuyển tiền",
+    "Transfer money between wallets": "Chuyển tiền giữa các ví",
+    "From Wallet": "Từ ví",
+    "To Wallet": "Đến ví",
+    "Amount": "Số tiền",
+    "Date": "Ngày",
+    "Select Date": "Chọn ngày",
+    "When did this transferring happen?": "Bạn đã thực hiện chuyển tiền này vào lúc nào?",
+    "Cancel": "Hủy",
+    "Save": "Lưu"
+  },
   "budgetCard": {
     "Deleting budget": "Đang xóa ngân sách",
     "Edit": "Sửa",
@@ -401,6 +420,8 @@
   "walletCard": {
     "Deleting wallet": "Đang xóa ví",
     "Hide": "Ẩn",
+    "Transfer": "Chuyển tiền",
+    "Add Transaction": "Thêm giao dịch",
     "Edit": "Sửa",
     "Delete Wallet": "Xóa ví",
     "Are you sure you want to delete this wallet?": "Bạn có chắc chắn muốn xóa ví này không?",
@@ -415,7 +436,8 @@
     "saving": "tiết kiệm",
     "Saving": "Tiết kiệm",
     "invest": "đầu tư",
-    "Invest": "Đầu tư"
+    "Invest": "Đầu tư",
+    "transfer": "chuyển tiền"
   },
   "walletSelection": {
     "No results found": "Không tìm thấy kết quả",

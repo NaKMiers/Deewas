@@ -3,20 +3,18 @@
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { refetching } from '@/lib/reducers/loadReducer'
-import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/string'
+import { formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
-import { ICategory } from '@/models/CategoryModel'
-import { IFullTransaction, TransactionType } from '@/models/TransactionModel'
+import { TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
-import { createTransactionApi } from '@/requests'
+import { transferFundApi } from '@/requests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
 import { useTranslations } from 'next-intl'
 import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import CategoryPicker from '../CategoryPicker'
 import CustomInput from '../CustomInput'
 import { Button } from '../ui/button'
 import { Calendar } from '../ui/calendar'
@@ -32,27 +30,24 @@ import {
 } from '../ui/drawer'
 import WalletSelection from '../WalletSelection'
 
-interface CreateTransactionDrawerProps {
+interface TransferFundDrawerProps {
   type?: TransactionType
-  initWallet?: IWallet
-  initCategory?: ICategory
+  initFromWallet?: IWallet
+  initToWallet?: IWallet
   trigger: ReactNode
   refetch?: () => void
-  update?: (transaction: IFullTransaction) => void
   className?: string
 }
 
-function CreateTransactionDrawer({
-  type,
-  initWallet,
-  initCategory,
+function TransferFundDrawer({
+  initFromWallet,
+  initToWallet,
   trigger,
-  update,
   refetch,
   className = '',
-}: CreateTransactionDrawerProps) {
+}: TransferFundDrawerProps) {
   // hooks
-  const t = useTranslations('createTransactionDrawer')
+  const t = useTranslations('TransferFundDrawer')
   const dispatch = useAppDispatch()
 
   // store
@@ -79,12 +74,10 @@ function CreateTransactionDrawer({
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: initWallet?._id || curWallet?._id || '',
-      name: '',
-      categoryId: initCategory?._id || '',
+      fromWalletId: initFromWallet?._id || '',
+      toWalletId: initToWallet?._id || '',
       amount: '',
       date: moment().format('YYYY-MM-DD'),
-      type: initCategory?.type || type || 'expense',
     },
   })
   const form = watch()
@@ -94,20 +87,29 @@ function CreateTransactionDrawer({
     data => {
       let isValid = true
 
-      // wallet is required
-      if (!data.walletId) {
-        setError('walletId', {
+      // source wallet is required
+      if (!data.fromWalletId) {
+        setError('fromWalletId', {
           type: 'manual',
-          message: t('Wallet is required'),
+          message: t('Source wallet is required'),
         })
         isValid = false
       }
 
-      // name is required
-      if (!data.name) {
-        setError('name', {
+      // destination wallet is required
+      if (!data.fromWalletId) {
+        setError('toWalletId', {
           type: 'manual',
-          message: t('Name is required'),
+          message: t('Destination wallet is required'),
+        })
+        isValid = false
+      }
+
+      // source wallet and destination wallet must be different
+      if (data.fromWalletId === data.toWalletId) {
+        setError('toWalletId', {
+          type: 'manual',
+          message: t('Source wallet and destination wallet must be different'),
         })
         isValid = false
       }
@@ -117,24 +119,6 @@ function CreateTransactionDrawer({
         setError('amount', {
           type: 'manual',
           message: t('Amount is required'),
-        })
-        isValid = false
-      }
-
-      // type is required
-      if (!data.type) {
-        setError('type', {
-          type: 'manual',
-          message: t('Type is required'),
-        })
-        isValid = false
-      }
-
-      // category must be selected
-      if (!data.categoryId) {
-        setError('categoryId', {
-          type: 'manual',
-          message: t('Category is required'),
         })
         isValid = false
       }
@@ -153,18 +137,18 @@ function CreateTransactionDrawer({
     [setError, t]
   )
 
-  // create transaction
-  const handleCreateTransaction: SubmitHandler<FieldValues> = useCallback(
+  // transfer fund
+  const handleTransferFund: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // validate form
       if (!handleValidate(data)) return
 
       // start loading
       setSaving(true)
-      toast.loading(t('Creating transaction') + '...', { id: 'create-transaction' })
+      toast.loading(t('Transferring') + '...', { id: 'transferring' })
 
       try {
-        const { transaction, message } = await createTransactionApi({
+        const { message } = await transferFundApi({
           ...data,
           date: toUTC(data.date),
           amount: revertAdjustedCurrency(data.amount, locale),
@@ -173,20 +157,19 @@ function CreateTransactionDrawer({
         dispatch(refetching())
 
         if (refetch) refetch()
-        if (update) update(transaction)
 
-        toast.success(message, { id: 'create-transaction' })
+        toast.success(message, { id: 'transferring' })
         setOpen(false)
         reset()
       } catch (err: any) {
-        toast.error(t('Failed to create transaction'), { id: 'create-transaction' })
+        toast.error(t('Failed to transfer'), { id: 'transferring' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, update, dispatch, locale, t]
+    [handleValidate, reset, refetch, dispatch, locale, t]
   )
 
   return (
@@ -199,27 +182,66 @@ function CreateTransactionDrawer({
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
           <DrawerHeader>
-            <DrawerTitle className="text-center">
-              {t('Create')}{' '}
-              {form.type && <span className={cn(checkTranType(form.type).color)}>{t(form.type)}</span>}{' '}
-              {t('transaction')}
-            </DrawerTitle>
+            <DrawerTitle className="text-center">{t('Transfer Fund')}</DrawerTitle>
             <DrawerDescription className="text-center">
-              {t('Transactions keep track of your finances effectively')}
+              {t('Transfer money between wallets')}
             </DrawerDescription>
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
-            {/* MARK: Name */}
-            <CustomInput
-              id="name"
-              label={t('Name')}
-              disabled={saving}
-              register={register}
-              errors={errors}
-              type="text"
-              onFocus={() => clearErrors('name')}
-            />
+            {/* MARK: From Wallet */}
+            <div className="mt-1.5">
+              <p
+                className={cn(
+                  'mb-1 text-xs font-semibold',
+                  errors.fromWalletId?.message && 'text-rose-500'
+                )}
+              >
+                {t('From Wallet')}
+              </p>
+              <div onFocus={() => clearErrors('fromWalletId')}>
+                <WalletSelection
+                  className={cn(
+                    'w-full justify-normal',
+                    errors.fromWalletId?.message && 'border-rose-500'
+                  )}
+                  update={(wallet: IWallet) => setValue('fromWalletId', wallet._id)}
+                  initWallet={initFromWallet}
+                />
+              </div>
+              {errors.fromWalletId?.message && (
+                <span className="ml-1 block text-xs italic text-rose-400">
+                  {errors.fromWalletId?.message?.toString()}
+                </span>
+              )}
+            </div>
+
+            {/* MARK: To Wallet */}
+            <div className="mt-1.5">
+              <p
+                className={cn(
+                  'mb-1 text-xs font-semibold',
+                  errors.toWalletId?.message && 'text-rose-500'
+                )}
+              >
+                {t('From Wallet')}
+              </p>
+              <div onFocus={() => clearErrors('toWalletId')}>
+                <WalletSelection
+                  className={cn(
+                    'w-full justify-normal',
+                    errors.toWalletId?.message && 'border-rose-500'
+                  )}
+                  update={(wallet: IWallet) => setValue('toWalletId', wallet._id)}
+                  initWallet={initFromWallet}
+                />
+              </div>
+              {errors.toWalletId?.message && (
+                <span className="ml-1 block text-xs italic text-rose-400">
+                  {errors.toWalletId?.message?.toString()}
+                </span>
+              )}
+            </div>
 
             {/* MARK: Amount */}
             {currency && (
@@ -235,83 +257,6 @@ function CreateTransactionDrawer({
                 icon={<span>{formatSymbol(currency)}</span>}
               />
             )}
-
-            {/* MARK: Type */}
-            {!initCategory && !type && (
-              <CustomInput
-                id="type"
-                label={t('Type')}
-                disabled={saving}
-                register={register}
-                errors={errors}
-                type="select"
-                control={control}
-                options={[
-                  {
-                    label: t('Expense'),
-                    value: 'expense',
-                  },
-                  {
-                    label: t('Income'),
-                    value: 'income',
-                  },
-                  {
-                    label: t('Saving'),
-                    value: 'saving',
-                  },
-                  {
-                    label: t('Invest'),
-                    value: 'invest',
-                  },
-                ]}
-                onFocus={() => clearErrors('type')}
-              />
-            )}
-
-            {/* MARK: Category */}
-            <div className="mt-1.5 flex flex-1 flex-col">
-              <p
-                className={cn(
-                  'mb-1 text-xs font-semibold',
-                  errors.categoryId?.message && 'text-rose-500'
-                )}
-              >
-                {t('Category')}
-              </p>
-              <div onFocus={() => clearErrors('categoryId')}>
-                <CategoryPicker
-                  category={initCategory}
-                  onChange={(categoryId: string) => setValue('categoryId', categoryId)}
-                  type={form.type}
-                />
-              </div>
-              {errors.categoryId?.message && (
-                <span className="ml-1 mt-0.5 text-xs italic text-rose-400">
-                  {errors.categoryId?.message?.toString()}
-                </span>
-              )}
-            </div>
-
-            {/* MARK: Wallet */}
-            <div className="mt-1.5">
-              <p
-                className={cn('mb-1 text-xs font-semibold', errors.walletId?.message && 'text-rose-500')}
-              >
-                {t('Wallet')}
-              </p>
-              <div onFocus={() => clearErrors('walletId')}>
-                <WalletSelection
-                  className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
-                  update={(wallet: IWallet) => setValue('walletId', wallet._id)}
-                  initWallet={initWallet}
-                />
-              </div>
-              {errors.walletId?.message && (
-                <span className="ml-1 block text-xs italic text-rose-400">
-                  {errors.walletId?.message?.toString()}
-                </span>
-              )}
-            </div>
 
             {/* MARK: Date */}
             <div className="mt-1.5 flex flex-1 flex-col">
@@ -329,7 +274,7 @@ function CreateTransactionDrawer({
                     <DrawerHeader>
                       <DrawerTitle className="text-center">{t('Select Date')}</DrawerTitle>
                       <DrawerDescription className="text-center">
-                        {t('When did this transaction happen?')}
+                        {t('When did this transferring happen?')}
                       </DrawerDescription>
                     </DrawerHeader>
 
@@ -376,7 +321,7 @@ function CreateTransactionDrawer({
                 disabled={saving}
                 variant="default"
                 className="h-10 min-w-[60px] rounded-md px-21/2 text-[13px] font-semibold"
-                onClick={handleSubmit(handleCreateTransaction)}
+                onClick={handleSubmit(handleTransferFund)}
               >
                 {saving ? (
                   <LucideLoaderCircle
@@ -395,4 +340,4 @@ function CreateTransactionDrawer({
   )
 }
 
-export default memo(CreateTransactionDrawer)
+export default memo(TransferFundDrawer)

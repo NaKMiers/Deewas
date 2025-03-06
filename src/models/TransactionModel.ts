@@ -28,13 +28,6 @@ const TransactionSchema = new Schema(
     amount: {
       type: Number,
       required: true,
-      validate: {
-        validator: function (value: number) {
-          return value > 0
-        },
-        message: 'Amount must be greater than 0',
-      },
-      min: 0,
     },
     date: {
       type: Date,
@@ -42,7 +35,7 @@ const TransactionSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ['income', 'expense', 'saving', 'invest'],
+      enum: ['income', 'expense', 'saving', 'invest', 'transfer'],
       required: true,
     },
   },
@@ -66,6 +59,6 @@ export interface ITransaction {
   date: string
 }
 
-export type TransactionType = 'income' | 'expense' | 'saving' | 'invest'
+export type TransactionType = 'income' | 'expense' | 'saving' | 'invest' | 'transfer'
 
 export type IFullTransaction = ITransaction & { category: ICategory; wallet: IWallet; user: IUser }

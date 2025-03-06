@@ -43,6 +43,21 @@ export const createWalletApi = async (data: any) => {
   return await res.json()
 }
 
+// [POST]: /wallet/transfer
+export const transferFundApi = async (data: any) => {
+  const res = await fetch('/api/wallet/transfer', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
+
 // [PUT]: /wallet/:id/update
 export const updateWalletApi = async (id: string, data: any) => {
   const res = await fetch(`/api/wallet/${id}/update`, {
