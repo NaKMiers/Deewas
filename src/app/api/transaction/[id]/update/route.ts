@@ -1,17 +1,6 @@
-import { connectDatabase } from '@/config/database'
-import { toUTC } from '@/lib/time'
-import BudgetModel from '@/models/BudgetModel'
-import CategoryModel from '@/models/CategoryModel'
-import TransactionModel from '@/models/TransactionModel'
-import WalletModel from '@/models/WalletModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-
-// Models: Transaction, Category, Wallet, Budget
-import '@/models/BudgetModel'
-import '@/models/CategoryModel'
-import '@/models/TransactionModel'
-import '@/models/WalletModel'
+import { updateTransaction } from '../..'
 
 // [PUT]: /transaction/:id/update
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -38,91 +27,5 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
-  }
-}
-
-export const updateTransaction = async (
-  transactionId: string,
-  walletId: string,
-  name: string,
-  amount: number,
-  date: string
-) => {
-  try {
-    // connect to database
-    await connectDatabase()
-
-    console.log('updateTransaction', transactionId, walletId, name, amount, date)
-
-    // update transaction
-    const oldTx: any = await TransactionModel.findByIdAndUpdate(
-      transactionId,
-      { $set: { wallet: walletId, name, amount, date: toUTC(date) } },
-      { new: false } // return old document
-    ).lean()
-
-    // check if transaction not found
-    if (!oldTx) {
-      throw new Error('Transaction not found')
-    }
-
-    const promises: any[] = [
-      // get new updated transaction
-      TransactionModel.findById(transactionId).populate('category wallet').lean(),
-    ]
-
-    // amount is changed
-    if (oldTx.amount !== amount) {
-      const diffAmount = amount - oldTx.amount
-
-      // update category amount of this transaction
-      promises.push(CategoryModel.findByIdAndUpdate(oldTx.category, { $inc: { amount: diffAmount } }))
-
-      // update budgets
-      promises.push(
-        BudgetModel.updateMany(
-          {
-            category: oldTx.category,
-            begin: { $lte: oldTx.date },
-            end: { $gte: oldTx.date },
-          },
-          { $inc: { amount: diffAmount } }
-        )
-      )
-
-      if (walletId !== oldTx.wallet.toString()) {
-        // update "old" wallet amount of this transaction
-        promises.push(
-          WalletModel.findByIdAndUpdate(oldTx.wallet, { $inc: { [oldTx.type]: -oldTx.amount } })
-        )
-        // update "new" wallet amount of this transaction
-        promises.push(WalletModel.findByIdAndUpdate(walletId, { $inc: { [oldTx.type]: amount } }))
-      } else {
-        // update "old" wallet amount of this transaction
-        promises.push(
-          WalletModel.findByIdAndUpdate(oldTx.wallet, { $inc: { [oldTx.type]: diffAmount } })
-        )
-      }
-    }
-    // wallet is changed
-    else if (walletId !== oldTx.wallet.toString()) {
-      // update "old" wallet amount of this transaction
-      promises.push(
-        WalletModel.findByIdAndUpdate(oldTx.wallet, { $inc: { [oldTx.type]: -oldTx.amount } })
-      )
-      // update "new" wallet amount of this transaction
-      promises.push(WalletModel.findByIdAndUpdate(walletId, { $inc: { [oldTx.type]: amount } }))
-    }
-
-    const [transaction] = await Promise.all(promises)
-
-    // check if transaction not found
-    if (!transaction) {
-      throw new Error('Transaction not found')
-    }
-
-    return { transaction: JSON.parse(JSON.stringify(transaction)), message: 'Updated transaction' }
-  } catch (err: any) {
-    throw new Error(err)
   }
 }

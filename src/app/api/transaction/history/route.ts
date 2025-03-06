@@ -1,13 +1,6 @@
-import { connectDatabase } from '@/config/database'
-import { toUTC } from '@/lib/time'
-import TransactionModel from '@/models/TransactionModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-
-// Models: Transaction, Category, Wallet
-import '@/models/CategoryModel'
-import '@/models/TransactionModel'
-import '@/models/WalletModel'
+import { getHistory } from '..'
 
 // [GET]: /
 export async function GET(req: NextRequest) {
@@ -31,32 +24,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
-  }
-}
-
-export const getHistory = async (userId: string, params: any = {}) => {
-  try {
-    // connect to database
-    await connectDatabase()
-
-    const { from, to } = params
-
-    // required date range
-    if (!from || !to) {
-      return { message: 'Please provide date range' }
-    }
-
-    // get all transaction in time range
-    const transactions = await TransactionModel.find({
-      user: userId,
-      date: { $gte: toUTC(from), $lte: toUTC(to) },
-    })
-      .populate('category wallet')
-      .sort({ date: -1 })
-      .lean()
-
-    return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'Home is here' }
-  } catch (err: any) {
-    throw new Error(err.message)
   }
 }

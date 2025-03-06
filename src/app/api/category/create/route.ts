@@ -1,10 +1,6 @@
-import { connectDatabase } from '@/config/database'
-import CategoryModel from '@/models/CategoryModel'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
-
-// Models: Category
-import '@/models/CategoryModel'
+import { createCategory } from '..'
 
 // [POST]: /category/create
 export async function POST(req: NextRequest) {
@@ -28,24 +24,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
-  }
-}
-
-export const createCategory = async (userId: string, name: string, icon: string, type: string) => {
-  try {
-    // connect to database
-    await connectDatabase()
-
-    // create category
-    const category = await CategoryModel.create({
-      user: userId,
-      name,
-      icon,
-      type,
-    })
-
-    return { category: JSON.parse(JSON.stringify(category)), message: 'Created category' }
-  } catch (err: any) {
-    return err
   }
 }
