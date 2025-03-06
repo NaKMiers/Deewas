@@ -11,9 +11,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   console.log('- Update Wallet -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
     const userId = token?._id
 
@@ -28,16 +25,25 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // get data from request body
     const { name, icon, hide } = await req.json()
 
-    // update wallet
-    const wallet = await WalletModel.findByIdAndUpdate(
-      id,
-      { $set: { name, icon, hide } },
-      { new: true }
-    ).lean()
+    const response = await updateWallet(id, name, icon, hide)
 
     // return response
-    return NextResponse.json({ wallet, message: 'Updated wallet' }, { status: 200 })
+    return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
+}
+
+export const updateWallet = async (walletId: string, name: string, icon: string, hide: string) => {
+  // connect to database
+  await connectDatabase()
+
+  // update wallet
+  const wallet = await WalletModel.findByIdAndUpdate(
+    walletId,
+    { $set: { name, icon, hide } },
+    { new: true }
+  ).lean()
+
+  return { wallet: JSON.parse(JSON.stringify(wallet)), message: 'Updated wallet' }
 }

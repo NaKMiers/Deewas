@@ -1,3 +1,5 @@
+'use client'
+
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { updateCategory } from '@/lib/reducers/categoryReduce'
 import { refetching } from '@/lib/reducers/loadReducer'

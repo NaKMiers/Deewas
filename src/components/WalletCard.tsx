@@ -1,3 +1,5 @@
+'use client'
+
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
 import { deleteWallet, setCurWallet, updateWallet } from '@/lib/reducers/walletReducer'

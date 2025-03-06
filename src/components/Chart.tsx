@@ -45,8 +45,6 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
   // hooks
   const { resolvedTheme } = useTheme()
 
-  console.log('data', data)
-
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 

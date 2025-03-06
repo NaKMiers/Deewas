@@ -16,11 +16,8 @@ export async function GET(req: NextRequest) {
   console.log('- Get Transactions -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -28,17 +25,37 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.nextUrl)
-    const walletId = searchParams.get('walletId')
-    const from = searchParams.get('from')
-    const to = searchParams.get('to')
-    const sort = searchParams.get('sort') || 'date'
-    const orderBy = parseInt(searchParams.get('orderBy') || '-1', 10) as 1 | -1
-    const limit = searchParams.get('limit') || Infinity
+    const params = Object.fromEntries(searchParams.entries())
+
+    const response = await getTransactions(userId, params)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const getTransactions = async (userId: string, params: any = {}) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
+    const { walletId, from, to, type, amount, name } = params
+
+    console.log('Params:', params)
+
+    const sort = params.sort || 'date'
+    const orderBy = parseInt(params.orderBy || '-1', 10) as 1 | -1
+    const limit = params.limit || Infinity
 
     const filter: any = { user: userId }
     if (walletId) filter.wallet = walletId
     if (from) filter.date = { $gte: toUTC(from) }
     if (to) filter.date = { ...filter.date, $lte: toUTC(to) }
+    if (type) filter.type = type
+    if (amount) filter.amount = amount
+    if (name) filter.name = { $regex: name, $options: 'i' }
 
     // MARK: Overview
     const transactions = await TransactionModel.find(filter)
@@ -47,9 +64,8 @@ export async function GET(req: NextRequest) {
       .limit(+limit)
       .lean()
 
-    // return response
-    return NextResponse.json({ transactions, message: 'Transactions are here' }, { status: 200 })
+    return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'Transactions are here' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

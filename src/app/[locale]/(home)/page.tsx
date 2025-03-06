@@ -1,8 +1,9 @@
 'use client'
 
+import Creations from '@/components/Creations'
 import History from '@/components/History'
-import OverviewCard from '@/components/OverviewCard'
 import LatestTransactions from '@/components/LatestTransactions'
+import OverviewCard from '@/components/OverviewCard'
 import { Separator } from '@/components/ui/separator'
 import Wallets from '@/components/Wallets'
 
@@ -22,6 +23,8 @@ function HomePage() {
       <Separator className="my-8 h-0" />
 
       <LatestTransactions />
+
+      <Creations />
     </div>
   )
 }

@@ -11,11 +11,8 @@ export async function POST(req: NextRequest) {
   console.log('- Create Category -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -25,6 +22,20 @@ export async function POST(req: NextRequest) {
     // get data from request body
     const { name, icon, type } = await req.json()
 
+    const response = await createCategory(userId, name, icon, type)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const createCategory = async (userId: string, name: string, icon: string, type: string) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
     // create category
     const category = await CategoryModel.create({
       user: userId,
@@ -33,9 +44,8 @@ export async function POST(req: NextRequest) {
       type,
     })
 
-    // return response
-    return NextResponse.json({ category, message: 'Created category' }, { status: 200 })
+    return { category: JSON.parse(JSON.stringify(category)), message: 'Created category' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return err
   }
 }

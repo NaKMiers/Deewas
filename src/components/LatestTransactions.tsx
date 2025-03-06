@@ -1,3 +1,5 @@
+'use client'
+
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
@@ -141,12 +143,14 @@ interface TransactionProps {
   className?: string
 }
 
-function Transaction({ transaction, update, remove, refetch, className = '' }: TransactionProps) {
+export function Transaction({ transaction, update, remove, refetch, className = '' }: TransactionProps) {
   // hooks
   const t = useTranslations('transaction')
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
+
+  console.log('currency', currency)
 
   // states
   const [deleting, setDeleting] = useState<boolean>(false)

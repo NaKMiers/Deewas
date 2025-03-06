@@ -11,9 +11,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   console.log('- Delete Budget -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
     const userId = token?._id
 
@@ -25,17 +22,31 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get budget id from params
     const { id } = await params
 
+    const response = await deleteBudget(id)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const deleteBudget = async (budgetId: string) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
     // delete budget
-    const budget = await BudgetModel.findByIdAndDelete(id)
+    const budget = await BudgetModel.findByIdAndDelete(budgetId)
 
     // check if budget exists
     if (!budget) {
-      return NextResponse.json({ message: 'Budget not found' }, { status: 404 })
+      throw new Error('Budget not found')
     }
 
     // return response
-    return NextResponse.json({ budget, message: 'Deleted budget' }, { status: 200 })
+    return { budget: JSON.parse(JSON.stringify(budget)), message: 'Deleted budget' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

@@ -14,11 +14,8 @@ export async function GET(req: NextRequest) {
   console.log('- Get History - ')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -26,12 +23,27 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.nextUrl)
-    const from = searchParams.get('from')
-    const to = searchParams.get('to')
+    const params = Object.fromEntries(searchParams.entries())
+
+    const response = await getHistory(userId, params)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const getHistory = async (userId: string, params: any = {}) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
+    const { from, to } = params
 
     // required date range
     if (!from || !to) {
-      return NextResponse.json({ message: 'Please provide date range' }, { status: 400 })
+      return { message: 'Please provide date range' }
     }
 
     // get all transaction in time range
@@ -43,9 +55,8 @@ export async function GET(req: NextRequest) {
       .sort({ date: -1 })
       .lean()
 
-    // return response
-    return NextResponse.json({ transactions, message: 'Home is here' }, { status: 200 })
+    return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'Home is here' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err.message)
   }
 }

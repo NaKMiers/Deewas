@@ -13,11 +13,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   console.log('- Delete Category -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -27,50 +24,59 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get category id form params
     const { id } = await params
 
-    // find category
-    let category: any = await CategoryModel.findById(id).lean()
-
-    // check if category exists
-    if (!category) {
-      return NextResponse.json({ message: 'Category not found' }, { status: 404 })
-    }
-
-    // check if category is deletable
-    if (category.deletable === false) {
-      return NextResponse.json({ message: 'Cannot delete default category' }, { status: 400 })
-    }
-
-    // get uncategorized category of this type
-    const uncategorizedCategory = await CategoryModel.findOne({
-      user: userId,
-      type: category.type,
-      deletable: false,
-    }).select('_id')
-
-    if (!uncategorizedCategory) {
-      return NextResponse.json({ message: 'Failed to delete category' }, { status: 404 })
-    }
-
-    await Promise.all([
-      // delete category
-      CategoryModel.findByIdAndDelete(id),
-      // move all transactions to uncategorized category
-      TransactionModel.updateMany(
-        { user: userId, category: id },
-        { $set: { category: uncategorizedCategory._id } }
-      ),
-      // update total amount of uncategorized category
-      CategoryModel.findByIdAndUpdate(uncategorizedCategory._id, {
-        $inc: { amount: category.amount },
-      }),
-    ])
+    const response = await deleteCategory(userId, id)
 
     // return response
-    return NextResponse.json(
-      { category, message: `Deleted ${category.icon} ${category.name} category` },
-      { status: 200 }
-    )
+    return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const deleteCategory = async (userId: string, categoryId: string) => {
+  // connect to database
+  await connectDatabase()
+
+  // find category
+  let category: any = await CategoryModel.findById(categoryId).lean()
+
+  // check if category exists
+  if (!category) {
+    throw new Error('Category not found')
+  }
+
+  // check if category is deletable
+  if (category.deletable === false) {
+    throw new Error('Cannot delete default category')
+  }
+
+  // get uncategorized category of this type
+  const uncategorizedCategory = await CategoryModel.findOne({
+    user: userId,
+    type: category.type,
+    deletable: false,
+  }).select('_id')
+
+  if (!uncategorizedCategory) {
+    throw new Error('Failed to delete category')
+  }
+
+  await Promise.all([
+    // delete category
+    CategoryModel.findByIdAndDelete(categoryId),
+    // move all transactions to uncategorized category
+    TransactionModel.updateMany(
+      { user: userId, category: categoryId },
+      { $set: { category: uncategorizedCategory._id } }
+    ),
+    // update total amount of uncategorized category
+    CategoryModel.findByIdAndUpdate(uncategorizedCategory._id, {
+      $inc: { amount: category.amount },
+    }),
+  ])
+
+  return {
+    category: JSON.parse(JSON.stringify(category)),
+    message: `Deleted ${category.icon} ${category.name} category`,
   }
 }

@@ -16,28 +16,47 @@ export async function GET(req: NextRequest) {
   console.log('- Get My Budgets -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
 
-    // get budgets: budgets.end > today
-    const budgets = await BudgetModel.find({
-      user: userId,
-      end: { $gte: toUTC(moment().toDate()) },
-    })
-      .populate('category')
-      .lean()
+    const { searchParams } = new URL(req.nextUrl)
+    const params = Object.fromEntries(searchParams.entries())
+
+    const response = await getBudgets(userId, params)
 
     // return response
-    return NextResponse.json({ budgets, message: 'Budgets are here' }, { status: 200 })
+    return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const getBudgets = async (userId: string, params: any = {}) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
+    console.log('params', params)
+
+    const filter: any = { user: userId, end: { $gte: toUTC(moment().toDate()) } }
+    Object.keys(params).forEach(key => {
+      if (params[key]) {
+        filter[key] = params[key]
+      }
+    })
+
+    console.log('filter', filter)
+
+    // get budgets: budgets.end > today
+    const budgets = await BudgetModel.find(filter).populate('category').lean()
+
+    return { budgets: JSON.parse(JSON.stringify(budgets)), message: 'Budgets are here' }
+  } catch (err: any) {
+    throw new Error(err.message)
   }
 }

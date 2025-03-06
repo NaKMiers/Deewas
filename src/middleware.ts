@@ -18,6 +18,12 @@ const requireAuth = async (req: NextRequest, token: JWT | null, locale: string =
   return !token ? NextResponse.redirect(new URL(`/${locale}/auth/login`, req.url)) : intlMiddleware(req)
 }
 
+// Require Auth For Api
+const requireAuthForApi = async (req: NextRequest, token: JWT | null, locale: string = 'en') => {
+  console.log('- Require Auth For ApiApi -')
+  return !token ? NextResponse.redirect(new URL(`/${locale}/auth/login`, req.url)) : NextResponse.next()
+}
+
 // Require Admin
 const requireAdmin = async (req: NextRequest, token: JWT | null, locale: string = 'en') => {
   console.log('- Require Admin -')
@@ -43,7 +49,7 @@ export default async function middleware(req: NextRequest) {
     if (['/api/admin'].some(path => pathname.startsWith(path))) {
       return requireAdminForApi(req, token, locale) // require admin
     } else {
-      return NextResponse.next() // not required
+      return requireAuthForApi(req, token, locale) // not required
     }
   } else {
     const purePathname = pathname.replace(/^\/(vi|en)/, '') || '/'

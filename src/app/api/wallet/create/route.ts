@@ -11,11 +11,8 @@ export async function POST(req: NextRequest) {
   console.log('- Create Wallet -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -25,6 +22,20 @@ export async function POST(req: NextRequest) {
     // get data from request body
     const { name, icon } = await req.json()
 
+    const response = await createWallet(userId, name, icon)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const createWallet = async (userId: string, name: string, icon: string) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
     // create wallet
     const wallet = await WalletModel.create({
       user: userId,
@@ -32,9 +43,8 @@ export async function POST(req: NextRequest) {
       icon,
     })
 
-    // return response
-    return NextResponse.json({ wallet, message: 'Created wallet' }, { status: 200 })
+    return { wallet: JSON.parse(JSON.stringify(wallet)), message: 'Created wallet' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

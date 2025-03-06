@@ -15,9 +15,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   console.log('- Update Budget -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
     const userId = token?._id
 
@@ -32,6 +29,26 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // get data from request body
     const { categoryId, total, begin, end } = await req.json()
 
+    const response = await updateBudget(id, categoryId, begin, end, total)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const updateBudget = async (
+  budgetId: string,
+  categoryId: string,
+  begin: string,
+  end: string,
+  total: number
+) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
     // calculate total amount of transactions of category from begin to end of budget
     const transactions = await TransactionModel.find({
       category: categoryId,
@@ -41,7 +58,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // update budget
     const budget = await BudgetModel.findByIdAndUpdate(
-      id,
+      budgetId,
       {
         $set: {
           category: categoryId,
@@ -56,9 +73,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       .populate('category')
       .lean()
 
-    // return response
-    return NextResponse.json({ budget, message: 'Updated budget' }, { status: 200 })
+    return { budget: JSON.parse(JSON.stringify(budget)), message: 'Updated budget' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

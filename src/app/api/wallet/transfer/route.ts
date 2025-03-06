@@ -16,11 +16,8 @@ export async function POST(req: NextRequest) {
   console.log('- Transfer Funds -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -30,10 +27,25 @@ export async function POST(req: NextRequest) {
     // get data from request
     const { fromWalletId, toWalletId, amount, date } = await req.json()
 
-    console.log('fromWalletId:', fromWalletId)
-    console.log('toWalletId:', toWalletId)
-    console.log('amount:', amount)
-    console.log('date:', date)
+    const response = await transfer(userId, fromWalletId, toWalletId, amount, date)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const transfer = async (
+  userId: string,
+  fromWalletId: string,
+  toWalletId: string,
+  amount: number,
+  date: string
+) => {
+  try {
+    // connect to database
+    await connectDatabase()
 
     const [fromWallet, toWallet, transferCategory] = await Promise.all([
       WalletModel.findById(fromWalletId).select('name'),
@@ -42,22 +54,24 @@ export async function POST(req: NextRequest) {
     ])
 
     if (!fromWallet) {
-      return NextResponse.json({ message: 'Source wallet not found' }, { status: 404 })
+      throw new Error('Source wallet not found')
     }
 
     if (!toWallet) {
-      return NextResponse.json({ message: 'Destination wallet not found' }, { status: 404 })
+      throw new Error('Destination wallet not found')
     }
 
     if (!transferCategory) {
-      return NextResponse.json({ message: 'Cannot categorized this action' }, { status: 404 })
+      throw new Error('Cannot categorized this action')
     }
 
-    console.log('fromWallet:', fromWallet)
-    console.log('toWallet:', toWallet)
-    console.log('transferCategory:', transferCategory)
+    const [sourceW, destinationW] = await Promise.all([
+      // update from wallet
+      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { transfer: -amount } }, { new: true }),
 
-    await Promise.all([
+      // update to wallet
+      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { transfer: amount } }, { new: true }),
+
       // create transfer transactions
       TransactionModel.create({
         user: userId,
@@ -79,17 +93,14 @@ export async function POST(req: NextRequest) {
         amount: amount,
         date: toUTC(date),
       }),
-
-      // update from wallet
-      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { transfer: -amount } }),
-
-      // update to wallet
-      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { transfer: amount } }),
     ])
 
-    // return response
-    return NextResponse.json({ message: 'Transferred fund' }, { status: 200 })
+    return {
+      sourceWallet: JSON.parse(JSON.stringify(sourceW)),
+      destinationWallet: JSON.parse(JSON.stringify(destinationW)),
+      message: 'Funds transferred',
+    }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

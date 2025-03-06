@@ -3,8 +3,11 @@ import { formatCurrency, parseCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
+import { getHistoryApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
+import { useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Chart, { ChartDatum } from './Chart'
@@ -12,9 +15,6 @@ import { Button } from './ui/button'
 import { DateRangePicker } from './ui/DateRangePicker'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
-import { useSession } from 'next-auth/react'
-import { useTranslations } from 'next-intl'
-import { getHistoryApi } from '@/requests'
 
 interface HistoryProps {
   className?: string
@@ -71,7 +71,6 @@ function History({ className = '' }: HistoryProps) {
       const to = toUTC(dateRange.to)
 
       const { transactions } = await getHistoryApi(`?from=${from}&to=${to}`)
-      console.log('transactions', transactions)
       setTransactions(transactions)
     } catch (err: any) {
       console.log(err)

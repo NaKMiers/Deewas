@@ -11,9 +11,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   console.log('- Update Category -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
     const userId = token?._id
 
@@ -28,21 +25,30 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // get data from request body
     const { name, icon } = await req.json()
 
-    // update category
-    const category: ICategory | null = (await CategoryModel.findByIdAndUpdate(
-      id,
-      { $set: { name, icon } },
-      { new: true }
-    ).lean()) as any
-
-    // check if category exists
-    if (!category) {
-      return NextResponse.json({ message: 'Category not found' }, { status: 404 })
-    }
+    const response = await updateCategory(id, name, icon)
 
     // return response
-    return NextResponse.json({ category, message: 'Updated category' }, { status: 200 })
+    return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
+}
+
+export const updateCategory = async (categoryId: string, name: string, icon: string) => {
+  // connect to database
+  await connectDatabase()
+
+  // update category
+  const category: ICategory | null = (await CategoryModel.findByIdAndUpdate(
+    categoryId,
+    { $set: { name, icon } },
+    { new: true }
+  ).lean()) as any
+
+  // check if category exists
+  if (!category) {
+    throw new Error('Category not found')
+  }
+
+  return { category: JSON.parse(JSON.stringify(category)), message: 'Updated category' }
 }

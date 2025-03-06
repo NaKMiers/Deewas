@@ -18,9 +18,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   console.log('- Update Transaction - ')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
     const userId = token?._id
 
@@ -34,21 +31,44 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // get data from request
     const { name, amount, date, walletId } = await req.json()
+
+    const response = await updateTransaction(id, walletId, name, amount, date)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const updateTransaction = async (
+  transactionId: string,
+  walletId: string,
+  name: string,
+  amount: number,
+  date: string
+) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
+    console.log('updateTransaction', transactionId, walletId, name, amount, date)
+
     // update transaction
     const oldTx: any = await TransactionModel.findByIdAndUpdate(
-      id,
+      transactionId,
       { $set: { wallet: walletId, name, amount, date: toUTC(date) } },
       { new: false } // return old document
     ).lean()
 
     // check if transaction not found
     if (!oldTx) {
-      return NextResponse.json({ message: 'Transaction not found' }, { status: 404 })
+      throw new Error('Transaction not found')
     }
 
     const promises: any[] = [
       // get new updated transaction
-      TransactionModel.findById(id).populate('category wallet').lean(),
+      TransactionModel.findById(transactionId).populate('category wallet').lean(),
     ]
 
     // amount is changed
@@ -98,12 +118,11 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // check if transaction not found
     if (!transaction) {
-      return NextResponse.json({ message: 'Transaction not found' }, { status: 404 })
+      throw new Error('Transaction not found')
     }
 
-    // return response
-    return NextResponse.json({ transaction, message: 'Updated transaction' }, { status: 200 })
+    return { transaction: JSON.parse(JSON.stringify(transaction)), message: 'Updated transaction' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

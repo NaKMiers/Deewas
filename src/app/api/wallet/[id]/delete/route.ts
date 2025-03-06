@@ -13,11 +13,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   console.log('- Delete Wallet -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -27,27 +24,40 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get wallet id form params
     const { id } = await params
 
+    const response = await deleteWallet(userId, id)
+
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const deleteWallet = async (userId: string, walletId: string) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
     const [walletCount]: any[] = await Promise.all([
       // count wallets
       WalletModel.countDocuments({ user: userId }).lean(),
       // delete all transactions associated with wallet
-      TransactionModel.deleteMany({ wallet: id }),
+      TransactionModel.deleteMany({ wallet: walletId }),
     ])
 
     // clear wallet if only one wallet is left
     if (walletCount > 1) {
       // delete wallet
-      const wallet = await WalletModel.findByIdAndDelete(id)
-      return NextResponse.json({ wallet, message: 'Deleted wallet' }, { status: 200 })
+      const wallet = await WalletModel.findByIdAndDelete(walletId)
+      return { wallet, message: 'Deleted wallet' }
     } else {
       const wallet = await WalletModel.findByIdAndUpdate(
-        id,
+        walletId,
         { $set: { income: 0, expense: 0, saving: 0, invest: 0 } },
         { new: true }
       )
-      return NextResponse.json({ wallet, message: 'Cleared wallet' }, { status: 200 })
+      return { wallet: JSON.parse(JSON.stringify(wallet)), message: 'Cleared wallet' }
     }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

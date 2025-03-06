@@ -1,3 +1,5 @@
+'use client'
+
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { deleteBudget, updateBudget } from '@/lib/reducers/budgetReducer'
 import { checkLevel, formatCurrency } from '@/lib/string'

@@ -15,11 +15,8 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   console.log('- Get Wallet -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
-    const userId = token?._id
+    const userId = token?._id as string
 
     // check if user is logged in
     if (!userId) {
@@ -29,18 +26,35 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     // get wallet id from params
     const { id } = await params
 
+    const response = await getWallet(id, userId)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const getWallet = async (walletId: string, userId: string) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
     // find wallet
-    const wallet = await WalletModel.findOne({ _id: id, user: userId }).lean()
-    const categories = await CategoryModel.find({ wallet: id, user: userId }).lean()
+    const wallet = await WalletModel.findById(walletId).lean()
+    const categories = await CategoryModel.find({ wallet: walletId, user: userId }).lean()
 
     // check if wallet exist
     if (!wallet) {
-      return NextResponse.json({ message: 'Wallet not found' }, { status: 404 })
+      throw new Error('Wallet not found')
     }
 
-    // return response
-    return NextResponse.json({ wallet, categories, message: 'Wallet is here' }, { status: 200 })
+    return {
+      wallet: JSON.parse(JSON.stringify(wallet)),
+      categories: JSON.parse(JSON.stringify(categories)),
+      message: 'Wallet is here',
+    }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }

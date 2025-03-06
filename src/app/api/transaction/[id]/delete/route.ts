@@ -17,9 +17,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   console.log('- Delete Transaction - ')
 
   try {
-    // connect to database
-    await connectDatabase()
-
     const token = await getToken({ req })
     const userId = token?._id
 
@@ -31,13 +28,29 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     // get transaction id to delete
     const { id } = await params
 
+    const response = await deleteTransaction(id)
+
+    // return response
+    return NextResponse.json(response, { status: 200 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message }, { status: 500 })
+  }
+}
+
+export const deleteTransaction = async (transactionId: string) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
     // delete transaction
-    const transaction: any = await TransactionModel.findByIdAndDelete(id).lean()
+    const transaction: any = await TransactionModel.findByIdAndDelete(transactionId).lean()
 
     // check if transaction not found
     if (!transaction) {
-      return NextResponse.json({ message: 'Transaction not found' }, { status: 404 })
+      throw new Error('Transaction not found')
     }
+
+    console.log('Transaction:', transaction)
 
     await Promise.all([
       // update category amount of this transaction
@@ -57,9 +70,8 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
       ),
     ])
 
-    // return response
-    return NextResponse.json({ transaction, message: 'Deleted transaction' }, { status: 200 })
+    return { transaction: JSON.parse(JSON.stringify(transaction)), message: 'Deleted transaction' }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    throw new Error(err)
   }
 }
