@@ -320,6 +320,19 @@
     "Delete": "Xóa",
     "Cancel": "Hủy"
   },
+  "walletPicker": {
+    "All wallets": "Tất cả ví",
+    "Deleting wallet": "Đang xóa ví",
+    "Select Wallet": "Chọn ví",
+    "Wallets are used to group your transactions by source of funds": "Ví dùng để phân loại giao dịch của bạn theo nguồn tiền",
+    "Find a wallet": "Tìm kiếm ví",
+    "Create Wallet": "Tạo ví mới",
+    "No results found": "Không tìm thấy kết quả",
+    "Delete wallet": "Xóa ví",
+    "Are you sure you want to delete": "Bạn có chắc muốn xóa",
+    "Delete": "Xóa",
+    "Cancel": "Hủy"
+  },
   "history": {
     "History": "Lịch sử",
     "types": "loại",

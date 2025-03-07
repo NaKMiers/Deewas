@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/ui/DateRangePicker'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
-import WalletSelection from '@/components/WalletSelection'
+import WalletPicker from '@/components/WalletPicker'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { setTransactions } from '@/lib/reducers/transactionReducer'
-import { setCurWallet } from '@/lib/reducers/walletReducer'
 import { toUTC } from '@/lib/time'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
@@ -126,14 +125,10 @@ function TransactionsPage() {
           {t('Transactions')} <span className="text-muted-foreground/50">{t('of wallet')}</span>
         </h2>
 
-        <WalletSelection
-          allowAll
-          update={(wallet: IWallet | null) => {
-            setWallet(wallet)
-            if (wallet) {
-              dispatch(setCurWallet(wallet))
-            }
-          }}
+        <WalletPicker
+          wallet={wallet as IWallet}
+          isAllowedAll
+          onChange={(wallet: IWallet | null) => setWallet(wallet)}
         />
       </div>
 

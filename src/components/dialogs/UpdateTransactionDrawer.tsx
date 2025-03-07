@@ -29,7 +29,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import WalletSelection from '../WalletSelection'
+import WalletPicker from '../WalletPicker'
 
 interface UpdateTransactionDrawerProps {
   transaction: IFullTransaction
@@ -192,6 +192,7 @@ function UpdateTransactionDrawer({
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
+            {/* MARK: Name */}
             <CustomInput
               id="name"
               label={t('Name')}
@@ -202,6 +203,7 @@ function UpdateTransactionDrawer({
               onFocus={() => clearErrors('name')}
             />
 
+            {/* MARK: Amount */}
             {currency && (
               <CustomInput
                 id="amount"
@@ -216,7 +218,7 @@ function UpdateTransactionDrawer({
               />
             )}
 
-            {/* Category */}
+            {/* MARK: Category */}
             <div className="mt-1.5 flex flex-1 flex-col">
               <p
                 className={cn(
@@ -240,22 +242,24 @@ function UpdateTransactionDrawer({
               )}
             </div>
 
-            {/* Wallet */}
+            {/* MARK: Wallet */}
             <div className="mt-1.5">
               <p className="mb-1 text-xs font-semibold">{t('Wallet')}</p>
-              <WalletSelection
-                className="w-full justify-normal"
-                initWallet={transaction.wallet}
-                update={(wallet: IWallet) => setValue('walletId', wallet._id)}
-              />
+              <div onFocus={() => clearErrors('walletId')}>
+                <WalletPicker
+                  className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
+                  wallet={transaction.wallet}
+                  onChange={(wallet: IWallet | null) => wallet && setValue('walletId', wallet._id)}
+                />
+              </div>
               {errors.walletId?.message && (
-                <span className="ml-1 block text-xs italic text-rose-400">
+                <span className="ml-1 mt-0.5 block text-xs italic text-rose-400">
                   {errors.walletId?.message?.toString()}
                 </span>
               )}
             </div>
 
-            {/* Date */}
+            {/* MARK: Date */}
             <div className="mt-1.5 flex flex-1 flex-col">
               <p className="mb-1 text-xs font-semibold">{t('Date')}</p>
               <div onFocus={() => clearErrors('date')}>

@@ -96,7 +96,7 @@ function WalletCard({ wallet, className = '' }: WalletCardProps) {
 
   return (
     <Card
-      className={cn('cursor-pointer overflow-hidden', className)}
+      className={cn('cursor-pointer select-none overflow-hidden', className)}
       onClick={() => {
         dispatch(setCurWallet(wallet))
         router.push('/transactions', { locale })

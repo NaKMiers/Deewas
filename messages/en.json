@@ -319,6 +319,19 @@
     "Delete": "Delete",
     "Cancel": "Cancel"
   },
+  "walletPicker": {
+    "All wallets": "All wallets",
+    "Deleting wallet": "Deleting wallet",
+    "Select Wallet": "Select Wallet",
+    "Wallets are used to group your transactions by source of funds": "Wallets are used to group your transactions by source of funds",
+    "Find a wallet": "Find a wallet",
+    "Create Wallet": "Create Wallet",
+    "No results found": "No results found",
+    "Delete wallet": "Delete wallet",
+    "Are you sure you want to delete": "Are you sure you want to delete",
+    "Delete": "Delete",
+    "Cancel": "Cancel"
+  },
   "history": {
     "History": "History",
     "types": "types",

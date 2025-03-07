@@ -65,7 +65,7 @@ If user wants to know about a specific wallet. Call \`get_wallet\`. To get walle
   If user does not provide enough information to get wallets, you should give example (
     e.g: get wallet cash).
 
-If user wants to create wallet. Call \`create_wallet\`. To create wallet you need:
+If user wants to create wallet (e.g create new wallet). Call \`create_wallet\`. To create wallet you need:
   name: string (name is required), icon: string (emoji icon, you can choose any emoji icon base on name).
   If user does not provide enough information to create a wallet, you should give example (
     e.g: create wallet cash).
@@ -140,6 +140,7 @@ const sendMessage = async (message: string) => {
   }
 
   const messages = getMutableAIState<typeof AI>('messages')
+
   messages.update([...(messages.get() as CoreMessage[]), { role: 'user', content: message }])
 
   console.log('messages', messages.get())

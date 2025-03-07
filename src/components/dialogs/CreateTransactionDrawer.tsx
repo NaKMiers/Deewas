@@ -30,7 +30,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import WalletSelection from '../WalletSelection'
+import WalletPicker from '../WalletPicker'
 
 interface CreateTransactionDrawerProps {
   type?: TransactionType
@@ -300,14 +300,14 @@ function CreateTransactionDrawer({
                 {t('Wallet')}
               </p>
               <div onFocus={() => clearErrors('walletId')}>
-                <WalletSelection
+                <WalletPicker
                   className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
-                  update={(wallet: IWallet) => setValue('walletId', wallet._id)}
-                  initWallet={initWallet}
+                  wallet={initWallet || curWallet}
+                  onChange={(wallet: IWallet | null) => wallet && setValue('walletId', wallet._id)}
                 />
               </div>
               {errors.walletId?.message && (
-                <span className="ml-1 block text-xs italic text-rose-400">
+                <span className="ml-1 mt-0.5 block text-xs italic text-rose-400">
                   {errors.walletId?.message?.toString()}
                 </span>
               )}

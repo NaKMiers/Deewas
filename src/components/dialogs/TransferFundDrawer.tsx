@@ -29,6 +29,7 @@ import {
   DrawerTrigger,
 } from '../ui/drawer'
 import WalletSelection from '../WalletSelection'
+import WalletPicker from '../WalletPicker'
 
 interface TransferFundDrawerProps {
   type?: TransactionType
@@ -97,7 +98,7 @@ function TransferFundDrawer({
       }
 
       // destination wallet is required
-      if (!data.fromWalletId) {
+      if (!data.toWalletId) {
         setError('toWalletId', {
           type: 'manual',
           message: t('Destination wallet is required'),
@@ -200,17 +201,17 @@ function TransferFundDrawer({
                 {t('From Wallet')}
               </p>
               <div onFocus={() => clearErrors('fromWalletId')}>
-                <WalletSelection
+                <WalletPicker
                   className={cn(
                     'w-full justify-normal',
                     errors.fromWalletId?.message && 'border-rose-500'
                   )}
-                  update={(wallet: IWallet) => setValue('fromWalletId', wallet._id)}
-                  initWallet={initFromWallet}
+                  onChange={(wallet: IWallet | null) => wallet && setValue('fromWalletId', wallet._id)}
+                  wallet={initFromWallet}
                 />
               </div>
               {errors.fromWalletId?.message && (
-                <span className="ml-1 block text-xs italic text-rose-400">
+                <span className="ml-1 mt-0.5 block text-xs italic text-rose-400">
                   {errors.fromWalletId?.message?.toString()}
                 </span>
               )}
@@ -227,17 +228,17 @@ function TransferFundDrawer({
                 {t('To Wallet')}
               </p>
               <div onFocus={() => clearErrors('toWalletId')}>
-                <WalletSelection
+                <WalletPicker
                   className={cn(
                     'w-full justify-normal',
                     errors.toWalletId?.message && 'border-rose-500'
                   )}
-                  update={(wallet: IWallet) => setValue('toWalletId', wallet._id)}
-                  initWallet={initFromWallet}
+                  onChange={(wallet: IWallet | null) => wallet && setValue('toWalletId', wallet._id)}
+                  wallet={initToWallet}
                 />
               </div>
               {errors.toWalletId?.message && (
-                <span className="ml-1 block text-xs italic text-rose-400">
+                <span className="ml-1 mt-0.5 block text-xs italic text-rose-400">
                   {errors.toWalletId?.message?.toString()}
                 </span>
               )}
