@@ -459,11 +459,6 @@
     "Invest": "Invest",
     "transfer": "transfer"
   },
-  "walletSelection": {
-    "No results found": "No results found",
-    "All wallets": "All wallets",
-    "Find a wallet": "Find a wallet"
-  },
   "dateRangePicker": {
     "Today": "Today",
     "Yesterday": "Yesterday",

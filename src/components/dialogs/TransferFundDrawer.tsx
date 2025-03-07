@@ -28,7 +28,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import WalletSelection from '../WalletSelection'
 import WalletPicker from '../WalletPicker'
 
 interface TransferFundDrawerProps {

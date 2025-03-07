@@ -460,11 +460,6 @@
     "Invest": "Đầu tư",
     "transfer": "chuyển tiền"
   },
-  "walletSelection": {
-    "No results found": "Không tìm thấy kết quả",
-    "All wallets": "Tất cả ví",
-    "Find a wallet": "Tìm kiếm ví"
-  },
   "dateRangePicker": {
     "Today": "Hôm nay",
     "Yesterday": "Hôm qua",
