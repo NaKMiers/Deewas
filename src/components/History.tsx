@@ -198,7 +198,7 @@ function History({ className = '' }: HistoryProps) {
       groupedData.push({
         name: colStart.format(dateFormat),
         income: parseCurrency(formatCurrency(currency, totalIncomeTransactionValue)),
-        expense: parseCurrency(formatCurrency(currency, totalIncomeTransactionValue)),
+        expense: parseCurrency(formatCurrency(currency, totalExpenseTransactionValue)),
         balance: parseCurrency(
           formatCurrency(currency, totalIncomeTransactionValue - totalExpenseTransactionValue)
         ),

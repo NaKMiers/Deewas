@@ -79,6 +79,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
                 dataKey={type}
                 fill={checkTranType(type).hex}
                 radius={[2, 2, 0, 0]}
+                barSize={30}
                 key={type}
               />
             ))}
@@ -122,6 +123,9 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
                 dataKey={type}
                 stroke={checkTranType(type).hex}
                 fill={checkTranType(type).hex + 20}
+                strokeWidth={2}
+                dot={{ stroke: checkTranType(type).hex, strokeWidth: 1, r: 4 }}
+                activeDot={{ r: 6 }}
                 key={type}
               />
             ))}
@@ -156,6 +160,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
                 dataKey={type}
                 stroke={checkTranType(type).hex}
                 fill={checkTranType(type).hex + 20}
+                fillOpacity={0.6}
                 key={type}
               />
             ))}
@@ -200,6 +205,9 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
                 type="monotone"
                 dataKey={type}
                 stroke={checkTranType(type).hex}
+                strokeWidth={2}
+                dot={{ stroke: checkTranType(type).hex, strokeWidth: 1, r: 4 }}
+                activeDot={{ r: 6 }}
                 key={type}
               />
             ))}

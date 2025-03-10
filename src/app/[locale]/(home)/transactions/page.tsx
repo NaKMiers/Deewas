@@ -59,7 +59,6 @@ function TransactionsPage() {
     try {
       const { transactions } = await getMyTransactionsApi(query)
       dispatch(setTransactions(transactions))
-      console.log('transactions', transactions.length)
     } catch (err: any) {
       console.log(err)
       toast.error(t('Failed to fetch transactions'))

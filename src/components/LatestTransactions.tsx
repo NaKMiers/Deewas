@@ -150,8 +150,6 @@ export function Transaction({ transaction, update, remove, refetch, className = 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
-  console.log('currency', currency)
-
   // states
   const [deleting, setDeleting] = useState<boolean>(false)
   const [duplicating, setDuplicating] = useState<boolean>(false)

@@ -121,16 +121,12 @@ export const getBudgets = async (userId: string, params: any = {}) => {
     // connect to database
     await connectDatabase()
 
-    console.log('params', params)
-
     const filter: any = { user: userId, end: { $gte: toUTC(moment().toDate()) } }
     Object.keys(params).forEach(key => {
       if (params[key]) {
         filter[key] = params[key]
       }
     })
-
-    console.log('filter', filter)
 
     // get budgets: budgets.end > today
     const budgets = await BudgetModel.find(filter).populate('category').lean()

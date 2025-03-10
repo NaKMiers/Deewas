@@ -20,7 +20,7 @@ const requireAuth = async (req: NextRequest, token: JWT | null, locale: string =
 
 // Require Auth For Api
 const requireAuthForApi = async (req: NextRequest, token: JWT | null, locale: string = 'en') => {
-  console.log('- Require Auth For ApiApi -')
+  console.log('- Require Auth For Api -')
   return !token ? NextResponse.redirect(new URL(`/${locale}/auth/login`, req.url)) : NextResponse.next()
 }
 
@@ -46,16 +46,15 @@ export default async function middleware(req: NextRequest) {
   const locale = req.cookies.get('NEXT_LOCALE')?.value || 'en'
 
   if (['/api'].some(path => pathname.startsWith(path))) {
-    if (['/api/admin'].some(path => pathname.startsWith(path))) {
+    if (['/api/auth'].some(path => pathname.startsWith(path))) {
+      return NextResponse.next()
+    } else if (['/api/admin'].some(path => pathname.startsWith(path))) {
       return requireAdminForApi(req, token, locale) // require admin
     } else {
       return requireAuthForApi(req, token, locale) // not required
     }
   } else {
     const purePathname = pathname.replace(/^\/(vi|en)/, '') || '/'
-    console.log('pathname', pathname)
-    console.log('purePathname', purePathname)
-
     if (['/auth'].some(path => purePathname.startsWith(path))) {
       return requireUnAuth(req, token, locale) // require unauth
     } else if (

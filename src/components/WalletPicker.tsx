@@ -48,8 +48,6 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className = '' }: Wallet
   // store
   const { wallets, loading } = useAppSelector(state => state.wallet)
 
-  console.log('wallets', wallets)
-
   // states
   const [open, setOpen] = useState<boolean>(false)
   const [selectedWallet, setSelectedWallet] = useState<IWallet | null>(wallet || null)

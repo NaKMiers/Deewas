@@ -24,8 +24,6 @@ export const deleteTransaction = async (transactionId: string) => {
       throw new Error('Transaction not found')
     }
 
-    console.log('Transaction:', transaction)
-
     await Promise.all([
       // update category amount of this transaction
       CategoryModel.findByIdAndUpdate(transaction.category, { $inc: { amount: -transaction.amount } }),
@@ -60,8 +58,6 @@ export const updateTransaction = async (
   try {
     // connect to database
     await connectDatabase()
-
-    console.log('updateTransaction', transactionId, walletId, name, amount, date)
 
     // update transaction
     const oldTx: any = await TransactionModel.findByIdAndUpdate(
@@ -221,8 +217,6 @@ export const getTransactions = async (userId: string, params: any = {}) => {
     await connectDatabase()
 
     const { walletId, from, to, type, amount, name } = params
-
-    console.log('Params:', params)
 
     const sort = params.sort || 'date'
     const orderBy = parseInt(params.orderBy || '-1', 10) as 1 | -1

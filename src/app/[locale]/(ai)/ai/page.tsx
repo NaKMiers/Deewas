@@ -94,8 +94,6 @@ export default function Home() {
           onSubmit={async event => {
             event.preventDefault()
 
-            console.log('input', input)
-
             if (input.trim() !== '') {
               setMessages(messages => [
                 ...messages,

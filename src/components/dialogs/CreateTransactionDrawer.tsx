@@ -13,7 +13,7 @@ import { createTransactionApi } from '@/requests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
 import { useTranslations } from 'next-intl'
-import { memo, ReactNode, useCallback, useState } from 'react'
+import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CategoryPicker from '../CategoryPicker'
@@ -74,6 +74,7 @@ function CreateTransactionDrawer({
     setError,
     setValue,
     watch,
+    getValues,
     control,
     clearErrors,
     reset,
@@ -88,6 +89,12 @@ function CreateTransactionDrawer({
     },
   })
   const form = watch()
+
+  useEffect(() => {
+    if (!getValues('walletId')) {
+      setValue('walletId', initWallet?._id || curWallet?._id)
+    }
+  }, [getValues, setValue, initWallet, curWallet])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(

@@ -12,7 +12,7 @@ import Category from '@/components/Category'
 import { Transaction } from '@/components/LatestTransactions'
 import WalletCard from '@/components/WalletCard'
 import { IFullBudget } from '@/models/BudgetModel'
-import { deepseek } from '@ai-sdk/deepseek'
+import { openai } from '@ai-sdk/openai'
 import { CoreMessage, generateId, generateText } from 'ai'
 import { createAI, createStreamableValue, getMutableAIState, streamUI } from 'ai/rsc'
 import { getServerSession } from 'next-auth'
@@ -143,13 +143,11 @@ const sendMessage = async (message: string) => {
 
   messages.update([...(messages.get() as CoreMessage[]), { role: 'user', content: message }])
 
-  console.log('messages', messages.get())
-
   const contentStream = createStreamableValue('')
   const textComponent = <TextStreamMessage content={contentStream.value} />
 
   const results = await streamUI({
-    model: deepseek('deepseek-chat'),
+    model: openai('gpt-4o'),
     system: content,
     messages: messages.get() as CoreMessage[],
     initial: (
@@ -1164,7 +1162,7 @@ const sendMessage = async (message: string) => {
             const { categories }: { categories: any[] } = await getCategories(userId)
 
             const { text: index } = await generateText({
-              model: deepseek('deepseek-chat'),
+              model: openai('gpt-4o'),
               messages: [
                 {
                   role: 'system',
