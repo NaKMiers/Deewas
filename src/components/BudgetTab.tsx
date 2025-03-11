@@ -41,7 +41,7 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
       className={cn(className)}
     >
       {/* Budget Overview */}
-      <Card className="md:px-21 flex flex-col items-center justify-center gap-21 rounded-md px-21/2 py-21 text-center">
+      <Card className="flex flex-col items-center justify-center gap-21 rounded-md px-21/2 py-21 text-center md:px-21">
         <div className="flex flex-col gap-21/2">
           <p className="text-sm font-semibold text-muted-foreground">{t('Amount you can spend')}</p>
           {currency && (
@@ -56,7 +56,7 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
         </div>
 
         {currency && (
-          <div className="md:grid-cols-4 grid w-full grid-cols-2 items-center justify-evenly gap-1 gap-y-2">
+          <div className="grid w-full grid-cols-2 items-center justify-evenly gap-1 gap-y-2 md:grid-cols-4">
             <div className="flex-1">
               <p className="font-semibold">
                 {formatCompactNumber(formatCurrency(currency, total), true)}

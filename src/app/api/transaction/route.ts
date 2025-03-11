@@ -1,6 +1,7 @@
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 import { getTransactions } from '.'
+import { searchParamsToObject } from '@/lib/query'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,10 +18,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
 
-    const { searchParams } = new URL(req.nextUrl)
-    const params = Object.fromEntries(searchParams.entries())
-
-    const response = await getTransactions(userId, params)
+    const response = await getTransactions(userId, searchParamsToObject(req.nextUrl.searchParams))
 
     // return response
     return NextResponse.json(response, { status: 200 })

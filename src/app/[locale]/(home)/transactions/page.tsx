@@ -34,7 +34,7 @@ function TransactionsPage() {
   // states
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: moment().startOf('month').toDate(), // default is current month
-    to: moment().toDate(),
+    to: moment().endOf('month').toDate(),
   })
   const [wallet, setWallet] = useState<IWallet | null>(curWallet)
   const [groups, setGroups] = useState<any[]>([])
@@ -51,7 +51,7 @@ function TransactionsPage() {
     if (!curWallet) return
 
     let query = `?from=${toUTC(dateRange.from)}&to=${toUTC(dateRange.to)}`
-    if (wallet) query += `&walletId=${wallet._id}`
+    if (wallet) query += `&wallet=${wallet._id}`
 
     // start loading
     setLoading(true)

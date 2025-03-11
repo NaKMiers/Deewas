@@ -58,7 +58,7 @@ function UpdateTransactionDrawer({
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
 
-  // form
+  // MARK: form
   const {
     register,
     handleSubmit,
@@ -75,7 +75,7 @@ function UpdateTransactionDrawer({
       name: transaction.name || '',
       categoryId: transaction.category._id || '',
       amount: transaction.amount.toString() || '',
-      date: moment().format('YYYY-MM-DD'),
+      date: moment(transaction.date).format('YYYY-MM-DD'),
     },
   })
 

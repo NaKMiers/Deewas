@@ -85,7 +85,7 @@
   },
   "header": {
     "Hello": "Xin chào",
-    "Upgrade": "Năng cấp"
+    "Upgrade": "Nâng cấp"
   },
   "createBudgetDrawer": {
     "Amount is required": "Số tiền không được trống",

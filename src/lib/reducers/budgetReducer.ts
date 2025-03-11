@@ -11,7 +11,7 @@ export const budget = createSlice({
       state.budgets = action.payload
     },
     addBudget: (state, action: PayloadAction<any>) => {
-      state.budgets.push(action.payload)
+      state.budgets = [action.payload, ...state.budgets]
     },
     updateBudget: (state, action: PayloadAction<any>) => {
       state.budgets = state.budgets.map(budget =>

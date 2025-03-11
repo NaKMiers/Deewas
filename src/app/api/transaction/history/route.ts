@@ -1,6 +1,7 @@
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 import { getHistory } from '..'
+import { searchParamsToObject } from '@/lib/query'
 
 // [GET]: /
 export async function GET(req: NextRequest) {
@@ -15,10 +16,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
 
-    const { searchParams } = new URL(req.nextUrl)
-    const params = Object.fromEntries(searchParams.entries())
-
-    const response = await getHistory(userId, params)
+    const response = await getHistory(userId, searchParamsToObject(req.nextUrl.searchParams))
 
     // return response
     return NextResponse.json(response, { status: 200 })

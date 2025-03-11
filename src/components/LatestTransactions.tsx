@@ -57,7 +57,9 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
     setLoading(true)
 
     try {
-      const { transactions } = await getMyTransactionsApi(`?sort=date&orderBy=-1&limit=${limit}`)
+      const { transactions } = await getMyTransactionsApi(
+        `?sort=date|-1&sort=createdAt|-1&limit=${limit}`
+      )
       setTransactions(transactions)
     } catch (err: any) {
       toast.error(err.message)

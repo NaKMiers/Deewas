@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { TransactionType } from './TransactionModel'
 import { IUser } from './UserModel'
 const Schema = mongoose.Schema
 

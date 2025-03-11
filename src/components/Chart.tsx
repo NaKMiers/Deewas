@@ -73,6 +73,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
               tickLine={false}
               axisLine={false}
               fontSize={10}
+              tickFormatter={value => formatCompactNumber(value, false)}
             />
             {types.map((type: any) => (
               <Bar
@@ -115,6 +116,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
               tickLine={false}
               axisLine={false}
               fontSize={12}
+              tickFormatter={value => formatCompactNumber(value, false)}
             />
 
             {types.map((type: any) => (
@@ -154,7 +156,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
               dataKey="name"
               fontSize={12}
             />
-            <PolarRadiusAxis />
+            <PolarRadiusAxis tickFormatter={value => formatCompactNumber(value, false)} />
             {types.map((type: any) => (
               <Radar
                 dataKey={type}

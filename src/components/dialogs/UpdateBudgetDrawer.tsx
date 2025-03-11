@@ -202,7 +202,6 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
               <div onFocus={() => clearErrors('categoryId')}>
                 <CategoryPicker
                   category={budget.category}
-                  isExcept
                   onChange={(categoryId: string) => setValue('categoryId', categoryId)}
                   type="expense"
                 />

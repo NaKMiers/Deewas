@@ -240,6 +240,8 @@
     "Amount": "Amount",
     "Category": "Category",
     "Date": "Date",
+    "Select Date": "Select Date",
+    "When did this transaction happen?": "When did this transaction happen?",
     "Cancel": "Cancel",
     "Save": "Save"
   },

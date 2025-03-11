@@ -1,3 +1,4 @@
+import { searchParamsToObject } from '@/lib/query'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 import { getWallets } from '.'
@@ -15,7 +16,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
 
-    const response = await getWallets(userId)
+    const response = await getWallets(userId, searchParamsToObject(req.nextUrl.searchParams))
 
     // return response
     return NextResponse.json(response, { status: 200 })

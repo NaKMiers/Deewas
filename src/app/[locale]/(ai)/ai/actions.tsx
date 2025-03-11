@@ -12,7 +12,7 @@ import Category from '@/components/Category'
 import { Transaction } from '@/components/LatestTransactions'
 import WalletCard from '@/components/WalletCard'
 import { IFullBudget } from '@/models/BudgetModel'
-import { openai } from '@ai-sdk/openai'
+import { deepseek } from '@ai-sdk/deepseek'
 import { CoreMessage, generateId, generateText } from 'ai'
 import { createAI, createStreamableValue, getMutableAIState, streamUI } from 'ai/rsc'
 import { getServerSession } from 'next-auth'
@@ -20,114 +20,7 @@ import { ReactNode } from 'react'
 import { z } from 'zod'
 
 const content = `\
-You are a professional bot you can help users with their personal expenses management and provide them with insights on their spending habits.
-
-You can help users with the following tasks about transactions:
-if user wants to know about all transactions. Call \`get_all_transactions\`. To get transactions you need:
-  type: enum[income, expense, transfer, saving, invest] (type is optional, if user does not provide type, you should get all transactions)
-  limit: number (limit is optional, if user does not provide limit, default is 10)
-  If user does not provide enough information to get transactions, you should give example (
-    e.g: get all transactions for income).
-
-If user wants to create a transaction. Call \`create_transaction\`. To create a transaction you need:
-  name: string (name is required), 
-  amount: number (amount is required), 
-  date: string (date is required, default is current date), 
-  wallet name: string(wallet name is required),
-  type: enum[income, expense, transfer, saving, invest] (you will choose a suitable type for transaction base on transaction name), 
-  category: string (you will choose a suitable category for transaction base on transaction name).
-  If user does not provide enough information to create a transaction, you should give example (
-    e.g: I have bought a budget for 20.000).
-
-If user wants to update a transaction. Call \`update_transaction\`. To update a transaction you need:
-  name: string (name is required), 
-  new name: string (new name is optional),
-  amount: number (amount is optional), 
-  new amount: number (new amount is optional),
-  date: string (date is required, default is current date), 
-  new wallet name: string(new wallet name is required),
-  If user does not provide enough information to update a transaction, you should give example (
-    e.g: update dumpling transaction from 20000 to 10000, in this example amount is 20000, new amount is 10000).
-
-If user wants to delete a transaction. Call \`delete_transaction\`. To delete a transaction you need:
-  name: string (name is required), 
-  amount: number (amount is optional),
-  If user does not provide enough information to delete a transaction, you should give example (
-    e.g: delete dumpling transaction 20.000).
-
-You can help users with the following tasks about wallets:
-If user wants to know about all wallets. Call \`get_all_wallets\`. To get wallets you need:
-  If user does not provide enough information to get wallets, you should give example (
-    e.g: get all wallets).
-
-If user wants to know about a specific wallet. Call \`get_wallet\`. To get wallets you need:
-  name: string (name is required)
-  If user does not provide enough information to get wallets, you should give example (
-    e.g: get wallet cash).
-
-If user wants to create wallet (e.g create new wallet). Call \`create_wallet\`. To create wallet you need:
-  name: string (name is required), icon: string (emoji icon, you can choose any emoji icon base on name).
-  If user does not provide enough information to create a wallet, you should give example (
-    e.g: create wallet cash).
-
-If user wants to delete wallet. Call \`delete_wallet\`. To delete wallet you need: 
-  name: string (name is required)
-  If user does not provide enough information to delete a wallet, you should give example (
-    e.g: delete wallet cash).
-  If user give you enough information, you should ask user to confirm the deletion of the wallet. If user confirms, you should delete the wallet.
-
-If user wants to update wallet. Call \`update_wallet\`. To update wallet you need:
-  name: string (name is required), new name: string (new name is required) icon: string (emoji icon, you can choose any emoji icon base on name).
-  If user does not provide enough information to update a wallet, you should give example (
-    e.g: rename wallet cash, to cash2).
-
-If user wants to transfer funds from one wallet to another. Call \`transfer_fund_from_wallet_to_wallet\`. To transfer funds you need:
-  from wallet: string (from wallet is required), to wallet: string (to wallet is required), amount: number (amount is required), date: string (date is required, default is current date)
-  If user does not provide enough information to transfer funds, you should give example (
-    e.g: transfer 100 from cash to bank).
-
-You can help users with the following tasks about categories:
-If user wants to know about all categories (e.g: show all categories). Call \`get_all_categories\`. To get categories you need:
-  type: enum[income, expense, transfer, saving, invest] (type is optional, if user does not provide type, you should get all categories)
-  If user does not provide enough information to get categories, you should give example (
-    e.g: get all categories for income).
-
-If user wants to know about a specific category. Call \`get_category\`. To get category you need:
-  name: string (name is required), type: enum[income, expense, transfer, saving, invest] (type is optional, if user does not provide type, you should get all categories)
-  If user does not provide enough information to get categories, you should give example (
-    e.g: get category for food).
-
-If user wants to create category. Call \`create_category\`. To create category you need:
-  name: string (name is required), icon: string (emoji icon, you can choose any emoji icon base on name), type: enum[income, expense, transfer, saving, invest] (type is required and you should not choose to for user)
-  If user does not provide enough information to create a category, you should give example (
-    e.g: create expense category for clothes).
-  )
-
-If user wants to update category. Call \`update_category\`. To update category you need:
-  name: string (name is required), new name: string (new name is required) icon: string (emoji icon, you can choose any emoji icon base on name)
-  If user does not provide enough information to update a category, you should respond give example (
-    e.g: rename category food, to food & beverage)
-
-If user wants to delete category. Call \`delete_category\`. To delete category you need:
-  name: string (name is required)
-  If user does not provide enough information to delete a category, you should give example (
-    e.g: delete category food)
-
-You can help users with the following tasks about budgets:
-If you want to know about budgets by category name. Call \`get_budgets\`. To get budgets you need:
-  category name: string (if user does not provide category name, you should get all budgets)
-  If user does not provide enough information to get budgets, you should give example (
-    e.g: get budgets for food category)
-
-If user wants to create budget. Call \`create_budget\`. To create budget you need:
-  category name: string (category name is required), total: number (total is required), begin: string (begin is required), end: string (end is required)
-  If user does not provide enough information to create a budget, you should give example (
-    e.g: create budget for food category, total 1000, begin 2024-01-01, end 2024-01-31).
-
-If user wants to update or delete budget. You are not allowed to update budget. You should respond that you are a demo and cannot do that.
-
-You can only do something related to personal expenses management. If the user wants to do or ask anything else, it is an impossible task, so you should respond that you are a demo and cannot do that.
-Never reply user longer than 50 words
+Bot for "Deewas" expenses app. Handle transactions, wallets, categories, budgets via tools. Reply <50 words. Non-expense tasks: "I'm a demo, can’t do that."
 `
 
 const sendMessage = async (message: string) => {
@@ -140,16 +33,25 @@ const sendMessage = async (message: string) => {
   }
 
   const messages = getMutableAIState<typeof AI>('messages')
+  const currentMessages = messages.get() as CoreMessage[]
+  messages.update([...currentMessages, { role: 'user', content: message }])
 
-  messages.update([...(messages.get() as CoreMessage[]), { role: 'user', content: message }])
+  console.log('messages', currentMessages)
 
   const contentStream = createStreamableValue('')
   const textComponent = <TextStreamMessage content={contentStream.value} />
 
+  // Only get the last 5 messages
+  const recentMessages = currentMessages.slice(-5)
+  const messagesToSend = [
+    ...recentMessages,
+    { role: 'user', content: message } as CoreMessage, // make sure the last message is the user's message
+  ]
+
   const results = await streamUI({
-    model: openai('gpt-4o'),
+    model: deepseek('deepseek-chat'),
     system: content,
-    messages: messages.get() as CoreMessage[],
+    messages: messagesToSend,
     initial: (
       <button className="flex h-10 w-20 items-center justify-center">
         <span className="animate-spin">---</span>
@@ -1162,7 +1064,7 @@ const sendMessage = async (message: string) => {
             const { categories }: { categories: any[] } = await getCategories(userId)
 
             const { text: index } = await generateText({
-              model: openai('gpt-4o'),
+              model: deepseek('deepseek-chat'),
               messages: [
                 {
                   role: 'system',
@@ -1286,6 +1188,7 @@ const sendMessage = async (message: string) => {
             const { transaction } = await updateTransaction(
               transactionToUpdate._id,
               walletId,
+              transactionToUpdate.category._id,
               newName || transactionToUpdate.name,
               newAmount || transactionToUpdate.amount,
               date || transactionToUpdate.date

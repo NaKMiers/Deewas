@@ -11,6 +11,107 @@ import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 import '@/models/WalletModel'
 
+type DefaultsType = {
+  skip: number
+  limit: number
+  filter: { [key: string]: any }
+  sort: { [key: string]: any }
+}
+
+// MARK: Filter Builder
+const filterBuilder = (
+  params: any,
+  defaults: DefaultsType = {
+    skip: 0,
+    limit: Infinity,
+    sort: {},
+    filter: {},
+  }
+) => {
+  // options
+  let skip = defaults.skip
+  let limit = defaults.limit
+  const filter: { [key: string]: any } = defaults.filter
+  let sort: { [key: string]: any } = defaults.sort
+
+  // build filter
+  for (const key in params) {
+    const values = params[key]
+
+    if (params.hasOwnProperty(key)) {
+      // Special Cases ---------------------
+      if (key === 'limit') {
+        limit = +values[0]
+        continue
+      }
+
+      if (key === 'page') {
+        // page only works when limit is set
+        if (limit === Infinity) {
+          continue
+        }
+
+        const page = +values[0]
+        skip = (page - 1) * limit
+        continue
+      }
+
+      if (key === 'search') {
+        const searchFields = ['name', 'type']
+
+        filter.$or = searchFields.map(field => ({
+          [field]: { $regex: values[0], $options: 'i' },
+        }))
+        continue
+      }
+
+      if (key === 'sort') {
+        values.forEach((value: string) => {
+          sort[value.split('|')[0]] = +value.split('|')[1]
+        })
+
+        continue
+      }
+
+      if (key === 'amount') {
+        const from = +values[0].split('-')[0]
+        const to = +values[0].split('-')[1]
+        if (from >= 0 && to >= 0) {
+          filter[key] = {
+            $gte: from,
+            $lte: to,
+          }
+        } else if (from >= 0) {
+          filter[key] = {
+            $gte: from,
+          }
+        } else if (to >= 0) {
+          filter[key] = {
+            $lte: to,
+          }
+        }
+        continue
+      }
+
+      if (key === 'begin') {
+        filter.date = { ...filter.date, $gte: toUTC(values[0]) }
+        continue
+      }
+
+      if (key === 'end') {
+        filter.date = { ...filter.date, $lte: toUTC(values[0]) }
+        continue
+      }
+
+      // Normal Cases ---------------------
+      filter[key] = values.length === 1 ? values[0] : { $in: values }
+    }
+  }
+
+  return { filter, sort, limit, skip }
+}
+
+// MARK: Delete Budget
 export const deleteBudget = async (budgetId: string) => {
   try {
     // connect to database
@@ -31,6 +132,7 @@ export const deleteBudget = async (budgetId: string) => {
   }
 }
 
+// MARK: Update Budget
 export const updateBudget = async (
   budgetId: string,
   categoryId: string,
@@ -72,6 +174,7 @@ export const updateBudget = async (
   }
 }
 
+// MARK: Create Budget
 export const createBudget = async (
   userId: string,
   categoryId: string,
@@ -116,20 +219,31 @@ export const createBudget = async (
   return { budget: JSON.parse(JSON.stringify(budget)), message: 'Created budget' }
 }
 
+// MARK: Get Budgets
 export const getBudgets = async (userId: string, params: any = {}) => {
   try {
     // connect to database
     await connectDatabase()
 
-    const filter: any = { user: userId, end: { $gte: toUTC(moment().toDate()) } }
-    Object.keys(params).forEach(key => {
-      if (params[key]) {
-        filter[key] = params[key]
-      }
+    const { filter, sort, limit, skip } = filterBuilder(params, {
+      skip: 0,
+      limit: 10,
+      filter: { user: userId, end: { $gte: toUTC(moment().toDate()) } },
+      sort: { createdAt: -1 },
     })
 
+    console.log('filter', filter)
+    console.log('sort', sort)
+    console.log('limit', limit)
+    console.log('skip', skip)
+
     // get budgets: budgets.end > today
-    const budgets = await BudgetModel.find(filter).populate('category').lean()
+    const budgets = await BudgetModel.find(filter)
+      .populate('category')
+      .sort(sort)
+      .limit(limit)
+      .skip(skip)
+      .lean()
 
     return { budgets: JSON.parse(JSON.stringify(budgets)), message: 'Budgets are here' }
   } catch (err: any) {
