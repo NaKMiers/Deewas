@@ -64,7 +64,7 @@ function AccountPage() {
 
   return (
     <div className="container flex flex-col gap-21/2 px-21/2 pb-32 pt-21/2 md:gap-21 md:px-21 md:pt-21">
-      {/* Account */}
+      {/* MARK: Account */}
       <div className="p2 overflow-auto rounded-md border p-2">
         <div className="flex w-full items-center gap-2 pb-2">
           <div className="aspect-square max-w-[40px] flex-shrink-0 overflow-hidden rounded-full shadow-sm">
@@ -95,7 +95,7 @@ function AccountPage() {
         <div className="border-t py-2 text-center font-semibold capitalize">{t('Free Account')}</div>
       </div>
 
-      {/* Ads */}
+      {/* MARK: Ads */}
       <div className="flex flex-col gap-2 rounded-md border p-2">
         <div className="flex justify-between gap-2">
           <span className="font-semibold">{t('Flash Sale')}</span>
@@ -119,7 +119,7 @@ function AccountPage() {
         </div>
       </div>
 
-      {/* Categories & Wallets */}
+      {/* MARK: Categories & Wallets */}
       <div className="flex flex-col rounded-md border px-21/2 py-2 md:px-21">
         <Link
           href="/categories"
@@ -136,7 +136,7 @@ function AccountPage() {
         </Link>
       </div>
 
-      {/* Theme */}
+      {/* MARK: Theme */}
       <div className="flex items-center gap-2 rounded-md border px-21/2 py-2 md:px-21">
         <span className="font-semibold">{t('Theme')}</span>
         <DropdownMenu>
@@ -158,20 +158,20 @@ function AccountPage() {
         </DropdownMenu>
       </div>
 
-      {/* Settings */}
+      {/* MARK: Settings */}
       <SettingsBox isRequireInit />
 
-      {/* More */}
+      {/* MARK: More */}
       <div className="flex flex-col rounded-lg border px-21/2 py-2 md:px-21">
         <Link
-          href="/"
+          href="/about"
           className="flex h-8 items-center gap-2 text-sm"
         >
           <LucideInfo size={18} />
           {t('About')}
         </Link>
         <Link
-          href="/"
+          href="/help-and-support"
           className="flex h-8 items-center gap-2 text-sm"
         >
           <LucideShieldQuestion size={18} />
@@ -179,7 +179,7 @@ function AccountPage() {
         </Link>
       </div>
 
-      {/* Danger */}
+      {/* MARK: Danger */}
       <ConfirmDialog
         label={t('Delete All Data')}
         desc={t('Are you sure you want to delete all your data? This action is irreversible')}

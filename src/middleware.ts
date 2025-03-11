@@ -58,9 +58,15 @@ export default async function middleware(req: NextRequest) {
     if (['/auth'].some(path => purePathname.startsWith(path))) {
       return requireUnAuth(req, token, locale) // require unauth
     } else if (
-      ['/transactions', '/budgets', '/account', '/categories', '/wizard'].some(path =>
-        purePathname.startsWith(path)
-      ) ||
+      [
+        '/transactions',
+        '/budgets',
+        '/account',
+        '/categories',
+        '/wizard',
+        '/about',
+        '/help-and-support',
+      ].some(path => purePathname.startsWith(path)) ||
       purePathname === '/'
     ) {
       return requireAuth(req, token, locale) // require auth

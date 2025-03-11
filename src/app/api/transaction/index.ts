@@ -174,14 +174,10 @@ export const updateTransaction = async (
       transactionId,
       { $set: { name, date: toUTC(date), amount, category: categoryId, wallet: walletId } },
       { new: true }
-    )
+    ).populate('category wallet')
 
     // 3. Calculate amount delta
     const diff = amount - oldTx.amount
-
-    console.log('oldTx:', oldTx)
-    console.log('newTx:', newTx)
-    console.log('diff:', diff)
 
     // 4. Update related models
     await updateRelatedModels(oldTx, newTx, diff)
@@ -370,6 +366,21 @@ export const createTransaction = async (
   }
 }
 
+// MARK: Get Transaction
+export const getTransaction = async (transactionId: string) => {
+  try {
+    // connect to database
+    await connectDatabase()
+
+    // get transaction
+    const transaction = await TransactionModel.findById(transactionId).populate('category wallet').lean()
+
+    return { transaction: JSON.parse(JSON.stringify(transaction)), message: 'category is here' }
+  } catch (err: any) {
+    throw new Error(err)
+  }
+}
+
 // MARK: Get History
 export const getHistory = async (userId: string, params: any = {}) => {
   try {
@@ -398,7 +409,7 @@ export const getHistory = async (userId: string, params: any = {}) => {
       .limit(limit)
       .lean()
 
-    return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'Home is here' }
+    return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'History is here' }
   } catch (err: any) {
     throw new Error(err.message)
   }
@@ -409,6 +420,8 @@ export const getTransactions = async (userId: string, params: any = {}) => {
   try {
     // connect to database
     await connectDatabase()
+
+    console.log('params:', params)
 
     const { filter, sort, skip, limit } = filterBuilder(params, {
       filter: { user: userId },

@@ -2,7 +2,7 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { formatCurrency, parseCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
-import { IFullTransaction, ITransaction } from '@/models/TransactionModel'
+import { IFullTransaction, ITransaction, TransactionType } from '@/models/TransactionModel'
 import { getHistoryApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
@@ -26,8 +26,8 @@ function History({ className = '' }: HistoryProps) {
   const user = session?.user
   const t = useTranslations('history')
 
-  const types = ['balance', 'income', 'expense', 'saving', 'invest']
-  const charts = ['line', 'bar', 'area', 'radar']
+  const types: TransactionType[] = ['balance', 'income', 'expense', 'saving', 'invest']
+  const charts = ['bar', 'line', 'area', 'radar', 'pie']
 
   // store
   const { refetching } = useAppSelector(state => state.load)
@@ -35,7 +35,7 @@ function History({ className = '' }: HistoryProps) {
 
   // states
   const [chart, setChart] = useState<string>(charts[0])
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(types)
+  const [selectedTypes, setSelectedTypes] = useState<TransactionType[]>(types)
   const [data, setData] = useState<any[]>([])
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: moment().startOf('month').toDate(),

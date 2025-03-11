@@ -1,9 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { BotIcon, UserIcon } from './icons'
-import { ReactNode } from 'react'
+import { cn } from '@/lib/utils'
 import { StreamableValue, useStreamableValue } from 'ai/rsc'
+import { motion } from 'framer-motion'
+import { LucideBotMessageSquare, LucideUser } from 'lucide-react'
+import { ReactNode } from 'react'
 import { Markdown } from './markdown'
 
 export const TextStreamMessage = ({ content }: { content: StreamableValue }) => {
@@ -11,12 +12,12 @@ export const TextStreamMessage = ({ content }: { content: StreamableValue }) => 
 
   return (
     <motion.div
-      className={`flex w-full flex-row gap-4 px-4 first-of-type:pt-20 md:w-[500px] md:px-0`}
+      className={`flex w-full flex-row gap-4 pr-2`}
       initial={{ y: 5, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
       <div className="flex size-[24px] flex-shrink-0 flex-col items-center justify-center">
-        <BotIcon />
+        <LucideBotMessageSquare />
       </div>
 
       <div className="flex w-full flex-col gap-1">
@@ -37,15 +38,15 @@ export const Message = ({
 }) => {
   return (
     <motion.div
-      className={`flex w-full flex-row gap-4 px-4 first-of-type:pt-20 md:w-[500px] md:px-0`}
+      className={cn('flex w-full gap-4 pr-2', role === 'assistant' ? 'flex-row' : 'flex-row-reverse')}
       initial={{ y: 5, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
     >
       <div className="flex size-[24px] flex-shrink-0 flex-col items-center justify-center">
-        {role === 'assistant' ? <BotIcon /> : <UserIcon />}
+        {role === 'assistant' ? <LucideBotMessageSquare /> : <LucideUser />}
       </div>
 
-      <div className="flex w-full flex-col gap-1">
+      <div className={cn('flex flex-col gap-1', role === 'assistant' ? 'flex-1' : 'items-end')}>
         <div className="flex flex-col gap-4">{content}</div>
       </div>
     </motion.div>

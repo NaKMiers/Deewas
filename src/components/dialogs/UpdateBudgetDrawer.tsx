@@ -137,8 +137,8 @@ function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateB
       try {
         const { budget: b, message } = await updateBudgetApi(budget._id, {
           ...data,
-          begin: toUTC(data.begin),
-          end: toUTC(data.end),
+          begin: toUTC(moment(data.begin).startOf('day').toDate()),
+          end: toUTC(moment(data.end).endOf('day').toDate()),
           total: revertAdjustedCurrency(data.total, locale),
         })
 

@@ -2,12 +2,15 @@
 
 import { Message } from '@/components/ai/message'
 import { useScrollToBottom } from '@/components/ai/use-scroll-to-bottom'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useActions } from 'ai/rsc'
 import { motion } from 'framer-motion'
-import { ReactNode, useRef, useState } from 'react'
+import { LucideLoaderCircle, LucideSend } from 'lucide-react'
+import { ReactNode, useCallback, useRef, useState } from 'react'
+import toast from 'react-hot-toast'
 
-export default function Home() {
+function AIPage() {
   const { sendMessage } = useActions()
 
   const [input, setInput] = useState<string>('')
@@ -15,39 +18,98 @@ export default function Home() {
 
   const inputRef = useRef<HTMLInputElement>(null)
   const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>()
+  const [loading, setLoading] = useState<boolean>(false)
 
   const suggestedActions = [
-    { title: 'Create', label: 'Wallet', action: 'Create a new wallet' },
-    { title: 'Set', label: 'A new budget', action: 'Set a new budget' },
+    { title: 'Create', label: 'a wallet', action: 'Create a new wallet' },
+    { title: 'Set', label: 'a new budget', action: 'Set a new budget' },
     {
       title: 'Add',
-      label: 'New category',
+      label: 'a new category',
       action: 'Add a new category',
     },
     {
       title: 'Add',
-      label: 'Transaction',
+      label: 'a transaction',
       action: 'Add a new transaction',
     },
   ]
 
+  const handleSubmit = useCallback(
+    async (e: any) => {
+      e.preventDefault()
+      if (loading || input.trim() === '') return
+
+      setMessages(messages => [
+        ...messages,
+        <Message
+          key={messages.length}
+          role="user"
+          content={input}
+        />,
+      ])
+
+      try {
+        setLoading(true)
+        setInput('')
+        const response: ReactNode = await sendMessage(input)
+        setMessages(messages => [...messages, response])
+      } catch (err: any) {
+        toast.error('An error occurred. Please try again later.')
+        console.log(err)
+      } finally {
+        setLoading(false)
+        setTimeout(() => {
+          inputRef.current?.focus
+        }, 200)
+      }
+    },
+    [input, sendMessage, loading]
+  )
+
+  const handleSuggestionClick = useCallback(
+    async (action: string) => {
+      if (loading) return
+
+      setMessages(messages => [
+        ...messages,
+        <Message
+          key={messages.length}
+          role="user"
+          content={action}
+        />,
+      ])
+
+      try {
+        setLoading(true)
+        const response: ReactNode = await sendMessage(action)
+        setMessages(messages => [...messages, response])
+      } catch (err: any) {
+        toast.error('An error occurred. Please try again later.')
+        console.log(err)
+      } finally {
+        setLoading(false)
+      }
+    },
+    [sendMessage, loading]
+  )
+
   return (
-    <div className="flex h-dvh flex-row justify-center pb-20 text-primary">
-      <div className="flex flex-col justify-between gap-4">
-        {/* MARK: Introduction */}
+    <div className="flex w-full flex-1 overflow-y-auto overflow-x-hidden px-21/2 py-8 md:px-21">
+      <div className="mx-auto flex w-full max-w-[600px] flex-col justify-between gap-4">
+        {/* MARK: Messages */}
         <div
           ref={messagesContainerRef}
-          className="flex h-full w-full flex-col items-center gap-3 overflow-y-scroll"
+          className="flex h-full w-full flex-col items-center gap-3 overflow-y-auto"
         >
+          {/* Introductions */}
           {messages.length === 0 && (
-            <motion.div className="h-[350px] w-full px-4 pt-20 md:w-[500px] md:px-0">
-              <div className="flex flex-col gap-21/2 rounded-lg border p-6 text-sm">
-                <p className="text-center text-lg font-semibold">Deewas</p>
-                <p className="text-muted-foreground">
-                  Deewas is a personal finance assistant that helps you manage your money wisely.
-                </p>
-              </div>
-            </motion.div>
+            <div className="flex flex-col gap-21/2 rounded-lg border-2 border-primary p-21 text-center text-sm shadow-md">
+              <p className="text-center text-lg font-semibold">Deewas</p>
+              <p className="text-muted-foreground">
+                Deewas is a personal finance assistant that helps you manage your money wisely.
+              </p>
+            </div>
           )}
 
           {messages.map(message => message)}
@@ -56,7 +118,7 @@ export default function Home() {
         </div>
 
         {/* MARK: Suggestions */}
-        <div className="mx-auto mb-4 grid w-full gap-2 px-4 sm:grid-cols-2 md:max-w-[500px] md:px-0">
+        <div className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-2 md:px-0">
           {messages.length === 0 &&
             suggestedActions.map((action, index) => (
               <motion.div
@@ -64,66 +126,44 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.01 * index }}
                 key={index}
-                className={index > 1 ? 'hidden sm:block' : 'block'}
               >
-                <button
-                  onClick={async () => {
-                    setMessages(messages => [
-                      ...messages,
-                      <Message
-                        key={messages.length}
-                        role="user"
-                        content={action.action}
-                      />,
-                    ])
-                    const response: ReactNode = await sendMessage(action.action)
-                    setMessages(messages => [...messages, response])
-                  }}
-                  className="flex w-full flex-col rounded-lg border border-zinc-200 p-2 text-left text-sm transition-colors"
+                <Button
+                  variant="outline"
+                  onClick={() => handleSuggestionClick(action.action)}
+                  className="h-9 w-full gap-1.5 rounded-md border px-2 text-sm"
                 >
-                  <span className="font-medium">{action.title}</span>
+                  <span className="font-semibold">{action.title}</span>
                   <span className="">{action.label}</span>
-                </button>
+                </Button>
               </motion.div>
             ))}
         </div>
 
         {/* MARK: Input */}
         <form
-          className="relative flex flex-col items-center gap-2"
-          onSubmit={async event => {
-            event.preventDefault()
-
-            if (input.trim() !== '') {
-              setMessages(messages => [
-                ...messages,
-                <Message
-                  key={messages.length}
-                  role="user"
-                  content={input}
-                />,
-              ])
-
-              // if empty
-              if (input.trim() !== '') {
-                setInput('')
-                const response: ReactNode = await sendMessage(input)
-                setMessages(messages => [...messages, response])
-              }
-            }
-          }}
+          className="relative flex h-10 flex-shrink-0 gap-2"
+          onSubmit={handleSubmit}
         >
           <Input
             ref={inputRef}
-            className="w-full max-w-[calc(100dvw-32px)] rounded-md bg-secondary px-2 py-1.5 text-base text-primary outline-none md:max-w-[500px]"
-            placeholder="Send a message..."
+            className="h-full border-2 border-primary text-base shadow-md !ring-0"
+            placeholder="Ask me anything..."
             value={input}
             onChange={event => {
               setInput(event.target.value)
             }}
+            autoFocus
           />
+          <Button
+            className="h-full w-10 shadow-md"
+            disabled={input.trim() === '' || loading}
+          >
+            {loading ? <LucideLoaderCircle className="animate-spin" /> : <LucideSend />}
+          </Button>
         </form>
       </div>
     </div>
   )
 }
+
+export default AIPage

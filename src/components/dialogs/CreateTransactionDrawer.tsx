@@ -163,8 +163,6 @@ function CreateTransactionDrawer({
   // create transaction
   const handleCreateTransaction: SubmitHandler<FieldValues> = useCallback(
     async data => {
-      console.log('data', data)
-
       // validate form
       if (!handleValidate(data)) return
 

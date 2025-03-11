@@ -21,13 +21,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // get data from request
     const { name, amount, date, walletId, categoryId } = await req.json()
 
-    console.log('id:', id)
-    console.log('name:', name)
-    console.log('amount:', amount)
-    console.log('date:', date)
-    console.log('walletId:', walletId)
-    console.log('categoryId:', categoryId)
-
     const response = await updateTransaction(id, walletId, categoryId, name, amount, date)
 
     // return response

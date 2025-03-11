@@ -36,7 +36,6 @@ function BudgetsPage() {
 
       try {
         const { budgets } = await getMyBudgetsApi()
-
         dispatch(setBudgets(budgets))
       } catch (err: any) {
         console.log(err)
@@ -60,6 +59,7 @@ function BudgetsPage() {
 
     budgets.forEach((budget: IFullBudget) => {
       const key = `${budget.begin}-${budget.end}`
+      console.log(key)
 
       if (!groups[key]) {
         groups[key] = {
@@ -76,7 +76,7 @@ function BudgetsPage() {
   }, [budgets])
 
   return (
-    <div className="md:p-21 container p-21/2 pb-32">
+    <div className="container p-21/2 pb-32 md:p-21">
       {!loading ? (
         groups.length > 0 ? (
           <Tabs

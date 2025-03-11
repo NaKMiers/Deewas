@@ -3,6 +3,7 @@
 import { useAppSelector } from '@/hooks/reduxHook'
 import { capitalize, checkTranType, formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
+import { TransactionType } from '@/models/TransactionModel'
 import { useTheme } from 'next-themes'
 import { memo, useCallback } from 'react'
 import {
@@ -11,8 +12,11 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   Line,
   LineChart,
+  Pie,
+  PieChart,
   PolarAngleAxis,
   PolarGrid,
   PolarRadiusAxis,
@@ -35,7 +39,7 @@ export type ChartDatum = {
 
 interface ChartProps {
   chart: string
-  types: string[]
+  types: TransactionType[]
   data: any[]
   className?: string
   maxKey: string
@@ -58,6 +62,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
 
   const renderChart = useCallback(() => {
     switch (chart) {
+      // MARK: Bar
       case 'bar':
         return (
           <BarChart data={data}>
@@ -101,6 +106,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
           </BarChart>
         )
 
+      // MARK: Area
       case 'area':
         return (
           <AreaChart data={data}>
@@ -148,6 +154,7 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
           </AreaChart>
         )
 
+      // MARK: Radar
       case 'radar':
         return (
           <RadarChart data={data}>
@@ -183,7 +190,49 @@ function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) 
           </RadarChart>
         )
 
+      // MARK: Pie
       case 'pie':
+        const pieData = types
+          .map(type => ({
+            name: capitalize(type),
+            value: data.reduce((sum: number, item: any) => sum + (item[type] || 0), 0),
+          }))
+          .filter(item => item.value > 0)
+
+        return (
+          <PieChart>
+            <Pie
+              data={pieData}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              label={({ name, value }) => `${name}: ${formatCompactNumber(value, false)}`}
+            >
+              {pieData.map((entry: any, index) => (
+                <Cell
+                  key={index}
+                  fill={checkTranType(entry.name.toLowerCase()).hex}
+                />
+              ))}
+            </Pie>
+            <Tooltip
+              animationEasing="ease-in-out"
+              animationDuration={200}
+              formatter={formatTooltip}
+              labelStyle={{ color: '#01dbe5' }}
+              contentStyle={{
+                fontSize: 13,
+                background: resolvedTheme === 'dark' ? '#171717' : '#fff',
+                borderRadius: 8,
+                border: 'none',
+                boxShadow: '0px 5px 5px 2px rgba(0, 0, 0, 0.2)',
+              }}
+            />
+          </PieChart>
+        )
+
       default:
         return (
           <LineChart data={data}>

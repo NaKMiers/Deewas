@@ -178,8 +178,8 @@ export const updateBudget = async (
 export const createBudget = async (
   userId: string,
   categoryId: string,
-  begin: string,
-  end: string,
+  begin: string | Date,
+  end: string | Date,
   total: number
 ) => {
   // connect to database
@@ -231,11 +231,6 @@ export const getBudgets = async (userId: string, params: any = {}) => {
       filter: { user: userId, end: { $gte: toUTC(moment().toDate()) } },
       sort: { createdAt: -1 },
     })
-
-    console.log('filter', filter)
-    console.log('sort', sort)
-    console.log('limit', limit)
-    console.log('skip', skip)
 
     // get budgets: budgets.end > today
     const budgets = await BudgetModel.find(filter)

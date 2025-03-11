@@ -59,6 +59,6 @@ export interface ITransaction {
   date: string
 }
 
-export type TransactionType = 'income' | 'expense' | 'saving' | 'invest' | 'transfer'
+export type TransactionType = 'income' | 'expense' | 'saving' | 'invest' | 'transfer' | 'balance'
 
 export type IFullTransaction = ITransaction & { category: ICategory; wallet: IWallet; user: IUser }
