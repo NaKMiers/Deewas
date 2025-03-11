@@ -36,6 +36,35 @@
     "Invalid email": "Invalid email",
     "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number"
   },
+  "forgotPasswordPage": {
+    "Forgot Password - Deewas": "Forgot Password - Deewas",
+    "Reset Your Password": "Reset Your Password",
+    "Enter your email to receive a password reset link": "Enter your email to receive a password reset link",
+    "Email": "Email",
+    "Send Reset Link": "Send Reset Link",
+    "Back to Login": "Back to Login",
+    "Don't have an account?": "Don't have an account?",
+    "Register": "Register",
+    "Sending reset link": "Sending reset link",
+    "Reset link sent! Check your email": "Reset link sent! Check your email",
+    "Something went wrong": "Something went wrong"
+  },
+  "resetPasswordPage": {
+    "Reset Your Password": "Reset Your Password",
+    "Enter your new password below": "Enter your new password below",
+    "New Password": "New Password",
+    "Confirm New Password": "Confirm New Password",
+    "Reset Password": "Reset Password",
+    "Resetting password": "Resetting password",
+    "Password is required": "Password is required",
+    "Confirm password is required": "Confirm password is required",
+    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number",
+    "Passwords do not match": "Passwords do not match",
+    "Invalid reset link": "Invalid reset link",
+    "Back to Login": "Back to Login",
+    "Don't have an account?": "Don't have an account?",
+    "Register": "Register"
+  },
   "accountPage": {
     "Deleting all data": "Deleting all data",
     "Free Account": "Free Account",

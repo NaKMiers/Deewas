@@ -23,6 +23,7 @@ export const shortName = (user: IUser) => {
   if (user?.email) {
     return user.email.split('@')[0]
   }
+  return 'User'
 }
 
 export const formatSymbol = (currency: string): string =>

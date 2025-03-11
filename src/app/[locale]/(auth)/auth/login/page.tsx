@@ -9,7 +9,6 @@ import { setPageLoading } from '@/lib/reducers/loadReducer'
 import { cn } from '@/lib/utils'
 import { signIn } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
-import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
@@ -20,7 +19,6 @@ function LoginPage() {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const locale = useLocale()
-  const { setTheme, resolvedTheme } = useTheme()
   const t = useTranslations('loginPage')
 
   // states
@@ -100,29 +98,22 @@ function LoginPage() {
     <div className="flex h-screen w-full items-center justify-center p-2">
       <div
         className={cn(
-          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary',
-          resolvedTheme === 'dark'
-            ? 'border-neutral-800 bg-white text-secondary'
-            : 'bg-neutral-50 text-primary'
+          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary bg-white text-black'
         )}
       >
         <div className="no-scrollbar overflow-y-auto px-10 py-8">
-          <h1
-            className="text-center text-lg font-semibold"
-            onClick={() => setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
-          >
-            {t('Login to Deewas')}
-          </h1>
+          {/* MARK: Header */}
+          <h1 className="text-center text-lg font-semibold">{t('Login to Deewas')}</h1>
           <p className="text-center text-sm text-muted-foreground">
             {t('Welcome back, please login to continue!')}
           </p>
 
           <Separator className="my-8 h-0" />
 
-          <div className="md:grid-cols-3 grid grid-cols-1 items-center justify-center gap-2">
+          {/* MARK: Social Login */}
+          <div className="grid grid-cols-1 items-center justify-center gap-2 md:grid-cols-3">
             <Button
-              variant={resolvedTheme === 'light' ? 'outline' : 'default'}
-              className="h-8"
+              className="h-8 bg-white"
               onClick={() => signIn('google', { callbackUrl: `/${locale}/wizard` })}
             >
               <Image
@@ -132,9 +123,8 @@ function LoginPage() {
                 alt="Google"
               />
             </Button>
-            <Button
-              variant={resolvedTheme === 'light' ? 'outline' : 'default'}
-              className="h-8"
+            {/* <Button
+              className="h-8 bg-white"
               onClick={() => signIn('apple', { callbackUrl: `/${locale}/wizard` })}
             >
               <Image
@@ -145,8 +135,7 @@ function LoginPage() {
               />
             </Button>
             <Button
-              variant={resolvedTheme === 'light' ? 'outline' : 'default'}
-              className="h-8"
+              className="h-8 bg-white"
               onClick={() => signIn('facebook', { callbackUrl: `/${locale}/wizard` })}
             >
               <Image
@@ -155,7 +144,7 @@ function LoginPage() {
                 height={16}
                 alt="Google"
               />
-            </Button>
+            </Button> */}
           </div>
 
           <div className="my-6 flex items-center gap-3">
@@ -165,6 +154,7 @@ function LoginPage() {
           </div>
 
           <div className="flex flex-col gap-3">
+            {/* MARK: Username / Email */}
             <CustomInput
               id="usernameOrEmail"
               label={t('Username / Email')}
@@ -176,6 +166,7 @@ function LoginPage() {
               onFocus={() => clearErrors('usernameOrEmail')}
             />
 
+            {/* MARK: Password */}
             <CustomInput
               id="password"
               label={t('Password')}
@@ -197,8 +188,9 @@ function LoginPage() {
             </Link>
           </div>
 
+          {/* MARK: Submit Button */}
           <Button
-            variant="default"
+            variant="outline"
             className="mt-6 w-full bg-neutral-900 text-white"
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
@@ -207,6 +199,7 @@ function LoginPage() {
           </Button>
         </div>
 
+        {/* MARK: Footer */}
         <div className="border-y border-slate-300 bg-neutral-100">
           <p className="px-2 py-5 text-center text-sm text-black">
             {t("Don't have an account?")}{' '}

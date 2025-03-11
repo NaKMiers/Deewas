@@ -36,20 +36,13 @@ function TransactionsPage() {
     from: moment().startOf('month').toDate(), // default is current month
     to: moment().endOf('month').toDate(),
   })
-  const [wallet, setWallet] = useState<IWallet | null>(curWallet)
+  const [wallet, setWallet] = useState<IWallet | null>(null)
   const [groups, setGroups] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState<string>('')
 
-  // initially set wallet
-  useEffect(() => {
-    curWallet && setWallet(curWallet)
-  }, [curWallet])
-
   // get my transactions of selected wallet
   const getMyTransactions = useCallback(async () => {
-    if (!curWallet) return
-
     let query = `?from=${toUTC(dateRange.from)}&to=${toUTC(dateRange.to)}`
     if (wallet) query += `&wallet=${wallet._id}`
 
@@ -66,7 +59,7 @@ function TransactionsPage() {
       // stop loading
       setLoading(false)
     }
-  }, [dispatch, dateRange, wallet, curWallet, t])
+  }, [dispatch, dateRange, wallet, t])
 
   // initial fetch
   useEffect(() => {
@@ -216,19 +209,18 @@ function TransactionsPage() {
       )}
 
       {/* MARK: Create Transaction */}
-      {curWallet && (
-        <CreateTransactionDrawer
-          trigger={
-            <Button
-              variant="default"
-              className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]"
-            >
-              <LucidePlus size={24} />
-              {t('Add Transaction')}
-            </Button>
-          }
-        />
-      )}
+      <CreateTransactionDrawer
+        initWallet={wallet || curWallet}
+        trigger={
+          <Button
+            variant="default"
+            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]"
+          >
+            <LucidePlus size={24} />
+            {t('Add Transaction')}
+          </Button>
+        }
+      />
     </div>
   )
 }

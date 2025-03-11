@@ -36,6 +36,35 @@
     "Invalid email": "Email không hợp lệ",
     "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Mật khẩu phải có ít nhất 6 ký tự và chứa ít nhất 1 chữ thường, 1 chữ hoa, 1 số"
   },
+  "forgotPasswordPage": {
+    "Forgot Password - Deewas": "Quên mật khẩu - Deewas",
+    "Reset Your Password": "Đặt lại mật khẩu của bạn",
+    "Enter your email to receive a password reset link": "Nhập email của bạn để nhận liên kết đặt lại mật khẩu",
+    "Email": "Email",
+    "Send Reset Link": "Gửi email",
+    "Back to Login": "Quay lại đăng nhập",
+    "Don't have an account?": "Bạn chưa có tài khoản?",
+    "Register": "Đăng ký ngay",
+    "Sending reset link": "Đang gửi liên kết",
+    "Reset link sent! Check your email": "Liên kết đã được gửi! Vui lòng kiểm tra email của bạn",
+    "Something went wrong": "Có lỗi xảy ra"
+  },
+  "resetPasswordPage": {
+    "Reset Your Password": "Đặt lại mật khẩu của bạn",
+    "Enter your new password below": "Nhập mật khẩu mới của bạn bên dưới",
+    "New Password": "Mật khẩu mới",
+    "Confirm New Password": "Xác nhận mật khẩu mới",
+    "Reset Password": "Đặt lại mật khẩu",
+    "Resetting password": "Đang đặt lại mật khẩu",
+    "Password is required": "Mật khẩu không được trống",
+    "Confirm password is required": "Xác nhận mật khẩu không được trống",
+    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Mật khẩu phải có ít nhất 6 ký tự và chứa ít nhất 1 chữ thường, 1 chữ hoa, 1 số",
+    "Passwords do not match": "Mật khẩu không khớp",
+    "Invalid reset link": "Liên kết không hợp lệ",
+    "Back to Login": "Quay lại đăng nhập",
+    "Don't have an account?": "Bạn chưa có tài khoản?",
+    "Register": "Đăng ký ngay"
+  },
   "accountPage": {
     "Deleting all data": "Đang xóa toàn bộ dữ liệu",
     "Free Account": "Tài khoản Free",

@@ -7,7 +7,7 @@ import { getHistoryApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
 import moment from 'moment-timezone'
 import { useSession } from 'next-auth/react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { memo, ReactNode, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import Chart, { ChartDatum } from './Chart'
@@ -25,6 +25,7 @@ function History({ className = '' }: HistoryProps) {
   const { data: session } = useSession()
   const user = session?.user
   const t = useTranslations('history')
+  const locale = useLocale()
 
   const types: TransactionType[] = ['balance', 'income', 'expense', 'saving', 'invest']
   const charts = ['bar', 'line', 'area', 'radar', 'pie']
@@ -219,7 +220,7 @@ function History({ className = '' }: HistoryProps) {
         <h2 className="text-lg font-bold">{t('History')}</h2>
 
         <DateRangePicker
-          locale="vi"
+          locale={locale}
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
           showCompare={false}

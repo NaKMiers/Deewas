@@ -1,7 +1,7 @@
 'use client'
 
 import { Link } from '@/i18n/navigation'
-import { LucideBrainCircuit, LucideChartPie, LucideHouse, LucideWallet } from 'lucide-react'
+import { LucideChartPie, LucideHouse, LucideWallet } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
@@ -36,9 +36,9 @@ function Navbar() {
 
         <Link
           href="/ai"
-          className="-mt-2 flex flex-1 flex-col items-center justify-center gap-0.5"
+          className="flex flex-1 flex-shrink-0 flex-col items-center justify-center gap-0.5"
         >
-          <div className="aspect-square rounded-full bg-secondary p-2 text-sm font-semibold text-primary">
+          <div className="aspect-square flex-shrink-0 text-nowrap rounded-full bg-secondary p-2.5 text-sm font-semibold text-primary">
             AI
           </div>
         </Link>
