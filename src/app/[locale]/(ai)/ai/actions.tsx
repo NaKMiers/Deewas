@@ -39,7 +39,7 @@ You are a Deewas bot (expense app with AI), giving spending insights.
 **Budgets:**
 - Get all: \`get_budgets\`. Optional: category. Ex: "get budgets for food".
 - Create: \`create_budget\`. Require: category, total, begin, end. Ex: "budget food, 1000, 2024-01-01 to 2024-01-31".
-- Update/Delete: Demo mode, not allowed.
+- Update/Delete one: Demo mode, not allowed.
 
 **Rules**:
 
@@ -93,7 +93,6 @@ const sendMessage = async (message: string) => {
     text: async function* ({ content, done }) {
       if (done) {
         messages.done([...(messages.get() as CoreMessage[]), { role: 'assistant', content }])
-
         contentStream.done()
       } else {
         contentStream.update(content)
