@@ -66,6 +66,7 @@ export default async function middleware(req: NextRequest) {
         '/wizard',
         '/about',
         '/help-and-support',
+        '/calendar',
       ].some(path => purePathname.startsWith(path)) ||
       purePathname === '/'
     ) {
@@ -81,5 +82,9 @@ export default async function middleware(req: NextRequest) {
 // math all routes
 export const config = {
   // Match only internationalized pathnames
-  matcher: ['/', '/(vi|en)/:path*', '/(transactions|budgets|account|categories|auth|wizard|api)/:path*'],
+  matcher: [
+    '/',
+    '/(vi|en)/:path*',
+    '/(transactions|budgets|account|categories|auth|wizard|calendar|about|help-and-support|help|api)/:path*',
+  ],
 }

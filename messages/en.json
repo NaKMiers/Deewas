@@ -112,6 +112,11 @@
     "You can change these setting at any time": "You can change these setting at any time",
     "I'm done! Take me to the dashboard": "I'm done! Take me to the dashboard"
   },
+  "calendarPage": {
+    "Calendar": "Calendar",
+    "Transactions for": "Transactions for",
+    "No transactions for this day": "No transactions for this day"
+  },
   "NotFoundPage": {},
   "header": {
     "Hello": "Hello",
@@ -511,5 +516,8 @@
     "language": "language",
     "Select": "Select",
     "No results found": "No results found"
+  },
+  "montYearPicker": {
+    "Apply": "Apply"
   }
 }

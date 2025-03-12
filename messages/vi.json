@@ -112,6 +112,11 @@
     "You can change these setting at any time": "Bạn có thể thay đổi cài đặt này bất cứ lúc nào",
     "I'm done! Take me to the dashboard": "Đã xong! Đưa tôi đến trang chủ ngay"
   },
+  "calendarPage": {
+    "Calendar": "Lịch",
+    "Transactions for": "Các giao dịch ngày",
+    "No transactions for this day": "Không có giao dịch nào cho ngày này"
+  },
   "header": {
     "Hello": "Xin chào",
     "Upgrade": "Nâng cấp"
@@ -510,5 +515,8 @@
     "language": "ngôn ngữ",
     "Select": "Chọn",
     "No results found": "Không tìm thấy kết quả"
+  },
+  "montYearPicker": {
+    "Apply": "Áp dụng"
   }
 }

@@ -362,7 +362,7 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
           <div className="flex py-2">
             <div className="flex">
               <div className="flex flex-col">
-                <div className="lg:flex-row lg:items-start lg:pb-0 flex flex-col items-center justify-end gap-2 px-3 pb-4">
+                <div className="flex flex-col items-center justify-end gap-2 px-3 pb-4 lg:flex-row lg:items-start lg:pb-0">
                   {showCompare && (
                     <div className="flex items-center space-x-2 py-1 pr-4">
                       <Switch

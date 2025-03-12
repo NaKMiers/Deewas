@@ -38,9 +38,8 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
 
   return (
     <div className={cn('flex flex-col gap-21/2 md:mt-21', className)}>
-      {/* Type Group */}
-      <div className="">
-        {/* Type Header */}
+      <div>
+        {/* MARK: Type Header */}
         <div
           className={cn(
             'flex w-full cursor-pointer items-center gap-21/2 border border-l-[3px] bg-secondary/30 py-1 pl-21/2 pr-1',
@@ -98,7 +97,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
           </DropdownMenu>
         </div>
 
-        {/* Type Body */}
+        {/* MARK: Type Body */}
         <AnimatePresence>
           {open && (
             <motion.div

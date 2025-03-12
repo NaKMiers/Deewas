@@ -35,6 +35,7 @@ interface UpdateTransactionDrawerProps {
   transaction: IFullTransaction
   trigger: ReactNode
   update?: (transaction: IFullTransaction) => void
+  refetch?: () => void
   className?: string
 }
 
@@ -42,6 +43,7 @@ function UpdateTransactionDrawer({
   transaction,
   trigger,
   update,
+  refetch,
   className = '',
 }: UpdateTransactionDrawerProps) {
   // hooks
@@ -153,6 +155,7 @@ function UpdateTransactionDrawer({
         })
 
         if (update) update(tx)
+        if (refetch) refetch()
         dispatch(refetching())
 
         toast.success(message, { id: 'update-transaction' })
@@ -166,7 +169,7 @@ function UpdateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, dispatch, transaction._id, locale, t]
+    [handleValidate, reset, update, refetch, dispatch, , transaction._id, locale, t]
   )
 
   return (

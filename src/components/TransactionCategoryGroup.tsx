@@ -2,12 +2,14 @@ import { Button } from '@/components/ui/button'
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { refetching } from '@/lib/reducers/loadReducer'
-import { addTransaction, deleteTransaction, updateTransaction } from '@/lib/reducers/transactionReducer'
+import { addTransaction, updateTransaction } from '@/lib/reducers/transactionReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate, toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { IFullTransaction } from '@/models/TransactionModel'
+import { createTransactionApi, deleteTransactionApi } from '@/requests'
+import { motion } from 'framer-motion'
 import {
   LucideChevronDown,
   LucideChevronUp,
@@ -26,7 +28,6 @@ import ConfirmDialog from './dialogs/ConfirmDialog'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import UpdateTransactionDrawer from './dialogs/UpdateTransactionDrawer'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
-import { createTransactionApi, deleteTransactionApi } from '@/requests'
 
 interface ITransactionCategoryGroupProps {
   category: ICategory
@@ -66,7 +67,7 @@ function TransactionCategoryGroup({
           )}
         </div>
 
-        {/* New Transaction for category */}
+        {/* MARK: New Transaction for category */}
         <CreateTransactionDrawer
           initCategory={category}
           update={(transaction: IFullTransaction) => dispatch(addTransaction(transaction))}
@@ -82,14 +83,18 @@ function TransactionCategoryGroup({
         />
       </div>
 
-      {/* Transactions of category */}
+      {/*  MARK: Transactions of category */}
       <div className="my-1.5 pl-2">
         <div className="flex flex-col gap-0 border-l">
-          {transactions.map(transaction => (
-            <TransactionItem
-              transaction={transaction}
-              key={transaction._id}
-            />
+          {transactions.map((tx, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 * index }}
+              key={tx._id}
+            >
+              <TransactionItem transaction={tx} />
+            </motion.div>
           ))}
         </div>
       </div>

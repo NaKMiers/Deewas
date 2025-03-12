@@ -9,6 +9,7 @@ import { formatDate, toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { createTransactionApi, deleteTransactionApi, getMyTransactionsApi } from '@/requests'
+import { motion } from 'framer-motion'
 import {
   LucideChevronDown,
   LucideChevronUp,
@@ -112,18 +113,25 @@ function LatestTransactions({ className = '' }: LatestTransactionsProps) {
         </Button>
       </div>
 
+      {/* MARK: Transaction List */}
       <div className="mt-2 flex flex-col gap-2 rounded-lg border p-21/2 md:p-21">
         {transactions.slice(0, +limit).length > 0 ? (
-          transactions.slice(0, +limit).map(transaction => (
-            <Transaction
-              transaction={transaction}
-              update={(transaction: IFullTransaction) => {
-                setTransactions(transactions.map(t => (t._id === transaction._id ? transaction : t)))
-                dispatch(refetching())
-              }}
-              refetch={() => getLatestTransactions()}
-              key={transaction._id}
-            />
+          transactions.slice(0, +limit).map((tx, index) => (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 * index }}
+              key={tx._id}
+            >
+              <Transaction
+                transaction={tx}
+                update={(transaction: IFullTransaction) => {
+                  setTransactions(transactions.map(t => (t._id === transaction._id ? transaction : t)))
+                  dispatch(refetching())
+                }}
+                refetch={() => getLatestTransactions()}
+              />
+            </motion.div>
           ))
         ) : (
           <p className="flex items-center justify-center rounded-lg py-5 text-lg font-semibold text-muted-foreground">
@@ -276,6 +284,7 @@ export function Transaction({ transaction, update, remove, refetch, className = 
                 <UpdateTransactionDrawer
                   transaction={transaction}
                   update={update}
+                  refetch={refetch}
                   trigger={
                     <Button
                       variant="ghost"

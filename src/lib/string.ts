@@ -9,6 +9,7 @@ import {
   LucideTrendingUp,
   LucideWalletCards,
 } from 'lucide-react'
+import * as locales from 'date-fns/locale'
 
 export const shortName = (user: IUser) => {
   if (user?.firstName) {
@@ -50,12 +51,16 @@ export const formatPrice = (price: number = 0) => {
   return Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)
 }
 
-export function formatCompactNumber(num: number | string, isCurrency: boolean): string {
+export function formatCompactNumber(num: number | string, isCurrency: boolean = false): string {
   if (isCurrency && typeof num === 'string') {
     return new Intl.NumberFormat('vi-VN', { notation: 'compact' }).format(parseCurrency(num))
   }
 
   return new Intl.NumberFormat('en', { notation: 'compact' }).format(num as number)
+}
+
+export const getLocale = (locale: string): locales.Locale => {
+  return (locales as Record<string, locales.Locale>)[locale] || locales.enUS
 }
 
 export const capitalize = (str: string) => {

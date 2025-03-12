@@ -112,7 +112,7 @@ export function ResetPasswordEmailPreview() {
   return (
     <ResetPasswordEmail
       name="John Doe"
-      resetLink="https://yourapp.com/reset-password?token=abc123"
+      resetLink="https://deewas.com/reset-password?token=abc123"
       supportUrl={`mailto:${process.env.NEXT_PUBLIC_MAIL}`}
     />
   )

@@ -36,6 +36,7 @@ interface CreateTransactionDrawerProps {
   type?: TransactionType
   initWallet?: IWallet
   initCategory?: ICategory
+  initDate?: string
   trigger: ReactNode
   refetch?: () => void
   update?: (transaction: IFullTransaction) => void
@@ -46,6 +47,7 @@ function CreateTransactionDrawer({
   type,
   initWallet,
   initCategory,
+  initDate,
   trigger,
   update,
   refetch,
@@ -84,7 +86,7 @@ function CreateTransactionDrawer({
       name: '',
       categoryId: initCategory?._id || '',
       amount: '',
-      date: moment().format('YYYY-MM-DD'),
+      date: initDate ? moment(initDate).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD'),
       type: initCategory?.type || type || 'expense',
     },
   })
