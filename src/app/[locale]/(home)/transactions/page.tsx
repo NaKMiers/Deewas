@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import WalletPicker from '@/components/WalletPicker'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { useRouter } from '@/i18n/navigation'
 import { refetching } from '@/lib/reducers/loadReducer'
 import { setTransactions } from '@/lib/reducers/transactionReducer'
 import { toUTC } from '@/lib/time'
@@ -15,9 +16,9 @@ import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { getMyTransactionsApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
-import { LucidePlus, LucideRefreshCw, LucideSearch } from 'lucide-react'
+import { LucideCalendarDays, LucidePlus, LucideRefreshCw, LucideSearch } from 'lucide-react'
 import moment from 'moment-timezone'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuX } from 'react-icons/lu'
@@ -26,6 +27,8 @@ function TransactionsPage() {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('transactionPage')
+  const router = useRouter()
+  const locale = useLocale()
 
   // store
   const { curWallet } = useAppSelector(state => state.wallet)
@@ -157,7 +160,7 @@ function TransactionsPage() {
         />
       </div>
 
-      {/* MARK: Search  */}
+      {/* MARK: Search & Calendar */}
       <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
         {/* Search */}
         <div className="relative flex w-full overflow-hidden rounded-md shadow-sm">
@@ -187,6 +190,16 @@ function TransactionsPage() {
             </Button>
           )}
         </div>
+
+        {/* Calendar */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-9 w-9 flex-shrink-0"
+          onClick={() => router.push('/calendar', { locale })}
+        >
+          <LucideCalendarDays />
+        </Button>
       </div>
 
       {/* MARK: Groups */}
