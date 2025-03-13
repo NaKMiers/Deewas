@@ -112,6 +112,23 @@
     "You can change these setting at any time": "Bạn có thể thay đổi cài đặt này bất cứ lúc nào",
     "I'm done! Take me to the dashboard": "Đã xong! Đưa tôi đến trang chủ ngay"
   },
+  "aiPage": {
+    "Create": "Tạo",
+    "a wallet": "một ví",
+    "Create a new wallet": "Tạo một ví mới",
+    "Set": "Thiết lập",
+    "a new budget": "một ngân sách",
+    "Set a new budget": "Thiết lập một ngân sách mới",
+    "Add": "Thêm",
+    "a new category": "một danh mục",
+    "Add a new category": "Thêm một danh mục mới",
+    "a transaction": "một giao dịch",
+    "Add a new transaction": "Thêm một giao dịch mới",
+    "An error occurred": "Đã xảy ra lỗi",
+    "Please try again later": "Vui lòng thử lại sau",
+    "Deewas is a personal finance assistant that helps you manage your money wisely": "Deewas là trợ lý tài chính cá nhân giúp bạn quản lý chi tiêu một cách thông minh",
+    "Ask me anything": "Hỏi tôi điều gì đó"
+  },
   "calendarPage": {
     "Calendar": "Lịch",
     "Transactions for": "Các giao dịch ngày",
@@ -312,6 +329,7 @@
     "Save": "Lưu"
   },
   "budgetCard": {
+    "Create Similar": "Tạo tương tự",
     "Deleting budget": "Đang xóa ngân sách",
     "Edit": "Sửa",
     "Delete": "Xóa",

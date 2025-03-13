@@ -1,17 +1,25 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { deleteBudget, updateBudget } from '@/lib/reducers/budgetReducer'
+import { addBudget, deleteBudget, updateBudget } from '@/lib/reducers/budgetReducer'
 import { checkLevel, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
 import { deleteBudgetApi } from '@/requests/budgetRequests'
 import { differenceInDays } from 'date-fns'
-import { LucideEllipsis, LucideLoaderCircle, LucidePencil, LucideTrash } from 'lucide-react'
+import {
+  LucideEllipsis,
+  LucideLayers2,
+  LucideLoaderCircle,
+  LucidePencil,
+  LucideTrash,
+} from 'lucide-react'
+import moment from 'moment-timezone'
 import { useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
+import CreateBudgetDrawer from './dialogs/CreateBudgetDrawer'
 import UpdateBudgetDrawer from './dialogs/UpdateBudgetDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
@@ -62,6 +70,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
   return (
     <div className={cn('rounded-md border px-3 pb-8 pt-2', className)}>
       <div className="flex items-center justify-between gap-1">
+        {/* MARK: Category & Amount */}
         <div className="flex items-center gap-2 text-sm font-semibold">
           <span>{budget.category.icon}</span>
           <span>{budget.category.name}</span> <div className="h-5 w-0.5 bg-muted-foreground/50" />
@@ -83,6 +92,25 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+              {/* MARK: Duplicate */}
+              <CreateBudgetDrawer
+                initTotal={budget.total}
+                initCategory={budget.category}
+                initBegin={moment(budget.begin).add(1, 'month').toDate()}
+                initEnd={moment(budget.end).add(1, 'month').toDate()}
+                update={(budget: IFullBudget) => dispatch(addBudget(budget))}
+                trigger={
+                  <Button
+                    variant="ghost"
+                    className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
+                  >
+                    <LucideLayers2 size={16} />
+                    {t('Create Similar')}
+                  </Button>
+                }
+              />
+
+              {/* MARK: Update */}
               <UpdateBudgetDrawer
                 update={(budget: IFullBudget) => dispatch(updateBudget(budget))}
                 budget={budget}
@@ -97,6 +125,7 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
                 }
               />
 
+              {/* MARK: Delete */}
               <ConfirmDialog
                 label={t('Delete Budget')}
                 desc={t('Are you sure you want to delete this budget?')}
@@ -124,6 +153,8 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
           </Button>
         )}
       </div>
+
+      {/* MARK: Left */}
       <div className="mt-1 px-1">
         <div className="relative h-6 w-full rounded-full bg-primary/10">
           <div
@@ -131,12 +162,12 @@ function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
             style={{ width: `${progress > 100 ? 100 : progress}%` }}
           />
           {currency && (
-            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap font-body text-sm font-semibold tracking-wider">
+            <span className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-nowrap font-body text-sm font-semibold tracking-wider">
               {t('Left')} {formatCurrency(currency, budget.total - budget.amount)}
             </span>
           )}
           <div
-            className="absolute top-0 h-full w-0.5 -translate-x-1/2 bg-white"
+            className="absolute top-0 h-full w-0.5 -translate-x-1/2 bg-white/50"
             style={{ left: (spent / length) * 100 + '%' }}
           >
             <div className="absolute left-1/2 top-7 -translate-x-1/2 rounded-sm bg-primary/10 px-0.5 py-0.5 text-[10px]">

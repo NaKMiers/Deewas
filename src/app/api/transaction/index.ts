@@ -430,6 +430,11 @@ export const getTransactions = async (userId: string, params: any = {}) => {
       limit: Infinity,
     })
 
+    console.log('filter:', filter)
+    console.log('sort:', sort)
+    console.log('skip:', skip)
+    console.log('limit:', limit)
+
     // MARK: Overview
     const transactions = await TransactionModel.find(filter)
       .populate('wallet category')

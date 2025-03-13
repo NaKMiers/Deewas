@@ -38,7 +38,7 @@ export const get_budgets = (userId: string) => {
         }
 
         const params: any = {}
-        if (category) params.category = category._id
+        if (category) params.category = [category._id]
 
         const { budgets }: { budgets: any[] } = await getBudgets(userId, params)
 

@@ -4,34 +4,42 @@ import { Message } from '@/components/ai/message'
 import { useScrollToBottom } from '@/components/ai/use-scroll-to-bottom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useRouter } from '@/i18n/navigation'
 import { useActions } from 'ai/rsc'
 import { motion } from 'framer-motion'
-import { LucideLoaderCircle, LucideSend } from 'lucide-react'
+import { LucideLoaderCircle, LucideSend, Router } from 'lucide-react'
+import { useLocale, useTranslations } from 'next-intl'
 import { ReactNode, useCallback, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 
 function AIPage() {
+  // hooks
   const { sendMessage } = useActions()
+  const t = useTranslations('aiPage')
+  const router = useRouter()
+  const locale = useLocale()
 
+  // states
   const [input, setInput] = useState<string>('')
   const [messages, setMessages] = useState<Array<ReactNode>>([])
-
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>()
   const [loading, setLoading] = useState<boolean>(false)
 
+  // refs
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [messagesContainerRef, messagesEndRef] = useScrollToBottom<HTMLDivElement>()
+
   const suggestedActions = [
-    { title: 'Create', label: 'a wallet', action: 'Create a new wallet' },
-    { title: 'Set', label: 'a new budget', action: 'Set a new budget' },
+    { title: t('Create'), label: t('a wallet'), action: t('Create a new wallet') },
+    { title: t('Set'), label: t('a new budget'), action: t('Set a new budget') },
     {
-      title: 'Add',
-      label: 'a new category',
-      action: 'Add a new category',
+      title: t('Add'),
+      label: t('a new category'),
+      action: t('Add a new category'),
     },
     {
-      title: 'Add',
-      label: 'a transaction',
-      action: 'Add a new transaction',
+      title: t('Add'),
+      label: t('a transaction'),
+      action: t('Add a new transaction'),
     },
   ]
 
@@ -55,7 +63,8 @@ function AIPage() {
         const response: ReactNode = await sendMessage(input)
         setMessages(messages => [...messages, response])
       } catch (err: any) {
-        toast.error('An error occurred. Please try again later.')
+        toast.error(t('An error occurred') + '.' + t('Please try again later'))
+        router.prefetch('/ai', { locale })
         console.log(err)
       } finally {
         setLoading(false)
@@ -64,7 +73,7 @@ function AIPage() {
         }, 200)
       }
     },
-    [input, sendMessage, loading]
+    [input, sendMessage, loading, router, locale, t]
   )
 
   const handleSuggestionClick = useCallback(
@@ -107,7 +116,7 @@ function AIPage() {
             <div className="flex flex-col gap-21/2 rounded-lg border-2 border-primary p-21 text-center text-sm shadow-md">
               <p className="text-center text-lg font-semibold">Deewas</p>
               <p className="text-muted-foreground">
-                Deewas is a personal finance assistant that helps you manage your money wisely.
+                {t('Deewas is a personal finance assistant that helps you manage your money wisely')}.
               </p>
             </div>
           )}
@@ -147,7 +156,7 @@ function AIPage() {
           <Input
             ref={inputRef}
             className="h-full border-2 border-primary text-base shadow-md !ring-0"
-            placeholder="Ask me anything..."
+            placeholder={`${t('Ask me anything')}...`}
             value={input}
             onChange={event => {
               setInput(event.target.value)

@@ -112,6 +112,23 @@
     "You can change these setting at any time": "You can change these setting at any time",
     "I'm done! Take me to the dashboard": "I'm done! Take me to the dashboard"
   },
+  "aiPage": {
+    "Create": "Create",
+    "a wallet": "a wallet",
+    "Create a new wallet": "Create a new wallet",
+    "Set": "Set",
+    "a new budget": "a new budget",
+    "Set a new budget": "Set a new budget",
+    "Add": "Add",
+    "a new category": "a new category",
+    "Add a new category": "Add a new category",
+    "a transaction": "a transaction",
+    "Add a new transaction": "Add a new transaction",
+    "An error occurred": "An error occurred",
+    "Please try again later": "Please try again later",
+    "Deewas is a personal finance assistant that helps you manage your money wisely": "Deewas is a personal finance assistant that helps you manage your money wisely",
+    "Ask me anything": "Ask me anything"
+  },
   "calendarPage": {
     "Calendar": "Calendar",
     "Transactions for": "Transactions for",
@@ -123,11 +140,12 @@
     "Upgrade": "Upgrade"
   },
   "createBudgetDrawer": {
+    "Failed to create budget": "Failed to create budget",
     "Amount is required": "Amount is required",
     "Amount must be greater than 0": "Amount must be greater than 0",
     "Category is required": "Category is required",
     "From and To date is required": "From and To date is required",
-    "Creating transaction": "Creating transaction",
+    "Creating budget": "Creating budget",
     "Failed to create transaction": "Failed to create transaction",
     "Create Budget": "Create Budget",
     "Budget helps you manage money wisely": "Budget helps you manage money wisely",
@@ -313,6 +331,7 @@
     "Save": "Save"
   },
   "budgetCard": {
+    "Create Similar": "Create Similar",
     "Deleting budget": "Deleting budget",
     "Edit": "Edit",
     "Delete": "Delete",

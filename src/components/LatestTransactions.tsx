@@ -251,7 +251,7 @@ export function Transaction({ transaction, update, remove, refetch, className = 
             </div>
           )}
 
-          {!deleting ? (
+          {!deleting && !duplicating ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

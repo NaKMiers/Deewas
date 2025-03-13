@@ -91,7 +91,7 @@ export const get_category = (userId: string) => {
 
       try {
         const params: any = {}
-        if (type) params.type = type
+        if (type) params.type = [type]
         const { categories }: { categories: any[] } = await getCategories(userId, params)
 
         const category = categories.find(c => c.name.toLowerCase() === name.toLowerCase())

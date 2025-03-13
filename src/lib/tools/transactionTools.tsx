@@ -18,15 +18,15 @@ export const get_all_transactions = (userId: string) => {
     description: 'get all transactions of the user',
     parameters: z.object({
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
-      limit: z.number().optional(),
+      limit: z.number().optional().default(20),
     }),
     generate: async function* ({ type, limit }: { type?: string; limit?: number }) {
       const toolCallId = generateId()
 
       try {
         const params: any = {}
-        if (type) params.type = type
-        if (limit) params.limit = limit
+        if (type) params.type = [type]
+        if (limit) params.limit = [limit]
 
         const { transactions }: { transactions: any[] } = await getTransactions(userId, params)
 

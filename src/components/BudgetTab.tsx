@@ -34,6 +34,8 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
   const total = budgets.reduce((acc: number, budget: IFullBudget) => acc + budget.total, 0)
   const amount = budgets.reduce((acc: number, budget: IFullBudget) => acc + budget.amount, 0)
   const daysLeft = differenceInDays(new Date(end), new Date())
+  let dailyLimit = (total - amount) / daysLeft
+  dailyLimit = dailyLimit > 10000 ? Math.round(dailyLimit) : dailyLimit
 
   return (
     <TabsContent
@@ -79,7 +81,7 @@ function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabPro
             <div className="flex-1">
               <p className="font-semibold">
                 {total - amount > 0
-                  ? formatCurrency(currency, (total - amount) / daysLeft) + '/' + t('day')
+                  ? formatCurrency(currency, dailyLimit) + '/' + t('day')
                   : formatCurrency(currency, 0)}
               </p>
               <p className="text-sm tracking-tight text-muted-foreground">{t('Daily limit')}</p>

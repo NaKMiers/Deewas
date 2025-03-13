@@ -20,13 +20,14 @@ function Header({ className = '' }: { className?: string }) {
   return (
     <header
       className={cn(
-        'h-[50px] w-full border-b border-muted-foreground bg-secondary text-primary',
+        'h-[50px] w-full border-b border-muted-foreground bg-primary text-secondary',
         className
       )}
     >
       <div className="container flex h-full items-center justify-between px-21/2 md:px-21">
         <div className="flex items-center gap-2 md:gap-4">
           <Button
+            variant="secondary"
             size="icon"
             className="h-8 w-8"
             onClick={() => router.push('/calendar', { locale })}
@@ -39,11 +40,17 @@ function Header({ className = '' }: { className?: string }) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button className="relative h-8">{t('Upgrade')}</Button>
+          <Button
+            variant="secondary"
+            className="relative h-8"
+          >
+            {t('Upgrade')}
+          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
+                variant="secondary"
                 size="icon"
                 className="h-8"
               >

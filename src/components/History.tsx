@@ -36,7 +36,7 @@ function History({ className = '' }: HistoryProps) {
 
   // states
   const [chart, setChart] = useState<string>(charts[0])
-  const [selectedTypes, setSelectedTypes] = useState<TransactionType[]>(types)
+  const [selectedTypes, setSelectedTypes] = useState<TransactionType[]>(['income', 'expense'])
   const [data, setData] = useState<any[]>([])
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: moment().startOf('month').toDate(),

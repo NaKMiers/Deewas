@@ -225,12 +225,19 @@ export const getBudgets = async (userId: string, params: any = {}) => {
     // connect to database
     await connectDatabase()
 
+    console.log('params', params)
+
     const { filter, sort, limit, skip } = filterBuilder(params, {
       skip: 0,
       limit: 10,
       filter: { user: userId, end: { $gte: toUTC(moment().toDate()) } },
       sort: { createdAt: -1 },
     })
+
+    console.log('filter', filter)
+    console.log('sort', sort)
+    console.log('limit', limit)
+    console.log('skip', skip)
 
     // get budgets: budgets.end > today
     const budgets = await BudgetModel.find(filter)

@@ -209,12 +209,19 @@ export const getCategories = async (userId: string, params: any = {}) => {
     // connect to database
     await connectDatabase()
 
+    console.log('params', params)
+
     const { filter, sort, limit, skip } = filterBuilder(params, {
       skip: 0,
       filter: { user: userId },
       sort: { createdAt: -1 },
       limit: Infinity,
     })
+
+    console.log('filter', filter)
+    console.log('sort', sort)
+    console.log('limit', limit)
+    console.log('skip', skip)
 
     // get user categories
     const categories = await CategoryModel.find(filter).sort(sort).skip(skip).limit(limit).lean()

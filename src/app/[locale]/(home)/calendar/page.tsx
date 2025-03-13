@@ -6,8 +6,9 @@ import MonthYearPicker from '@/components/MonthYearPicker'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useMockTransactions } from '@/hooks/useMockTransactions'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { formatCompactNumber, getLocale } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import {
@@ -21,7 +22,7 @@ import {
   subMonths,
 } from 'date-fns'
 import { motion } from 'framer-motion'
-import { LucideChevronLeft, LucideChevronRight, LucidePlus } from 'lucide-react'
+import { LucideChevronLeft, LucideChevronRight, LucidePlus, LucideRefreshCw } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useState } from 'react'
 
@@ -30,6 +31,7 @@ function CalendarPage() {
   const locale = useLocale()
   const { transactions, loading, refetch } = useMockTransactions()
   const t = useTranslations('calendarPage')
+  const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -61,6 +63,16 @@ function CalendarPage() {
       {/* MARK: Top */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4 md:px-21">
         <h2 className="text-lg font-bold">{t('Calendar')}</h2>
+
+        {/* Mark: Refresh */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="group h-8"
+          onClick={() => dispatch(refetching())}
+        >
+          <LucideRefreshCw className="trans-300 group-hover:rotate-180" />
+        </Button>
       </div>
 
       {!loading ? (

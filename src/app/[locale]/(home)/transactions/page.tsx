@@ -8,13 +8,14 @@ import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
 import WalletPicker from '@/components/WalletPicker'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refetching } from '@/lib/reducers/loadReducer'
 import { setTransactions } from '@/lib/reducers/transactionReducer'
 import { toUTC } from '@/lib/time'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { getMyTransactionsApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
-import { LucidePlus, LucideSearch } from 'lucide-react'
+import { LucidePlus, LucideRefreshCw, LucideSearch } from 'lucide-react'
 import moment from 'moment-timezone'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
@@ -36,7 +37,7 @@ function TransactionsPage() {
     from: moment().startOf('month').toDate(), // default is current month
     to: moment().endOf('month').toDate(),
   })
-  const [wallet, setWallet] = useState<IWallet | null>(null)
+  const [wallet, setWallet] = useState<IWallet | null>(curWallet)
   const [groups, setGroups] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState<string>('')
@@ -125,7 +126,17 @@ function TransactionsPage() {
       </div>
 
       {/* MARK: Date Range */}
-      <div className="mb-21/2 flex items-center justify-end px-21/2 md:px-21">
+      <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
+        {/* Mark: Refresh */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="group h-8"
+          onClick={() => dispatch(refetching())}
+        >
+          <LucideRefreshCw className="trans-300 group-hover:rotate-180" />
+        </Button>
+
         <DateRangePicker
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
@@ -214,7 +225,7 @@ function TransactionsPage() {
         trigger={
           <Button
             variant="default"
-            className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]"
+            className="fixed bottom-[calc(68px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]"
           >
             <LucidePlus size={24} />
             {t('Add Transaction')}

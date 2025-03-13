@@ -5,9 +5,12 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { formatSymbol, revertAdjustedCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
+import { IFullBudget } from '@/models/BudgetModel'
+import { ICategory } from '@/models/CategoryModel'
 import { createBudgetApi } from '@/requests/budgetRequests'
 import { LucideLoaderCircle } from 'lucide-react'
 import moment from 'moment'
+import { useTranslations } from 'next-intl'
 import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -25,18 +28,26 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '../ui/drawer'
-import { IFullBudget } from '@/models/BudgetModel'
-import { useTranslations } from 'next-intl'
-import { ICategory } from '@/models/CategoryModel'
 
 interface CreateBudgetDrawerProps {
   trigger: ReactNode
   update?: (budget: IFullBudget) => void
   initCategory?: ICategory
+  initTotal?: number
+  initBegin?: string | Date
+  initEnd?: string | Date
   className?: string
 }
 
-function CreateBudgetDrawer({ trigger, initCategory, update, className = '' }: CreateBudgetDrawerProps) {
+function CreateBudgetDrawer({
+  trigger,
+  initCategory,
+  initTotal,
+  initBegin,
+  initEnd,
+  update,
+  className = '',
+}: CreateBudgetDrawerProps) {
   // hooks
   const t = useTranslations('createBudgetDrawer')
 
@@ -53,23 +64,26 @@ function CreateBudgetDrawer({ trigger, initCategory, update, className = '' }: C
     formState: { errors },
     setError,
     setValue,
+    getValues,
     control,
     clearErrors,
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
       categoryId: initCategory?._id || '',
-      total: '',
-      begin: moment().startOf('month').toDate(),
-      end: moment().endOf('month').toDate(),
+      total: initTotal?.toString() || '',
+      begin: initBegin
+        ? moment(initBegin).startOf('month').toDate()
+        : moment().startOf('month').toDate(),
+      end: initEnd ? moment(initEnd).endOf('month').toDate() : moment().endOf('month').toDate(),
     },
   })
 
   const [open, setOpen] = useState<boolean>(false)
   const [saving, setSaving] = useState<boolean>(false)
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
-    from: moment().startOf('month').toDate(),
-    to: moment().endOf('month').toDate(),
+    from: moment(getValues('begin')).startOf('month').toDate(),
+    to: moment(getValues('end')).endOf('month').toDate(),
   })
 
   // validate form

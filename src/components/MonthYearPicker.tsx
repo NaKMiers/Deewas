@@ -37,7 +37,10 @@ function MonthYearPicker({ currentMonth, setCurrentMonth }: MonthYearPickerProps
   }
 
   const handleApply = useCallback(() => {
-    const newDate = new Date(newYear, newMonth)
+    const newY = Math.min(Math.max(newYear, 1900), 2100)
+    setNewYear(newY)
+
+    const newDate = new Date(newY, newMonth)
     setCurrentMonth(newDate)
     setOpen(false)
   }, [newMonth, newYear, setCurrentMonth])

@@ -19,7 +19,7 @@ export default async function AILayout({
       <UseSettings />
 
       {/* Main */}
-      <main className="flex h-[calc(100vh-70px)] flex-col justify-between">
+      <main className="flex h-[calc(100vh-64px)] flex-col justify-between">
         <Header className="flex-shrink-0" />
 
         <AI>{children}</AI>
