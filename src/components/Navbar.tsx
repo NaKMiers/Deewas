@@ -19,7 +19,7 @@ function Navbar() {
   const dispatch = useAppDispatch()
 
   return (
-    <nav className="fixed bottom-21/2 left-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 px-21/2 text-secondary">
+    <nav className="fixed bottom-21 left-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 px-21/2 text-secondary">
       <div className="container flex h-full items-center justify-between gap-0.5 rounded-full bg-primary px-21/2 py-2 text-center">
         {/* Home */}
         <Link

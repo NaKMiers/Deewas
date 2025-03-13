@@ -42,7 +42,7 @@ function Creations() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <button className="fixed bottom-[calc(68px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]">
+        <button className="fixed bottom-[calc(78px)] right-2 z-20 h-10 rounded-full xl:right-[calc(50%-640px+21px)]">
           <div className="aspect-square rounded-full bg-primary p-2 text-secondary">
             <LucidePlus size={24} />
           </div>
