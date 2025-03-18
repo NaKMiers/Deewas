@@ -19,13 +19,13 @@ export default async function AILayout({
       <UseSettings />
 
       {/* Main */}
-      <main className="flex h-[calc(100vh-64px)] flex-col justify-between">
+      <main className="flex h-[calc(100vh-64px-21px/2)] flex-col justify-between">
         <Header className="flex-shrink-0" />
 
         <AI>{children}</AI>
       </main>
 
-      <Navbar />
+      <Navbar className="static mx-auto mb-21/2 h-[64px] w-full max-w-full translate-x-0 translate-y-0 md:max-w-[400px]" />
     </>
   )
 }

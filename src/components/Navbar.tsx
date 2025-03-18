@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { memo } from 'react'
 
-function Navbar() {
+function Navbar({ className }: { className?: string }) {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
@@ -19,14 +19,19 @@ function Navbar() {
   const dispatch = useAppDispatch()
 
   return (
-    <nav className="fixed bottom-21 left-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 px-21/2 text-secondary">
+    <nav
+      className={cn(
+        'fixed bottom-21 left-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 px-21/2 text-secondary',
+        className
+      )}
+    >
       <div className="container flex h-full items-center justify-between gap-0.5 rounded-full bg-primary px-21/2 py-2 text-center">
         {/* Home */}
         <Link
           href="/"
           className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full border border-transparent py-1',
-            pathname === '/' && 'border-emerald-500 text-emerald-500 shadow-md'
+            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
+            pathname === '/' && 'text-emerald-500 shadow-md'
           )}
         >
           <LucideHouse className="h-[22px] w-[22px] md:h-[18px] md:w-[18px]" />
@@ -37,8 +42,8 @@ function Navbar() {
         <Link
           href="/transactions"
           className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full border border-transparent py-1',
-            pathname.startsWith('/transactions') && 'border-sky-500 text-sky-500 shadow-md'
+            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
+            pathname.startsWith('/transactions') && 'text-sky-500 shadow-md'
           )}
           onClick={() => dispatch(setCurWallet(null))}
         >
@@ -64,8 +69,8 @@ function Navbar() {
         <Link
           href="/budgets"
           className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full border border-transparent py-1',
-            pathname.startsWith('/budgets') && 'border-violet-500 text-violet-500 shadow-md'
+            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
+            pathname.startsWith('/budgets') && 'text-violet-500 shadow-md'
           )}
         >
           <LucideChartPie className="h-[22px] w-[22px] md:h-[18px] md:w-[18px]" />
@@ -76,8 +81,8 @@ function Navbar() {
         <Link
           href="/account"
           className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full border border-transparent py-1',
-            pathname.startsWith('/account') && 'border-yellow-500 text-yellow-500 shadow-md'
+            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
+            pathname.startsWith('/account') && 'text-yellow-500 shadow-md'
           )}
         >
           <div className="aspect-square max-w-[22px] overflow-hidden rounded-full md:max-w-[20px]">

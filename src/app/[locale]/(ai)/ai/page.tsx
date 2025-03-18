@@ -104,7 +104,7 @@ function AIPage() {
   )
 
   return (
-    <div className="flex w-full flex-1 overflow-y-auto overflow-x-hidden px-21/2 py-8 md:px-21">
+    <div className="flex h-full w-full flex-1 overflow-y-auto overflow-x-hidden px-21/2 py-8 md:px-21">
       <div className="mx-auto flex w-full max-w-[600px] flex-col justify-between gap-4">
         {/* MARK: Messages */}
         <div
