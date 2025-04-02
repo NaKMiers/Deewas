@@ -1,4 +1,4 @@
-import { getToken } from 'next-auth/jwt'
+import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { deleteAllData } from '..'
 
@@ -7,7 +7,7 @@ export async function DELETE(req: NextRequest) {
   console.log('- Delete All Data -')
 
   try {
-    const token = await getToken({ req })
+    const token = await extractToken(req)
     const userId = token?._id as string
 
     // check if user is logged in

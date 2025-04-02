@@ -1,7 +1,7 @@
-import { getToken } from 'next-auth/jwt'
+import { searchParamsToObject } from '@/lib/query'
+import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { getTransactions } from '.'
-import { searchParamsToObject } from '@/lib/query'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   console.log('- Get Transactions -')
 
   try {
-    const token = await getToken({ req })
+    const token = await extractToken(req)
     const userId = token?._id as string
 
     // check if user is logged in

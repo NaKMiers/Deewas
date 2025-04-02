@@ -1,4 +1,4 @@
-import { getToken } from 'next-auth/jwt'
+import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { updateCategory } from '../..'
 
@@ -7,7 +7,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   console.log('- Update Category -')
 
   try {
-    const token = await getToken({ req })
+    const token = await extractToken(req)
     const userId = token?._id
 
     // check if user is logged in

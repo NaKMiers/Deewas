@@ -43,7 +43,7 @@ const authOptions = {
 
         // check if credentials is empty
         if (!credentials?.usernameOrEmail || !credentials?.password) {
-          return null
+          throw new Error('Missing credentials')
         }
 
         // get data from credentials

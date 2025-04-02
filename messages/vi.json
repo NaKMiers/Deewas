@@ -7,6 +7,9 @@
     "Login - Deewas": "Đăng nhập - Deewas",
     "Login to Deewas": "Đăng nhập vào Deewas",
     "Welcome back, please login to continue!": "Chào mừng trở lại, vui lòng đăng nhập để tiếp tục!",
+    "Login with Google": "Đăng nhập với Google",
+    "Login with Facebook": "Đăng nhập với Facebook",
+    "Login with Apple": "Đăng nhập với Apple",
     "or": "hoặc",
     "Username / Email": "Tên người dùng / Email",
     "Password": "Mật khẩu",
@@ -34,6 +37,7 @@
     "Failed to register": "Đăng ký thất bại",
     "Username must be at least 5 characters": "Tên người dùng phải có ít nhất 5 ký tự",
     "Invalid email": "Email không hợp lệ",
+    "Login with Google": "Đăng nhập với Google",
     "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Mật khẩu phải có ít nhất 6 ký tự và chứa ít nhất 1 chữ thường, 1 chữ hoa, 1 số"
   },
   "forgotPasswordPage": {

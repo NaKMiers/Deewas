@@ -1,7 +1,8 @@
-import { getToken, JWT } from 'next-auth/jwt'
+import { JWT } from 'next-auth/jwt'
 import createMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import { routing } from './i18n/routing'
+import { extractToken } from './lib/utils'
 
 // MARK: Internationalization Middleware
 const intlMiddleware = createMiddleware(routing)
@@ -41,7 +42,7 @@ const requireAdminForApi = async (req: NextRequest, token: JWT | null, locale: s
 }
 
 export default async function middleware(req: NextRequest) {
-  const token = await getToken({ req })
+  const token = await extractToken(req)
   const pathname = req.nextUrl.pathname
   const locale = req.cookies.get('NEXT_LOCALE')?.value || 'en'
 
@@ -81,7 +82,6 @@ export default async function middleware(req: NextRequest) {
 
 // math all routes
 export const config = {
-  // Match only internationalized pathnames
   matcher: [
     '/',
     '/(vi|en)/:path*',

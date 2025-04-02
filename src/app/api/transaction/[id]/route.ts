@@ -1,4 +1,4 @@
-import { getToken } from 'next-auth/jwt'
+import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { getTransactions } from '..'
 
@@ -7,7 +7,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   console.log('- Get Transaction - ')
 
   try {
-    const token = await getToken({ req })
+    const token = await extractToken(req)
     const userId = token?._id as string
 
     if (!userId) {

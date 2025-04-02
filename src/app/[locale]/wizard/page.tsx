@@ -31,7 +31,7 @@ function WizardPage() {
   }, [update])
 
   return (
-    <div className="md:px-21 container flex h-screen w-screen items-center justify-center gap-4 px-21/2">
+    <div className="container flex h-screen w-screen items-center justify-center gap-4 px-21/2 md:px-21">
       <div className="flex max-w-2xl flex-col gap-4">
         <div>
           <h1 className="text-center text-3xl">

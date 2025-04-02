@@ -7,6 +7,9 @@
     "Login - Deewas": "Login - Deewas",
     "Login to Deewas": "Login to Deewas",
     "Welcome back, please login to continue!": "Welcome back, please login to continue!",
+    "Login with Google": "Login with Google",
+    "Login with Facebook": "Login with Facebook",
+    "Login with Apple": "Login with Apple",
     "or": "or",
     "Username / Email": "Username / Email",
     "Password": "Password",
@@ -16,7 +19,9 @@
     "Register": "Register",
     "Logging in": "Logging in",
     "Login Successfully!": "Login Successfully!",
-    "Login Failed": "Login Failed"
+    "Login Failed": "Login Failed",
+    "Username or email is required": "Username or email is required",
+    "Password is required": "Password is required"
   },
   "registerPage": {
     "Register - Deewas": "Register - Deewas",
@@ -34,7 +39,10 @@
     "Failed to register": "Failed to register",
     "Username must be at least 5 characters": "Username must be at least 5 characters",
     "Invalid email": "Invalid email",
-    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number"
+    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number",
+    "Login with Google": "Login with Google",
+    "Login with Facebook": "Login with Facebook",
+    "Login with Apple": "Login with Apple"
   },
   "forgotPasswordPage": {
     "Forgot Password - Deewas": "Forgot Password - Deewas",
@@ -525,7 +533,8 @@
     "This Month": "This Month",
     "Last Month": "Last Month",
     "Update": "Update",
-    "Cancel": "Cancel"
+    "Cancel": "Cancel",
+    "Confirm": "Confirm"
   },
   "settingsBox": {
     "Set your currency": "Set your currency",
@@ -538,5 +547,13 @@
   },
   "montYearPicker": {
     "Apply": "Apply"
+  },
+  "success": {
+    "Login Success": "Login Success",
+    "You have successfully logged in": "You have successfully logged in"
+  },
+  "error": {
+    "Login Failed": "Login Failed",
+    "Incorrect username or email": "Incorrect username or email"
   }
 }

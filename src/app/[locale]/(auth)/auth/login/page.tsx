@@ -111,9 +111,9 @@ function LoginPage() {
           <Separator className="my-8 h-0" />
 
           {/* MARK: Social Login */}
-          <div className="grid grid-cols-1 items-center justify-center gap-2 md:grid-cols-3">
+          <div className="flex items-center justify-center gap-2">
             <Button
-              className="h-8 bg-white"
+              className="trans-200 h-8 flex-1 bg-white hover:bg-black/5"
               onClick={() => signIn('google', { callbackUrl: `/${locale}/wizard` })}
             >
               <Image
@@ -122,6 +122,8 @@ function LoginPage() {
                 height={16}
                 alt="Google"
               />
+
+              <p className="ml-1 font-semibold text-black/80">Login with Google</p>
             </Button>
             {/* <Button
               className="h-8 bg-white"

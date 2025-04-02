@@ -1,5 +1,5 @@
 import { searchParamsToObject } from '@/lib/query'
-import { getToken } from 'next-auth/jwt'
+import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { getWallets } from '.'
 
@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
   console.log('- Get My Wallets -')
 
   try {
-    const token = await getToken({ req })
+    const token = await extractToken(req)
     const userId = token?._id as string
 
     // check if user is logged in

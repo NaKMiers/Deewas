@@ -1,4 +1,4 @@
-import { getToken } from 'next-auth/jwt'
+import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSettings } from '.'
 
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   console.log('- Get My Settings -')
 
   try {
-    const token = await getToken({ req })
+    const token = await extractToken(req)
     let userId = token?._id as string
 
     if (!userId) {

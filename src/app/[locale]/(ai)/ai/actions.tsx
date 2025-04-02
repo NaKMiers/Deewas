@@ -80,7 +80,6 @@ const sendMessage = async (message: string) => {
 
   const messagesToSend = [...recentMessages, { role: 'user', content: message } as CoreMessage]
 
-  console.log('messages', messagesToSend)
   const results = await streamUI({
     model: openai('gpt-4o-mini'),
     system: content,

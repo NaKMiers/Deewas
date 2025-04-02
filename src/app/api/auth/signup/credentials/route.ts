@@ -1,29 +1,30 @@
 import { connectDatabase } from '@/config/database'
-import UserModel from '@/models/UserModel'
-import { NextRequest, NextResponse } from 'next/server'
-
 import { initCategories } from '@/constants/categories'
 import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
+import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
+import { sign } from 'jsonwebtoken'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User, Category, Settings, Wallet
-import '@/models/UserModel'
 import '@/models/CategoryModel'
 import '@/models/SettingsModel'
+import '@/models/UserModel'
 import '@/models/WalletModel'
 
-// [POST]: /auth/register
+// [POST]: /auth/signup/credentials
 export async function POST(req: NextRequest) {
-  console.log('- Register -')
+  console.log('- Sign Up With Credentials -')
 
   try {
-    // connect to database
-    await connectDatabase()
-
+    // get data from request body
     let { username, email, password } = await req.json()
     username = username.toLowerCase()
     email = email.toLowerCase()
+
+    // connect to database
+    await connectDatabase()
 
     // check if user is already exist in database
     const existingUser: any = await UserModel.findOne({
@@ -71,10 +72,12 @@ export async function POST(req: NextRequest) {
     ])
 
     // exclude password from user object
-    const { password: _, ...user } = newUser
+    const { password: _, ...otherDetails } = newUser
+
+    const token = sign(otherDetails, process.env.NEXTAUTH_SECRET!, { expiresIn: '30d' })
 
     // return home page
-    return NextResponse.json({ user, message: 'Register Successfully' }, { status: 200 })
+    return NextResponse.json({ token, message: 'Token is here' }, { status: 200 })
   } catch (err) {
     return NextResponse.json(err, { status: 500 })
   }
