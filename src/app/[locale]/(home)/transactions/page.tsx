@@ -55,6 +55,7 @@ function TransactionsPage() {
 
     try {
       const { transactions } = await getMyTransactionsApi(query)
+      console.log('transactions', transactions)
       dispatch(setTransactions(transactions))
     } catch (err: any) {
       console.log(err)

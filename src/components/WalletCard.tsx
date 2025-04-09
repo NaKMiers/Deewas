@@ -217,7 +217,7 @@ function WalletCard({ wallet, className }: WalletCardProps) {
       <CardContent className="flex flex-col gap-2 px-4 pb-2">
         <Item
           title={t('Balance')}
-          value={wallet.income + wallet.saving + wallet.invest + wallet.transfer - wallet.expense}
+          value={wallet.income + wallet.saving + wallet.invest - wallet.expense}
           type="balance"
         />
         <div
@@ -242,11 +242,6 @@ function WalletCard({ wallet, className }: WalletCardProps) {
             title={t('Invest')}
             value={wallet.invest}
             type="invest"
-          />
-          <Item
-            title={t('Transfer')}
-            value={wallet.transfer}
-            type="transfer"
           />
         </div>
       </CardContent>

@@ -177,10 +177,11 @@ export const transfer = async (
     // connect to database
     await connectDatabase()
 
-    const [fromWallet, toWallet, transferCategory] = await Promise.all([
+    const [fromWallet, toWallet, unCategorizedIncomeCate, unCategorizedExpenseCate] = await Promise.all([
       WalletModel.findById(fromWalletId).select('name'),
       WalletModel.findById(toWalletId).select('name'),
-      CategoryModel.findOne({ deletable: false, type: 'transfer' }).select('_id'),
+      CategoryModel.findOne({ user: userId, deletable: false, type: 'income' }).select('_id'),
+      CategoryModel.findOne({ user: userId, deletable: false, type: 'expense' }).select('_id'),
     ])
 
     if (!fromWallet) {
@@ -191,7 +192,7 @@ export const transfer = async (
       throw new Error('Destination wallet not found')
     }
 
-    if (!transferCategory) {
+    if (!unCategorizedIncomeCate || !unCategorizedExpenseCate) {
       throw new Error('Cannot categorized this action')
     }
 
@@ -200,10 +201,10 @@ export const transfer = async (
       TransactionModel.create({
         user: userId,
         wallet: fromWalletId,
-        category: transferCategory._id,
+        category: unCategorizedExpenseCate._id,
         type: 'expense',
         name: `${fromWallet.name} ➡️ ${toWallet.name}`,
-        amount: -amount,
+        amount: amount,
         date: toUTC(date),
       }),
 
@@ -211,7 +212,7 @@ export const transfer = async (
       TransactionModel.create({
         user: userId,
         wallet: toWalletId,
-        category: transferCategory._id,
+        category: unCategorizedIncomeCate._id,
         type: 'income',
         name: `${toWallet.name} ⬅️ ${fromWallet.name}`,
         amount: amount,
@@ -219,10 +220,24 @@ export const transfer = async (
       }),
 
       // update from wallet
-      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { transfer: -amount } }, { new: true }),
+      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { expense: amount } }, { new: true }),
 
       // update to wallet
-      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { transfer: amount } }, { new: true }),
+      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { income: amount } }, { new: true }),
+
+      // update category
+      CategoryModel.findByIdAndUpdate(
+        unCategorizedExpenseCate._id,
+        { $inc: { amount: amount } },
+        { new: true }
+      ),
+
+      // update category
+      CategoryModel.findByIdAndUpdate(
+        unCategorizedIncomeCate._id,
+        { $inc: { amount: amount } },
+        { new: true }
+      ),
     ])
 
     return {

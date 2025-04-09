@@ -4,11 +4,13 @@ import * as budgetTools from '@/lib/tools/budgetTools'
 import * as categoryTools from '@/lib/tools/categoryTools'
 import * as transactionTools from '@/lib/tools/transactionTools'
 import * as walletTools from '@/lib/tools/walletTools'
+import { extractToken } from '@/lib/utils'
 import { openai } from '@ai-sdk/openai'
 import { CoreMessage, generateId } from 'ai'
 import { createAI, createStreamableValue, getMutableAIState, streamUI } from 'ai/rsc'
 import { LucideLoaderCircle } from 'lucide-react'
 import { getServerSession } from 'next-auth'
+import { NextRequest } from 'next/server'
 import { ReactNode } from 'react'
 
 const content = `\
@@ -50,10 +52,15 @@ Never reply user longer than 50 words
 Current date UTC: ${new Date().toISOString()} 
 `
 
-const sendMessage = async (message: string) => {
+export const sendMessage = async (message: string, req: NextRequest) => {
   'use server'
 
-  const token = await getServerSession(authOptions)
+  // authenticate user
+  let token = await getServerSession(authOptions)
+  if (!token && req) {
+    const user = await extractToken(req)
+    if (user) token = { user }
+  }
   const userId = token?.user?._id
   if (!userId) throw new Error('Please login to continue')
 
