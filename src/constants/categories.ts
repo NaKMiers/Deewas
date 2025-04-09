@@ -191,12 +191,4 @@ export const initCategories = {
       deletable: false,
     },
   ],
-  transfer: [
-    {
-      name: 'Transferring',
-      icon: '🔄',
-      type: 'transfer',
-      deletable: false,
-    },
-  ],
 }

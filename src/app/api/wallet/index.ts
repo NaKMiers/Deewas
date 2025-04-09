@@ -196,19 +196,13 @@ export const transfer = async (
     }
 
     const [sourceW, destinationW] = await Promise.all([
-      // update from wallet
-      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { transfer: -amount } }, { new: true }),
-
-      // update to wallet
-      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { transfer: amount } }, { new: true }),
-
       // create transfer transactions
       TransactionModel.create({
         user: userId,
         wallet: fromWalletId,
         category: transferCategory._id,
-        type: 'transfer',
-        name: `Transferred from ${fromWallet.name} to ${toWallet.name}`,
+        type: 'expense',
+        name: `${fromWallet.name} ➡️ ${toWallet.name}`,
         amount: -amount,
         date: toUTC(date),
       }),
@@ -218,11 +212,17 @@ export const transfer = async (
         user: userId,
         wallet: toWalletId,
         category: transferCategory._id,
-        type: 'transfer',
-        name: `Transferred from ${fromWallet.name} to ${toWallet.name}`,
+        type: 'income',
+        name: `${toWallet.name} ⬅️ ${fromWallet.name}`,
         amount: amount,
         date: toUTC(date),
       }),
+
+      // update from wallet
+      WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { transfer: -amount } }, { new: true }),
+
+      // update to wallet
+      WalletModel.findByIdAndUpdate(toWalletId, { $inc: { transfer: amount } }, { new: true }),
     ])
 
     return {

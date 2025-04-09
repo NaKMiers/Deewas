@@ -35,7 +35,7 @@ const TransactionSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ['income', 'expense', 'saving', 'invest', 'transfer'],
+      enum: ['income', 'expense', 'saving', 'invest'],
       required: true,
     },
   },
