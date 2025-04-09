@@ -35,7 +35,7 @@ interface UpdateBudgetDrawerProps {
   className?: string
 }
 
-function UpdateBudgetDrawer({ budget, trigger, update, className = '' }: UpdateBudgetDrawerProps) {
+function UpdateBudgetDrawer({ budget, trigger, update, className }: UpdateBudgetDrawerProps) {
   // hooks
   const t = useTranslations('updateBudgetDrawer')
 

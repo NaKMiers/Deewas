@@ -34,7 +34,7 @@ interface WalletCardProps {
   className?: string
 }
 
-function WalletCard({ wallet, className = '' }: WalletCardProps) {
+function WalletCard({ wallet, className }: WalletCardProps) {
   // hooks
   const router = useRouter()
   const locale = useLocale()

@@ -36,7 +36,7 @@ interface CreateWalletDrawerProps {
   className?: string
 }
 
-function CreateWalletDrawer({ trigger, update, load, className = '' }: CreateWalletDrawerProps) {
+function CreateWalletDrawer({ trigger, update, load, className }: CreateWalletDrawerProps) {
   // hooks
   const t = useTranslations('createWalletDrawer')
 

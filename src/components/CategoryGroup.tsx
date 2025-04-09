@@ -18,7 +18,7 @@ interface CategoryGroupProps {
   className?: string
 }
 
-function CategoryGroup({ categories, type, className = '' }: CategoryGroupProps) {
+function CategoryGroup({ categories, type, className }: CategoryGroupProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('categoryGroup')
@@ -50,7 +50,7 @@ function CategoryGroup({ categories, type, className = '' }: CategoryGroupProps)
             />
           </div>
           <div className="flex flex-1 flex-col">
-            <p className="md:text-2xl text-sm font-semibold capitalize">
+            <p className="text-sm font-semibold capitalize md:text-2xl">
               {type} {t('Categories')}
             </p>
             <p className="text-xs font-semibold text-muted-foreground">{t('Sorted by name')}</p>
@@ -63,7 +63,7 @@ function CategoryGroup({ categories, type, className = '' }: CategoryGroupProps)
               <Button
                 disabled={creating}
                 variant="default"
-                className="md:px-4 flex h-8 flex-shrink-0 items-center gap-1.5 rounded-md px-2 text-xs font-semibold"
+                className="flex h-8 flex-shrink-0 items-center gap-1.5 rounded-md px-2 text-xs font-semibold md:px-4"
               >
                 {!creating ? (
                   <>
@@ -87,7 +87,7 @@ function CategoryGroup({ categories, type, className = '' }: CategoryGroupProps)
               />
             ))
           ) : (
-            <div className="md:p-21 flex w-full items-center justify-center border-t p-21/2 text-center text-lg font-semibold text-muted-foreground">
+            <div className="flex w-full items-center justify-center border-t p-21/2 text-center text-lg font-semibold text-muted-foreground md:p-21">
               {t('No categories found!')}
             </div>
           )}

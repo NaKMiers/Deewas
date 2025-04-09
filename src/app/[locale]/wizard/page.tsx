@@ -41,7 +41,7 @@ function WizardPage() {
             {t("Let's start with some simple settings")}
           </h2>
           <h3 className="mt-2 text-center text-sm text-muted-foreground">
-            {t('You can change these setting at any time')}
+            {t('You can change these settings at any time')}
           </h3>
         </div>
 

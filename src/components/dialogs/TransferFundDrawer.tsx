@@ -44,7 +44,7 @@ function TransferFundDrawer({
   initToWallet,
   trigger,
   refetch,
-  className = '',
+  className,
 }: TransferFundDrawerProps) {
   // hooks
   const t = useTranslations('TransferFundDrawer')

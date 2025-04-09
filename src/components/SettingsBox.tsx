@@ -26,7 +26,7 @@ interface SettingsBoxProps {
   isRequireInit?: boolean
 }
 
-function SettingsBox({ isRequireInit, className = '' }: SettingsBoxProps) {
+function SettingsBox({ isRequireInit, className }: SettingsBoxProps) {
   // hooks
   const locale = useLocale()
   const t = useTranslations('settingsBox')
@@ -74,7 +74,7 @@ interface BoxProps {
   className?: string
 }
 
-function Box({ type, desc, list, init, className = '' }: BoxProps) {
+function Box({ type, desc, list, init, className }: BoxProps) {
   // hooks
   const dispatch = useAppDispatch()
   const pathname = usePathname()

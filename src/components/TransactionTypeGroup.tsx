@@ -17,12 +17,13 @@ interface ITransactionTypeGroupProps {
   className?: string
 }
 
-function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransactionTypeGroupProps) {
+function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionTypeGroupProps) {
   // hooks
   const t = useTranslations('transactionTypeGroup')
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
+  const { curWallet } = useAppSelector(state => state.wallet)
 
   // states
   const [open, setOpen] = useState<boolean>(true)
@@ -82,6 +83,7 @@ function TransactionTypeGroup({ type, categoryGroups, className = '' }: ITransac
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-w-max p-0">
               <CreateTransactionDrawer
+                initWallet={curWallet}
                 type={type}
                 trigger={
                   <Button

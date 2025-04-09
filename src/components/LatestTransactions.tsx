@@ -34,7 +34,7 @@ interface LatestTransactionsProps {
   className?: string
 }
 
-function LatestTransactions({ className = '' }: LatestTransactionsProps) {
+function LatestTransactions({ className }: LatestTransactionsProps) {
   // hooks
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -153,7 +153,7 @@ interface TransactionProps {
   className?: string
 }
 
-export function Transaction({ transaction, update, remove, refetch, className = '' }: TransactionProps) {
+export function Transaction({ transaction, update, remove, refetch, className }: TransactionProps) {
   // hooks
   const t = useTranslations('transaction')
 

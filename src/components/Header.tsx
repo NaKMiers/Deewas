@@ -9,7 +9,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
 
-function Header({ className = '' }: { className?: string }) {
+function Header({ className }: { className?: string }) {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user

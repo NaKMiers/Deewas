@@ -12,7 +12,7 @@ interface OverviewCardProps {
   className?: string
 }
 
-function OverviewCard({ className = '' }: OverviewCardProps) {
+function OverviewCard({ className }: OverviewCardProps) {
   // hooks
   const t = useTranslations('overviewCard')
 
@@ -107,7 +107,7 @@ interface CardProps {
   toggle?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
-function Item({ title, type, value, isEye, isShow, toggle, className = '' }: CardProps) {
+function Item({ title, type, value, isEye, isShow, toggle, className }: CardProps) {
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 

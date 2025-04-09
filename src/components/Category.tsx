@@ -30,7 +30,7 @@ interface CategoryProps {
   className?: string
 }
 
-function Category({ category, className = '' }: CategoryProps) {
+function Category({ category, className }: CategoryProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('category')

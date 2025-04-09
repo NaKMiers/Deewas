@@ -19,7 +19,9 @@
     "Register": "Đăng ký ngay",
     "Logging in": "Đang đăng nhập",
     "Login Successfully!": "Đăng nhập thành công!",
-    "Login Failed!": "Đăng nhập thất bại!"
+    "Login Failed!": "Đăng nhập thất bại!",
+    "Username or email is required": "Tên người dùng hoặc email không được trống",
+    "Password is required": "Mật khẩu không được trống"
   },
   "registerPage": {
     "Register - Deewas": "Đăng ký - Deewas",
@@ -37,8 +39,10 @@
     "Failed to register": "Đăng ký thất bại",
     "Username must be at least 5 characters": "Tên người dùng phải có ít nhất 5 ký tự",
     "Invalid email": "Email không hợp lệ",
+    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Mật khẩu phải có ít nhất 6 ký tự và chứa ít nhất 1 chữ thường, 1 chữ hoa, 1 số",
     "Login with Google": "Đăng nhập với Google",
-    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "Mật khẩu phải có ít nhất 6 ký tự và chứa ít nhất 1 chữ thường, 1 chữ hoa, 1 số"
+    "Login with Facebook": "Đăng nhập với Facebook",
+    "Login with Apple": "Đăng nhập với Apple"
   },
   "forgotPasswordPage": {
     "Forgot Password - Deewas": "Quên mật khẩu - Deewas",
@@ -113,7 +117,7 @@
   "wizardPage": {
     "Welcome": "Chào mừng",
     "Let's start with some simple settings": "Hãy bắt đầu bằng 1 số cài đặt đơn giản",
-    "You can change these setting at any time": "Bạn có thể thay đổi cài đặt này bất cứ lúc nào",
+    "You can change these settings at any time": "Bạn có thể thay đổi cài đặt này bất cứ lúc nào",
     "I'm done! Take me to the dashboard": "Đã xong! Đưa tôi đến trang chủ ngay"
   },
   "aiPage": {
@@ -143,13 +147,14 @@
     "Upgrade": "Nâng cấp"
   },
   "createBudgetDrawer": {
+    "Failed to create budget": "Không thể tạo ngân sách",
     "Amount is required": "Số tiền không được trống",
     "Amount must be greater than 0": "Số tiền phải lớn hơn 0",
     "Category is required": "Vui lòng chọn danh mục",
     "From and To date is required": "Vui lòng chọn ngày bắt đầu và kết thúc",
     "Creating budget": "Đang tạo ngân sách",
-    "Failed to create budget": "Không thể tạo ngân sách",
     "Create Budget": "Tạo ngân sách",
+    "Failed to create transaction": "Không thể tạo giao dịch",
     "Budget helps you manage money wisely": "Ngân sách giúp bạn quản lý chi tiêu một cách thông minh",
     "Total": "Tổng",
     "Category": "Danh mục",
@@ -527,7 +532,8 @@
     "This Month": "Tháng này",
     "Last Month": "Tháng trước",
     "Update": "Áp dụng",
-    "Cancel": "Hủy"
+    "Cancel": "Hủy",
+    "Confirm": "Xác nhận"
   },
   "settingsBox": {
     "Set your currency": "Thiết lập tiền tệ",
@@ -540,5 +546,13 @@
   },
   "montYearPicker": {
     "Apply": "Áp dụng"
+  },
+  "success": {
+    "Login Success": "Đăng nhập thành công",
+    "You have successfully logged in": "Bạn đã đăng nhập thành công"
+  },
+  "error": {
+    "Login Failed": "Đăng nhập thất bại",
+    "Incorrect username or email": "Tên người dùng hoặc email không chính xác"
   }
 }

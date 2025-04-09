@@ -45,7 +45,7 @@ function CustomInput({
   onClick,
   control,
   onFocus,
-  className = '',
+  className,
   ...rest
 }: InputProps) {
   // store

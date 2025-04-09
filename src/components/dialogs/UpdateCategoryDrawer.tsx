@@ -43,7 +43,7 @@ function UpdateCategoryDrawer({
   trigger,
   update,
   load,
-  className = '',
+  className,
 }: UpdateCategoryDrawerProps) {
   // hooks
   const t = useTranslations('updateCategoryDrawer')

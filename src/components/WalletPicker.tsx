@@ -40,7 +40,7 @@ interface WalletPickerProps {
   className?: string
 }
 
-function WalletPicker({ wallet, isAllowedAll, onChange, className = '' }: WalletPickerProps) {
+function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPickerProps) {
   // hooks
   const t = useTranslations('walletPicker')
   const dispatch = useAppDispatch()

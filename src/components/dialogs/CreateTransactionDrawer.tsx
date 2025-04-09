@@ -51,7 +51,7 @@ function CreateTransactionDrawer({
   trigger,
   update,
   refetch,
-  className = '',
+  className,
 }: CreateTransactionDrawerProps) {
   // hooks
   const t = useTranslations('createTransactionDrawer')

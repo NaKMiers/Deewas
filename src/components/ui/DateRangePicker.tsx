@@ -89,7 +89,7 @@ export const DateRangePicker: FC<DateRangePickerProps & { className?: string }> 
   align = 'end',
   locale = 'en-US',
   showCompare = true,
-  className = '',
+  className,
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false)
 

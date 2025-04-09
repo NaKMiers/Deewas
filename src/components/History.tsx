@@ -20,7 +20,7 @@ interface HistoryProps {
   className?: string
 }
 
-function History({ className = '' }: HistoryProps) {
+function History({ className }: HistoryProps) {
   // hooks
   const { data: session } = useSession()
   const user = session?.user

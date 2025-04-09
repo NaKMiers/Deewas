@@ -31,7 +31,7 @@ interface IBudgetCardProps {
   className?: string
 }
 
-function BudgetCard({ begin, end, budget, className = '' }: IBudgetCardProps) {
+function BudgetCard({ begin, end, budget, className }: IBudgetCardProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('budgetCard')

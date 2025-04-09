@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BarChart, Edit, Heart, Mail, PlusCircle, Trash, Wallet } from 'lucide-react' // Icon từ lucide-react
 import Link from 'next/link'
 
-export default function UserGuidePage() {
+function UserGuidePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -287,3 +287,5 @@ export default function UserGuidePage() {
     </div>
   )
 }
+
+export default UserGuidePage

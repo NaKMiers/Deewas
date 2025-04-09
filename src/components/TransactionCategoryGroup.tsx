@@ -38,7 +38,7 @@ interface ITransactionCategoryGroupProps {
 function TransactionCategoryGroup({
   category,
   transactions,
-  className = '',
+  className,
 }: ITransactionCategoryGroupProps) {
   // hooks
   const dispatch = useAppDispatch()
@@ -46,6 +46,7 @@ function TransactionCategoryGroup({
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
+  const { curWallet } = useAppSelector(state => state.wallet)
 
   return (
     <div className={cn('flex flex-col', className)}>
@@ -69,6 +70,7 @@ function TransactionCategoryGroup({
 
         {/* MARK: New Transaction for category */}
         <CreateTransactionDrawer
+          initWallet={curWallet}
           initCategory={category}
           update={(transaction: IFullTransaction) => dispatch(addTransaction(transaction))}
           trigger={
@@ -109,7 +111,7 @@ interface ITransactionProps {
   className?: string
 }
 
-function TransactionItem({ transaction, className = '' }: ITransactionProps) {
+function TransactionItem({ transaction, className }: ITransactionProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('transactionItem')

@@ -45,7 +45,7 @@ interface ChartProps {
   maxKey: string
 }
 
-function Chart({ maxKey, types, chart, data = [], className = '' }: ChartProps) {
+function Chart({ maxKey, types, chart, data = [], className }: ChartProps) {
   // hooks
   const { resolvedTheme } = useTheme()
 

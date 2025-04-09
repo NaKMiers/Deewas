@@ -11,7 +11,7 @@ interface PriceProps {
   className?: string
 }
 
-function CountDown({ timeType, start, duration, expire, className = '' }: PriceProps) {
+function CountDown({ timeType, start, duration, expire, className }: PriceProps) {
   // states
   const [timeLeft, setTimeLeft] = useState<number[]>([0, 0, 0])
 

@@ -40,7 +40,7 @@ interface CategoryPickerProps {
   className?: string
 }
 
-function CategoryPicker({ category, type, onChange, className = '' }: CategoryPickerProps) {
+function CategoryPicker({ category, type, onChange, className }: CategoryPickerProps) {
   // hooks
   const t = useTranslations('categoryPicker')
 

@@ -18,7 +18,7 @@ interface WalletProps {
   className?: string
 }
 
-function Wallets({ className = '' }: WalletProps) {
+function Wallets({ className }: WalletProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('wallets')
@@ -117,7 +117,7 @@ export default memo(Wallets)
 export function SkeletonWallets({
   loading,
   children,
-  className = '',
+  className,
 }: {
   loading: boolean
   children: ReactNode

@@ -46,7 +46,7 @@ function CreateBudgetDrawer({
   initBegin,
   initEnd,
   update,
-  className = '',
+  className,
 }: CreateBudgetDrawerProps) {
   // hooks
   const t = useTranslations('createBudgetDrawer')

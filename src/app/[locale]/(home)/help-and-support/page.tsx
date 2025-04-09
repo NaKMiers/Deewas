@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { Link } from '@/i18n/navigation'
 import { BookOpen, LifeBuoy, Mail, MessageSquare } from 'lucide-react' // Icon từ lucide-react
 
-export default function HelpPage() {
+function HelpPage() {
   return (
     <div className="p-21/2 md:p-21">
       {/* Header */}
@@ -159,3 +159,5 @@ export default function HelpPage() {
     </div>
   )
 }
+
+export default HelpPage

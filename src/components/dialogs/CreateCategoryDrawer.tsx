@@ -39,13 +39,7 @@ interface CreateCategoryDrawerProps {
   className?: string
 }
 
-function CreateCategoryDrawer({
-  type,
-  trigger,
-  update,
-  load,
-  className = '',
-}: CreateCategoryDrawerProps) {
+function CreateCategoryDrawer({ type, trigger, update, load, className }: CreateCategoryDrawerProps) {
   // hooks
   const t = useTranslations('createCategoryDrawer')
 

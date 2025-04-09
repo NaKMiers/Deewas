@@ -231,7 +231,7 @@ export const getBudgets = async (userId: string, params: any = {}) => {
       skip: 0,
       limit: 10,
       filter: { user: userId, end: { $gte: toUTC(moment().toDate()) } },
-      sort: { createdAt: -1 },
+      sort: { end: 1, createdAt: -1 },
     })
 
     console.log('filter', filter)
@@ -240,7 +240,7 @@ export const getBudgets = async (userId: string, params: any = {}) => {
     console.log('skip', skip)
 
     // get budgets: budgets.end > today
-    const budgets = await BudgetModel.find(filter)
+    let budgets = await BudgetModel.find(filter)
       .populate('category')
       .sort(sort)
       .limit(limit)

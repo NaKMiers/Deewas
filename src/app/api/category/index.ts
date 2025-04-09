@@ -1,4 +1,5 @@
 import { connectDatabase } from '@/config/database'
+import BudgetModel from '@/models/BudgetModel'
 import CategoryModel, { ICategory } from '@/models/CategoryModel'
 import TransactionModel from '@/models/TransactionModel'
 
@@ -139,6 +140,8 @@ export const deleteCategory = async (userId: string, categoryId: string) => {
     CategoryModel.findByIdAndUpdate(uncategorizedCategory._id, {
       $inc: { amount: category.amount },
     }),
+    // delete all budgets of this category
+    BudgetModel.deleteMany({ user: userId, category: categoryId }),
   ])
 
   return {

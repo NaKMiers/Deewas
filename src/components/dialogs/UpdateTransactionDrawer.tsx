@@ -44,7 +44,7 @@ function UpdateTransactionDrawer({
   trigger,
   update,
   refetch,
-  className = '',
+  className,
 }: UpdateTransactionDrawerProps) {
   // hooks
   const t = useTranslations('updateTransactionDrawer')

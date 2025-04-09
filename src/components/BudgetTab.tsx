@@ -21,7 +21,7 @@ interface IBudgetTabProps {
   className?: string
 }
 
-function BudgetTab({ value, begin, end, budgets, className = '' }: IBudgetTabProps) {
+function BudgetTab({ value, begin, end, budgets, className }: IBudgetTabProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('budgetTab')
