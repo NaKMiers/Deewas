@@ -8,16 +8,17 @@ export const get_all_categories = (userId: string) => {
     description: 'get all categories of the user',
     parameters: z.object({
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
+      message: z.string().describe('a short funny message about the categories'),
     }),
-    execute: async ({ type }: { type?: string }) => {
+    execute: async ({ type, message }: { type?: string; message: string }) => {
       try {
         const params: any = {}
         if (type) params.type = type
         const { categories }: { categories: any[] } = await getCategories(userId, params)
 
-        return { categories }
+        return { categories, message }
       } catch (err: any) {
-        return { error: `Failed to get categories: ${err.message}` }
+        return { error: 'Failed to get categories' }
       }
     },
   }
@@ -30,8 +31,9 @@ export const get_category = (userId: string) => {
     parameters: z.object({
       name: z.string(),
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
+      message: z.string().describe('a short funny message about the category'),
     }),
-    execute: async ({ name, type }: { name: string; type?: string }) => {
+    execute: async ({ name, type, message }: { name: string; type?: string; message: string }) => {
       try {
         const params: any = {}
         if (type) params.type = [type]
@@ -43,10 +45,10 @@ export const get_category = (userId: string) => {
           return { error: `No category found with name "${name}"` }
         }
 
-        return { category }
+        return { category, message }
       } catch (err: any) {
         return {
-          error: `Failed to get category: ${err.message}`,
+          error: 'Failed to get category',
         }
       }
     },
@@ -61,13 +63,24 @@ export const create_category = (userId: string) => {
       name: z.string(),
       icon: z.string(),
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']),
+      message: z.string().describe('a short funny message about the category'),
     }),
-    execute: async ({ name, icon, type }: { name: string; icon: string; type: string }) => {
+    execute: async ({
+      name,
+      icon,
+      type,
+      message,
+    }: {
+      name: string
+      icon: string
+      type: string
+      message: string
+    }) => {
       try {
         const { category } = await createCategory(userId, name, icon, type)
-        return { category }
+        return { category, message }
       } catch (err: any) {
-        return { error: `Failed to create category: ${err.message}` }
+        return { error: 'Failed to create category' }
       }
     },
   }
@@ -81,8 +94,19 @@ export const update_category = (userId: string) => {
       name: z.string(),
       newName: z.string(),
       icon: z.string(),
+      message: z.string().describe('a short funny message about the category'),
     }),
-    execute: async ({ name, newName, icon }: { name: string; newName: string; icon: string }) => {
+    execute: async ({
+      name,
+      newName,
+      icon,
+      message,
+    }: {
+      name: string
+      newName: string
+      icon: string
+      message: string
+    }) => {
       try {
         const { categories }: { categories: any[] } = await getCategories(userId)
         const categoryToUpdate: any = categories.find(c => c.name.toLowerCase() === name.toLowerCase())
@@ -92,9 +116,9 @@ export const update_category = (userId: string) => {
         }
 
         const { category } = await updateCategory(categoryToUpdate._id, newName, icon)
-        return { category }
+        return { category, message }
       } catch (err: any) {
-        return { error: `Failed to update category: ${err.message}` }
+        return { error: 'Failed to update category' }
       }
     },
   }
@@ -106,8 +130,9 @@ export const delete_category = (userId: string) => {
     description: 'delete a category by name',
     parameters: z.object({
       name: z.string(),
+      message: z.string().describe('a short funny message about the category'),
     }),
-    execute: async ({ name }: { name: string }) => {
+    execute: async ({ name, message }: { name: string; message: string }) => {
       try {
         const { categories }: { categories: any[] } = await getCategories(userId)
         const categoryToDelete = categories.find(c => c.name.toLowerCase() === name.toLowerCase())
@@ -117,9 +142,9 @@ export const delete_category = (userId: string) => {
         }
 
         const { category } = await deleteCategory(userId, categoryToDelete._id)
-        return { category }
+        return { category, message }
       } catch (err: any) {
-        return { error: `Failed to delete category: ${err.message}` }
+        return { error: 'Failed to delete category' }
       }
     },
   }

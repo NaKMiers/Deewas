@@ -9,8 +9,9 @@ export const get_budgets = (userId: string) => {
     description: 'get budgets by category name',
     parameters: z.object({
       categoryName: z.string().optional(),
+      message: z.string().describe('a short funny message about the budget'),
     }),
-    execute: async ({ categoryName }: { categoryName?: string }) => {
+    execute: async ({ categoryName, message }: { categoryName?: string; message: string }) => {
       try {
         let category = null
         if (categoryName) {
@@ -26,9 +27,9 @@ export const get_budgets = (userId: string) => {
         if (category) params.category = [category._id]
 
         const { budgets }: { budgets: any[] } = await getBudgets(userId, params)
-        return { budgets }
+        return { budgets, message }
       } catch (err: any) {
-        return { error: `Failed to get budgets: ${err.message}` }
+        return { error: 'Failed to get budgets' }
       }
     },
   }
@@ -44,17 +45,20 @@ export const create_budget = (userId: string) => {
       total: z.number(),
       begin: z.string(),
       end: z.string(),
+      message: z.string().describe('a short funny message about the budget'),
     }),
     execute: async ({
       categoryName,
       total,
       begin,
       end,
+      message,
     }: {
       categoryName: string
       total: number
       begin: string
       end: string
+      message: string
     }) => {
       try {
         const { categories }: { categories: any[] } = await getCategories(userId)
@@ -72,9 +76,9 @@ export const create_budget = (userId: string) => {
           total
         )
 
-        return { budget }
+        return { budget, message }
       } catch (err: any) {
-        return { error: `Failed to create budget: ${err.message}` }
+        return { error: 'Failed to create budget' }
       }
     },
   }

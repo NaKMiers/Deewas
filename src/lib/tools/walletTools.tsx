@@ -6,16 +6,18 @@ import { z } from 'zod'
 // MARK: Get all wallets
 export const get_all_wallets = (userId: string) => {
   return {
-    description: 'get all wallets of the user',
-    parameters: z.object({}),
-    execute: async () => {
+    description: 'get all wallets of the user with a short funny message',
+    parameters: z.object({
+      message: z.string().describe('a short funny message about the wallets'),
+    }),
+    execute: async ({ message }: { message: string }) => {
       try {
         const { wallets }: { wallets: any[] } = await getWallets(userId)
 
-        return { wallets }
+        return { wallets, message }
       } catch (err: any) {
         return {
-          error: `Failed to get wallets: ${err.message}`,
+          error: 'Failed to get wallets',
         }
       }
     },
@@ -28,8 +30,9 @@ export const get_wallet = (userId: string) => {
     description: 'get a wallet by name',
     parameters: z.object({
       name: z.string(),
+      message: z.string().describe('a short funny message about the wallet'),
     }),
-    execute: async ({ name }: { name: string }) => {
+    execute: async ({ name, message }: { name: string; message: string }) => {
       try {
         const { wallets }: { wallets: any[] } = await getWallets(userId)
         const wallet = wallets.find(w => w.name.toLowerCase() === name.toLowerCase())
@@ -40,9 +43,9 @@ export const get_wallet = (userId: string) => {
           }
         }
 
-        return { wallet }
+        return { wallet, message }
       } catch (err: any) {
-        return { error: `Failed to get wallet: ${err.message}` }
+        return { error: 'Failed to get wallet' }
       }
     },
   }
@@ -55,14 +58,15 @@ export const create_wallet = (userId: string) => {
     parameters: z.object({
       name: z.string(),
       icon: z.string(),
+      message: z.string().describe('a short funny message about the wallet'),
     }),
-    execute: async ({ name, icon }: { name: string; icon: string }) => {
+    execute: async ({ name, icon, message }: { name: string; icon: string; message: string }) => {
       try {
         const { wallet } = await createWallet(userId, name, icon)
 
-        return { wallet }
+        return { wallet, message }
       } catch (err: any) {
-        return { error: `Failed to create wallet: ${err.message}` }
+        return { error: 'Failed to create wallet' }
       }
     },
   }
@@ -74,26 +78,22 @@ export const delete_wallet = (userId: string) => {
     description: 'delete a wallet by name',
     parameters: z.object({
       name: z.string(),
+      message: z.string().describe('a short funny message about the wallet'),
     }),
-    execute: async ({ name }: { name: string }) => {
+    execute: async ({ name, message }: { name: string; message: string }) => {
       try {
         const { wallets }: { wallets: any[] } = await getWallets(userId)
         const walletToDelete: any = wallets.find(w => w.name.toLowerCase() === name.toLowerCase())
 
         if (!walletToDelete) {
-          return (
-            <Message
-              role="assistant"
-              content={`No wallet found with name "${name}"`}
-            />
-          )
+          return { error: `No wallet found with name "${name}"` }
         }
 
         const { wallet } = await deleteWallet(userId, walletToDelete._id)
 
-        return { wallet }
+        return { wallet, message }
       } catch (err: any) {
-        return { error: `Failed to delete wallet: ${err.message}` }
+        return { error: 'Failed to delete wallet' }
       }
     },
   }
@@ -107,8 +107,19 @@ export const update_wallet = (userId: string) => {
       name: z.string(),
       newName: z.string(),
       icon: z.string(),
+      message: z.string().describe('a short funny message about the wallet'),
     }),
-    execute: async ({ name, newName, icon }: { name: string; newName: string; icon: string }) => {
+    execute: async ({
+      name,
+      newName,
+      icon,
+      message,
+    }: {
+      name: string
+      newName: string
+      icon: string
+      message: string
+    }) => {
       try {
         const { wallets }: { wallets: any[] } = await getWallets(userId)
         const walletToUpdate: any = wallets.find(w => w.name.toLowerCase() === name.toLowerCase())
@@ -129,9 +140,9 @@ export const update_wallet = (userId: string) => {
           walletToUpdate.hide
         )
 
-        return { wallet }
+        return { wallet, message }
       } catch (err: any) {
-        return { error: `Failed to update wallet: ${err.message}` }
+        return { error: 'Failed to update wallet' }
       }
     },
   }
@@ -146,29 +157,30 @@ export const transfer_fund_from_wallet_to_wallet = (userId: string) => {
       toWalletName: z.string(),
       amount: z.number(),
       date: z.string(),
+      message: z.string().describe('a short funny message about the transfer'),
     }),
     execute: async ({
       fromWalletName,
       toWalletName,
       amount,
       date,
+      message,
     }: {
       fromWalletName: string
       toWalletName: string
       amount: number
       date: string
+      message: string
     }) => {
       try {
         const { wallets }: { wallets: any[] } = await getWallets(userId)
 
         const sourceWallet = wallets.find(w => w.name.toLowerCase() === fromWalletName.toLowerCase())
-
         if (!sourceWallet) {
           return { error: `No wallet found with name "${fromWalletName}"` }
         }
 
         const destinationWallet = wallets.find(w => w.name.toLowerCase() === toWalletName.toLowerCase())
-
         if (!destinationWallet) {
           return { error: `No wallet found with name "${toWalletName}"` }
         }
@@ -181,10 +193,10 @@ export const transfer_fund_from_wallet_to_wallet = (userId: string) => {
           date || new Date().toISOString()
         )
 
-        return { sourceWallet: sW, destinationWallet: dW }
+        return { sourceWallet: sW, destinationWallet: dW, message }
       } catch (err: any) {
         return {
-          error: `Failed to transfer fund: ${err.message}`,
+          error: 'Failed to transfer fund',
         }
       }
     },

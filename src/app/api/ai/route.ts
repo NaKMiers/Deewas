@@ -1,6 +1,11 @@
+import * as budgetTools from '@/lib/tools/budgetTools'
+import * as categoryTools from '@/lib/tools/categoryTools'
+import * as transactionTools from '@/lib/tools/transactionTools'
+import * as walletTools from '@/lib/tools/walletTools'
 import { extractToken } from '@/lib/utils'
 import { openai } from '@ai-sdk/openai'
 import { streamText } from 'ai'
+import moment from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
 
 const content = `\
@@ -22,28 +27,30 @@ You are a Deewas bot (expense app with AI), giving spending insights.
 - Transfer money from a wallet to another: \`transfer_fund_from_wallet_to_wallet\`. Required: from wallet, to wallet, amount, date (default is today). Ex: "transfer 100 cash to bank".
 
 **Categories:**
-- Get all categories: \`get_all_categories\`. Optional: type. Ex: "get income categories".
+- Get all: \`get_all_categories\`. Optional: type. Ex: "get income categories".
 - Get one: \`get_category\`. Require: name, type (optional). Ex: "get category food".
 - Create: \`create_category\`. Require: name, icon (emoji - auto-chosen), type. Ex: "create expense category clothes".
 - Update: \`update_category\`. Require: name, new name, icon (emoji - auto-chosen). Ex: "rename food to food & beverage".
 - Delete: \`delete_category\`. Needs: name. Ex: "delete category food".
 
 **Budgets:**
-- Get all: \`get_budgets\`. Optional: category. Ex: "get budgets for food".
-- Create: \`create_budget\`. Require: category, total, begin, end. Ex: "budget food, 1000, 2024-01-01 to 2024-01-31".
+- Get all budgets: \`get_budgets\`. Optional: category. Ex: "get budgets for food".
+- Create a budget: \`create_budget\`. Require: category, total, begin, end. Ex: "budget food, 1000, 2024-01-01 to 2024-01-31".
 - Update/Delete one: Demo mode, not allowed.
 
 **Rules**:
-
-If user does not provide enough information you should ask for more details.
-You can reply question related to date time and personal expenses management. If the user wants to do or ask anything else, it is an impossible task, so you should respond that you are a demo and cannot do that.
-Never reply user longer than 50 words
-
-Current date UTC: ${new Date().toISOString()} 
+- If user lacks info, ask for more details.
+- Reply to date/time or expense questions only.
+- For other tasks, say "I'm a demo, can't do that."
+- Always reply under 50 words.
+- After calling a tool, return a short message with a comment and the tool result (e.g., "Here are your wallets: [list]"). Use natural language.
 `
 
 export async function POST(req: NextRequest) {
   console.log('- Send Message - ')
+
+  const timezone = req.headers.get('x-timezone') || 'UTC'
+  moment.tz.setDefault(timezone)
 
   try {
     const token = await extractToken(req)
@@ -74,37 +81,37 @@ export async function POST(req: NextRequest) {
 
     const result = streamText({
       model: openai('gpt-4o-mini'),
-      // system: content,
+      system: content + `Current time is: ${moment().format('YYYY-MM-DD HH:mm:ss')}`,
       messages: recentMessages,
       abortSignal: req.signal,
 
-      // tools: {
-      //   // Wallet
-      //   get_all_wallets: walletTools.get_all_wallets(userId),
-      //   get_wallet: walletTools.get_wallet(userId),
-      //   create_wallet: walletTools.create_wallet(userId),
-      //   delete_wallet: walletTools.delete_wallet(userId),
-      //   update_wallet: walletTools.update_wallet(userId),
-      //   transfer_fund_from_wallet_to_wallet: walletTools.transfer_fund_from_wallet_to_wallet(userId),
+      tools: {
+        // Wallet
+        get_all_wallets: walletTools.get_all_wallets(userId),
+        get_wallet: walletTools.get_wallet(userId),
+        create_wallet: walletTools.create_wallet(userId),
+        delete_wallet: walletTools.delete_wallet(userId),
+        update_wallet: walletTools.update_wallet(userId),
+        transfer_fund_from_wallet_to_wallet: walletTools.transfer_fund_from_wallet_to_wallet(userId),
 
-      //   // Category
-      //   get_all_categories: categoryTools.get_all_categories(userId),
-      //   get_category: categoryTools.get_category(userId),
-      //   create_category: categoryTools.create_category(userId),
-      //   update_category: categoryTools.update_category(userId),
-      //   delete_category: categoryTools.delete_category(userId),
+        // Category
+        get_all_categories: categoryTools.get_all_categories(userId),
+        get_category: categoryTools.get_category(userId),
+        create_category: categoryTools.create_category(userId),
+        update_category: categoryTools.update_category(userId),
+        delete_category: categoryTools.delete_category(userId),
 
-      //   // Budget
-      //   get_budgets: budgetTools.get_budgets(userId),
-      //   create_budget: budgetTools.create_budget(userId),
+        // Budget
+        get_budgets: budgetTools.get_budgets(userId),
+        create_budget: budgetTools.create_budget(userId),
 
-      //   // Transaction
-      //   get_all_transactions: transactionTools.get_all_transactions(userId),
-      //   get_transaction: transactionTools.get_transaction(userId),
-      //   create_transaction: transactionTools.create_transaction(userId),
-      //   update_transaction: transactionTools.update_transaction(userId),
-      //   delete_transaction: transactionTools.delete_transaction(userId),
-      // },
+        // Transaction
+        get_all_transactions: transactionTools.get_all_transactions(userId),
+        get_transaction: transactionTools.get_transaction(userId),
+        create_transaction: transactionTools.create_transaction(userId),
+        update_transaction: transactionTools.update_transaction(userId),
+        delete_transaction: transactionTools.delete_transaction(userId),
+      },
     })
 
     return result.toDataStreamResponse({

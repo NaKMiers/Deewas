@@ -14,17 +14,18 @@ export const get_all_transactions = (userId: string) => {
     parameters: z.object({
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
       limit: z.number().optional().default(20),
+      message: z.string().describe('a short funny message about the transactions'),
     }),
-    execute: async ({ type, limit }: { type?: string; limit?: number }) => {
+    execute: async ({ type, limit, message }: { type?: string; limit?: number; message: string }) => {
       try {
         const params: any = {}
         if (type) params.type = [type]
         if (limit) params.limit = [limit]
 
         const { transactions }: { transactions: any[] } = await getTransactions(userId, params)
-        return { transactions }
+        return { transactions, message }
       } catch (err: any) {
-        return { error: `Failed to get transactions: ${err.message}` }
+        return { error: 'Failed to get transactions' }
       }
     },
   }
@@ -38,8 +39,19 @@ export const get_transaction = (userId: string) => {
       name: z.string(),
       amount: z.number().optional(),
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
+      message: z.string().describe('a short funny message about the transaction'),
     }),
-    execute: async ({ name, amount, type }: { name: string; amount?: number; type?: string }) => {
+    execute: async ({
+      name,
+      amount,
+      type,
+      message,
+    }: {
+      name: string
+      amount?: number
+      type?: string
+      message: string
+    }) => {
       try {
         const { transactions }: { transactions: any[] } = await getTransactions(userId)
 
@@ -54,9 +66,9 @@ export const get_transaction = (userId: string) => {
             (!type || t.type === type)
         )
 
-        return { transaction }
+        return { transaction, message }
       } catch (err: any) {
-        return { error: `❌ Failed to get transaction: ${err.message}` }
+        return { error: '❌ Failed to get transaction' }
       }
     },
   }
@@ -73,6 +85,7 @@ export const create_transaction = (userId: string) => {
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']),
       walletName: z.string(),
       categoryName: z.string().optional(),
+      message: z.string().describe('a short funny message about the transaction'),
     }),
     execute: async ({
       name,
@@ -81,6 +94,7 @@ export const create_transaction = (userId: string) => {
       type,
       walletName,
       categoryName,
+      message,
     }: {
       name: string
       amount: number
@@ -88,6 +102,7 @@ export const create_transaction = (userId: string) => {
       type: TransactionType
       walletName: string
       categoryName?: string
+      message: string
     }) => {
       try {
         const { wallets }: { wallets: any[] } = await getWallets(userId)
@@ -139,9 +154,9 @@ export const create_transaction = (userId: string) => {
           type
         )
 
-        return { transaction }
+        return { transaction, message }
       } catch (err: any) {
-        return { error: `❌ Failed to create transaction: ${err.message}` }
+        return { error: '❌ Failed to create transaction' }
       }
     },
   }
@@ -163,6 +178,7 @@ export const update_transaction = (userId: string) => {
       newCategoryName: z.string().optional(),
       walletName: z.string().optional(),
       newWalletName: z.string().optional(),
+      message: z.string().describe('a short funny message about the transaction'),
     }),
     execute: async ({
       name,
@@ -175,6 +191,7 @@ export const update_transaction = (userId: string) => {
       newCategoryName,
       walletName,
       newWalletName,
+      message,
     }: {
       name: string
       newName?: string
@@ -186,6 +203,7 @@ export const update_transaction = (userId: string) => {
       newCategoryName?: string
       walletName?: string
       newWalletName?: string
+      message: string
     }) => {
       try {
         const { transactions }: { transactions: any[] } = await getTransactions(userId)
@@ -235,9 +253,9 @@ export const update_transaction = (userId: string) => {
           newDate || transactionToUpdate.date
         )
 
-        return { transaction }
+        return { transaction, message }
       } catch (err: any) {
-        return { error: `❌ Failed to update transaction: ${err.message}` }
+        return { error: '❌ Failed to update transaction' }
       }
     },
   }
@@ -251,8 +269,9 @@ export const delete_transaction = (userId: string) => {
     parameters: z.object({
       name: z.string(),
       amount: z.number().optional(),
+      message: z.string().describe('a short funny message about the transaction'),
     }),
-    execute: async ({ name, amount }: { name: string; amount?: number }) => {
+    execute: async ({ name, amount, message }: { name: string; amount?: number; message: string }) => {
       try {
         const { transactions }: { transactions: any[] } = await getTransactions(userId)
 
@@ -272,7 +291,7 @@ export const delete_transaction = (userId: string) => {
 
         await deleteTransaction(transaction._id)
 
-        return { transaction }
+        return { transaction, message }
       } catch (err: any) {
         return {
           error: `❌ Failed to delete transaction: ${err.message}`,
