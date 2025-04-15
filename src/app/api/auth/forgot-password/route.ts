@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Email not found' }, { status: 404 })
     }
 
-    // check if user is not local
-    if (user.authType !== 'local') {
+    // user does not have password
+    if (!user.password) {
       return NextResponse.json(
         {
           message: `This account is authenticated by ${user.authType}, you can't reset password`,

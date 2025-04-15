@@ -59,8 +59,8 @@ const authOptions = {
           throw new Error('Incorrect username or email')
         }
 
-        // check if user is not local
-        if (user.authType !== 'local') {
+        // user does not have password
+        if (!user.password) {
           throw new Error('This account is authenticated by ' + user.authType)
         }
 

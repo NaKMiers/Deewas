@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Incorrect username or email' }, { status: 400 })
     }
 
-    // check if user is not local
-    if (user.authType !== 'local') {
+    // user does not have password
+    if (!user.password) {
       return NextResponse.json(
         { message: 'This account is authenticated by ' + user.authType },
         { status: 400 }
