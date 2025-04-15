@@ -57,7 +57,18 @@ export const deleteAllData = async (userId: string) => {
 }
 
 // MARK: Update Settings
-export const updateSettings = async (userId: string, currency: string, language: string) => {
+export const updateSettings = async (
+  userId: string,
+  {
+    currency,
+    language,
+    personalities,
+  }: {
+    currency?: string
+    language?: string
+    personalities?: number[]
+  }
+) => {
   try {
     // connect to database
     await connectDatabase()
@@ -66,6 +77,7 @@ export const updateSettings = async (userId: string, currency: string, language:
 
     if (currency) set.currency = currency
     if (language) set.language = language
+    if (personalities) set.personalities = personalities
 
     // update user settings
     let settings = await SettingsModel.findOneAndUpdate(

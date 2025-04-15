@@ -1,9 +1,10 @@
 import PageLoading from '@/components/PageLoading'
+import { ReactNode } from 'react'
 
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: ReactNode
 }>) {
   return (
     <>

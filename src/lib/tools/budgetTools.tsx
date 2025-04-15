@@ -4,12 +4,12 @@ import moment from 'moment-timezone'
 import { z } from 'zod'
 
 // MARK: Get budgets
-export const get_budgets = (userId: string) => {
+export const get_budgets = (userId: string, style?: string) => {
   return {
     description: 'get budgets by category name',
     parameters: z.object({
       categoryName: z.string().optional(),
-      message: z.string().describe('a short funny message about the budget'),
+      message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({ categoryName, message }: { categoryName?: string; message: string }) => {
       try {
@@ -36,16 +36,16 @@ export const get_budgets = (userId: string) => {
 }
 
 // MARK: Create budget
-export const create_budget = (userId: string) => {
+export const create_budget = (userId: string, style?: string) => {
   return {
     description:
       'create a budget with the following properties: category name, total, begin of budget, end of budget',
     parameters: z.object({
       categoryName: z.string(),
       total: z.number(),
-      begin: z.string(),
-      end: z.string(),
-      message: z.string().describe('a short funny message about the budget'),
+      begin: z.date(),
+      end: z.date(),
+      message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({
       categoryName,

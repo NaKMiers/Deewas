@@ -47,7 +47,7 @@ export default async function middleware(req: NextRequest) {
   const locale = req.cookies.get('NEXT_LOCALE')?.value || 'en'
 
   if (['/api'].some(path => pathname.startsWith(path))) {
-    if (['/api/auth'].some(path => pathname.startsWith(path))) {
+    if (['/api/auth', '/api/report'].some(path => pathname.startsWith(path))) {
       return NextResponse.next()
     } else if (['/api/admin'].some(path => pathname.startsWith(path))) {
       return requireAdminForApi(req, token, locale) // require admin
@@ -85,6 +85,7 @@ export const config = {
   matcher: [
     '/',
     '/(vi|en)/:path*',
-    '/(transactions|budgets|account|categories|auth|wizard|calendar|about|help-and-support|help|api)/:path*',
+    '/(transactions|budgets|account|categories|auth|wizard|calendar|admin|api)/:path*',
+    '/(about|help-and-support|help|privacy-policy|terms-and-service)/:path*',
   ],
 }

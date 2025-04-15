@@ -8,7 +8,11 @@ const SettingsSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'user',
       required: true,
-      unique: true,
+      unique: true, // each user has only one settings
+    },
+    personalities: {
+      type: [Number], // index of personalities
+      default: [0],
     },
     currency: {
       type: String,
@@ -31,6 +35,7 @@ export interface ISettings {
   updatedAt: string
 
   user: string
+  personalities: number[]
   currency: string
   language: string
 }

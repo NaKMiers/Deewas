@@ -185,6 +185,8 @@ export const createBudget = async (
   // connect to database
   await connectDatabase()
 
+  console.log('create budget', { userId, categoryId, begin, end, total })
+
   // check if category is an expense
   const category: any = await CategoryModel.findById(categoryId).select('type').lean()
 
