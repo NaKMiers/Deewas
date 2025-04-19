@@ -7,8 +7,9 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: User
 import '@/models/UserModel'
 
+// [POST]: /auth/sign-in/credentials
 export async function POST(req: NextRequest) {
-  console.log('- Sign In With Credentials -')
+  console.log('- Credentials Sign In -')
 
   try {
     // get data from request body

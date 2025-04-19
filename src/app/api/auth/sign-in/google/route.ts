@@ -9,8 +9,10 @@ import '@/models/UserModel'
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
-// [POST]: /auth/signin/google
+// [POST]: /auth/sign-in/google
 export async function POST(req: NextRequest) {
+  console.log('- Google Sign In -')
+
   try {
     // get data from request body
     const { idToken } = await req.json()

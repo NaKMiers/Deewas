@@ -61,12 +61,18 @@ export const currencies: CurrencyType[] = [
   { value: 'MZN', label: 'Mozambican Metical (MT)', symbol: 'MT', locale: 'pt-MZ' },
   { value: 'ETB', label: 'Ethiopian Birr (Br)', symbol: 'Br', locale: 'am-ET' },
 ]
+
+export const defaultCurrency = currencies.find(c => c.value === 'USD') || currencies[0]
+
 export type LanguageType = {
   value: string
   label: string
+  alternative: string
 }
 
 export const languages: LanguageType[] = [
-  { value: 'en', label: 'English' },
-  { value: 'vi', label: 'Tiếng Việt (Vietnamese)' },
+  { value: 'en', label: 'English', alternative: 'English' },
+  { value: 'vi', label: 'Tiếng Việt', alternative: 'Vietnamese' },
 ]
+
+export const defaultLanguage = languages.find(l => l.value === 'en') || languages[0]
