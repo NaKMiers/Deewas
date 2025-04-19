@@ -9,7 +9,7 @@ import '@/models/UserModel'
 
 // [POST]: /auth/sign-in/credentials
 export async function POST(req: NextRequest) {
-  console.log('- Credentials Sign In -')
+  console.log('- Sign In With Credentials -')
 
   try {
     // get data from request body

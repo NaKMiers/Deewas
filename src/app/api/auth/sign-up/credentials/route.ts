@@ -13,7 +13,7 @@ import '@/models/SettingsModel'
 import '@/models/UserModel'
 import '@/models/WalletModel'
 
-// [POST]: /auth/signup/credentials
+// [POST]: /auth/sign-up/credentials
 export async function POST(req: NextRequest) {
   console.log('- Sign Up With Credentials -')
 

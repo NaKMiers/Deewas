@@ -11,7 +11,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 // [POST]: /auth/sign-in/google
 export async function POST(req: NextRequest) {
-  console.log('- Google Sign In -')
+  console.log('- Sign In With Google -')
 
   try {
     // get data from request body
