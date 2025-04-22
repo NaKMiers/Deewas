@@ -40,6 +40,24 @@ const UserSchema = new Schema(
         message: 'Mật khẩu không hợp lệ',
       },
     },
+    googleUserId: {
+      type: String,
+      required: function (this: { authType: string }) {
+        return this.authType === 'google'
+      },
+      unique: function (this: { authType: string }) {
+        return this.authType === 'google'
+      },
+    },
+    appleUserId: {
+      type: String,
+      required: function (this: { authType: string }) {
+        return this.authType === 'apple'
+      },
+      unique: function (this: { authType: string }) {
+        return this.authType === 'apple'
+      },
+    },
     authType: {
       type: String,
       enum: ['local', 'google', 'facebook', 'apple'],
@@ -103,6 +121,8 @@ export interface IUser {
   password: string
   authType: TAuthType
   role: TUserRole
+  appleUserId: string
+  googleUserId: string
 
   avatar: string
   firstName: string

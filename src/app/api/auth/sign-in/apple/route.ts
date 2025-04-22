@@ -5,6 +5,7 @@ import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
 import { OAuth2Client } from 'google-auth-library'
+import * as jose from 'jose'
 import { sign } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -18,43 +19,43 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 // [POST]: /auth/sign-in/google
 export async function POST(req: NextRequest) {
-  console.log('- Sign In With Google -')
+  console.log('- Sign In With Apple -')
 
   try {
     // get data from request body
-    const { idToken, googleUserId } = await req.json()
+    const { idToken, appleUserId, nonce } = await req.json()
+
+    console.log('idToken', idToken)
 
     // check if idToken is exist
-    if (!idToken || !googleUserId) {
+    if (!idToken || !appleUserId) {
       return NextResponse.json({ message: 'ID is required' }, { status: 400 })
     }
 
     // verify id token
-    const ticket = await client.verifyIdToken({
-      idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
+    const jwks = jose.createRemoteJWKSet(new URL('https://appleid.apple.com/auth/keys'))
+    const { payload }: any = await jose.jwtVerify(idToken, jwks, {
+      issuer: 'https://appleid.apple.com',
+      audience: process.env.APPLE_CLIENT_ID,
     })
 
-    // check if ticket is valid
-    if (!ticket) {
-      return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
-    }
-
-    // get payload from ticket
-    const payload: any = ticket.getPayload()
-
     // check if payload is valid
-    if (!payload && !payload?.email) {
+    if (!payload) {
       return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
-    }
-
-    // Verify userId matches sub
-    if (payload.sub !== googleUserId) {
-      return NextResponse.json({ message: 'User ID mismatch' }, { status: 401 })
     }
 
     // get data from payload
-    const { email, name, picture: avatar } = payload
+    const { email, name, sub, iss, aud, nonce_supported } = payload
+
+    // verify required claims are present
+    if (!email || !sub || !iss || !aud || !nonce) {
+      return NextResponse.json({ message: 'Missing required claims in token' }, { status: 401 })
+    }
+
+    // verify nonce
+    if (nonce_supported && payload.nonce !== nonce) {
+      return NextResponse.json({ message: 'Nonce mismatch' }, { status: 401 })
+    }
 
     // connect to database
     await connectDatabase()
@@ -62,7 +63,7 @@ export async function POST(req: NextRequest) {
     // find user from database
     let user: any = await UserModel.findOneAndUpdate(
       { email },
-      { $set: { name, avatar, authType: 'google' } },
+      { $set: { name, authType: 'apple' } },
       { new: true }
     ).lean()
 
@@ -75,9 +76,8 @@ export async function POST(req: NextRequest) {
         email,
         username: email.split('@')[0],
         name,
-        avatar,
-        authType: 'google',
-        googleUserId,
+        authType: 'apple',
+        appleUserId,
       })
       user = newUser._doc
 
