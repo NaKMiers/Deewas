@@ -84,6 +84,28 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+
+    // plan:
+    plan: {
+      type: String,
+      enum: [
+        'free',
+        'trial-7',
+        'trial-14',
+        'trial-30',
+        'premium-1m',
+        'premium-3m',
+        'premium-12m',
+        'premium-lt',
+      ],
+      default: 'free',
+    },
+    planExpiredAt: {
+      type: Date,
+    },
+    paymentMethod: {
+      type: String,
+    },
   },
   {
     timestamps: true,
@@ -128,6 +150,10 @@ export interface IUser {
   firstName: string
   lastName: string
   initiated: boolean
+
+  plan: string
+  planExpiredAt: Date
+  paymentMethod: string
 }
 
 export type TAuthType = 'local' | 'google' | 'facebook' | 'apple'

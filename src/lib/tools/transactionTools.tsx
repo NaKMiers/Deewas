@@ -106,10 +106,13 @@ export const create_transaction = (userId: string, style?: string) => {
     }) => {
       try {
         const { wallets }: { wallets: any[] } = await getWallets(userId)
-        const wallet = wallets.find(w => w.name.toLowerCase() === walletName.toLowerCase())
+        let wallet = wallets.find(w => w.name.toLowerCase() === walletName.toLowerCase())
 
-        if (!wallet) {
-          return { error: `❌ No wallet found with name "${walletName}"` }
+        if (walletName) {
+          if (!wallet) return { error: `❌ No wallet found with name "${walletName}"` }
+        } else {
+          // use the first wallet if no wallet name is provided
+          wallet = wallets[0]
         }
 
         // I want to use AI to choose suitable category for the transaction
