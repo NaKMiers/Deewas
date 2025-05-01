@@ -29,3 +29,18 @@ export async function connectDatabase() {
     throw new Error('Unable to connect to database')
   }
 }
+
+export async function disconnectDatabase() {
+  if (!cachedConnection) {
+    console.log('No active connection to disconnect.')
+    return
+  }
+
+  try {
+    await mongoose.disconnect()
+    cachedConnection = null
+    console.log('MongoDB disconnected successfully')
+  } catch (error) {
+    console.log('Error while disconnecting from MongoDB:', error)
+  }
+}

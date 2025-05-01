@@ -6,6 +6,7 @@ import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
 import { sign } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
+import bcrypt from 'bcrypt'
 
 // Models: User, Category, Settings, Wallet
 import '@/models/CategoryModel'
@@ -20,8 +21,8 @@ export async function POST(req: NextRequest) {
   try {
     // get data from request body
     let { username, email, password } = await req.json()
-    username = username.toLowerCase()
-    email = email.toLowerCase()
+    username = username.trim().toLowerCase()
+    email = email.trim().toLowerCase()
 
     // connect to database
     await connectDatabase()
@@ -36,16 +37,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Username or email exists' }, { status: 401 })
     }
 
+    const hashedPassword = await bcrypt.hash(password, +process.env.BCRYPT_SALT_ROUND! || 10)
+
     // create new user
-    await UserModel.create({
+    const user = await UserModel.create({
       username,
       email,
-      password,
+      password: hashedPassword,
       authType: 'local',
     })
 
     // get registered user
-    const newUser: any = await UserModel.findOne({ email }).lean()
+    const newUser: any = await UserModel.findById(user._id).lean()
 
     // MARK: Create new user and init data
     const categories = Object.values(initCategories)
@@ -79,6 +82,7 @@ export async function POST(req: NextRequest) {
     // return home page
     return NextResponse.json({ token, message: 'Token is here' }, { status: 200 })
   } catch (err) {
+    console.log(err)
     return NextResponse.json(err, { status: 500 })
   }
 }

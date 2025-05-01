@@ -47,7 +47,7 @@ export default async function middleware(req: NextRequest) {
   const locale = req.cookies.get('NEXT_LOCALE')?.value || 'en'
 
   if (['/api'].some(path => pathname.startsWith(path))) {
-    if (['/api/auth', '/api/report'].some(path => pathname.startsWith(path))) {
+    if (['/api/auth', '/api/report', '/api/revenuecat-event'].some(path => pathname.startsWith(path))) {
       return NextResponse.next()
     } else if (['/api/admin'].some(path => pathname.startsWith(path))) {
       return requireAdminForApi(req, token, locale) // require admin

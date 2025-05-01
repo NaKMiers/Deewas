@@ -79,15 +79,23 @@ export const updateUser = async (userId: string, data: any) => {
     // connect to database
     await connectDatabase()
 
-    const { initiated } = data
+    const { initiated, username, name } = data
     const set: any = {}
     if (initiated) set.initiated = initiated
+    if (name) set.name = name.trim()
+    if (username) {
+      const existingUser = await UserModel.findOne({ username }).lean()
+      if (existingUser) {
+        throw { message: 'Username already exists', errorCode: 'USERNAME_EXISTS' }
+      }
+      set.username = username.trim().toLowerCase()
+    }
 
     // update user
     await UserModel.findByIdAndUpdate(userId, { $set: set })
 
     return { message: 'User updated' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }

@@ -147,10 +147,22 @@ export const updateWallet = async (walletId: string, name: string, icon: string,
 }
 
 // MARK: Create Wallet
-export const createWallet = async (userId: string, name: string, icon: string) => {
+export const createWallet = async (userId: string, isPremium: boolean, name: string, icon: string) => {
   try {
     // connect to database
     await connectDatabase()
+
+    // limit 2 wallets for free user
+    if (!isPremium) {
+      // count user wallets
+      const walletCount = await WalletModel.countDocuments({ user: userId }).lean()
+
+      if (walletCount >= 2) {
+        throw new Error(
+          'You have reached the limit of wallets. Please upgrade to premium to create unlimited wallets.'
+        )
+      }
+    }
 
     // create wallet
     const wallet = await WalletModel.create({

@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     // find user from database
     let user: any = await UserModel.findOneAndUpdate(
       { email },
-      { $set: { name, avatar, authType: 'google' } },
+      { $set: { avatar, authType: 'google' } },
       { new: true }
     ).lean()
 
@@ -73,7 +73,6 @@ export async function POST(req: NextRequest) {
       // create new user
       const newUser = await UserModel.create({
         email,
-        username: email.split('@')[0],
         name,
         avatar,
         authType: 'google',

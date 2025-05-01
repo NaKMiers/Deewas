@@ -12,18 +12,8 @@ import {
 import * as locales from 'date-fns/locale'
 
 export const shortName = (user: IUser) => {
-  if (user?.firstName) {
-    return user.firstName
-  }
-  if (user?.lastName) {
-    return user.lastName
-  }
-  if (user?.username) {
-    return user.username
-  }
-  if (user?.email) {
-    return user.email.split('@')[0]
-  }
+  if (user?.username) return user.username
+  if (user?.email) return user.email.split('@')[0]
   return 'User'
 }
 

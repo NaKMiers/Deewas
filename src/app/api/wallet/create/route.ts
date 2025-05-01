@@ -1,4 +1,4 @@
-import { extractToken } from '@/lib/utils'
+import { checkPremium, extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { createWallet } from '..'
 
@@ -15,10 +15,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
 
+    const isPremium = checkPremium(token)
+
     // get data from request body
     const { name, icon } = await req.json()
 
-    const response = await createWallet(userId, name, icon)
+    const response = await createWallet(userId, isPremium, name, icon)
 
     // return response
     return NextResponse.json(response, { status: 200 })

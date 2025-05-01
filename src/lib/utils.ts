@@ -1,5 +1,7 @@
+import { IUser } from '@/models/UserModel'
 import { clsx, type ClassValue } from 'clsx'
 import { jwtVerify } from 'jose'
+import moment from 'moment-timezone'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest } from 'next/server'
 import { twMerge } from 'tailwind-merge'
@@ -17,4 +19,18 @@ export const extractToken = async (req: NextRequest) => {
   }
 
   return await getToken({ req })
+}
+
+export const checkPremium = (user: any) => {
+  if (!user) return false
+
+  switch (user.plan) {
+    case 'premium-lifetime':
+      return true
+    case 'premium-monthly':
+    case 'premium-yearly':
+      return moment(user.planExpiredAt).isAfter(moment()) // not expire yet
+    default:
+      return false
+  }
 }

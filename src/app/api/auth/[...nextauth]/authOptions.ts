@@ -138,16 +138,6 @@ const authOptions = {
         // get data for authentication
         const email = user.email
         const avatar = user.image
-        let firstName: string = ''
-        let lastName: string = ''
-
-        if (account.provider === 'google') {
-          firstName = profile.given_name
-          lastName = profile.family_name
-        } else if (account.provider === 'github') {
-          firstName = profile.name
-          lastName = ''
-        }
 
         // get user from database to check exist
         const existingUser: any = await UserModel.findOneAndUpdate(
@@ -166,8 +156,6 @@ const authOptions = {
         const newUser = await UserModel.create({
           email,
           avatar,
-          firstName,
-          lastName,
           authType: account.provider,
         })
 

@@ -4,7 +4,6 @@ import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
-import { OAuth2Client } from 'google-auth-library'
 import * as jose from 'jose'
 import { sign } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
@@ -15,8 +14,6 @@ import '@/models/SettingsModel'
 import '@/models/UserModel'
 import '@/models/WalletModel'
 
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
-
 // [POST]: /auth/sign-in/google
 export async function POST(req: NextRequest) {
   console.log('- Sign In With Apple -')
@@ -24,8 +21,6 @@ export async function POST(req: NextRequest) {
   try {
     // get data from request body
     const { idToken, appleUserId, nonce } = await req.json()
-
-    console.log('idToken', idToken)
 
     // check if idToken is exist
     if (!idToken || !appleUserId) {
@@ -44,8 +39,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
     }
 
+    console.log(payload)
+
     // get data from payload
-    const { email, name, sub, iss, aud, nonce_supported } = payload
+    const { email, sub, iss, aud, nonce_supported } = payload
 
     // verify required claims are present
     if (!email || !sub || !iss || !aud || !nonce) {
@@ -63,7 +60,7 @@ export async function POST(req: NextRequest) {
     // find user from database
     let user: any = await UserModel.findOneAndUpdate(
       { email },
-      { $set: { name, authType: 'apple' } },
+      { $set: { authType: 'apple' } },
       { new: true }
     ).lean()
 
@@ -74,8 +71,6 @@ export async function POST(req: NextRequest) {
       // create new user
       const newUser = await UserModel.create({
         email,
-        username: email.split('@')[0],
-        name,
         authType: 'apple',
         appleUserId,
       })
@@ -120,6 +115,7 @@ export async function POST(req: NextRequest) {
     // return response
     return NextResponse.json({ token, isNewUser, message: 'Token is here' }, { status: 200 })
   } catch (err: any) {
+    console.log(err)
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
 }

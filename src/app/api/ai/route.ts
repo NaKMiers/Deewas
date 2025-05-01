@@ -3,11 +3,17 @@ import * as budgetTools from '@/lib/tools/budgetTools'
 import * as categoryTools from '@/lib/tools/categoryTools'
 import * as transactionTools from '@/lib/tools/transactionTools'
 import * as walletTools from '@/lib/tools/walletTools'
-import { extractToken } from '@/lib/utils'
+import { checkPremium, extractToken } from '@/lib/utils'
+import SettingsModel from '@/models/SettingsModel'
 import { openai } from '@ai-sdk/openai'
 import { streamText } from 'ai'
+import tokenizer from 'gpt-tokenizer'
 import moment from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
+
+// Models: Setting
+import { connectDatabase } from '@/config/database'
+import '@/models/SettingsModel'
 
 export async function POST(req: NextRequest) {
   console.log('- Send Message - ')
@@ -74,10 +80,14 @@ export async function POST(req: NextRequest) {
   try {
     const token = await extractToken(req)
     const userId = token?._id as string
+
     // check if user is logged in
     if (!userId) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
+
+    const isPremium = checkPremium(token)
+
     // get messages history from request
     const { messages } = await req.json()
     // get the last 5 messages
@@ -92,6 +102,32 @@ export async function POST(req: NextRequest) {
         }
       }
     }
+
+    // Calculate token count
+    if (!isPremium) {
+      let totalTokens = tokenizer.encode(content).length || 0
+      for (const message of recentMessages) {
+        if (message.content) {
+          totalTokens += tokenizer.encode(message.content).length
+        }
+      }
+
+      try {
+        await connectDatabase()
+        const oldSettings = await SettingsModel.findOneAndUpdate(
+          { user: userId },
+          { $inc: { freeTokensUsed: totalTokens } },
+          { new: false }
+        )
+        // if old settings updatedAt is yesterday, reset freeTokensUsed to 0
+        if (oldSettings && moment(oldSettings.updatedAt).isBefore(moment().startOf('day'))) {
+          await SettingsModel.updateOne({ user: userId }, { $set: { freeTokensUsed: totalTokens } })
+        }
+      } catch (error) {
+        console.error('Error updating tokens:', error)
+      }
+    }
+
     const result = streamText({
       model: openai('gpt-4o-mini'),
       system: content,
@@ -101,7 +137,7 @@ export async function POST(req: NextRequest) {
         // Wallet
         get_all_wallets: walletTools.get_all_wallets(userId),
         get_wallet: walletTools.get_wallet(userId),
-        create_wallet: walletTools.create_wallet(userId),
+        create_wallet: walletTools.create_wallet(userId, isPremium),
         delete_wallet: walletTools.delete_wallet(userId),
         update_wallet: walletTools.update_wallet(userId),
         transfer_fund_from_wallet_to_wallet: walletTools.transfer_fund_from_wallet_to_wallet(userId),
@@ -113,7 +149,7 @@ export async function POST(req: NextRequest) {
         delete_category: categoryTools.delete_category(userId),
         // Budget
         get_budgets: budgetTools.get_budgets(userId),
-        create_budget: budgetTools.create_budget(userId),
+        create_budget: budgetTools.create_budget(userId, isPremium),
         // Transaction
         get_all_transactions: transactionTools.get_all_transactions(userId),
         get_transaction: transactionTools.get_transaction(userId),
@@ -122,6 +158,7 @@ export async function POST(req: NextRequest) {
         delete_transaction: transactionTools.delete_transaction(userId),
       },
     })
+
     return result.toDataStreamResponse({
       headers: {
         'Content-Type': 'application/octet-stream',

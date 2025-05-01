@@ -36,7 +36,7 @@ export const get_budgets = (userId: string, style?: string) => {
 }
 
 // MARK: Create budget
-export const create_budget = (userId: string, style?: string) => {
+export const create_budget = (userId: string, isPremium: boolean, style?: string) => {
   return {
     description:
       'create a budget with the following properties: category name, total, begin of budget, end of budget',
@@ -70,6 +70,7 @@ export const create_budget = (userId: string, style?: string) => {
 
         const { budget } = await createBudget(
           userId,
+          isPremium,
           category._id,
           moment(begin).startOf('day').toDate(),
           moment(end).endOf('day').toDate(),

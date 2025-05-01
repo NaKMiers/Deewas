@@ -1,3 +1,4 @@
+import { update_category } from './../lib/tools/categoryTools'
 import mongoose from 'mongoose'
 import { IUser } from './UserModel'
 const Schema = mongoose.Schema
@@ -22,6 +23,10 @@ const SettingsSchema = new Schema(
       type: String,
       default: 'en',
     },
+    freeTokensUsed: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 )
@@ -38,6 +43,8 @@ export interface ISettings {
   personalities: number[]
   currency: string
   language: string
+
+  freeTokensUsed: number
 }
 
 export type IFullSettings = ISettings & { user: IUser }

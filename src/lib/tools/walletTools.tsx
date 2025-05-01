@@ -52,7 +52,7 @@ export const get_wallet = (userId: string, style?: string) => {
 }
 
 // MARK: Create wallet
-export const create_wallet = (userId: string, style?: string) => {
+export const create_wallet = (userId: string, isPremium: boolean, style?: string) => {
   return {
     description: 'create a wallet with the following properties: name, user, icon',
     parameters: z.object({
@@ -62,7 +62,7 @@ export const create_wallet = (userId: string, style?: string) => {
     }),
     execute: async ({ name, icon, message }: { name: string; icon: string; message: string }) => {
       try {
-        const { wallet } = await createWallet(userId, name, icon)
+        const { wallet } = await createWallet(userId, isPremium, name, icon)
 
         return { wallet, message }
       } catch (err: any) {

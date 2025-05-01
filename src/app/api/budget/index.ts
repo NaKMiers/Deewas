@@ -177,6 +177,7 @@ export const updateBudget = async (
 // MARK: Create Budget
 export const createBudget = async (
   userId: string,
+  isPremium: boolean,
   categoryId: string,
   begin: string | Date,
   end: string | Date,
@@ -186,6 +187,21 @@ export const createBudget = async (
   await connectDatabase()
 
   console.log('create budget', { userId, categoryId, begin, end, total })
+
+  // limit 4 budgets for free user
+  if (!isPremium) {
+    // count user wallets
+    const budgetCount = await BudgetModel.countDocuments({
+      user: userId,
+      end: { $gte: toUTC(moment().toDate()) },
+    }).lean()
+
+    if (budgetCount >= 4) {
+      throw new Error(
+        'You have reached the limit of budgets. Please upgrade to premium to create unlimited budgets.'
+      )
+    }
+  }
 
   // check if category is an expense
   const category: any = await CategoryModel.findById(categoryId).select('type').lean()

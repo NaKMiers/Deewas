@@ -22,6 +22,6 @@ export async function PUT(req: NextRequest) {
     // return response
     return NextResponse.json(response, { status: 200 })
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message, errorCode: err.errorCode }, { status: 500 })
   }
 }

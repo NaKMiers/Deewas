@@ -1,8 +1,11 @@
-import { toUTC } from '@/lib/time'
 import { extractToken } from '@/lib/utils'
-import UserModel from '@/models/UserModel'
-import moment from 'moment-timezone'
+import { sign } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
+
+// Models: User
+import { updateUserPlan } from '@/app/api/revenuecat-event'
+import '@/models/UserModel'
+import { getRevenueCatSubscriberApi } from '@/requests'
 
 // [PUT]: /user/plan/upgrade
 export async function PUT(req: NextRequest) {
@@ -18,46 +21,38 @@ export async function PUT(req: NextRequest) {
     }
 
     // get data from request body
-    const { plan, paymentMethod } = await req.json()
+    const { appUserId, platform } = await req.json()
+    console.log('platform', platform)
+    // console.log('appUserId', appUserId)
+    console.log('process.env.REVENUECAT_SECRET_KEY', process.env.REVENUECAT_SECRET_KEY)
 
     // VERIFY...
+    const data = await getRevenueCatSubscriberApi(userId)
 
-    const set: any = { plan, paymentMethod }
+    console.log('data', data)
+    const activeEntitlement = data.subscriber.entitlements?.['Premium']
 
-    switch (plan) {
-      case 'trial-7':
-        set.planExpireAt = toUTC(moment().add(7, 'days').toDate())
-        break
-      case 'trial-14':
-        set.planExpireAt = toUTC(moment().add(14, 'days').toDate())
-        break
-      case 'trial-30':
-        set.planExpireAt = toUTC(moment().add(30, 'days').toDate())
-        break
-      case 'premium-1m':
-        set.planExpireAt = toUTC(moment().add(1, 'month').toDate())
-        break
-      case 'premium-3m':
-        set.planExpireAt = toUTC(moment().add(3, 'months').toDate())
-        break
-      case 'premium-12m':
-        set.planExpireAt = toUTC(moment().add(12, 'months').toDate())
-        break
-      case 'premium-lt':
-        set.planExpireAt = null
-        break
+    if (!activeEntitlement) {
+      return NextResponse.json({ message: 'User is not active' }, { status: 401 })
     }
 
-    // update user
-    const updatedUser = await UserModel.findByIdAndUpdate(userId, { $set: set }, { new: true })
+    // active user
+    const updatedUser = await updateUserPlan(userId, 'active', activeEntitlement, platform)
 
     // check if user is updated
     if (!updatedUser) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
 
+    // exclude password from user object
+    if (updatedUser.password) delete updatedUser.password
+    const newToken = sign(updatedUser, process.env.NEXTAUTH_SECRET!, { expiresIn: '30d' })
+
     // response
-    return NextResponse.json({ updatedUser, message: 'User plan updated to ' + plan }, { status: 200 })
+    return NextResponse.json(
+      { token: newToken, message: 'User plan updated to ' + updatedUser.plan },
+      { status: 200 }
+    )
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }

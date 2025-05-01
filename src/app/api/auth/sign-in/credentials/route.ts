@@ -13,7 +13,8 @@ export async function POST(req: NextRequest) {
 
   try {
     // get data from request body
-    const { usernameOrEmail, password } = await req.json()
+    let { usernameOrEmail, password } = await req.json()
+    usernameOrEmail = usernameOrEmail.trim().toLowerCase()
 
     if (!usernameOrEmail || !password) {
       return NextResponse.json({ message: 'Please fill all fields' }, { status: 400 })

@@ -8,9 +8,9 @@ import SettingsModel from '@/models/SettingsModel'
 import WalletModel from '@/models/WalletModel'
 
 // Models: User, Category, Settings, Wallet
-import '@/models/UserModel'
 import '@/models/CategoryModel'
 import '@/models/SettingsModel'
+import '@/models/UserModel'
 import '@/models/WalletModel'
 
 // [POST]: /auth/register
@@ -37,8 +37,8 @@ export async function POST(req: NextRequest) {
 
     // create new user
     await UserModel.create({
-      username,
       email,
+      username,
       password,
       authType: 'local',
     })
