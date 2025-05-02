@@ -4,7 +4,7 @@ import * as budgetTools from '@/lib/tools/budgetTools'
 import * as categoryTools from '@/lib/tools/categoryTools'
 import * as transactionTools from '@/lib/tools/transactionTools'
 import * as walletTools from '@/lib/tools/walletTools'
-import { extractToken } from '@/lib/utils'
+import { checkPremium, extractToken } from '@/lib/utils'
 import { openai } from '@ai-sdk/openai'
 import { CoreMessage, generateId } from 'ai'
 import { createAI, createStreamableValue, getMutableAIState, streamUI } from 'ai/rsc'
@@ -64,6 +64,8 @@ export const sendMessage = async (message: string, req: NextRequest) => {
   const userId = token?.user?._id
   if (!userId) throw new Error('Please login to continue')
 
+  const isPremium = checkPremium(token)
+
   const messages = getMutableAIState<typeof AI>('messages')
   const currentMessages = messages.get() as CoreMessage[]
   messages.update([...currentMessages, { role: 'user', content: message }])
@@ -110,7 +112,7 @@ export const sendMessage = async (message: string, req: NextRequest) => {
       // Wallet
       get_all_wallets: walletTools.get_all_wallets(userId),
       get_wallet: walletTools.get_wallet(userId),
-      create_wallet: walletTools.create_wallet(userId),
+      create_wallet: walletTools.create_wallet(userId, isPremium),
       delete_wallet: walletTools.delete_wallet(userId),
       update_wallet: walletTools.update_wallet(userId),
       transfer_fund_from_wallet_to_wallet: walletTools.transfer_fund_from_wallet_to_wallet(userId),
@@ -124,7 +126,7 @@ export const sendMessage = async (message: string, req: NextRequest) => {
 
       // Budget
       get_budgets: budgetTools.get_budgets(userId),
-      create_budget: budgetTools.create_budget(userId),
+      create_budget: budgetTools.create_budget(userId, isPremium),
 
       // Transaction
       get_all_transactions: transactionTools.get_all_transactions(userId),
