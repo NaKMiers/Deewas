@@ -19,9 +19,9 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     const { id } = await params
 
     // get data from request body
-    const { name, icon, hide } = await req.json()
+    const { name, icon, exclude } = await req.json()
 
-    const response = await updateWallet(id, name, icon, hide)
+    const response = await updateWallet(id, name, icon, exclude)
 
     // return response
     return NextResponse.json(response, { status: 200 })

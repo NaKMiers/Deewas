@@ -132,14 +132,14 @@ export const deleteWallet = async (userId: string, walletId: string) => {
 }
 
 // MARK: Update Wallet
-export const updateWallet = async (walletId: string, name: string, icon: string, hide: string) => {
+export const updateWallet = async (walletId: string, name: string, icon: string, exclude: string) => {
   // connect to database
   await connectDatabase()
 
   // update wallet
   const wallet = await WalletModel.findByIdAndUpdate(
     walletId,
-    { $set: { name, icon, hide } },
+    { $set: { name, icon, exclude } },
     { new: true }
   ).lean()
 
@@ -209,10 +209,10 @@ export const transfer = async (
     }
 
     const [sourceW, destinationW] = await Promise.all([
-      // update from wallet
+      // update source wallet
       WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { expense: amount } }, { new: true }),
 
-      // update to wallet
+      // update destination wallet
       WalletModel.findByIdAndUpdate(toWalletId, { $inc: { income: amount } }, { new: true }),
 
       // create transfer transactions
@@ -224,6 +224,7 @@ export const transfer = async (
         name: `${fromWallet.name} ➡️ ${toWallet.name}`,
         amount: amount,
         date: toUTC(date),
+        exclude: true,
       }),
 
       // create transfer transactions
@@ -235,21 +236,22 @@ export const transfer = async (
         name: `${toWallet.name} ⬅️ ${fromWallet.name}`,
         amount: amount,
         date: toUTC(date),
+        exclude: true,
       }),
 
-      // update category
-      CategoryModel.findByIdAndUpdate(
-        unCategorizedExpenseCate._id,
-        { $inc: { amount: amount } },
-        { new: true }
-      ),
+      // // update category
+      // CategoryModel.findByIdAndUpdate(
+      //   unCategorizedExpenseCate._id,
+      //   { $inc: { amount: amount } },
+      //   { new: true }
+      // ),
 
-      // update category
-      CategoryModel.findByIdAndUpdate(
-        unCategorizedIncomeCate._id,
-        { $inc: { amount: amount } },
-        { new: true }
-      ),
+      // // update category
+      // CategoryModel.findByIdAndUpdate(
+      //   unCategorizedIncomeCate._id,
+      //   { $inc: { amount: amount } },
+      //   { new: true }
+      // ),
     ])
 
     return {

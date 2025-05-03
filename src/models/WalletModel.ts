@@ -16,7 +16,7 @@ const WalletSchema = new Schema(
     icon: {
       type: String,
     },
-    hide: {
+    exclude: {
       type: Boolean,
       default: false,
     },
@@ -56,7 +56,7 @@ export interface IWallet {
   user: string
   name: string
   icon: string
-  hide: boolean
+  exclude: boolean
 
   income: number
   expense: number

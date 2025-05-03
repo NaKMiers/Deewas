@@ -501,7 +501,7 @@
   },
   "walletCard": {
     "Deleting wallet": "Deleting wallet",
-    "Hide": "Hide",
+    "Exclude": "Exclude",
     "Transfer": "Transfer",
     "Add Transaction": "Add Transaction",
     "Edit": "Edit",

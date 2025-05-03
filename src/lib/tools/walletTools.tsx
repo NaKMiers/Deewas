@@ -138,7 +138,7 @@ export const update_wallet = (userId: string, style?: string) => {
           walletToUpdate._id,
           newName,
           icon,
-          walletToUpdate.hide
+          walletToUpdate.exclude
         )
 
         return { wallet, message }

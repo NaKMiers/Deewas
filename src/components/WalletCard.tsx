@@ -48,7 +48,7 @@ function WalletCard({ wallet, className }: WalletCardProps) {
   const [collapsed, setCollapsed] = useState<boolean>(false)
   const [updating, setUpdating] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
-  const [hide, setHide] = useState<boolean>(false)
+  const [exclude, setExclude] = useState<boolean>(false)
 
   // delete wallet
   const handleDeleteWallet = useCallback(async () => {
@@ -74,18 +74,18 @@ function WalletCard({ wallet, className }: WalletCardProps) {
     }
   }, [dispatch, wallet._id, wallets, , t])
 
-  // toggle hide
-  const handleChangeHide = useCallback(
+  // toggle exclude
+  const handleChangeExclude = useCallback(
     async (value: any) => {
-      setHide(value)
+      setExclude(value)
 
       try {
         const { wallet: w } = await updateWalletApi(wallet._id, {
           ...wallet,
-          hide: value,
+          exclude: value,
         })
 
-        setHide(w.hide)
+        setExclude(w.exclude)
         dispatch(updateWallet(w))
       } catch (err: any) {
         console.log(err)
@@ -120,17 +120,17 @@ function WalletCard({ wallet, className }: WalletCardProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent onClick={e => e.stopPropagation()}>
-                {/* MARK: Hide */}
+                {/* MARK: exclude */}
                 <Button
                   variant="ghost"
                   className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
                 >
                   <Switch
-                    checked={hide}
-                    onCheckedChange={handleChangeHide}
+                    checked={exclude}
+                    onCheckedChange={handleChangeExclude}
                     className="bg-gray-300 data-[state=checked]:bg-violet-500"
                   />
-                  {t('Hide')}
+                  {t('Exclude')}
                 </Button>
 
                 {/* MARK: Transfer */}

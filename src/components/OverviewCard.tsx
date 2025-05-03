@@ -17,7 +17,7 @@ function OverviewCard({ className }: OverviewCardProps) {
   const t = useTranslations('overviewCard')
 
   // store
-  const wallets = useAppSelector(state => state.wallet.wallets).filter(wallet => !wallet.hide)
+  const wallets = useAppSelector(state => state.wallet.wallets).filter(wallet => !wallet.exclude)
 
   // states
   const [collapsed, setCollapsed] = useState<boolean>(false)

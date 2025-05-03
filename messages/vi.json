@@ -501,7 +501,7 @@
   },
   "walletCard": {
     "Deleting wallet": "Đang xóa ví",
-    "Hide": "Ẩn",
+    "Exclude": "Loại trừ",
     "Transfer": "Chuyển tiền",
     "Add Transaction": "Thêm giao dịch",
     "Edit": "Sửa",

@@ -38,6 +38,10 @@ const TransactionSchema = new Schema(
       enum: ['income', 'expense', 'saving', 'invest'],
       required: true,
     },
+    exclude: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 )
@@ -57,6 +61,7 @@ export interface ITransaction {
   name: string
   amount: number
   date: string
+  exclude: boolean
 }
 
 export type TransactionType = 'income' | 'expense' | 'saving' | 'invest' | 'transfer' | 'balance'
