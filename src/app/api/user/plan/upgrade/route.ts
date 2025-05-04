@@ -1,11 +1,11 @@
+import { updateUserPlan } from '@/app/api/revenuecat-event'
 import { extractToken } from '@/lib/utils'
+import { getRevenueCatSubscriberApi } from '@/requests'
 import { sign } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User
-import { updateUserPlan } from '@/app/api/revenuecat-event'
 import '@/models/UserModel'
-import { getRevenueCatSubscriberApi } from '@/requests'
 
 // [PUT]: /user/plan/upgrade
 export async function PUT(req: NextRequest) {

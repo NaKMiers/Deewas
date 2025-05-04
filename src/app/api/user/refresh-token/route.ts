@@ -6,6 +6,8 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: User
 import '@/models/UserModel'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /user/refresh-token
 export async function GET(req: NextRequest) {
   console.log('- Refresh Token - ')

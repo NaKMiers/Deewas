@@ -3,6 +3,8 @@ import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { getWallets } from '.'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /wallet
 export async function GET(req: NextRequest) {
   console.log('- Get My Wallets -')

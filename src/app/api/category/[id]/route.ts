@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCategory } from '..'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /api/category/:id
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   console.log('- Get Category -')

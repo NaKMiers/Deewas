@@ -2,6 +2,8 @@ import { extractToken } from '@/lib/utils'
 import { NextRequest, NextResponse } from 'next/server'
 import { getTransactions } from '..'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /transaction/:id
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   console.log('- Get Transaction - ')

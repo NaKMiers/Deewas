@@ -12,6 +12,8 @@ import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 import '@/models/WalletModel'
 
+export const dynamic = 'force-dynamic'
+
 // [GET]: /settings/extract-all-data
 export async function GET(req: NextRequest) {
   try {
