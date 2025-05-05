@@ -11,6 +11,8 @@ import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 import '@/models/WalletModel'
 
+import { searchParamsToObject } from '@/lib/query'
+import { toUTC } from '@/lib/time'
 import moment from 'moment-timezone'
 
 export const dynamic = 'force-dynamic'
@@ -27,14 +29,29 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
     }
 
+    // get query params
+    const params = searchParamsToObject(req.nextUrl.searchParams)
+    const { from, to } = params
+
+    console.log('params', params)
+    if (!from?.[0] && !to?.[0]) {
+      return NextResponse.json({ message: 'Please provide a date range' }, { status: 400 })
+    }
+    const filter: any = { user: userId }
+    if (from?.[0]) filter.createdAt = { $gte: toUTC(moment(from[0]).toDate()) }
+    if (to?.[0]) filter.createdAt = { ...filter.createdAt, $lte: toUTC(moment(to[0]).toDate()) }
+    console.log('filter', filter)
+
     await connectDatabase()
 
-    const [transactions, walletCount, categoryCount, budgetCount] = await Promise.all([
-      TransactionModel.find({ user: userId }).sort({ createdAt: 1 }).lean(),
-      WalletModel.countDocuments({ user: userId }),
-      CategoryModel.countDocuments({ user: userId }),
-      BudgetModel.countDocuments({ user: userId }),
-    ])
+    const [recentTransactions, transactionCount, walletCount, categoryCount, budgetCount] =
+      await Promise.all([
+        TransactionModel.find(filter).sort({ createdAt: -1 }).lean(),
+        TransactionModel.countDocuments({ user: userId }),
+        WalletModel.countDocuments({ user: userId }),
+        CategoryModel.countDocuments({ user: userId }),
+        BudgetModel.countDocuments({ user: userId }),
+      ])
 
     // streak calculation
     let curStreak = 0
@@ -42,7 +59,7 @@ export async function GET(req: NextRequest) {
     let lastDate: string | null = null
 
     const uniqueDates = Array.from(
-      new Set(transactions.map(tx => moment(tx.createdAt).format('YYYY-MM-DD')))
+      new Set(recentTransactions.map(tx => moment(tx.createdAt).format('YYYY-MM-DD')))
     )
 
     for (let i = 0; i < uniqueDates.length; i++) {
@@ -65,13 +82,10 @@ export async function GET(req: NextRequest) {
 
     longestStreak = Math.max(longestStreak, curStreak)
 
-    const fromDate = moment().subtract(10, 'days').startOf('day')
-    const recentTransactions = transactions.filter(tx => moment(tx.createdAt).isSameOrAfter(fromDate))
-
     return NextResponse.json(
       {
-        transactionCount: transactions.length,
         recentTransactions,
+        transactionCount,
         walletCount,
         categoryCount,
         budgetCount,
@@ -82,6 +96,6 @@ export async function GET(req: NextRequest) {
     )
   } catch (err: any) {
     console.error(err)
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
 }

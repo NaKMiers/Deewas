@@ -67,9 +67,11 @@ const filterBuilder = (
       }
 
       if (key === 'sort') {
+        const newSort: { [key: string]: any } = {}
         values.forEach((value: string) => {
-          sort[value.split('|')[0]] = +value.split('|')[1]
+          newSort[value.split('|')[0]] = +value.split('|')[1]
         })
+        sort = { ...newSort, ...sort }
 
         continue
       }
@@ -184,7 +186,7 @@ export const updateTransaction = async (
 
     return { transaction: JSON.parse(JSON.stringify(newTx)), message: 'Updated transaction' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -362,7 +364,7 @@ export const createTransaction = async (
 
     return { transaction: JSON.parse(JSON.stringify(transaction)), message: 'Created transaction' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -377,7 +379,7 @@ export const getTransaction = async (transactionId: string) => {
 
     return { transaction: JSON.parse(JSON.stringify(transaction)), message: 'category is here' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -411,7 +413,7 @@ export const getHistory = async (userId: string, params: any = {}) => {
 
     return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'History is here' }
   } catch (err: any) {
-    throw new Error(err.message)
+    throw err
   }
 }
 
@@ -443,52 +445,8 @@ export const getTransactions = async (userId: string, params: any = {}) => {
       .limit(limit)
       .lean()
 
-    // const wallets = await WalletModel.find().lean()
-
-    // wallets.forEach(async wallet => {
-    //   const txs = await TransactionModel.find({ wallet: wallet._id }).lean()
-
-    //   const income = txs
-    //     .filter((tx: any) => tx.type === 'income')
-    //     .reduce((acc: number, tx: any) => acc + tx.amount, 0)
-    //   const expense = txs
-    //     .filter((tx: any) => tx.type === 'expense')
-    //     .reduce((acc: number, tx: any) => acc + tx.amount, 0)
-    //   const balance = income - expense
-    //   const invest = txs
-    //     .filter((tx: any) => tx.type === 'invest')
-    //     .reduce((acc: number, tx: any) => acc + tx.amount, 0)
-    //   const saving = txs
-    //     .filter((tx: any) => tx.type === 'saving')
-    //     .reduce((acc: number, tx: any) => acc + tx.amount, 0)
-
-    //   await WalletModel.findByIdAndUpdate(wallet._id, {
-    //     $set: {
-    //       balance,
-    //       income,
-    //       expense,
-    //       invest,
-    //       saving,
-    //     },
-    //   })
-    // })
-
-    // const categories = await CategoryModel.find().lean()
-
-    // categories.forEach(async cate => {
-    //   const txs = await TransactionModel.find({ category: cate._id }).lean()
-
-    //   const total = txs.reduce((acc: number, tx: any) => acc + tx.amount, 0)
-
-    //   await CategoryModel.findByIdAndUpdate(cate._id, {
-    //     $set: {
-    //       amount: total,
-    //     },
-    //   })
-    // })
-
     return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'Transactions are here' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }

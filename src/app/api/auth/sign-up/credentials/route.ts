@@ -81,8 +81,8 @@ export async function POST(req: NextRequest) {
 
     // return home page
     return NextResponse.json({ token, message: 'Token is here' }, { status: 200 })
-  } catch (err) {
+  } catch (err: any) {
     console.log(err)
-    return NextResponse.json(err, { status: 500 })
+    return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
 }

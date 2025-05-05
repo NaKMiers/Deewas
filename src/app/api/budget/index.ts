@@ -118,17 +118,17 @@ export const deleteBudget = async (budgetId: string) => {
     await connectDatabase()
 
     // delete budget
-    const budget = await BudgetModel.findByIdAndDelete(budgetId)
+    const budget = await BudgetModel.findByIdAndDelete(budgetId).populate('category').lean()
 
     // check if budget exists
     if (!budget) {
-      throw new Error('Budget not found')
+      throw { errorCode: 'BUDGET_NOT_FOUND', message: 'Budget not found' }
     }
 
     // return response
     return { budget: JSON.parse(JSON.stringify(budget)), message: 'Deleted budget' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -183,58 +183,64 @@ export const createBudget = async (
   end: string | Date,
   total: number
 ) => {
-  // connect to database
-  await connectDatabase()
+  try {
+    // connect to database
+    await connectDatabase()
 
-  console.log('create budget', { userId, categoryId, begin, end, total })
+    console.log('create budget', { userId, categoryId, begin, end, total })
 
-  // limit 4 budgets for free user
-  if (!isPremium) {
-    // count user wallets
-    const budgetCount = await BudgetModel.countDocuments({
-      user: userId,
-      end: { $gte: toUTC(moment().toDate()) },
-    }).lean()
+    // limit 4 budgets for free user
+    if (!isPremium) {
+      // count user wallets
+      const budgetCount = await BudgetModel.countDocuments({
+        user: userId,
+        end: { $gte: toUTC(moment().toDate()) },
+      }).lean()
 
-    if (budgetCount >= 4) {
-      throw new Error(
-        'You have reached the limit of budgets. Please upgrade to premium to create unlimited budgets.'
-      )
+      if (budgetCount >= 4) {
+        throw {
+          errorCode: 'BUDGET_LIMIT_REACHED',
+          message:
+            'You have reached the limit of budgets. Please upgrade to premium to create unlimited budgets.',
+        }
+      }
     }
+
+    // check if category is an expense
+    const category: any = await CategoryModel.findById(categoryId).select('type').lean()
+
+    if (!category || category.type !== 'expense') {
+      throw { errorCode: 'INVALID_CATEGORY', message: 'Category is not an expense category' }
+    }
+
+    // calculate total amount of transactions of category from begin to end of budget
+    const transactions = await TransactionModel.find({
+      category: categoryId,
+      date: { $gte: toUTC(begin), $lte: toUTC(end) },
+    }).lean()
+    const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
+
+    // create budget
+    const bud = await BudgetModel.create({
+      user: userId,
+      category: categoryId,
+      total,
+      begin: toUTC(begin),
+      end: toUTC(end),
+      amount: totalAmount,
+    })
+
+    // get newly created budget
+    const budget = await BudgetModel.findById(bud._id).populate('category').lean()
+
+    if (!budget) {
+      throw { errorCode: 'CREATE_BUDGET_FAILED', message: 'Failed to create budget' }
+    }
+
+    return { budget: JSON.parse(JSON.stringify(budget)), message: 'Created budget' }
+  } catch (err: any) {
+    throw err
   }
-
-  // check if category is an expense
-  const category: any = await CategoryModel.findById(categoryId).select('type').lean()
-
-  if (!category || category.type !== 'expense') {
-    throw new Error('Category is not an expense')
-  }
-
-  // calculate total amount of transactions of category from begin to end of budget
-  const transactions = await TransactionModel.find({
-    category: categoryId,
-    date: { $gte: toUTC(begin), $lte: toUTC(end) },
-  }).lean()
-  const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
-
-  // create budget
-  const bud = await BudgetModel.create({
-    user: userId,
-    category: categoryId,
-    total,
-    begin: toUTC(begin),
-    end: toUTC(end),
-    amount: totalAmount,
-  })
-
-  // get newly created budget
-  const budget = await BudgetModel.findById(bud._id).populate('category').lean()
-
-  if (!budget) {
-    throw new Error('Failed to create budget')
-  }
-
-  return { budget: JSON.parse(JSON.stringify(budget)), message: 'Created budget' }
 }
 
 // MARK: Get Budgets
@@ -267,6 +273,6 @@ export const getBudgets = async (userId: string, params: any = {}) => {
 
     return { budgets: JSON.parse(JSON.stringify(budgets)), message: 'Budgets are here' }
   } catch (err: any) {
-    throw new Error(err.message)
+    throw err
   }
 }

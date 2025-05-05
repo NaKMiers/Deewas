@@ -51,6 +51,6 @@ export async function POST(req: NextRequest) {
       message: 'Reset password link has been sent to your email, please check your inbox',
     })
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
 }

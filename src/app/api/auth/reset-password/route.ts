@@ -51,6 +51,6 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ message: 'Reset password successfully' })
     }
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
 }

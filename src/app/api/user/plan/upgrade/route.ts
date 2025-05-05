@@ -54,6 +54,6 @@ export async function PUT(req: NextRequest) {
       { status: 200 }
     )
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
 }

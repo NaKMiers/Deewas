@@ -46,11 +46,11 @@ export const updateUserPlan = async (
     const user: any = await UserModel.findByIdAndUpdate(userId, { $set: set }, { new: true }).lean()
 
     if (!user) {
-      throw new Error('User not found')
+      throw { errorCode: 'USER_NOT_FOUND', message: 'User not found' }
     }
 
     return user
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }

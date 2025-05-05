@@ -18,7 +18,11 @@ export const get_all_categories = (userId: string, style?: string) => {
 
         return { categories, message }
       } catch (err: any) {
-        return { error: 'Failed to get categories' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to get categories',
+        }
       }
     },
   }
@@ -42,13 +46,18 @@ export const get_category = (userId: string, style?: string) => {
         const category = categories.find(c => c.name.toLowerCase() === name.toLowerCase())
 
         if (!category) {
-          return { error: `No category found with name "${name}"` }
+          throw {
+            errorCode: 'CATEGORY_NOT_FOUND',
+            message: `No category found with name "${name}"`,
+          }
         }
 
         return { category, message }
       } catch (err: any) {
+        const code = err.errorCode
         return {
-          error: 'Failed to get category',
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to get category',
         }
       }
     },
@@ -80,7 +89,11 @@ export const create_category = (userId: string, style?: string) => {
         const { category } = await createCategory(userId, name, icon, type)
         return { category, message }
       } catch (err: any) {
-        return { error: 'Failed to create category' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to create category',
+        }
       }
     },
   }
@@ -112,13 +125,20 @@ export const update_category = (userId: string, style?: string) => {
         const categoryToUpdate: any = categories.find(c => c.name.toLowerCase() === name.toLowerCase())
 
         if (!categoryToUpdate) {
-          return { error: `No category found with name "${name}"` }
+          throw {
+            errorCode: 'CATEGORY_NOT_FOUND',
+            message: `No category found with name "${name}"`,
+          }
         }
 
         const { category } = await updateCategory(categoryToUpdate._id, newName, icon)
         return { category, message }
       } catch (err: any) {
-        return { error: 'Failed to update category' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to update category',
+        }
       }
     },
   }
@@ -138,13 +158,20 @@ export const delete_category = (userId: string, style?: string) => {
         const categoryToDelete = categories.find(c => c.name.toLowerCase() === name.toLowerCase())
 
         if (!categoryToDelete) {
-          return { error: `No category found with name "${name}"` }
+          throw {
+            errorCode: 'CATEGORY_NOT_FOUND',
+            message: `No category found with name "${name}"`,
+          }
         }
 
         const { category } = await deleteCategory(userId, categoryToDelete._id)
         return { category, message }
       } catch (err: any) {
-        return { error: 'Failed to delete category' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to delete category',
+        }
       }
     },
   }

@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
   - Create: \`create_transaction\`. Require: name, amount, date (default is today), wallet, type (auto), category (auto). Ex: "bought book 20000, today I bought dumpling 50000".
   - Update (if user want to change name, amount, category, wallet of transaction): \`update_transaction\`. Require: name, new name (opt), amount (opt), new amount (opt), date (opt), new date(opt), category name (opt), new category name (opt), wallet name (opt), new wallet name (opt). Ex: "update book from 20000 to 10000".
   - Delete: \`delete_transaction\`. Require: name, amount (opt). Ex: "delete book 20000".
-
+  - Get most expensive/cheapest transaction: \`get_most_transaction\`. Optional: type (income, expense, etc.), limit (default is 1). Ex: "get most expensive transaction".
+  
   **Wallets:**
   - Get all: \`get_all_wallets\`. Ex: "get all wallets".
   - Get one: \`get_wallet\`. Require: name. Ex: "get wallet cash".
@@ -57,9 +58,9 @@ export async function POST(req: NextRequest) {
   - Delete: \`delete_category\`. Needs: name. Ex: "delete category food".
 
   **Budgets:**
-  - Get all budgets: \`get_budgets\`. Optional: category. Ex: "get budgets for food".
-  - Create a budget: \`create_budget\`. Require: category, total, begin, end. Ex: "budget food for this month, mean that begin is begin of month and end is end of month".
-  - Update/Delete one: Demo mode, not allowed.
+  - Get all budgets: \`get_all_budgets\`. Optional: category. Ex: "get budgets for food".
+  - Create a budget: \`create_budget\`. Require: category name, total, begin date, end date. Ex: "budget for category food 200$, start date and end date of this month".
+  - Delete a budget: \`delete_budget\`. Require: category name, total, begin date, end date. Ex: "delete budget for category food 200$, start date and end date of this month".
 
   **Rules**:
   - Reply in language: ${language}
@@ -148,14 +149,17 @@ export async function POST(req: NextRequest) {
         update_category: categoryTools.update_category(userId),
         delete_category: categoryTools.delete_category(userId),
         // Budget
-        get_budgets: budgetTools.get_budgets(userId),
+        get_all_budgets: budgetTools.get_all_budgets(userId),
         create_budget: budgetTools.create_budget(userId, isPremium),
+        update_budget: budgetTools.update_budget(userId),
+        delete_budget: budgetTools.delete_budget(userId),
         // Transaction
         get_all_transactions: transactionTools.get_all_transactions(userId),
         get_transaction: transactionTools.get_transaction(userId),
         create_transaction: transactionTools.create_transaction(userId),
         update_transaction: transactionTools.update_transaction(userId),
         delete_transaction: transactionTools.delete_transaction(userId),
+        get_most_transaction: transactionTools.get_most_transaction(userId),
       },
     })
 
@@ -166,6 +170,6 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 500 })
+    return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
 }

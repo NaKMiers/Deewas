@@ -127,7 +127,7 @@ export const deleteWallet = async (userId: string, walletId: string) => {
       return { wallet: JSON.parse(JSON.stringify(wallet)), message: 'Cleared wallet' }
     }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -158,9 +158,10 @@ export const createWallet = async (userId: string, isPremium: boolean, name: str
       const walletCount = await WalletModel.countDocuments({ user: userId }).lean()
 
       if (walletCount >= 2) {
-        throw new Error(
-          'You have reached the limit of wallets. Please upgrade to premium to create unlimited wallets.'
-        )
+        throw {
+          errorCode: 'WALLET_LIMIT_REACHED',
+          message: 'Wallet limit reached, please upgrade to Premium to create more wallets',
+        }
       }
     }
 
@@ -173,7 +174,7 @@ export const createWallet = async (userId: string, isPremium: boolean, name: str
 
     return { wallet: JSON.parse(JSON.stringify(wallet)), message: 'Created wallet' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -197,15 +198,15 @@ export const transfer = async (
     ])
 
     if (!fromWallet) {
-      throw new Error('Source wallet not found')
+      throw { errorCode: 'WALLET_NOT_FOUND', message: 'Source wallet not found' }
     }
 
     if (!toWallet) {
-      throw new Error('Destination wallet not found')
+      throw { errorCode: 'WALLET_NOT_FOUND', message: 'Destination wallet not found' }
     }
 
     if (!unCategorizedIncomeCate || !unCategorizedExpenseCate) {
-      throw new Error('Cannot categorized this action')
+      throw { errorCode: 'CATEGORY_NOT_FOUND', message: 'Uncategorized category not found' }
     }
 
     const [sourceW, destinationW] = await Promise.all([
@@ -238,20 +239,6 @@ export const transfer = async (
         date: toUTC(date),
         exclude: true,
       }),
-
-      // // update category
-      // CategoryModel.findByIdAndUpdate(
-      //   unCategorizedExpenseCate._id,
-      //   { $inc: { amount: amount } },
-      //   { new: true }
-      // ),
-
-      // // update category
-      // CategoryModel.findByIdAndUpdate(
-      //   unCategorizedIncomeCate._id,
-      //   { $inc: { amount: amount } },
-      //   { new: true }
-      // ),
     ])
 
     return {
@@ -260,7 +247,7 @@ export const transfer = async (
       message: 'Funds transferred',
     }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -276,7 +263,7 @@ export const getWallet = async (walletId: string, userId: string) => {
 
     // check if wallet exist
     if (!wallet) {
-      throw new Error('Wallet not found')
+      throw { errorCode: 'WALLET_NOT_FOUND', message: 'Wallet not found' }
     }
 
     return {
@@ -285,7 +272,7 @@ export const getWallet = async (walletId: string, userId: string) => {
       message: 'Wallet is here',
     }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -314,6 +301,6 @@ export const getWallets = async (userId: string, params: any = {}) => {
 
     return { wallets: JSON.parse(JSON.stringify(wallets)), message: 'Wallets are here' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }

@@ -1,4 +1,3 @@
-import { IUser } from '@/models/UserModel'
 import { clsx, type ClassValue } from 'clsx'
 import { jwtVerify } from 'jose'
 import moment from 'moment-timezone'
@@ -22,7 +21,7 @@ export const extractToken = async (req: NextRequest) => {
 }
 
 export const checkPremium = (user: any) => {
-  if (!user) return false
+  if (!user || !user.plan) return false
 
   switch (user.plan) {
     case 'premium-lifetime':

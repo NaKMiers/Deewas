@@ -16,8 +16,10 @@ export const get_all_wallets = (userId: string, style?: string) => {
 
         return { wallets, message }
       } catch (err: any) {
+        const code = err.errorCode
         return {
-          error: 'Failed to get wallets',
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to get wallets',
         }
       }
     },
@@ -38,14 +40,19 @@ export const get_wallet = (userId: string, style?: string) => {
         const wallet = wallets.find(w => w.name.toLowerCase() === name.toLowerCase())
 
         if (!wallet) {
-          return {
-            error: `No wallet found with name "${name}"`,
+          throw {
+            errorCode: 'WALLET_NOT_FOUND',
+            message: `No wallet found with name "${name}"`,
           }
         }
 
         return { wallet, message }
       } catch (err: any) {
-        return { error: 'Failed to get wallet' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to get wallet',
+        }
       }
     },
   }
@@ -66,7 +73,11 @@ export const create_wallet = (userId: string, isPremium: boolean, style?: string
 
         return { wallet, message }
       } catch (err: any) {
-        return { error: 'Failed to create wallet' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to create wallet',
+        }
       }
     },
   }
@@ -86,14 +97,21 @@ export const delete_wallet = (userId: string, style?: string) => {
         const walletToDelete: any = wallets.find(w => w.name.toLowerCase() === name.toLowerCase())
 
         if (!walletToDelete) {
-          return { error: `No wallet found with name "${name}"` }
+          throw {
+            errorCode: 'WALLET_NOT_FOUND',
+            message: `No wallet found with name "${name}"`,
+          }
         }
 
         const { wallet } = await deleteWallet(userId, walletToDelete._id)
 
         return { wallet, message }
       } catch (err: any) {
-        return { error: 'Failed to delete wallet' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to delete wallet',
+        }
       }
     },
   }
@@ -126,12 +144,10 @@ export const update_wallet = (userId: string, style?: string) => {
         const walletToUpdate: any = wallets.find(w => w.name.toLowerCase() === name.toLowerCase())
 
         if (!walletToUpdate) {
-          return (
-            <Message
-              role="assistant"
-              content={`No wallet found with name "${name}"`}
-            />
-          )
+          throw {
+            errorCode: 'WALLET_NOT_FOUND',
+            message: `No wallet found with name "${name}"`,
+          }
         }
 
         const { wallet }: any = await updateWallet(
@@ -143,7 +159,11 @@ export const update_wallet = (userId: string, style?: string) => {
 
         return { wallet, message }
       } catch (err: any) {
-        return { error: 'Failed to update wallet' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to update wallet',
+        }
       }
     },
   }
@@ -178,12 +198,18 @@ export const transfer_fund_from_wallet_to_wallet = (userId: string, style?: stri
 
         const sourceWallet = wallets.find(w => w.name.toLowerCase() === fromWalletName.toLowerCase())
         if (!sourceWallet) {
-          return { error: `No wallet found with name "${fromWalletName}"` }
+          throw {
+            errorCode: 'WALLET_NOT_FOUND',
+            message: `No wallet found with name "${fromWalletName}"`,
+          }
         }
 
         const destinationWallet = wallets.find(w => w.name.toLowerCase() === toWalletName.toLowerCase())
         if (!destinationWallet) {
-          return { error: `No wallet found with name "${toWalletName}"` }
+          throw {
+            errorCode: 'WALLET_NOT_FOUND',
+            message: `No wallet found with name "${toWalletName}"`,
+          }
         }
 
         const { sourceWallet: sW, destinationWallet: dW } = await transfer(
@@ -196,8 +222,10 @@ export const transfer_fund_from_wallet_to_wallet = (userId: string, style?: stri
 
         return { sourceWallet: sW, destinationWallet: dW, message }
       } catch (err: any) {
+        const code = err.errorCode
         return {
-          error: 'Failed to transfer fund',
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to transfer fund',
         }
       }
     },

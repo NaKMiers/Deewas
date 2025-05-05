@@ -25,7 +25,11 @@ export const get_all_transactions = (userId: string, style?: string) => {
         const { transactions }: { transactions: any[] } = await getTransactions(userId, params)
         return { transactions, message }
       } catch (err: any) {
-        return { error: 'Failed to get transactions' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to get transactions',
+        }
       }
     },
   }
@@ -56,7 +60,10 @@ export const get_transaction = (userId: string, style?: string) => {
         const { transactions }: { transactions: any[] } = await getTransactions(userId)
 
         if (!transactions.length) {
-          return { error: `❌ No transaction found with name "${name}" and amount "${amount}"` }
+          throw {
+            errorCode: 'TRANSACTION_NOT_FOUND',
+            message: `No transaction found with name "${name}" and amount "${amount}"`,
+          }
         }
 
         const transaction = transactions.find(
@@ -68,7 +75,11 @@ export const get_transaction = (userId: string, style?: string) => {
 
         return { transaction, message }
       } catch (err: any) {
-        return { error: '❌ Failed to get transaction' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to get transaction',
+        }
       }
     },
   }
@@ -159,7 +170,11 @@ export const create_transaction = (userId: string, style?: string) => {
 
         return { transaction, message }
       } catch (err: any) {
-        return { error: '❌ Failed to create transaction' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to create transaction',
+        }
       }
     },
   }
@@ -211,7 +226,10 @@ export const update_transaction = (userId: string, style?: string) => {
       try {
         const { transactions }: { transactions: any[] } = await getTransactions(userId)
         if (!transactions.length) {
-          return { error: `❌ No transaction found with name "${name}" and amount "${amount}"` }
+          throw {
+            errorCode: 'TRANSACTION_NOT_FOUND',
+            message: `No transaction found with name "${name}" and amount "${amount}"`,
+          }
         }
 
         const transactionToUpdate = transactions.find(
@@ -228,7 +246,10 @@ export const update_transaction = (userId: string, style?: string) => {
           const { categories }: { categories: any[] } = await getCategories(userId)
           const category = categories.find(c => c.name.toLowerCase() === newCategoryName.toLowerCase())
           if (!category) {
-            return { error: `❌ No category found with name "${newCategoryName}"` }
+            throw {
+              errorCode: 'CATEGORY_NOT_FOUND',
+              message: `No category found with name "${newCategoryName}"`,
+            }
           }
 
           categoryId = category._id
@@ -241,7 +262,10 @@ export const update_transaction = (userId: string, style?: string) => {
           const { wallets }: { wallets: any[] } = await getWallets(userId)
           const wallet = wallets.find(w => w.name.toLowerCase() === newWalletName.toLowerCase())
           if (!wallet) {
-            return { error: `❌ No wallet found with name "${newWalletName}"` }
+            throw {
+              errorCode: 'WALLET_NOT_FOUND',
+              message: `No wallet found with name "${newWalletName}"`,
+            }
           }
 
           walletId = wallet._id
@@ -258,7 +282,11 @@ export const update_transaction = (userId: string, style?: string) => {
 
         return { transaction, message }
       } catch (err: any) {
-        return { error: '❌ Failed to update transaction' }
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to update transaction',
+        }
       }
     },
   }
@@ -279,7 +307,10 @@ export const delete_transaction = (userId: string, style?: string) => {
         const { transactions }: { transactions: any[] } = await getTransactions(userId)
 
         if (!transactions.length) {
-          return { error: `❌ No transaction found with name "${name}" and amount "${amount}"` }
+          throw {
+            errorCode: 'TRANSACTION_NOT_FOUND',
+            message: `No transaction found with name "${name}" and amount "${amount}"`,
+          }
         }
 
         const transaction = transactions.find(
@@ -287,8 +318,9 @@ export const delete_transaction = (userId: string, style?: string) => {
         )
 
         if (!transaction) {
-          return {
-            error: `❌ No transaction found with name "${name}" ${amount ? `and amount "${amount}"` : ''}`,
+          throw {
+            errorCode: 'TRANSACTION_NOT_FOUND',
+            message: `No transaction found with name "${name}" and amount "${amount}"`,
           }
         }
 
@@ -296,8 +328,64 @@ export const delete_transaction = (userId: string, style?: string) => {
 
         return { transaction, message }
       } catch (err: any) {
+        const code = err.errorCode
         return {
-          error: `❌ Failed to delete transaction: ${err.message}`,
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to delete transaction',
+        }
+      }
+    },
+  }
+}
+
+// MARK: Get most transaction
+export const get_most_transaction = (userId: string, style?: string) => {
+  return {
+    description: 'get most transaction by type and time',
+    parameters: z.object({
+      type: z.enum(['income', 'expense', 'saving', 'invest']),
+      fromDate: z.string(),
+      toDate: z.string(),
+      sort: z.enum(['most', 'least']).default('most'),
+      orderBy: z.enum(['amount', 'date']).default('amount'),
+      message: z.string().describe('a short message with your personalities'),
+    }),
+    execute: async ({
+      type,
+      fromDate,
+      toDate,
+      sort,
+      orderBy,
+      message,
+    }: {
+      type: string
+      fromDate: string
+      toDate: string
+      sort: string
+      orderBy: string
+      message: string
+    }) => {
+      try {
+        const params: any = { limit: [1] }
+        if (type) params.type = [type]
+        if (fromDate) params.from = [fromDate]
+        if (toDate) params.to = [toDate]
+        if (sort && orderBy) params.sort = [`${orderBy}|${sort === 'most' ? '-1' : '1'}`]
+        const { transactions }: { transactions: any[] } = await getTransactions(userId, params)
+
+        if (!transactions.length) {
+          throw {
+            errorCode: 'TRANSACTION_NOT_FOUND',
+            message: `No transaction found with type "${type}"`,
+          }
+        }
+
+        return { transaction: transactions[0], message }
+      } catch (err: any) {
+        const code = err.errorCode
+        return {
+          errorCode: code || '',
+          error: code ? err.message : 'Failed to delete category',
         }
       }
     },

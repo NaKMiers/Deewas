@@ -52,7 +52,7 @@ export const deleteAllData = async (userId: string) => {
 
     return { message: 'All data deleted successfully' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -88,7 +88,7 @@ export const updateSettings = async (
 
     return { settings: JSON.parse(JSON.stringify(settings)), message: 'Settings updated' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }
 
@@ -102,11 +102,11 @@ export const getSettings = async (userId: string) => {
     const settings = await SettingsModel.findOne({ user: userId }).lean()
 
     if (!settings) {
-      throw new Error('Settings not found')
+      throw { errorCode: 'SETTINGS_NOT_FOUND', message: 'Settings not found' }
     }
 
     return { settings: JSON.parse(JSON.stringify(settings)), message: 'Settings are here' }
   } catch (err: any) {
-    throw new Error(err)
+    throw err
   }
 }

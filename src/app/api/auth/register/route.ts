@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
     // return home page
     return NextResponse.json({ user, message: 'Register Successfully' }, { status: 200 })
-  } catch (err) {
-    return NextResponse.json(err, { status: 500 })
+  } catch (err: any) {
+    return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
 }
