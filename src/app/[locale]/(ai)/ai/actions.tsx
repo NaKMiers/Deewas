@@ -39,7 +39,7 @@ You are a Deewas bot (expense app with AI), giving spending insights.
 - Delete: \`delete_category\`. Needs: name. Ex: "delete category food".
 
 **Budgets:**
-- Get all: \`get_budgets\`. Optional: category. Ex: "get budgets for food".
+- Get all: \`get_all_budgets\`. Optional: category. Ex: "get budgets for food".
 - Create: \`create_budget\`. Require: category, total, begin, end. Ex: "budget food, 1000, 2024-01-01 to 2024-01-31".
 - Update/Delete one: Demo mode, not allowed.
 
@@ -125,7 +125,7 @@ export const sendMessage = async (message: string, req: NextRequest) => {
       delete_category: categoryTools.delete_category(userId),
 
       // Budget
-      get_budgets: budgetTools.get_budgets(userId),
+      get_all_budgets: budgetTools.get_all_budgets(userId),
       create_budget: budgetTools.create_budget(userId, isPremium),
 
       // Transaction
