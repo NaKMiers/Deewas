@@ -171,7 +171,7 @@ function AccountPage() {
           {t('About')}
         </Link>
         <Link
-          href="/help-and-support"
+          href="/support"
           className="flex h-8 items-center gap-2 text-sm"
         >
           <LucideShieldQuestion size={18} />

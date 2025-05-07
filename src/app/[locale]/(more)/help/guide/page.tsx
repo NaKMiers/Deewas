@@ -5,12 +5,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { BarChart, Edit, Heart, Mail, PlusCircle, Trash, Wallet } from 'lucide-react' // Icon từ lucide-react
+import { BarChart, Edit, Heart, LucideChevronLeft, Mail, PlusCircle, Trash, Wallet } from 'lucide-react' // Icon từ lucide-react
 import Link from 'next/link'
 
 function UserGuidePage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background p-6 md:p-12">
+      <Link
+        href="/"
+        className="flex items-center"
+      >
+        <LucideChevronLeft size={20} />
+        <span className="font-medium">Home</span>
+      </Link>
+
       {/* Header */}
       <header className="py-10 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">

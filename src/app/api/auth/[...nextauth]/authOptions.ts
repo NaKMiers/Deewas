@@ -1,8 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import CategoryModel from '@/models/CategoryModel'
-import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
-import WalletModel from '@/models/WalletModel'
 import bcrypt from 'bcrypt'
 import { SessionStrategy } from 'next-auth'
 
@@ -13,7 +10,6 @@ import '@/models/UserModel'
 import '@/models/WalletModel'
 
 // Providers
-import { initCategories } from '@/constants/categories'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
@@ -146,41 +142,41 @@ const authOptions = {
           { new: true }
         ).lean()
 
-        // check whether user exists
-        if (existingUser) {
-          return true
+        // user not found
+        if (!existingUser) {
+          return false
         }
 
-        // MARK: Create new user and init data
-        // create new user with google information (auto verified email)
-        const newUser = await UserModel.create({
-          email,
-          avatar,
-          authType: account.provider,
-        })
+        // // MARK: Create new user and init data
+        // // create new user with google information (auto verified email)
+        // const newUser = await UserModel.create({
+        //   email,
+        //   avatar,
+        //   authType: account.provider,
+        // })
 
-        const categories = Object.values(initCategories)
-          .flat()
-          .map(category => ({
-            ...category,
-            user: newUser._id,
-          }))
+        // const categories = Object.values(initCategories)
+        //   .flat()
+        //   .map(category => ({
+        //     ...category,
+        //     user: newUser._id,
+        //   }))
 
-        // Insert default categories
-        await CategoryModel.insertMany(categories)
+        // // Insert default categories
+        // await CategoryModel.insertMany(categories)
 
-        await Promise.all([
-          // create initial wallet
-          WalletModel.create({
-            user: newUser._id,
-            name: 'Cash',
-            icon: '💰',
-          }),
-          // initially create settings
-          SettingsModel.create({
-            user: newUser._id,
-          }),
-        ])
+        // await Promise.all([
+        //   // create initial wallet
+        //   WalletModel.create({
+        //     user: newUser._id,
+        //     name: 'Cash',
+        //     icon: '💰',
+        //   }),
+        //   // initially create settings
+        //   SettingsModel.create({
+        //     user: newUser._id,
+        //   }),
+        // ])
 
         return true
       } catch (err: any) {

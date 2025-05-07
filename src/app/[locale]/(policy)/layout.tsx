@@ -26,7 +26,7 @@ export default async function RootLayout({
                 Privacy Policy
               </Button>
             </Link>
-            <Link href="/terms-and-service">
+            <Link href="/terms-and-conditions">
               <Button
                 variant="ghost"
                 className="px-2"

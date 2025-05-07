@@ -113,7 +113,7 @@ function RegisterPage() {
           toast.success(message)
 
           // redirect to home page
-          router.push('/wizard', { locale })
+          router.push('/', { locale })
         }
       } catch (err: any) {
         // show error message
@@ -162,7 +162,7 @@ function RegisterPage() {
           <div className="flex items-center justify-center gap-2">
             <Button
               className="trans-200 h-8 flex-1 bg-white hover:bg-black/5"
-              onClick={() => signIn('google', { callbackUrl: `/${locale}/wizard` })}
+              onClick={() => signIn('google', { callbackUrl: `/${locale}` })}
             >
               <Image
                 src="/icons/google.png"
@@ -175,7 +175,7 @@ function RegisterPage() {
             </Button>
             {/* <Button
               className="h-8 bg-white"
-              onClick={() => signIn('apple', { callbackUrl: `/${locale}/wizard` })}
+              onClick={() => signIn('apple', { callbackUrl: `/${locale}` })}
             >
               <Image
                 src="/icons/apple.png"
@@ -186,7 +186,7 @@ function RegisterPage() {
             </Button>
             <Button
               className="h-8 bg-white"
-              onClick={() => signIn('facebook', { callbackUrl: '/wizard' })}
+              onClick={() => signIn('facebook', { callbackUrl: '/' })}
             >
               <Image
                 src="/icons/facebook.png"

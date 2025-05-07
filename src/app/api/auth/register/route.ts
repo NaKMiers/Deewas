@@ -1,11 +1,11 @@
 import { connectDatabase } from '@/config/database'
 import UserModel from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
-
 import { initCategories } from '@/constants/categories'
 import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
 import WalletModel from '@/models/WalletModel'
+import bcrypt from 'bcrypt'
 
 // Models: User, Category, Settings, Wallet
 import '@/models/CategoryModel'
@@ -35,11 +35,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Username or email exists' }, { status: 401 })
     }
 
+    const hashedPassword = await bcrypt.hash(password, +process.env.BCRYPT_SALT_ROUND! || 10)
+
     // create new user
     await UserModel.create({
       email,
       username,
-      password,
+      password: hashedPassword,
       authType: 'local',
     })
 

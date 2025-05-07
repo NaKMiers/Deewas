@@ -47,7 +47,11 @@ export default async function middleware(req: NextRequest) {
   const locale = req.cookies.get('NEXT_LOCALE')?.value || 'en'
 
   if (['/api'].some(path => pathname.startsWith(path))) {
-    if (['/api/auth', '/api/report', '/api/revenuecat-event'].some(path => pathname.startsWith(path))) {
+    if (
+      ['/api/auth', '/api/report', '/api/revenuecat-event', '/api/support'].some(path =>
+        pathname.startsWith(path)
+      )
+    ) {
       return NextResponse.next()
     } else if (['/api/admin'].some(path => pathname.startsWith(path))) {
       return requireAdminForApi(req, token, locale) // require admin
@@ -59,16 +63,9 @@ export default async function middleware(req: NextRequest) {
     if (['/auth'].some(path => purePathname.startsWith(path))) {
       return requireUnAuth(req, token, locale) // require unauth
     } else if (
-      [
-        '/transactions',
-        '/budgets',
-        '/account',
-        '/categories',
-        '/wizard',
-        '/about',
-        '/help-and-support',
-        '/calendar',
-      ].some(path => purePathname.startsWith(path)) ||
+      ['/transactions', '/budgets', '/account', '/categories', '/wizard', '/calendar'].some(path =>
+        purePathname.startsWith(path)
+      ) ||
       purePathname === '/'
     ) {
       return requireAuth(req, token, locale) // require auth
@@ -86,6 +83,6 @@ export const config = {
     '/',
     '/(vi|en)/:path*',
     '/(transactions|budgets|account|categories|auth|wizard|calendar|admin|api)/:path*',
-    '/(about|help-and-support|help|privacy-policy|terms-and-service)/:path*',
+    '/(about|support|help|privacy-policy|terms-and-service)/:path*',
   ],
 }

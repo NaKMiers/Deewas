@@ -4,11 +4,19 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Link } from '@/i18n/navigation'
-import { BarChart, LucideBrain, LucidePieChart, Wallet } from 'lucide-react'
+import { BarChart, LucideBrain, LucideChevronLeft, LucidePieChart, Wallet } from 'lucide-react'
 
 function AboutPage() {
   return (
-    <div className="bg-background p-21/2 md:p-21">
+    <div className="min-h-screen bg-background p-6 md:p-12">
+      <Link
+        href="/"
+        className="flex items-center"
+      >
+        <LucideChevronLeft size={20} />
+        <span className="font-medium">Home</span>
+      </Link>
+
       {/* Header */}
       <header className="py-10 text-center">
         <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">About Deewas</h1>

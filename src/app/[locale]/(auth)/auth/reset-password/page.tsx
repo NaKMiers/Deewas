@@ -214,7 +214,7 @@ function ResetPasswordPage() {
         </div>
 
         {/* MARK: Footer */}
-        <div className="border-y border-slate-300 bg-neutral-100">
+        {/* <div className="border-y border-slate-300 bg-neutral-100">
           <p className="px-2 py-5 text-center text-sm text-black">
             {t("Don't have an account?")}{' '}
             <Link
@@ -224,7 +224,7 @@ function ResetPasswordPage() {
               {t('Register')}
             </Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   )

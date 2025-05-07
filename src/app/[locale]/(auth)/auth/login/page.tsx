@@ -55,7 +55,7 @@ function LoginPage() {
           toast.success(t('Login Successfully!'), { id: 'login' })
 
           // redirect to home page
-          router.push('/wizard', { locale })
+          router.push('/', { locale })
         }
 
         if (res?.error) {
@@ -114,7 +114,7 @@ function LoginPage() {
           <div className="flex items-center justify-center gap-2">
             <Button
               className="trans-200 h-8 flex-1 bg-white hover:bg-black/5"
-              onClick={() => signIn('google', { callbackUrl: `/${locale}/wizard` })}
+              onClick={() => signIn('google', { callbackUrl: `/${locale}` })}
             >
               <Image
                 src="/icons/google.png"
@@ -127,7 +127,7 @@ function LoginPage() {
             </Button>
             {/* <Button
               className="h-8 bg-white"
-              onClick={() => signIn('apple', { callbackUrl: `/${locale}/wizard` })}
+              onClick={() => signIn('apple', { callbackUrl: `/${locale}` })}
             >
               <Image
                 src="/icons/apple.png"
@@ -138,7 +138,7 @@ function LoginPage() {
             </Button>
             <Button
               className="h-8 bg-white"
-              onClick={() => signIn('facebook', { callbackUrl: `/${locale}/wizard` })}
+              onClick={() => signIn('facebook', { callbackUrl: `/${locale}` })}
             >
               <Image
                 src="/icons/facebook.png"
@@ -202,7 +202,7 @@ function LoginPage() {
         </div>
 
         {/* MARK: Footer */}
-        <div className="border-y border-slate-300 bg-neutral-100">
+        {/* <div className="border-y border-slate-300 bg-neutral-100">
           <p className="px-2 py-5 text-center text-sm text-black">
             {t("Don't have an account?")}{' '}
             <Link
@@ -212,7 +212,7 @@ function LoginPage() {
               {t('Register')}
             </Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -27,3 +27,15 @@ export const getRevenueCatSubscriberApi = async (userId: string) => {
 
   return await res.json()
 }
+
+// [POST]: /api/support
+export const sendSupportFormApi = async (data: any) => {
+  const res = await fetch('/api/support', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+
+  if (!res.ok) new Error((await res.json()).message)
+
+  return await res.json()
+}
