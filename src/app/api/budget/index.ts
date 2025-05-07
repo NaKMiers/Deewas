@@ -144,6 +144,8 @@ export const updateBudget = async (
     // connect to database
     await connectDatabase()
 
+    console.log('update budget', { budgetId, categoryId, begin, end, total })
+
     // calculate total amount of transactions of category from begin to end of budget
     const transactions = await TransactionModel.find({
       category: categoryId,

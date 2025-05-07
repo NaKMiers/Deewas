@@ -403,15 +403,23 @@ export const getHistory = async (userId: string, params: any = {}) => {
       limit: Infinity,
     })
 
-    // get all transaction in time range
-    const transactions = await TransactionModel.find(filter)
-      .populate('category wallet')
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean()
+    const [transactions, oldestTransaction] = await Promise.all([
+      TransactionModel.find(filter)
+        .populate('category wallet')
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean(),
 
-    return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'History is here' }
+      // get oldest transaction date
+      TransactionModel.findOne({ user: userId }).select('date').sort({ date: 1 }).limit(1).lean(),
+    ])
+
+    return {
+      transactions: JSON.parse(JSON.stringify(transactions)),
+      oldestTransaction,
+      message: 'History is here',
+    }
   } catch (err: any) {
     throw err
   }
@@ -425,6 +433,9 @@ export const getTransactions = async (userId: string, params: any = {}) => {
 
     console.log('params:', params)
 
+    const needOldestDate = params?.needOldestDate?.[0] === 'true'
+    if (needOldestDate) delete params.needOldestDate
+
     const { filter, sort, skip, limit } = filterBuilder(params, {
       filter: { user: userId },
       sort: { date: -1, createdAt: -1 },
@@ -437,15 +448,28 @@ export const getTransactions = async (userId: string, params: any = {}) => {
     console.log('skip:', skip)
     console.log('limit:', limit)
 
-    // MARK: Overview
-    const transactions = await TransactionModel.find(filter)
-      .populate('wallet category')
-      .sort(sort)
-      .skip(skip)
-      .limit(limit)
-      .lean()
+    const promises: any[] = [
+      TransactionModel.find(filter)
+        .populate('wallet category')
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+    ]
 
-    return { transactions: JSON.parse(JSON.stringify(transactions)), message: 'Transactions are here' }
+    if (needOldestDate) {
+      promises.push(
+        TransactionModel.findOne({ user: userId }).select('date').sort({ date: 1 }).limit(1).lean()
+      )
+    }
+
+    const [transactions, oldestTransaction] = await Promise.all(promises)
+
+    return {
+      transactions: JSON.parse(JSON.stringify(transactions)),
+      oldestTransaction: oldestTransaction,
+      message: 'Transactions are here',
+    }
   } catch (err: any) {
     throw err
   }
