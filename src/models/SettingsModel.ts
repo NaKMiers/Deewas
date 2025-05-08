@@ -1,4 +1,3 @@
-import { update_category } from './../lib/tools/categoryTools'
 import mongoose from 'mongoose'
 import { IUser } from './UserModel'
 const Schema = mongoose.Schema
@@ -25,7 +24,7 @@ const SettingsSchema = new Schema(
     },
     freeTokensUsed: {
       type: Number,
-      default: 0,
+      default: -20000,
     },
   },
   { timestamps: true }
