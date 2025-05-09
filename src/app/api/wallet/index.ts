@@ -1,7 +1,7 @@
 import { connectDatabase } from '@/config/database'
 import { toUTC } from '@/lib/time'
 import CategoryModel from '@/models/CategoryModel'
-import TransactionModel from '@/models/TransactionModel'
+import TransactionModel, { IFullTransaction } from '@/models/TransactionModel'
 import WalletModel from '@/models/WalletModel'
 
 // Models: Wallet, Transaction, Category, Budget
@@ -106,25 +106,54 @@ export const deleteWallet = async (userId: string, walletId: string) => {
     // connect to database
     await connectDatabase()
 
-    const [walletCount]: any[] = await Promise.all([
+    const [walletCount, transactionsOfWallet]: any[] = await Promise.all([
       // count wallets
       WalletModel.countDocuments({ user: userId }).lean(),
-      // delete all transactions associated with wallet
-      TransactionModel.deleteMany({ wallet: walletId }),
+      TransactionModel.find({ wallet: walletId })
+        .populate({
+          path: 'category',
+          select: '_id',
+        })
+        .select('_id category amount')
+        .lean(),
     ])
+
+    // make unique category ids from transactions
+    const categoryIds: any[] = [
+      ...new Set(transactionsOfWallet.map((t: IFullTransaction) => t.category._id)),
+    ]
+    console.log(categoryIds)
+
+    const promises = categoryIds.map((cateId: string) => {
+      const totalAmountOfTxOfCate = transactionsOfWallet
+        .filter((t: IFullTransaction) => t.category._id.toString() === cateId.toString())
+        .reduce((total: number, tx: IFullTransaction) => total + tx.amount, 0)
+      return CategoryModel.findByIdAndUpdate(cateId, { $inc: { amount: -totalAmountOfTxOfCate } })
+    })
+
+    // delete all transactions associated with wallet
+    promises.push(TransactionModel.deleteMany({ wallet: walletId }))
 
     // clear wallet if only one wallet is left
     if (walletCount > 1) {
       // delete wallet
-      const wallet = await WalletModel.findByIdAndDelete(walletId)
-      return { wallet, message: 'Deleted wallet' }
+      promises.unshift(WalletModel.findByIdAndDelete(walletId))
     } else {
-      const wallet = await WalletModel.findByIdAndUpdate(
-        walletId,
-        { $set: { income: 0, expense: 0, saving: 0, invest: 0 } },
-        { new: true }
+      promises.unshift(
+        WalletModel.findByIdAndUpdate(
+          walletId,
+          { $set: { income: 0, expense: 0, saving: 0, invest: 0 } },
+          { new: true }
+        )
       )
-      return { wallet: JSON.parse(JSON.stringify(wallet)), message: 'Cleared wallet' }
+    }
+
+    // implement all promises
+    const [wallet] = await Promise.all(promises)
+
+    return {
+      wallet: JSON.parse(JSON.stringify(wallet)),
+      message: walletCount > 1 ? 'Deleted wallet' : 'Cleared wallet',
     }
   } catch (err: any) {
     throw err
