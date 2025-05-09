@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -65,17 +65,19 @@ export default function PrivacyPolicy() {
                   include:
                 </p>
                 <ul className="mt-2 list-disc pl-6">
-                  <li>Your device’s Internet Protocol address (e.g., IP address)</li>
                   <li>
-                    The pages of the Application that you visit, the time and date of your visit, the
-                    time spent on those pages
+                    {' '}
+                    Information you provide during login, such as your email address, username, first and
+                    last name
                   </li>
-                  <li>The time spent on the Application</li>
+                  <li>
+                    Public profile information retrieved from third-party services (e.g., Google, Apple)
+                    if you choose to log in using these services
+                  </li>
                   <li>The operating system you use on your mobile device</li>
                 </ul>
                 <p className="mt-4">
-                  The Application does not gather precise information about the location of your mobile
-                  device.
+                  The Application does not gather information about the location of your mobile device.
                 </p>
                 <p className="mt-4">
                   The Service Provider may use the information you provided to contact you from time to
@@ -126,12 +128,12 @@ export default function PrivacyPolicy() {
                   </li>
                   <li>
                     <a
-                      href="https://expo.dev/privacy"
+                      href="https://www.apple.com/legal/privacy/"
                       className="text-blue-600 hover:underline dark:text-blue-400"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Expo
+                      Apple Privacy Policy
                     </a>
                   </li>
                 </ul>

@@ -126,12 +126,12 @@ export default function TermsAndConditions() {
                   </li>
                   <li>
                     <a
-                      href="https://expo.dev/terms"
+                      href="https://www.apple.com/legal/privacy/"
                       className="text-blue-600 hover:underline dark:text-blue-400"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Expo
+                      Apple Privacy Policy
                     </a>
                   </li>
                 </ul>

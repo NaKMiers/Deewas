@@ -31,7 +31,7 @@ export default async function RootLayout({
                 variant="ghost"
                 className="px-2"
               >
-                Terms & Service
+                Terms & Conditions
               </Button>
             </Link>
           </nav>
