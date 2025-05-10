@@ -68,13 +68,13 @@ export default function PrivacyPolicy() {
                   <li>
                     {' '}
                     Information you provide during login, such as your email address, username, first and
-                    last name
+                    last name.
                   </li>
                   <li>
                     Public profile information retrieved from third-party services (e.g., Google, Apple)
-                    if you choose to log in using these services
+                    if you choose to log in using these services.
                   </li>
-                  <li>The operating system you use on your mobile device</li>
+                  <li>The operating system you use on your mobile device.</li>
                 </ul>
                 <p className="mt-4">
                   The Application does not gather information about the location of your mobile device.
