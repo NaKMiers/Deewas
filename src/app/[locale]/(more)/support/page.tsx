@@ -93,7 +93,7 @@ export default function HelpPage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background p-6 md:p-12">
+    <div className="min-h-screen p-6 md:p-12">
       <Link
         href="/"
         className="flex items-center"
@@ -196,7 +196,7 @@ export default function HelpPage() {
                 required
                 {...register('name', { required: true })}
                 placeholder="Your name"
-                className="mt-1"
+                className="mt-1 border-primary/10 bg-secondary/50"
               />
             </div>
             <div>
@@ -212,7 +212,7 @@ export default function HelpPage() {
                 required
                 placeholder="you@example.com"
                 {...register('email', { required: true })}
-                className="mt-1"
+                className="mt-1 border-primary/10 bg-secondary/50"
               />
             </div>
             <div>
@@ -228,7 +228,7 @@ export default function HelpPage() {
                 rows={5}
                 placeholder="How can we help you?"
                 {...register('message', { required: true })}
-                className="mt-1 w-full rounded-md border border-input bg-background p-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full rounded-md border border-primary/10 bg-secondary/50 p-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
             <Button

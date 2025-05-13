@@ -2,7 +2,7 @@ import { JWT } from 'next-auth/jwt'
 import createMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import { routing } from './i18n/routing'
-import { extractToken } from './lib/utils'
+import { checkPremium, extractToken } from './lib/utils'
 
 // MARK: Internationalization Middleware
 const intlMiddleware = createMiddleware(routing)
@@ -16,13 +16,21 @@ const requireUnAuth = async (req: NextRequest, token: JWT | null, locale: string
 // Require Auth
 const requireAuth = async (req: NextRequest, token: JWT | null, locale: string = 'en') => {
   console.log('- Require Auth -')
-  return !token ? NextResponse.redirect(new URL(`/${locale}/auth/login`, req.url)) : intlMiddleware(req)
+  if (!token) return NextResponse.redirect(new URL(`/${locale}/auth/sign-in`, req.url))
+
+  const isPremium = checkPremium(token)
+
+  if (!isPremium) return NextResponse.redirect(new URL(`/${locale}/onboarding`, req.url))
+
+  return intlMiddleware(req)
 }
 
 // Require Auth For Api
 const requireAuthForApi = async (req: NextRequest, token: JWT | null, locale: string = 'en') => {
   console.log('- Require Auth For Api -')
-  return !token ? NextResponse.redirect(new URL(`/${locale}/auth/login`, req.url)) : NextResponse.next()
+  return !token
+    ? NextResponse.redirect(new URL(`/${locale}/auth/sign-in`, req.url))
+    : NextResponse.next()
 }
 
 // Require Admin
@@ -63,8 +71,8 @@ export default async function middleware(req: NextRequest) {
     if (['/auth'].some(path => purePathname.startsWith(path))) {
       return requireUnAuth(req, token, locale) // require unauth
     } else if (
-      ['/transactions', '/budgets', '/account', '/categories', '/wizard', '/calendar'].some(path =>
-        purePathname.startsWith(path)
+      ['/transactions', '/budgets', '/account', '/wallets', '/categories', '/calendar', '/streaks'].some(
+        path => purePathname.startsWith(path)
       ) ||
       purePathname === '/'
     ) {
@@ -82,7 +90,7 @@ export const config = {
   matcher: [
     '/',
     '/(vi|en)/:path*',
-    '/(transactions|budgets|account|categories|auth|wizard|calendar|admin|api)/:path*',
-    '/(about|support|help|privacy-policy|terms-and-service)/:path*',
+    '/(transactions|budgets|account|wallets|categories|auth|calendar|streaks|admin|api)/:path*',
+    '/(about|support|help|privacy-policy|terms-and-service|onboarding)/:path*',
   ],
 }

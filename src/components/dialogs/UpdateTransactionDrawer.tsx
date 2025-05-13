@@ -2,8 +2,8 @@
 
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { refetching } from '@/lib/reducers/loadReducer'
-import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/string'
+import { refresh } from '@/lib/reducers/loadReducer'
+import { checkTranType, formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullTransaction } from '@/models/TransactionModel'
@@ -151,12 +151,12 @@ function UpdateTransactionDrawer({
         const { transaction: tx, message } = await updateTransactionApi(transaction._id, {
           ...data,
           date: toUTC(data.date),
-          amount: revertAdjustedCurrency(data.amount, locale),
+          amount: data.amount,
         })
 
         if (update) update(tx)
         if (refetch) refetch()
-        dispatch(refetching())
+        dispatch(refresh())
 
         toast.success(message, { id: 'update-transaction' })
         setOpen(false)
@@ -169,7 +169,7 @@ function UpdateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, refetch, dispatch, , transaction._id, locale, t]
+    [handleValidate, reset, update, refetch, dispatch, , transaction._id, t]
   )
 
   return (

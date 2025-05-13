@@ -22,14 +22,10 @@ export async function PUT(req: NextRequest) {
 
     // get data from request body
     const { appUserId, platform } = await req.json()
-    console.log('platform', platform)
-    // console.log('appUserId', appUserId)
-    console.log('process.env.REVENUECAT_SECRET_KEY', process.env.REVENUECAT_SECRET_KEY)
 
     // VERIFY...
     const data = await getRevenueCatSubscriberApi(userId)
 
-    console.log('data', data)
     const activeEntitlement = data.subscriber.entitlements?.['Premium']
 
     if (!activeEntitlement) {

@@ -31,7 +31,7 @@ function History({ className }: HistoryProps) {
   const charts = ['bar', 'line', 'area', 'radar', 'pie']
 
   // store
-  const { refetching } = useAppSelector(state => state.load)
+  const { refreshPoint } = useAppSelector(state => state.load)
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
   // states
@@ -84,7 +84,7 @@ function History({ className }: HistoryProps) {
   // initially get history
   useEffect(() => {
     getHistory()
-  }, [getHistory, refetching])
+  }, [getHistory, refreshPoint])
 
   // auto update chart data
   useEffect(() => {
@@ -214,12 +214,13 @@ function History({ className }: HistoryProps) {
   }, [dateRange, transactions, currency])
 
   return (
-    <div className={cn('px-21/2 md:px-21', className)}>
+    <div className={cn(className)}>
       {/* Top */}
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold">{t('History')}</h2>
 
         <DateRangePicker
+          className="border border-primary/10 bg-secondary shadow-md"
           locale={locale}
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
@@ -237,13 +238,13 @@ function History({ className }: HistoryProps) {
         />
       </div>
 
-      <div className="mt-1.5 rounded-lg border border-muted-foreground/50 px-0">
+      <div className="mt-1.5 rounded-xl border border-primary/10 bg-secondary/50 px-0 shadow-md">
         <div className="flex flex-wrap justify-end gap-21/2 p-21/2">
           <MultipleSelection
             trigger={
               <Button
-                variant="outline"
-                className="h-9 px-21/2 text-sm font-semibold"
+                variant="default"
+                className="h-9 bg-primary px-21/2 text-sm font-semibold text-secondary shadow-md"
               >
                 {selectedTypes.length} {selectedTypes.length !== 1 ? t('types') : t('type')}
               </Button>
@@ -257,7 +258,7 @@ function History({ className }: HistoryProps) {
             value={chart}
             onValueChange={setChart}
           >
-            <SelectTrigger className="max-w-max gap-1.5 font-semibold capitalize !ring-0">
+            <SelectTrigger className="max-w-max gap-1.5 bg-primary font-semibold capitalize text-secondary shadow-md !ring-0">
               <SelectValue placeholder="Select Chart" />
             </SelectTrigger>
             <SelectContent className="">
@@ -265,7 +266,7 @@ function History({ className }: HistoryProps) {
                 <SelectItem
                   key={chart}
                   value={chart}
-                  className="cursor-pointer capitalize"
+                  className="b- cursor-pointer capitalize"
                 >
                   {t(chart)}
                 </SelectItem>
@@ -311,7 +312,7 @@ export function MultipleSelection({ trigger, list, selected, onChange }: MultiSe
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent className="z-10 mt-2 flex max-w-max flex-col overflow-hidden rounded-lg p-0">
         <Button
-          variant="outline"
+          variant="ghost"
           className={cn(
             'trans-200 h-8 justify-start rounded-none border-0 px-3 text-left text-sm font-light',
             selected.length === list.length && 'border-l-2 border-primary pl-2'
@@ -322,7 +323,7 @@ export function MultipleSelection({ trigger, list, selected, onChange }: MultiSe
         </Button>
         {list.map((item, index) => (
           <Button
-            variant="outline"
+            variant="ghost"
             className={cn(
               'trans-200 h-8 justify-start rounded-none border-0 px-3 text-left text-sm font-light',
               (isObjectItem

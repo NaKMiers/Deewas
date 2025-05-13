@@ -2,8 +2,8 @@
 
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { refetching } from '@/lib/reducers/loadReducer'
-import { checkTranType, formatSymbol, revertAdjustedCurrency } from '@/lib/string'
+import { refresh } from '@/lib/reducers/loadReducer'
+import { checkTranType, formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
@@ -59,7 +59,6 @@ function CreateTransactionDrawer({
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-  const { curWallet } = useAppSelector(state => state.wallet)
 
   // values
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
@@ -82,7 +81,7 @@ function CreateTransactionDrawer({
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: initWallet?._id || curWallet?._id || '',
+      walletId: initWallet?._id || '',
       name: '',
       categoryId: initCategory?._id || '',
       amount: '',
@@ -94,9 +93,9 @@ function CreateTransactionDrawer({
 
   useEffect(() => {
     if (!getValues('walletId')) {
-      setValue('walletId', initWallet?._id || curWallet?._id)
+      setValue('walletId', initWallet?._id)
     }
-  }, [getValues, setValue, initWallet, curWallet])
+  }, [getValues, setValue, initWallet])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
@@ -176,10 +175,10 @@ function CreateTransactionDrawer({
         const { transaction, message } = await createTransactionApi({
           ...data,
           date: toUTC(data.date),
-          amount: revertAdjustedCurrency(data.amount, locale),
+          amount: data.amount,
         })
 
-        dispatch(refetching())
+        dispatch(refresh())
 
         if (refetch) refetch()
         if (update) update(transaction)
@@ -195,7 +194,7 @@ function CreateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, update, dispatch, locale, t]
+    [handleValidate, reset, refetch, update, dispatch, t]
   )
 
   return (
@@ -311,7 +310,7 @@ function CreateTransactionDrawer({
               <div onFocus={() => clearErrors('walletId')}>
                 <WalletPicker
                   className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
-                  wallet={initWallet || curWallet}
+                  wallet={initWallet}
                   onChange={(wallet: IWallet | null) => wallet && setValue('walletId', wallet._id)}
                 />
               </div>

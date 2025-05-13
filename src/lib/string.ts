@@ -1,20 +1,19 @@
 import { currencies } from '@/constants/settings'
-import { IUser } from '@/models/UserModel'
+import * as locales from 'date-fns/locale'
 import {
   LucideArrowRightLeft,
   LucideChartNoAxesCombined,
-  LucideForward,
   LucideHandCoins,
   LucideTrendingDown,
   LucideTrendingUp,
   LucideWalletCards,
 } from 'lucide-react'
-import * as locales from 'date-fns/locale'
 
-export const shortName = (user: IUser) => {
+export const shortName = (user: any, defaultValue: string = '') => {
+  if (user?.name) return user.name
   if (user?.username) return user.username
   if (user?.email) return user.email.split('@')[0]
-  return 'User'
+  return defaultValue
 }
 
 export const formatSymbol = (currency: string): string =>
@@ -109,22 +108,28 @@ export const checkTranType = (type: TranOptionKeys) => {
   return results || tranOptions['balance']
 }
 
-const levels = {
+const levelColors = {
   hard: {
+    text: 'text-rose-500',
     background: 'bg-rose-500',
+    hex: '#f43f5e',
   },
   medium: {
+    text: 'text-yellow-500',
     background: 'bg-yellow-500',
+    hex: '#eab308',
   },
   easy: {
+    text: 'text-emerald-500',
     background: 'bg-emerald-500',
+    hex: '#10b981',
   },
 }
 
-export const checkLevel = (level: number) => {
-  if (level <= 50) return levels.easy
-  if (level <= 80) return levels.medium
-  return levels.hard
+export const checkLevel = (level: number, levels: number[] = [50, 80, 100]) => {
+  if (level <= levels[0]) return levelColors.easy
+  if (level <= levels[1]) return levelColors.medium
+  return levelColors.hard
 }
 
 export const adjustCurrency = (input: string, locale: string) => {

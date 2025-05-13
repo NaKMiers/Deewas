@@ -11,7 +11,7 @@ export function useMockTransactions() {
   const [loading, setLoading] = useState<boolean>(true)
 
   // store
-  const { refetching: rfc } = useAppSelector(state => state.load)
+  const { refreshPoint } = useAppSelector(state => state.load)
 
   const fetchTransactions = useCallback(async () => {
     // start loading
@@ -30,7 +30,7 @@ export function useMockTransactions() {
 
   useEffect(() => {
     fetchTransactions()
-  }, [fetchTransactions, rfc])
+  }, [fetchTransactions, refreshPoint])
 
   return { transactions, loading, refetch: fetchTransactions }
 }

@@ -144,8 +144,6 @@ export const updateBudget = async (
     // connect to database
     await connectDatabase()
 
-    console.log('update budget', { budgetId, categoryId, begin, end, total })
-
     // calculate total amount of transactions of category from begin to end of budget
     const transactions = await TransactionModel.find({
       category: categoryId,
@@ -188,8 +186,6 @@ export const createBudget = async (
   try {
     // connect to database
     await connectDatabase()
-
-    console.log('create budget', { userId, categoryId, begin, end, total })
 
     // limit 4 budgets for free user
     if (!isPremium) {
@@ -251,19 +247,12 @@ export const getBudgets = async (userId: string, params: any = {}) => {
     // connect to database
     await connectDatabase()
 
-    console.log('params', params)
-
     const { filter, sort, limit, skip } = filterBuilder(params, {
       skip: 0,
       limit: 10,
       filter: { user: userId, end: { $gte: toUTC(moment().toDate()) } },
       sort: { end: 1, createdAt: -1 },
     })
-
-    console.log('filter', filter)
-    console.log('sort', sort)
-    console.log('limit', limit)
-    console.log('skip', skip)
 
     // get budgets: budgets.end > today
     let budgets = await BudgetModel.find(filter)

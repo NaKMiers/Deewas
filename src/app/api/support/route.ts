@@ -9,10 +9,6 @@ export async function POST(req: NextRequest) {
     // get data from request body
     const { name, email, message } = await req.json()
 
-    console.log('name', name)
-    console.log('email', email)
-    console.log('message', message)
-
     if (!name || !email || !message) {
       return NextResponse.json({ message: 'Please fill in all fields' }, { status: 400 })
     }

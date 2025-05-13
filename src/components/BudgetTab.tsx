@@ -1,12 +1,11 @@
 import BudgetCard from '@/components/BudgetCard'
 import CreateBudgetDrawer from '@/components/dialogs/CreateBudgetDrawer'
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { TabsContent } from '@/components/ui/tabs'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { addBudget } from '@/lib/reducers/budgetReducer'
-import { formatCompactNumber, formatCurrency } from '@/lib/string'
+import { checkLevel, formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
 import { differenceInDays } from 'date-fns'
@@ -43,18 +42,23 @@ function BudgetTab({ value, begin, end, budgets, className }: IBudgetTabProps) {
       className={cn(className)}
     >
       {/* Budget Overview */}
-      <Card className="flex flex-col items-center justify-center gap-21 rounded-md px-21/2 py-21 text-center md:px-21">
-        <div className="flex flex-col gap-21/2">
+      <div className="flex flex-col items-center justify-center gap-21 rounded-xl bg-primary px-21/2 py-21 text-center text-secondary shadow-md md:px-21">
+        <div className="flex w-full flex-col items-center gap-21/2">
           <p className="text-sm font-semibold text-muted-foreground">{t('Amount you can spend')}</p>
           {currency && (
             <p className="text-4xl font-semibold text-green-500">
               {formatCurrency(currency, total - amount)}
             </p>
           )}
-          <Progress
-            value={(amount / total) * 100}
-            className="w-full"
-          />
+          <div className="relative h-2 w-full max-w-[300px] overflow-hidden rounded-xl bg-muted-foreground">
+            <div
+              className={cn(
+                'absolute left-0 top-0 h-full',
+                checkLevel((amount / total) * 100).background
+              )}
+              style={{ width: `${(amount / total) * 100}%` }}
+            />
+          </div>
         </div>
 
         {currency && (
@@ -94,14 +98,14 @@ function BudgetTab({ value, begin, end, budgets, className }: IBudgetTabProps) {
           update={(budget: IFullBudget) => dispatch(addBudget(budget))}
           trigger={
             <Button
-              variant="default"
-              className="rounded-full"
+              variant="secondary"
+              className="rounded-full shadow-md"
             >
               {t('Create Budget')}
             </Button>
           }
         />
-      </Card>
+      </div>
 
       {/* Budget List */}
       <div className="mt-2 flex flex-col gap-2">

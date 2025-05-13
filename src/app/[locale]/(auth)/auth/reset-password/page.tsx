@@ -92,7 +92,7 @@ function ResetPasswordPage() {
     async data => {
       if (!token) {
         toast.error(t('Invalid reset link'))
-        router.push('/auth/login', { locale })
+        router.push('/auth/sign-in', { locale })
         return
       }
 
@@ -108,9 +108,9 @@ function ResetPasswordPage() {
         // show success message
         toast.success(message, { id: 'reset-password' })
 
-        // Redirect to login after successful reset
+        // Redirect to sign in after successful reset
         setTimeout(() => {
-          router.push('/auth/login', { locale })
+          router.push('/auth/sign-in', { locale })
         }, 2000)
       } catch (err: any) {
         toast.error(err.message, { id: 'reset-password' })
@@ -129,7 +129,7 @@ function ResetPasswordPage() {
 
     if (!token) {
       toast.error(t('Invalid reset link'))
-      router.push('/auth/login', { locale })
+      router.push('/auth/sign-in', { locale })
     }
 
     const handleKeydown = (e: KeyboardEvent) => {
@@ -146,10 +146,15 @@ function ResetPasswordPage() {
   const password = watch('password')
 
   return (
-    <div className="flex h-screen w-full items-center justify-center p-2">
+    <div className="flex h-screen w-full flex-col items-center justify-center p-2">
+      <p className="mb-21 flex flex-row items-end text-center text-4xl font-bold tracking-wider">
+        DEEWAS
+        <p className="text-[40px] font-bold text-green-500">.</p>
+      </p>
+
       <div
         className={cn(
-          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary bg-white text-black'
+          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary bg-white text-black shadow-md'
         )}
       >
         <div className="no-scrollbar overflow-y-auto px-10 py-8">
@@ -205,10 +210,10 @@ function ResetPasswordPage() {
 
           <div className="mt-4 text-center">
             <Link
-              href="/auth/login"
+              href="/auth/sign-in"
               className="text-sm text-muted-foreground underline underline-offset-2 hover:text-black"
             >
-              {t('Back to Login')}
+              {t('Back to Sign In')}
             </Link>
           </div>
         </div>
@@ -218,10 +223,10 @@ function ResetPasswordPage() {
           <p className="px-2 py-5 text-center text-sm text-black">
             {t("Don't have an account?")}{' '}
             <Link
-              href="/auth/register"
+              href="/auth/sign-up"
               className="font-semibold underline-offset-1 hover:underline"
             >
-              {t('Register')}
+              {t('Sign Up')}
             </Link>
           </p>
         </div> */}

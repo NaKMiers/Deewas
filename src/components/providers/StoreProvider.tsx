@@ -23,7 +23,7 @@ function StoreProvider({ children, session }: { children: React.ReactNode; sessi
       <Provider store={storeRef.current}>
         <SessionProvider
           session={session}
-          refetchOnWindowFocus={false}
+          refetchOnWindowFocus={true}
         >
           {children}
         </SessionProvider>

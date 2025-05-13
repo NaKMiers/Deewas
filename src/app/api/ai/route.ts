@@ -76,7 +76,6 @@ export async function POST(req: NextRequest) {
   **Current time is: ${moment().format('YYYY-MM-DD HH:mm:ss')}
 
   `
-  console.log(content)
 
   try {
     const token = await extractToken(req)

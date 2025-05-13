@@ -3,7 +3,7 @@
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
-import { refetching } from '@/lib/reducers/loadReducer'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate, toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -44,7 +44,7 @@ function LatestTransactions({ className }: LatestTransactionsProps) {
   const t = useTranslations('latestTransactions')
 
   // store
-  const { refetching: rfc } = useAppSelector(state => state.load)
+  const { refreshPoint } = useAppSelector(state => state.load)
 
   // states
   const [transactions, setTransactions] = useState<IFullTransaction[]>([])
@@ -74,47 +74,37 @@ function LatestTransactions({ className }: LatestTransactionsProps) {
   // get latest transactions
   useEffect(() => {
     getLatestTransactions()
-  }, [getLatestTransactions, rfc])
+  }, [getLatestTransactions, refreshPoint])
 
   return (
-    <div className={cn('px-21/2 md:px-21', className)}>
+    <div className={cn(className)}>
       {/* Top */}
-      <div className="flex items-center justify-between gap-1">
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold">{t('Latest')}</h2>
+      <div className="flex items-center gap-2">
+        <h2 className="text-lg font-bold">{t('Latest')}</h2>
 
-          <Select
-            value={limit}
-            onValueChange={setLimit}
-          >
-            <SelectTrigger className="h-8 max-w-max gap-1.5 text-sm">
-              <SelectValue placeholder="Select a fruit" />
-            </SelectTrigger>
-            <SelectContent>
-              {[5, 10, 20, 30, 50, 100].map(value => (
-                <SelectItem
-                  key={value}
-                  value={value.toString()}
-                  className="cursor-pointer"
-                >
-                  {value}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <Button
-          variant="outline"
-          className="h-8"
-          onClick={() => router.push('/transactions', { locale })}
+        <Select
+          value={limit}
+          onValueChange={setLimit}
         >
-          {t('All')}
-        </Button>
+          <SelectTrigger className="h-8 max-w-max gap-1.5 border border-primary/10 bg-secondary/50 text-sm shadow-md !ring-0">
+            <SelectValue placeholder="Select a fruit" />
+          </SelectTrigger>
+          <SelectContent>
+            {[5, 10, 20, 30, 50, 100].map(value => (
+              <SelectItem
+                key={value}
+                value={value.toString()}
+                className="cursor-pointer"
+              >
+                {value}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* MARK: Transaction List */}
-      <div className="mt-2 flex flex-col gap-2 rounded-lg border p-21/2 md:p-21">
+      <div className="mt-2 flex flex-col gap-2 rounded-lg border border-primary/10 bg-secondary/50 p-21/2 shadow-md md:p-21">
         {transactions.slice(0, +limit).length > 0 ? (
           transactions.slice(0, +limit).map((tx, index) => (
             <motion.div
@@ -127,7 +117,7 @@ function LatestTransactions({ className }: LatestTransactionsProps) {
                 transaction={tx}
                 update={(transaction: IFullTransaction) => {
                   setTransactions(transactions.map(t => (t._id === transaction._id ? transaction : t)))
-                  dispatch(refetching())
+                  dispatch(refresh())
                 }}
                 refetch={() => getLatestTransactions()}
               />
@@ -150,10 +140,18 @@ interface TransactionProps {
   update?: (transaction: IFullTransaction) => void
   remove?: (transaction: IFullTransaction) => void
   refetch?: () => void
+  hideMenu?: boolean
   className?: string
 }
 
-export function Transaction({ transaction, update, remove, refetch, className }: TransactionProps) {
+export function Transaction({
+  transaction,
+  update,
+  remove,
+  hideMenu,
+  refetch,
+  className,
+}: TransactionProps) {
   // hooks
   const t = useTranslations('transaction')
 
@@ -251,7 +249,7 @@ export function Transaction({ transaction, update, remove, refetch, className }:
             </div>
           )}
 
-          {!deleting && !duplicating ? (
+          {!hideMenu && !deleting && !duplicating ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

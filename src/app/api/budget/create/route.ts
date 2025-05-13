@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
     }
 
     const isPremium = checkPremium(token)
-    console.log('isPremium', isPremium)
 
     // get data from request body
     const { categoryId, total, begin, end } = await req.json()

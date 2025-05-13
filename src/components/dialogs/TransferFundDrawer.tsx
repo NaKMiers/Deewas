@@ -2,8 +2,8 @@
 
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { refetching } from '@/lib/reducers/loadReducer'
-import { formatSymbol, revertAdjustedCurrency } from '@/lib/string'
+import { refresh } from '@/lib/reducers/loadReducer'
+import { formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
@@ -52,7 +52,6 @@ function TransferFundDrawer({
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-  const { curWallet } = useAppSelector(state => state.wallet)
 
   // values
   const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
@@ -151,10 +150,10 @@ function TransferFundDrawer({
         const { message } = await transferFundApi({
           ...data,
           date: toUTC(data.date),
-          amount: revertAdjustedCurrency(data.amount, locale),
+          amount: data.amount,
         })
 
-        dispatch(refetching())
+        dispatch(refresh())
 
         if (refetch) refetch()
 
@@ -169,7 +168,7 @@ function TransferFundDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, dispatch, locale, t]
+    [handleValidate, reset, refetch, dispatch, t]
   )
 
   return (

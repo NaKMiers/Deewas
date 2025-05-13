@@ -122,7 +122,6 @@ export const deleteWallet = async (userId: string, walletId: string) => {
     const categoryIds: any[] = [
       ...new Set(transactionsOfWallet.map((t: IFullTransaction) => t.category._id)),
     ]
-    console.log(categoryIds)
 
     const promises = categoryIds.map((cateId: string) => {
       const totalAmountOfTxOfCate = transactionsOfWallet
@@ -311,19 +310,12 @@ export const getWallets = async (userId: string, params: any = {}) => {
     // connect to database
     await connectDatabase()
 
-    console.log('params', params)
-
     const { filter, sort, limit, skip } = filterBuilder(params, {
       skip: 0,
       limit: Infinity,
       sort: { createdAt: 1 },
       filter: { user: userId },
     })
-
-    console.log('filter', filter)
-    console.log('sort', sort)
-    console.log('limit', limit)
-    console.log('skip', skip)
 
     // get user wallets
     const wallets = await WalletModel.find(filter).sort(sort).skip(skip).limit(limit).lean()

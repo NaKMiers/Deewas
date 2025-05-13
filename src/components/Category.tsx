@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { updateCategory } from '@/lib/reducers/categoryReduce'
-import { refetching } from '@/lib/reducers/loadReducer'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
@@ -27,10 +27,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dro
 // MARK: Category
 interface CategoryProps {
   category: ICategory
+  hideMenu?: boolean
   className?: string
 }
 
-function Category({ category, className }: CategoryProps) {
+function Category({ category, hideMenu, className }: CategoryProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('category')
@@ -56,7 +57,7 @@ function Category({ category, className }: CategoryProps) {
       toast.success(message, { id: 'delete-category' })
 
       // dispatch(deleteCategory(w))
-      dispatch(refetching())
+      dispatch(refresh())
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-category' })
       console.log(err)
@@ -93,7 +94,8 @@ function Category({ category, className }: CategoryProps) {
           {currency && (
             <span className="font-body font-bold">{formatCurrency(currency, category.amount)}</span>
           )}
-          {!updating && !deleting ? (
+
+          {!hideMenu && !updating && !deleting ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

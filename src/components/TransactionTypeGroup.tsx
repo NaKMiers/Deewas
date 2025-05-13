@@ -23,7 +23,6 @@ function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionT
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-  const { curWallet } = useAppSelector(state => state.wallet)
 
   // states
   const [open, setOpen] = useState<boolean>(true)
@@ -38,7 +37,7 @@ function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionT
   }, [])
 
   return (
-    <div className={cn('flex flex-col gap-21/2 md:mt-21', className)}>
+    <div className={cn('flex flex-col gap-21/2', className)}>
       <div>
         {/* MARK: Type Header */}
         <div
@@ -59,7 +58,7 @@ function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionT
           </div>
 
           <div className="flex flex-1 flex-col">
-            <p className="text-sm font-semibold capitalize md:text-2xl">{t(type + 's')}</p>
+            <p className="text-lg font-semibold capitalize">{t(type + 's')}</p>
             <p className="text-xs font-semibold text-muted-foreground">Sorted by date</p>
           </div>
 
@@ -83,7 +82,6 @@ function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionT
             </DropdownMenuTrigger>
             <DropdownMenuContent className="max-w-max p-0">
               <CreateTransactionDrawer
-                initWallet={curWallet}
                 type={type}
                 trigger={
                   <Button

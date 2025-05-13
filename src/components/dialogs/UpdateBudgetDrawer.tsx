@@ -2,7 +2,7 @@
 
 import { currencies } from '@/constants/settings'
 import { useAppSelector } from '@/hooks/reduxHook'
-import { formatSymbol, revertAdjustedCurrency } from '@/lib/string'
+import { formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -139,7 +139,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className }: UpdateBudget
           ...data,
           begin: toUTC(moment(data.begin).startOf('day').toDate()),
           end: toUTC(moment(data.end).endOf('day').toDate()),
-          total: revertAdjustedCurrency(data.total, locale),
+          total: data.total,
         })
 
         if (update) update(b)
@@ -155,7 +155,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className }: UpdateBudget
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, budget._id, locale, t]
+    [handleValidate, reset, update, budget._id, t]
   )
 
   return (

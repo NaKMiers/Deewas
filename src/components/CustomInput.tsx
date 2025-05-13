@@ -1,6 +1,5 @@
 import { currencies } from '@/constants/settings'
 import { useAppSelector } from '@/hooks/reduxHook'
-import { adjustCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { memo, ReactNode, useCallback, useState } from 'react'
 import { Controller, FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
@@ -129,8 +128,8 @@ function CustomInput({
                   errors[id]?.message ? 'border-rose-500' : 'border-dark'
                 )}
                 disabled={disabled}
-                type="text"
-                value={adjustCurrency(value || '', locale)}
+                type="number"
+                value={value}
                 onChange={onChange}
                 {...rest}
               />

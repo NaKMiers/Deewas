@@ -128,7 +128,7 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
                   <span>{selectedCategory.icon}</span> {selectedCategory.name}
                 </p>
               ) : (
-                t('Select Category')
+                t('Select category')
               )}{' '}
               <LuChevronsUpDown size={18} />
             </Button>
@@ -139,7 +139,7 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
         <DrawerContent className="w-full p-0 shadow-md">
           <div className="mx-auto w-full max-w-sm px-21/2">
             <DrawerHeader>
-              <DrawerTitle className="text-center">{t('Select Category')}</DrawerTitle>
+              <DrawerTitle className="text-center">{t('Select category')}</DrawerTitle>
               <DrawerDescription className="text-center">
                 {t('Categories are used to group your transactions')}
               </DrawerDescription>

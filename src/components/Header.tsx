@@ -2,20 +2,26 @@
 
 import { useRouter } from '@/i18n/navigation'
 import { shortName } from '@/lib/string'
-import { cn } from '@/lib/utils'
-import { LucideBell, LucideCalendarDays } from 'lucide-react'
+import { checkPremium, cn } from '@/lib/utils'
+import { LucideCalendarDays } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
+import Image from 'next/image'
 import { Button } from './ui/button'
-import { DropdownMenu, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { memo } from 'react'
 
 function Header({ className }: { className?: string }) {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
+  const isPremium = checkPremium(user)
   const t = useTranslations('header')
   const router = useRouter()
   const locale = useLocale()
+
+  console.log(user.plan)
+
+  if (!isPremium) return router.replace('/onboarding')
 
   return (
     <header
@@ -35,33 +41,28 @@ function Header({ className }: { className?: string }) {
             <LucideCalendarDays size={22} />
           </Button>
           <h1 className="text-nowrap font-semibold tracking-wide">
-            {t('Hello')} {shortName(user)}!👋
+            {t('Hi')} {shortName(user)}!👋
           </h1>
         </div>
 
         <div className="flex items-center gap-2">
           <Button
             variant="secondary"
-            className="relative h-8"
+            size="icon"
+            onClick={() => router.push('/streaks')}
           >
-            {t('Upgrade')}
+            <Image
+              src="/icons/flame.gif"
+              width={30}
+              height={30}
+              alt="streaks"
+              className="h-full w-full object-cover"
+            />
           </Button>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="secondary"
-                size="icon"
-                className="h-8"
-              >
-                <LucideBell size={18} />
-              </Button>
-            </DropdownMenuTrigger>
-          </DropdownMenu>
         </div>
       </div>
     </header>
   )
 }
 
-export default Header
+export default memo(Header)

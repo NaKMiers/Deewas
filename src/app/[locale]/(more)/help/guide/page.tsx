@@ -10,7 +10,7 @@ import Link from 'next/link'
 
 function UserGuidePage() {
   return (
-    <div className="min-h-screen bg-background p-6 md:p-12">
+    <div className="min-h-screen p-6 md:p-12">
       <Link
         href="/"
         className="flex items-center"

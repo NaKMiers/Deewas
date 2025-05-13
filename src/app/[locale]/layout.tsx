@@ -68,7 +68,7 @@ export default async function RootLayout({
               showAtBottom={false}
             />
             {children}
-          </StoreProvider>{' '}
+          </StoreProvider>
         </NextIntlClientProvider>
       </body>
     </html>

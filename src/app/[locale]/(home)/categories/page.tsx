@@ -2,19 +2,20 @@
 
 import CategoryGroup from '@/components/CategoryGroup'
 import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
+import NoItemsFound from '@/components/NoItemsFound'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { addCategory, setCategories } from '@/lib/reducers/categoryReduce'
+import { Link } from '@/i18n/navigation'
+import { addCategory } from '@/lib/reducers/categoryReduce'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
-import { getMyCategoriesApi } from '@/requests'
-import { LucidePlus } from 'lucide-react'
+import { Separator } from '@radix-ui/react-separator'
+import { LucideChevronLeft, LucidePlus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 
 function CategoriesPage() {
   // hooks
@@ -22,33 +23,10 @@ function CategoriesPage() {
   const t = useTranslations('categoriesPage')
 
   // store
-  const { categories } = useAppSelector(state => state.category)
-  const { refetching: rfc } = useAppSelector(state => state.load)
+  const { categories, loading } = useAppSelector(state => state.category)
 
   // states
-  const [loading, setLoading] = useState<boolean>(false)
   const [groups, setGroups] = useState<any[]>([])
-
-  // get categories
-  useEffect(() => {
-    const getCategories = async () => {
-      // stat loading
-      setLoading(true)
-
-      try {
-        const { categories } = await getMyCategoriesApi()
-        dispatch(setCategories(categories))
-      } catch (err: any) {
-        toast.error(t('Failed to get categories'))
-        console.error(err)
-      } finally {
-        // stop loading
-        setLoading(false)
-      }
-    }
-
-    getCategories()
-  }, [dispatch, t, rfc])
 
   // auto group categories by type
   useEffect(() => {
@@ -67,10 +45,16 @@ function CategoriesPage() {
   }, [categories])
 
   return (
-    <div className="container px-21/2 pb-32 pt-21/2 md:px-21 md:pt-21">
+    <div className="container min-h-[calc(100vh-50px)] p-21/2 md:p-21">
       {/* Top */}
-      <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-bold">Categories</h2>
+      <div className="flex flex-row flex-wrap items-center gap-21/2">
+        <Link
+          href="/account"
+          className="rounded-full bg-secondary p-1.5"
+        >
+          <LucideChevronLeft size={22} />
+        </Link>
+        <p className="pl-1 text-xl font-bold">{t('Categories')}</p>
       </div>
 
       {/* Categories Groups */}
@@ -78,7 +62,7 @@ function CategoriesPage() {
         groups.length > 0 ? (
           <Tabs
             defaultValue={'expense'}
-            className="w-full"
+            className="mt-21 w-full"
           >
             <TabsList className="flex h-12 justify-start overflow-y-auto">
               {groups.map(([key]) => (
@@ -103,14 +87,13 @@ function CategoriesPage() {
             ))}
           </Tabs>
         ) : (
-          <div className="flex items-center justify-center rounded-md border border-muted-foreground/50 px-21/2 py-7">
-            <p className="text-center text-lg font-semibold text-muted-foreground/50">
-              {t("You don't have any categories yet, create one now!")}
-            </p>
-          </div>
+          <NoItemsFound
+            text={t("You don't have any categories yet, create one now!")}
+            className="mt-21"
+          />
         )
       ) : (
-        <div className="flex flex-col gap-2">
+        <div className="mt-21 flex flex-col gap-2">
           <Skeleton className="h-12 w-full" />
           <Skeleton className="h-96 w-full" />
           {Array.from({ length: 5 }).map((_, index) => (
@@ -135,6 +118,8 @@ function CategoriesPage() {
           </Button>
         }
       />
+
+      <Separator className="my-40 h-0" />
     </div>
   )
 }

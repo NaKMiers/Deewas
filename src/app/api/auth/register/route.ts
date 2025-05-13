@@ -13,9 +13,9 @@ import '@/models/SettingsModel'
 import '@/models/UserModel'
 import '@/models/WalletModel'
 
-// [POST]: /auth/register
+// [POST]: /auth/sign-up
 export async function POST(req: NextRequest) {
-  console.log('- Register -')
+  console.log('- Sign Up -')
 
   try {
     // connect to database

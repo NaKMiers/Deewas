@@ -87,17 +87,14 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
   )
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative shadow-md ${className}`}>
       <Drawer
         open={open}
         onOpenChange={setOpen}
       >
         <DrawerTrigger asChild>
           {!loading ? (
-            <Button
-              variant="outline"
-              className="w-full justify-between"
-            >
+            <Button className="w-full justify-between">
               {selectedWallet ? (
                 <p>
                   <span>{selectedWallet.icon}</span> {selectedWallet.name}
@@ -107,7 +104,7 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
                   <span>+</span> {t('All wallets')}
                 </p>
               ) : (
-                t('Select Wallet')
+                t('Select wallet')
               )}
               <LuChevronsUpDown size={18} />
             </Button>
@@ -118,7 +115,7 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
         <DrawerContent className="w-full p-0 shadow-md">
           <div className="mx-auto w-full max-w-sm px-21/2">
             <DrawerHeader>
-              <DrawerTitle className="text-center">{t('Select Wallet')}</DrawerTitle>
+              <DrawerTitle className="text-center">{t('Select wallet')}</DrawerTitle>
               <DrawerDescription className="text-center">
                 {t('Wallets are used to group your transactions by source of funds')}
               </DrawerDescription>

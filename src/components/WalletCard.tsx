@@ -2,8 +2,8 @@
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
-import { deleteWallet, setCurWallet, updateWallet } from '@/lib/reducers/walletReducer'
-import { checkTranType, formatCurrency } from '@/lib/string'
+import { deleteWallet, updateWallet } from '@/lib/reducers/walletReducer'
+import { checkLevel, checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
@@ -25,16 +25,16 @@ import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import TransferFundDrawer from './dialogs/TransferFundDrawer'
 import UpdateWalletDrawer from './dialogs/UpdateWalletDrawer'
 import { Button } from './ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
 import { Switch } from './ui/switch'
 
 interface WalletCardProps {
   wallet: IWallet
+  hideMenu?: boolean
   className?: string
 }
 
-function WalletCard({ wallet, className }: WalletCardProps) {
+function WalletCard({ wallet, hideMenu, className }: WalletCardProps) {
   // hooks
   const router = useRouter()
   const locale = useLocale()
@@ -49,6 +49,11 @@ function WalletCard({ wallet, className }: WalletCardProps) {
   const [updating, setUpdating] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
   const [exclude, setExclude] = useState<boolean>(false)
+
+  // value
+  const spentRate = wallet.income
+    ? Math.round(Math.min((wallet.expense / wallet.income) * 100, 100) * 100) / 100
+    : 0
 
   // delete wallet
   const handleDeleteWallet = useCallback(async () => {
@@ -95,29 +100,26 @@ function WalletCard({ wallet, className }: WalletCardProps) {
   )
 
   return (
-    <Card
-      className={cn('cursor-pointer select-none overflow-hidden', className)}
-      onClick={() => {
-        dispatch(setCurWallet(wallet))
-        router.push('/transactions', { locale })
-      }}
+    <div
+      className={cn(
+        'cursor-pointer select-none overflow-hidden rounded-lg bg-[url(/images/pre-bg-v-flip.png)] bg-cover bg-center bg-no-repeat shadow-md',
+        className
+      )}
+      onClick={() => router.push('/transactions', { locale })}
     >
-      <CardHeader className="py-21/2">
-        <CardTitle className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-lg">
+      <div className="px-21/2 py-21/2 text-neutral-800">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-lg font-semibold">
             <span>{wallet.icon}</span>
             <span>{wallet.name}</span>
           </div>
 
-          {!deleting && !updating ? (
+          {!hideMenu && !deleting && !updating ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                >
+                <button className="px-2">
                   <LucideEllipsis />
-                </Button>
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent onClick={e => e.stopPropagation()}>
                 {/* MARK: exclude */}
@@ -210,11 +212,11 @@ function WalletCard({ wallet, className }: WalletCardProps) {
               <LucideLoaderCircle className="animate-spin" />
             </Button>
           )}
-        </CardTitle>
-      </CardHeader>
+        </div>
+      </div>
 
       {/* Content */}
-      <CardContent className="flex flex-col gap-2 px-4 pb-2">
+      <div className="flex flex-col gap-2 px-4 pb-2">
         <Item
           title={t('Balance')}
           value={wallet.income + wallet.saving + wallet.invest - wallet.expense}
@@ -244,24 +246,32 @@ function WalletCard({ wallet, className }: WalletCardProps) {
             type="invest"
           />
         </div>
-      </CardContent>
+      </div>
 
       {/* Collapse Button */}
       <Button
-        className={cn(
-          'flex h-6 w-full items-center justify-center rounded-none bg-primary py-1 text-secondary'
-        )}
+        className={cn('w-full flex-row items-center justify-center gap-4 rounded-none')}
+        style={{ height: 32 }}
         onClick={e => {
           e.stopPropagation()
           setCollapsed(!collapsed)
         }}
       >
+        {!!spentRate && (
+          <div className="h-2 flex-1 rounded-lg bg-secondary">
+            <div
+              className={cn('h-full rounded-full', checkLevel(spentRate).background)}
+              style={{ width: `${spentRate}%` }}
+            />
+          </div>
+        )}
+
         <LucideChevronDown
-          size={18}
-          className={`trans-200 ${collapsed ? 'rotate-180' : ''}`}
+          size={26}
+          className={cn('trans-200', collapsed ? 'rotate-180' : 'rotate-0')}
         />
       </Button>
-    </Card>
+    </div>
   )
 }
 
@@ -281,17 +291,17 @@ function Item({ title, type, value }: CardProps) {
   const { Icon, background, border } = checkTranType(type)
 
   return (
-    <div className={`flex w-full items-center gap-21/2 rounded-lg border bg-secondary/30 px-21/2 py-1`}>
+    <div className={`flex w-full items-center gap-21/2 rounded-lg border bg-neutral-800 px-21/2 py-1`}>
       <div
         className={cn(
-          'flex h-10 w-10 items-center justify-center rounded-md border-2 text-white',
+          'x flex h-10 w-10 items-center justify-center rounded-md border-2 text-white',
           background,
           border
         )}
       >
         <Icon size={24} />
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col text-white">
         <p className="font-body tracking-wider">{title}</p>
 
         <span className="text-xl font-semibold">{currency && formatCurrency(currency, value)}</span>

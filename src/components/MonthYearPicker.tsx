@@ -16,7 +16,7 @@ interface MonthYearPickerProps {
 function MonthYearPicker({ currentMonth, setCurrentMonth }: MonthYearPickerProps) {
   // hooks
   const locale = useLocale()
-  const t = useTranslations('montYearPicker')
+  const t = useTranslations('monthYearPicker')
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -52,10 +52,7 @@ function MonthYearPicker({ currentMonth, setCurrentMonth }: MonthYearPickerProps
     >
       {/* MARK: Trigger */}
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="flex items-center gap-2 text-lg font-normal"
-        >
+        <Button className="flex items-center gap-2 bg-primary text-lg font-normal text-secondary shadow-md">
           <LucideCalendarFold size={20} />
           <span className="text-sm capitalize">
             {format(currentMonth, 'MMMM yyyy', { locale: getLocale(locale) })}

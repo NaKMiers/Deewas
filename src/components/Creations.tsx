@@ -13,7 +13,7 @@ import {
 import { useAppDispatch } from '@/hooks/reduxHook'
 import { addBudget } from '@/lib/reducers/budgetReducer'
 import { addCategory } from '@/lib/reducers/categoryReduce'
-import { refetching } from '@/lib/reducers/loadReducer'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { addTransaction } from '@/lib/reducers/transactionReducer'
 import { addWallet } from '@/lib/reducers/walletReducer'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -63,7 +63,7 @@ function Creations() {
             <CreateTransactionDrawer
               update={(transaction: IFullTransaction) => {
                 dispatch(addTransaction(transaction))
-                dispatch(refetching())
+                dispatch(refresh())
               }}
               trigger={
                 <Button variant="outline">

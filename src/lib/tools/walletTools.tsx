@@ -1,6 +1,6 @@
 import { createWallet, deleteWallet, getWallets, transfer } from '@/app/api/wallet'
 import { updateWallet } from '@/app/api/wallet/'
-import { Message } from '@/components/ai/message'
+import { Message } from '@/components/ai/Message'
 import { z } from 'zod'
 
 // MARK: Get all wallets

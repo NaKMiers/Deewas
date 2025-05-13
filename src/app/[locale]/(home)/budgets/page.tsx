@@ -22,7 +22,7 @@ function BudgetsPage() {
 
   // store
   const { budgets } = useAppSelector(state => state.budget)
-  const { refetching } = useAppSelector(state => state.load)
+  const { refreshPoint } = useAppSelector(state => state.load)
 
   // states
   const [loading, setLoading] = useState<boolean>(false)
@@ -46,7 +46,7 @@ function BudgetsPage() {
     }
 
     getBudgets()
-  }, [dispatch, refetching])
+  }, [dispatch, refreshPoint])
 
   useEffect(() => {
     const groups: {
@@ -76,7 +76,7 @@ function BudgetsPage() {
   }, [budgets])
 
   return (
-    <div className="container p-21/2 pb-32 md:p-21">
+    <div className="container min-h-[calc(100vh-50px)] p-21/2 pb-32 md:p-21">
       {!loading ? (
         groups.length > 0 ? (
           <Tabs

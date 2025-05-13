@@ -431,8 +431,6 @@ export const getTransactions = async (userId: string, params: any = {}) => {
     // connect to database
     await connectDatabase()
 
-    console.log('params:', params)
-
     const needOldestDate = params?.needOldestDate?.[0] === 'true'
     if (needOldestDate) delete params.needOldestDate
 
@@ -442,11 +440,6 @@ export const getTransactions = async (userId: string, params: any = {}) => {
       skip: 0,
       limit: Infinity,
     })
-
-    console.log('filter:', filter)
-    console.log('sort:', sort)
-    console.log('skip:', skip)
-    console.log('limit:', limit)
 
     const promises: any[] = [
       TransactionModel.find(filter)

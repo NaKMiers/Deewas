@@ -1,7 +1,7 @@
 // Auth -------------------------------------
 
 // [POST]: /auth/register
-export const registerApi = async (data: any) => {
+export const signUpApi = async (data: any) => {
   const res = await fetch('/api/auth/register', {
     method: 'POST',
     body: JSON.stringify(data),

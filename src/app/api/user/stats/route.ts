@@ -33,14 +33,12 @@ export async function GET(req: NextRequest) {
     const params = searchParamsToObject(req.nextUrl.searchParams)
     const { from, to } = params
 
-    console.log('params', params)
     if (!from?.[0] && !to?.[0]) {
       return NextResponse.json({ message: 'Please provide a date range' }, { status: 400 })
     }
     const filter: any = { user: userId }
     if (from?.[0]) filter.createdAt = { $gte: toUTC(moment(from[0]).toDate()) }
     if (to?.[0]) filter.createdAt = { ...filter.createdAt, $lte: toUTC(moment(to[0]).toDate()) }
-    console.log('filter', filter)
 
     await connectDatabase()
 

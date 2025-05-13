@@ -8,7 +8,7 @@ import { BarChart, LucideBrain, LucideChevronLeft, LucidePieChart, Wallet } from
 
 function AboutPage() {
   return (
-    <div className="min-h-screen bg-background p-6 md:p-12">
+    <div className="min-h-screen p-6 md:p-12">
       <Link
         href="/"
         className="flex items-center"

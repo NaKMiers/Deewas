@@ -72,10 +72,15 @@ function ForgotPasswordPage() {
   }, [handleSubmit, onSubmit, dispatch, t])
 
   return (
-    <div className="flex h-screen w-full items-center justify-center p-2">
+    <div className="flex h-screen w-full flex-col items-center justify-center p-2">
+      <p className="mb-21 flex flex-row items-end text-center text-4xl font-bold tracking-wider">
+        DEEWAS
+        <p className="text-[40px] font-bold text-green-500">.</p>
+      </p>
+
       <div
         className={cn(
-          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary bg-white text-black'
+          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary bg-white text-black shadow-md'
         )}
       >
         <div className="no-scrollbar overflow-y-auto px-10 py-8">
@@ -111,25 +116,13 @@ function ForgotPasswordPage() {
 
           <div className="mt-4 text-center">
             <Link
-              href="/auth/login"
+              href="/auth/sign-in"
               className="text-sm text-muted-foreground underline underline-offset-2 hover:text-black"
             >
-              {t('Back to Login')}
+              {t('Back to Sign In')}
             </Link>
           </div>
         </div>
-
-        {/* <div className="border-y border-slate-300 bg-neutral-100">
-          <p className="px-2 py-5 text-center text-sm text-black">
-            {t("Don't have an account?")}{' '}
-            <Link
-              href="/auth/register"
-              className="font-semibold underline-offset-1 hover:underline"
-            >
-              {t('Register')}
-            </Link>
-          </p>
-        </div> */}
       </div>
     </div>
   )

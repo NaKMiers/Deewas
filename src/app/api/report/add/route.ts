@@ -12,8 +12,6 @@ export async function POST(req: NextRequest) {
     // get results from request
     const { results } = await req.json()
 
-    console.log('Results:', results)
-
     // connect to database
     await connectDatabase()
 

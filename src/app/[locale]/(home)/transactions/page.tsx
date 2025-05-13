@@ -9,14 +9,13 @@ import { Skeleton } from '@/components/ui/skeleton'
 import WalletPicker from '@/components/WalletPicker'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
-import { refetching } from '@/lib/reducers/loadReducer'
 import { setTransactions } from '@/lib/reducers/transactionReducer'
 import { toUTC } from '@/lib/time'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { getMyTransactionsApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
-import { LucideCalendarDays, LucidePlus, LucideRefreshCw, LucideSearch } from 'lucide-react'
+import { LucideCalendarDays, LucidePlus, LucideSearch } from 'lucide-react'
 import moment from 'moment-timezone'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
@@ -26,21 +25,20 @@ import { LuX } from 'react-icons/lu'
 function TransactionsPage() {
   // hooks
   const dispatch = useAppDispatch()
-  const t = useTranslations('transactionPage')
+  const t = useTranslations('transactionsPage')
   const router = useRouter()
   const locale = useLocale()
 
   // store
-  const { curWallet } = useAppSelector(state => state.wallet)
   const { transactions } = useAppSelector(state => state.transaction)
-  const { refetching: rfc } = useAppSelector(state => state.load)
+  const { refreshPoint } = useAppSelector(state => state.load)
 
   // states
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
-    from: moment().startOf('month').toDate(), // default is current month
+    from: moment().startOf('month').toDate(),
     to: moment().endOf('month').toDate(),
   })
-  const [wallet, setWallet] = useState<IWallet | null>(curWallet)
+  const [wallet, setWallet] = useState<IWallet | null>(null)
   const [groups, setGroups] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState<string>('')
@@ -55,7 +53,6 @@ function TransactionsPage() {
 
     try {
       const { transactions } = await getMyTransactionsApi(query)
-      console.log('transactions', transactions)
       dispatch(setTransactions(transactions))
     } catch (err: any) {
       console.log(err)
@@ -69,7 +66,7 @@ function TransactionsPage() {
   // initial fetch
   useEffect(() => {
     getMyTransactions()
-  }, [getMyTransactions, rfc])
+  }, [getMyTransactions, refreshPoint])
 
   // auto group categories by type
   useEffect(() => {
@@ -115,11 +112,11 @@ function TransactionsPage() {
   }, [transactions, search])
 
   return (
-    <div className="container pb-32">
+    <div className="container min-h-[calc(100vh-50px)] pb-32">
       {/* MARK: Top */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4 md:px-21">
         <h2 className="text-lg font-bold">
-          {t('Transactions')} <span className="text-muted-foreground/50">{t('of wallet')}</span>
+          {t('Transactions')} <span className="text-muted-foreground/50">{t('of')}</span>
         </h2>
 
         <WalletPicker
@@ -131,20 +128,11 @@ function TransactionsPage() {
 
       {/* MARK: Date Range */}
       <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
-        {/* Mark: Refresh */}
-        <Button
-          variant="outline"
-          size="icon"
-          className="group h-8"
-          onClick={() => dispatch(refetching())}
-        >
-          <LucideRefreshCw className="trans-300 group-hover:rotate-180" />
-        </Button>
-
         <DateRangePicker
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
           showCompare={false}
+          className="h-10 bg-primary px-4 text-secondary shadow-md hover:bg-primary/90 hover:text-secondary"
           onUpdate={values => {
             const { from, to } = values.range
 
@@ -165,16 +153,12 @@ function TransactionsPage() {
       <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
         {/* Search */}
         <div className="relative flex w-full overflow-hidden rounded-md shadow-sm">
-          <Button
-            variant="outline"
-            size="icon"
-            className="w-10 flex-shrink-0 rounded-r-none"
-          >
-            <LucideSearch />
-          </Button>
+          <button className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-l-md rounded-r-none bg-primary text-secondary">
+            <LucideSearch size={20} />
+          </button>
 
           <Input
-            className="rounded-l-none border border-l-0 pr-10 text-base !ring-0 md:text-sm"
+            className="h-10 rounded-l-none border border-primary pr-10 !ring-0"
             placeholder={t('Search') + '...'}
             value={search}
             onChange={e => setSearch(e.target.value)}
@@ -193,14 +177,12 @@ function TransactionsPage() {
         </div>
 
         {/* Calendar */}
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-9 w-9 flex-shrink-0"
+        <button
+          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary text-secondary"
           onClick={() => router.push('/calendar', { locale })}
         >
-          <LucideCalendarDays />
-        </Button>
+          <LucideCalendarDays size={20} />
+        </button>
       </div>
 
       {/* MARK: Groups */}
@@ -235,7 +217,7 @@ function TransactionsPage() {
 
       {/* MARK: Create Transaction */}
       <CreateTransactionDrawer
-        initWallet={wallet || curWallet}
+        initWallet={wallet || undefined}
         trigger={
           <Button
             variant="default"

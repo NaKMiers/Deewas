@@ -17,7 +17,6 @@ export async function POST(req: NextRequest) {
 
     // VERIFY...
     const data = await getRevenueCatSubscriberApi(userId)
-    console.log('data', data)
 
     const activeEntitlement = data.subscriber.entitlements?.['Premium']
 

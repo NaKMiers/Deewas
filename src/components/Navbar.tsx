@@ -1,102 +1,102 @@
-'use client'
-
-import { useAppDispatch } from '@/hooks/reduxHook'
 import { Link, usePathname } from '@/i18n/navigation'
-import { setCurWallet } from '@/lib/reducers/walletReducer'
 import { cn } from '@/lib/utils'
-import { LucideChartPie, LucideHouse, LucideWallet } from 'lucide-react'
+import { CircleUserRound, Home, PieChart, Wallet } from 'lucide-react'
 import { useSession } from 'next-auth/react'
-import { useTranslations } from 'next-intl'
+import { useTheme } from 'next-themes'
 import Image from 'next/image'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 
-function Navbar({ className }: { className?: string }) {
-  // hooks
+interface NavbarProps {
+  className?: string
+  [key: string]: any
+}
+
+function Navbar({ className }: NavbarProps) {
+  // Hooks
   const { data: session } = useSession()
   const user: any = session?.user
-  const t = useTranslations('navbar')
+  const { resolvedTheme } = useTheme()
+  const isDarkColorScheme = resolvedTheme === 'dark'
   const pathname = usePathname()
-  const dispatch = useAppDispatch()
+
+  const routes = useMemo(
+    () => [
+      {
+        label: 'Home',
+        href: '/',
+        icon: Home,
+        activeColor: '#10b981',
+      },
+      {
+        label: 'Transactions',
+        href: '/transactions',
+        icon: Wallet,
+        activeColor: '#0ea5e9',
+      },
+      {
+        label: 'AI',
+        href: '/ai',
+        activeColor: '#f43f5e',
+        source: isDarkColorScheme ? '/images/rounded-logo-dark.png' : '/images/rounded-logo-light.png',
+        width: 32,
+        height: 32,
+        className: 'rounded-none',
+      },
+      {
+        label: 'Budgets',
+        href: '/budgets',
+        icon: PieChart,
+        activeColor: '#8b5cf6',
+      },
+      {
+        label: 'Account',
+        href: '/account',
+        source: user?.avatar || undefined,
+        icon: user?.authType === 'google' ? undefined : CircleUserRound,
+        size: 25,
+        activeColor: '#f59e0b',
+      },
+    ],
+    [user, isDarkColorScheme]
+  )
 
   return (
     <nav
       className={cn(
-        'fixed bottom-21 left-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 px-21/2 text-secondary',
+        'fixed bottom-21 left-1/2 flex w-full max-w-[400px] -translate-x-1/2 justify-center rounded-full bg-primary shadow-md',
         className
       )}
     >
-      <div className="container flex h-full items-center justify-between gap-0.5 rounded-full bg-primary px-21/2 py-2 text-center">
-        {/* Home */}
+      {routes.map(route => (
         <Link
-          href="/"
+          href={route.href}
+          key={route.href}
           className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
-            pathname === '/' && 'text-emerald-500 shadow-md'
+            'flex flex-1 flex-row items-center justify-center gap-0.5 rounded-full py-1 text-secondary transition-colors duration-200',
+            pathname === route.href ? 'bg-gray-200' : ''
           )}
         >
-          <LucideHouse className="h-[22px] w-[22px] md:h-[18px] md:w-[18px]" />
-          <span className="hidden text-xs font-semibold md:block">{t('Home')}</span>
-        </Link>
-
-        {/* Transactions */}
-        <Link
-          href="/transactions"
-          className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
-            pathname.startsWith('/transactions') && 'text-sky-500 shadow-md'
-          )}
-          onClick={() => dispatch(setCurWallet(null))}
-        >
-          <LucideWallet className="h-[22px] w-[22px] md:h-[18px] md:w-[18px]" />
-          <span className="hidden text-xs font-semibold md:block">{t('Transactions')}</span>
-        </Link>
-
-        <Link
-          href="/ai"
-          className="flex flex-1 flex-shrink-0 flex-col items-center justify-center gap-0.5"
-        >
-          <div
-            className={cn(
-              'flex aspect-square h-9 w-9 flex-shrink-0 items-center justify-center text-nowrap rounded-full bg-secondary text-sm font-semibold text-primary md:h-10 md:w-10',
-              pathname.startsWith('/ai') && 'bg-rose-500 text-white shadow-md'
-            )}
-          >
-            AI
-          </div>
-        </Link>
-
-        {/* Budget */}
-        <Link
-          href="/budgets"
-          className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
-            pathname.startsWith('/budgets') && 'text-violet-500 shadow-md'
-          )}
-        >
-          <LucideChartPie className="h-[22px] w-[22px] md:h-[18px] md:w-[18px]" />
-          <span className="hidden text-xs font-semibold md:block">{t('Budgets')}</span>
-        </Link>
-
-        {/* Account */}
-        <Link
-          href="/account"
-          className={cn(
-            'trans-200 flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-1',
-            pathname.startsWith('/account') && 'text-yellow-500 shadow-md'
-          )}
-        >
-          <div className="aspect-square max-w-[22px] overflow-hidden rounded-full md:max-w-[20px]">
-            <Image
-              className="h-full w-full object-cover"
-              src={user?.avatar || process.env.NEXT_PUBLIC_DEFAULT_AVATAR}
-              width={30}
-              height={30}
-              alt="account"
+          {route.icon ? (
+            <route.icon
+              size={route.size || 24}
+              color={pathname === route.href ? route.activeColor : undefined}
             />
-          </div>
-          <span className="hidden text-xs font-semibold md:block">{t('Account')}</span>
+          ) : (
+            <div
+              className={cn('overflow-hidden rounded-full', route.className)}
+              style={{ height: route.height || 26, width: route.width || 26 }}
+            >
+              <Image
+                src={route.source || '/default-avatar.png'}
+                alt={route.label}
+                width={route.width || 26}
+                height={route.height || 26}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          )}
         </Link>
-      </div>
+      ))}
     </nav>
   )
 }

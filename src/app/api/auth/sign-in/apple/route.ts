@@ -39,8 +39,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
     }
 
-    console.log(payload)
-
     // get data from payload
     const { email, sub, iss, aud, nonce_supported } = payload
 

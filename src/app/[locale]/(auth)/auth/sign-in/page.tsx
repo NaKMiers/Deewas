@@ -14,12 +14,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
-function LoginPage() {
+function SignInPage() {
   // hooks
   const dispatch = useAppDispatch()
   const router = useRouter()
   const locale = useLocale()
-  const t = useTranslations('loginPage')
+  const t = useTranslations('signInPage')
 
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -38,13 +38,13 @@ function LoginPage() {
     },
   })
 
-  // MARK: Login Submission
+  // MARK: Sign In Submission
   const onSubmit: SubmitHandler<FieldValues> = useCallback(
     async data => {
       // start loading
       setIsLoading(true)
 
-      toast.loading(t('Logging in') + '...', { id: 'login' })
+      toast.loading(t('Signing in') + '...', { id: 'sing-in' })
 
       try {
         // send request to server
@@ -52,7 +52,7 @@ function LoginPage() {
 
         if (res?.ok) {
           // show success message
-          toast.success(t('Login Successfully!'), { id: 'login' })
+          toast.success(t('Sign In Successfully!'), { id: 'sing-in' })
 
           // redirect to home page
           router.push('/', { locale })
@@ -60,12 +60,12 @@ function LoginPage() {
 
         if (res?.error) {
           // show error message
-          toast.error(res.error, { id: 'login' })
+          toast.error(res.error, { id: 'sign-in' })
           setError('usernameOrEmail', { type: 'manual' })
           setError('password', { type: 'manual' })
         }
       } catch (err: any) {
-        toast.error(err.message, { id: 'login' })
+        toast.error(err.message, { id: 'sign-in' })
         console.log(err)
       } finally {
         // stop loading state
@@ -78,7 +78,7 @@ function LoginPage() {
   // keyboard event
   useEffect(() => {
     // set page title
-    document.title = t('Login - Deewas')
+    document.title = t('Sign In - Deewas')
     dispatch(setPageLoading(false))
 
     const handleKeydown = (e: KeyboardEvent) => {
@@ -95,22 +95,27 @@ function LoginPage() {
   }, [handleSubmit, onSubmit, dispatch, t])
 
   return (
-    <div className="flex h-screen w-full items-center justify-center p-2">
+    <div className="flex h-screen w-full flex-col items-center justify-center p-2">
+      <p className="mb-21 flex flex-row items-end text-center text-4xl font-bold tracking-wider">
+        DEEWAS
+        <p className="text-[40px] font-bold text-green-500">.</p>
+      </p>
+
       <div
         className={cn(
-          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary bg-white text-black'
+          'w-full max-w-[400px] overflow-hidden rounded-2xl border border-primary bg-white text-black shadow-md'
         )}
       >
         <div className="no-scrollbar overflow-y-auto px-10 py-8">
           {/* MARK: Header */}
-          <h1 className="text-center text-lg font-semibold">{t('Login to Deewas')}</h1>
+          <h1 className="text-center text-lg font-semibold">{t('Sign In to Deewas')}</h1>
           <p className="text-center text-sm text-muted-foreground">
-            {t('Welcome back, please login to continue!')}
+            {t('Welcome back, please sign in to continue!')}
           </p>
 
           <Separator className="my-8 h-0" />
 
-          {/* MARK: Social Login */}
+          {/* MARK: Social Sign In */}
           <div className="flex items-center justify-center gap-2">
             <Button
               className="trans-200 h-8 flex-1 bg-white hover:bg-black/5"
@@ -123,30 +128,8 @@ function LoginPage() {
                 alt="Google"
               />
 
-              <p className="ml-1 font-semibold text-black/80">Login with Google</p>
+              <p className="ml-1 font-semibold text-black/80">Sign In with Google</p>
             </Button>
-            {/* <Button
-              className="h-8 bg-white"
-              onClick={() => signIn('apple', { callbackUrl: `/${locale}` })}
-            >
-              <Image
-                src="/icons/apple.png"
-                width={16}
-                height={16}
-                alt="Google"
-              />
-            </Button>
-            <Button
-              className="h-8 bg-white"
-              onClick={() => signIn('facebook', { callbackUrl: `/${locale}` })}
-            >
-              <Image
-                src="/icons/facebook.png"
-                width={16}
-                height={16}
-                alt="Google"
-              />
-            </Button> */}
           </div>
 
           <div className="my-6 flex items-center gap-3">
@@ -197,24 +180,11 @@ function LoginPage() {
             onClick={handleSubmit(onSubmit)}
             disabled={isLoading}
           >
-            {t('Login')}
+            {t('Sign In')}
           </Button>
         </div>
-
-        {/* MARK: Footer */}
-        {/* <div className="border-y border-slate-300 bg-neutral-100">
-          <p className="px-2 py-5 text-center text-sm text-black">
-            {t("Don't have an account?")}{' '}
-            <Link
-              href="/auth/register"
-              className="font-semibold underline-offset-1 hover:underline"
-            >
-              {t('Register')}
-            </Link>
-          </p>
-        </div> */}
       </div>
     </div>
   )
 }
-export default LoginPage
+export default SignInPage

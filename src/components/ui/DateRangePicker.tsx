@@ -71,10 +71,10 @@ const PRESETS: Preset[] = [
   { name: 'last7', label: 'Last 7 days' },
   { name: 'last14', label: 'Last 14 days' },
   { name: 'last30', label: 'Last 30 days' },
-  { name: 'thisWeek', label: 'This Week' },
-  { name: 'lastWeek', label: 'Last Week' },
-  { name: 'thisMonth', label: 'This Month' },
-  { name: 'lastMonth', label: 'Last Month' },
+  { name: 'thisWeek', label: 'This week' },
+  { name: 'lastWeek', label: 'Last week' },
+  { name: 'thisMonth', label: 'This month' },
+  { name: 'lastMonth', label: 'Last month' },
 ]
 
 /** The DateRangePicker component allows a user to select a range of dates */

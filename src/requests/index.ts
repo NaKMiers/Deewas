@@ -39,3 +39,13 @@ export const sendSupportFormApi = async (data: any) => {
 
   return await res.json()
 }
+
+// [GET]: /
+export const initApi = async () => {
+  const res = await fetch('/api')
+
+  // check status
+  if (!res.ok) throw await res.json()
+
+  return await res.json()
+}

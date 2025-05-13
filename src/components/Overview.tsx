@@ -6,13 +6,12 @@ import { LucideChevronDown, LucideEye } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { Dispatch, memo, SetStateAction, useState } from 'react'
 import { Button } from './ui/button'
-import { Card, CardContent } from './ui/card'
 
 interface OverviewCardProps {
   className?: string
 }
 
-function OverviewCard({ className }: OverviewCardProps) {
+function Overview({ className }: OverviewCardProps) {
   // hooks
   const t = useTranslations('overviewCard')
 
@@ -31,14 +30,14 @@ function OverviewCard({ className }: OverviewCardProps) {
   const totalBalance = totalIncome + totalSaving + totalInvest - totalExpense
 
   return (
-    <Card
+    <div
       className={cn(
-        'cursor-pointer overflow-hidden rounded-b-lg rounded-t-none border px-21/2 py-1 shadow-sm md:px-21',
+        'relative cursor-pointer rounded-xl border border-primary/10 bg-secondary/50 p-21/2 shadow-md',
         className
       )}
       onClick={() => setCollapsed(!collapsed)}
     >
-      <CardContent className="flex justify-between px-0 pb-2">
+      <div className="flex justify-between px-0 pb-2">
         <div>
           <Item
             title={t('Total Balance')}
@@ -84,12 +83,12 @@ function OverviewCard({ className }: OverviewCardProps) {
             className={`trans-200 ${collapsed ? 'rotate-180' : ''}`}
           />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   )
 }
 
-export default memo(OverviewCard)
+export default memo(Overview)
 
 interface CardProps {
   title: string

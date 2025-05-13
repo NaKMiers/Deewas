@@ -28,10 +28,11 @@ interface IBudgetCardProps {
   begin: Date | string
   end: Date | string
   budget: IFullBudget
+  hideMenu?: boolean
   className?: string
 }
 
-function BudgetCard({ begin, end, budget, className }: IBudgetCardProps) {
+function BudgetCard({ begin, end, budget, hideMenu, className }: IBudgetCardProps) {
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('budgetCard')
@@ -68,7 +69,7 @@ function BudgetCard({ begin, end, budget, className }: IBudgetCardProps) {
   }, [dispatch, budget._id, t])
 
   return (
-    <div className={cn('rounded-md border px-3 pb-8 pt-2', className)}>
+    <div className={cn('rounded-xl border border-primary/10 bg-secondary/50 px-3 pb-8 pt-2', className)}>
       <div className="flex items-center justify-between gap-1">
         {/* MARK: Category & Amount */}
         <div className="flex items-center gap-2 text-sm font-semibold">
@@ -81,7 +82,7 @@ function BudgetCard({ begin, end, budget, className }: IBudgetCardProps) {
           )}
         </div>
 
-        {!deleting ? (
+        {!hideMenu && !deleting ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button

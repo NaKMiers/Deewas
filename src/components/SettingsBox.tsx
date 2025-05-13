@@ -123,7 +123,12 @@ function Box({ type, desc, list, init, className }: BoxProps) {
   )
 
   return (
-    <div className={cn('relative w-full items-center justify-center rounded-lg border p-21', className)}>
+    <div
+      className={cn(
+        'relative w-full items-center justify-center rounded-lg border border-primary/10 bg-secondary/50 p-21 shadow-md',
+        className
+      )}
+    >
       <p className="font-bold capitalize">{t(type)}</p>
       <p className="mb-3 text-sm text-muted-foreground">{desc}</p>
 
@@ -134,7 +139,7 @@ function Box({ type, desc, list, init, className }: BoxProps) {
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between"
+            className="w-full justify-between border border-primary/10 bg-primary-foreground"
           >
             <p>{selected ? selected.label : `${t('Select')} ${t(type)}`}</p>
 
