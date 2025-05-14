@@ -1,11 +1,10 @@
 'use client'
 
-import { currencies } from '@/constants/settings'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
-import { IFullBudget } from '@/models/BudgetModel'
 import { ICategory } from '@/models/CategoryModel'
 import { createBudgetApi } from '@/requests/budgetRequests'
 import { LucideLoaderCircle } from 'lucide-react'
@@ -31,7 +30,6 @@ import {
 
 interface CreateBudgetDrawerProps {
   trigger: ReactNode
-  update?: (budget: IFullBudget) => void
   initCategory?: ICategory
   initTotal?: number
   initBegin?: string | Date
@@ -45,17 +43,14 @@ function CreateBudgetDrawer({
   initTotal,
   initBegin,
   initEnd,
-  update,
   className,
 }: CreateBudgetDrawerProps) {
   // hooks
   const t = useTranslations('createBudgetDrawer')
+  const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-
-  // values
-  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // form
   const {
@@ -152,18 +147,17 @@ function CreateBudgetDrawer({
       toast.loading(t('Creating budget') + '...', { id: 'create-budget' })
 
       try {
-        const { budget, message } = await createBudgetApi({
+        const { message } = await createBudgetApi({
           ...data,
           begin: toUTC(moment(data.begin).startOf('day').toDate()),
           end: toUTC(moment(data.end).endOf('day').toDate()),
           total: data.total,
         })
 
-        if (update) update(budget)
-
         toast.success(message, { id: 'create-budget' })
         setOpen(false)
         reset()
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(t('Failed to create budget'), { id: 'create-budget' })
         console.log(err)
@@ -172,7 +166,7 @@ function CreateBudgetDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, t]
+    [dispatch, handleValidate, reset, t]
   )
 
   return (

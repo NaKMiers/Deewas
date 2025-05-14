@@ -1,7 +1,6 @@
 import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
 import { Button } from '@/components/ui/button'
 import { useAppDispatch } from '@/hooks/reduxHook'
-import { addCategory } from '@/lib/reducers/categoryReduce'
 import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
@@ -57,8 +56,6 @@ function CategoryGroup({ categories, type, className }: CategoryGroupProps) {
           </div>
           <CreateCategoryDrawer
             type={type}
-            update={category => dispatch(addCategory(category))}
-            load={setCreating}
             trigger={
               <Button
                 disabled={creating}

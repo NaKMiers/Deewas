@@ -1,8 +1,8 @@
 'use client'
 
 import CreateTransactionDrawer from '@/components/dialogs/CreateTransactionDrawer'
-import { Transaction } from '@/components/LatestTransactions'
 import MonthYearPicker from '@/components/MonthYearPicker'
+import Transaction from '@/components/Transaction'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'

@@ -1,6 +1,5 @@
 'use client'
 
-import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatSymbol } from '@/lib/string'
@@ -34,27 +33,16 @@ import WalletPicker from '../WalletPicker'
 interface UpdateTransactionDrawerProps {
   transaction: IFullTransaction
   trigger: ReactNode
-  update?: (transaction: IFullTransaction) => void
-  refetch?: () => void
   className?: string
 }
 
-function UpdateTransactionDrawer({
-  transaction,
-  trigger,
-  update,
-  refetch,
-  className,
-}: UpdateTransactionDrawerProps) {
+function UpdateTransactionDrawer({ transaction, trigger, className }: UpdateTransactionDrawerProps) {
   // hooks
   const t = useTranslations('updateTransactionDrawer')
   const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-
-  // values
-  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -154,13 +142,10 @@ function UpdateTransactionDrawer({
           amount: data.amount,
         })
 
-        if (update) update(tx)
-        if (refetch) refetch()
-        dispatch(refresh())
-
         toast.success(message, { id: 'update-transaction' })
         setOpen(false)
         reset()
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(t('Failed to update transaction'), { id: 'update-transaction' })
         console.log(err)
@@ -169,7 +154,7 @@ function UpdateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, refetch, dispatch, , transaction._id, t]
+    [handleValidate, reset, dispatch, transaction._id, t]
   )
 
   return (

@@ -1,6 +1,5 @@
 'use client'
 
-import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { refresh } from '@/lib/reducers/loadReducer'
 import { formatSymbol } from '@/lib/string'
@@ -35,7 +34,6 @@ interface TransferFundDrawerProps {
   initFromWallet?: IWallet
   initToWallet?: IWallet
   trigger: ReactNode
-  refetch?: () => void
   className?: string
 }
 
@@ -43,18 +41,14 @@ function TransferFundDrawer({
   initFromWallet,
   initToWallet,
   trigger,
-  refetch,
   className,
 }: TransferFundDrawerProps) {
   // hooks
-  const t = useTranslations('TransferFundDrawer')
+  const t = useTranslations('transferFundDrawer')
   const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-
-  // values
-  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -153,13 +147,10 @@ function TransferFundDrawer({
           amount: data.amount,
         })
 
-        dispatch(refresh())
-
-        if (refetch) refetch()
-
         toast.success(message, { id: 'transferring' })
         setOpen(false)
         reset()
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(t('Failed to transfer'), { id: 'transferring' })
         console.log(err)
@@ -168,7 +159,7 @@ function TransferFundDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, dispatch, t]
+    [handleValidate, reset, dispatch, t]
   )
 
   return (

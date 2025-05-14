@@ -2,35 +2,28 @@
 
 import Message from '@/components/ai/Message'
 import { useScrollToBottom } from '@/components/ai/useScrollToBottom'
+import ChangePersonalityDrawer from '@/components/dialogs/ChangePersonalityDrawer'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
 import { personalities } from '@/constants'
 import { languages } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import useSettings from '@/hooks/useSettings'
 import { refresh } from '@/lib/reducers/loadReducer'
-import { setClearChat } from '@/lib/reducers/screenReducer'
-import { checkPremium, cn } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { useChat } from '@ai-sdk/react'
-import { ArrowUp, ChevronDown, Square, Trash } from 'lucide-react'
+import { ArrowUp, LucideChevronDown, Square, Trash } from 'lucide-react'
 import moment from 'moment-timezone'
-import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 
 export default function AIPage() {
-  const { data: session } = useSession()
-  const user = session?.user
-  const isPremium = checkPremium(user)
-  const { refetch: refetchSettings } = useSettings()
+  // hooks
   const t = useTranslations('aiPage')
   const locale = useLocale()
   const language = languages.find(l => l.value === locale)?.alternative || 'English'
-
   const { refreshPoint } = useAppSelector(state => state.load)
   const { settings } = useAppSelector(state => state.settings)
-  const clearChat = useAppSelector(state => state.screen.clearChat)
   const dispatch = useAppDispatch()
 
   const { messages, setMessages, handleInputChange, input, handleSubmit, append, status, error } =
@@ -45,11 +38,15 @@ export default function AIPage() {
       onError: error => console.error(error, 'ERROR'),
     })
 
-  const { stop } = useChat() // Dùng useChat thay vì useCompletion
-  const [containerRef, handleScroll, isAtBottom] = useScrollToBottom(messages, status === 'streaming')
-  const [refreshed, setRefreshed] = useState<boolean>(false)
-  const [openPremiumModal, setOpenPremiumModal] = useState<boolean>(false)
+  const { stop } = useChat()
 
+  // states
+  const [refreshed, setRefreshed] = useState<boolean>(false)
+
+  // refs
+  const [containerRef, handleScroll, isAtBottom] = useScrollToBottom(messages, status === 'streaming')
+
+  // values
   const samples = [
     t('Hello'),
     t('What can you do?'),
@@ -57,73 +54,40 @@ export default function AIPage() {
     t('How to limit my spending'),
   ]
 
-  // Sync messages to localStorage (replace AsyncStorage)
+  // init messages
   useEffect(() => {
-    if (messages.length > 0) {
-      localStorage.setItem('messages', JSON.stringify(messages))
+    const getMessages = async () => {
+      // get message from async storage
+      const message = localStorage.getItem('messages')
+      if (!message) return
+      const parsedMessage = JSON.parse(message)
+      setMessages(parsedMessage)
     }
-  }, [messages])
 
-  // Load messages from localStorage
-  useEffect(() => {
-    const message = localStorage.getItem('messages')
-    if (message) {
-      setMessages(JSON.parse(message))
-    }
+    getMessages()
   }, [setMessages, refreshPoint])
 
-  // Refetch settings to check token limit
+  // sync messages to async storage
   useEffect(() => {
-    if (isPremium) return
-    if (status === 'ready') {
-      refetchSettings()
+    const setMessagesToStorage = async () => {
+      if (messages.length === 0) return
+      localStorage.setItem('messages', JSON.stringify(messages))
     }
-  }, [refetchSettings, status, isPremium])
 
-  // Auto clear chat
-  useEffect(() => {
-    if (clearChat) {
-      setMessages([])
-      stop()
-      dispatch(setClearChat(false))
-    }
-  }, [dispatch, setMessages, stop, clearChat])
-
-  // Check token limit
-  const checkTokenLimit = useCallback(() => {
-    if (!settings) return false
-    if (
-      !isPremium &&
-      settings.freeTokensUsed > +(process.env.NEXT_PUBLIC_FREE_TOKENS_LIMIT || '10000')
-    ) {
-      setOpenPremiumModal(true)
-      return false
-    }
-    return true
-  }, [settings, isPremium])
+    setMessagesToStorage()
+  }, [messages])
 
   // Handle send message
   const handleSendMessage = useCallback(
     (e?: React.FormEvent) => {
       if (input.trim() === '') return
-      if (!checkTokenLimit()) return
 
       handleSubmit(e)
       handleInputChange({ target: { value: '' } } as any)
       setRefreshed(false)
     },
-    [handleInputChange, handleSubmit, checkTokenLimit, input]
+    [handleInputChange, handleSubmit, input]
   )
-
-  // Handle refresh
-  const handleRefresh = useCallback(async () => {
-    if (error) {
-      setMessages([])
-      localStorage.removeItem('messages')
-    }
-    stop()
-    dispatch(refresh())
-  }, [dispatch, setMessages, stop, error])
 
   // Refresh after tool invocation
   useEffect(() => {
@@ -150,6 +114,7 @@ export default function AIPage() {
 
     if (toolNames.includes(toolName)) {
       if (!refreshed) {
+        console.log('Refreshing messages...')
         setRefreshed(true)
         setTimeout(() => dispatch(refresh(true)), 1000)
       }
@@ -157,9 +122,13 @@ export default function AIPage() {
   }, [dispatch, messages, refreshed])
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-50px)] w-full max-w-3xl flex-col">
-      {/* Messages Section */}
-      <div className="flex flex-1 flex-col gap-6">
+    <div className="mx-auto flex h-[calc(100vh-50px)] w-full max-w-3xl flex-col px-21/2">
+      {/* MARK: Messages */}
+      <section
+        className="flex flex-1 flex-col overflow-y-auto pt-21/2"
+        ref={containerRef}
+        onScroll={handleScroll}
+      >
         {messages.length > 0 ? (
           <>
             {messages.map((m, i) => (
@@ -179,45 +148,47 @@ export default function AIPage() {
             )}
           </>
         ) : (
-          <Card className="shadow-md">
-            <CardContent className="flex flex-col items-center justify-center gap-2 p-6">
+          <div className="px-21/2">
+            <div className="gap-2 rounded-xl border border-primary/10 bg-secondary/50 p-6 shadow-md">
               <h2 className="text-center text-2xl font-semibold">Deewas</h2>
               <p className="text-center text-muted-foreground">
                 {t('Deewas is a personal finance assistant that helps you manage your money wisely')}.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         )}
         {status === 'submitted' && (
-          <div className="-mx-2 flex flex-row items-center py-2">{/* <PulseDot /> */}</div>
+          <div className="flex gap-1 p-0.5">
+            <div className="pulse-dot h-3 w-3 rounded-full bg-primary" />
+          </div>
         )}
-      </div>
+      </section>
 
-      {/* Scroll Down Button */}
-      {!isAtBottom && (
-        <button
-          className="absolute bottom-36 right-6 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-primary/5 bg-secondary shadow-lg"
-          onClick={() => (containerRef as any).current?.scrollTo({ top: 9999, behavior: 'smooth' })}
-        >
-          <ChevronDown
-            size={25}
-            className="opacity-70"
-          />
-        </button>
-      )}
+      {/* MARK: Input  */}
+      <section className="relative mt-6">
+        {!isAtBottom && (
+          <button
+            className="absolute -top-14 right-0 flex h-9 w-9 items-center justify-center rounded-full border border-primary/10 bg-secondary"
+            onClick={() => {
+              if (containerRef.current) {
+                containerRef.current.scrollTo({
+                  top: containerRef.current.scrollHeight,
+                  behavior: 'smooth',
+                })
+              }
+            }}
+          >
+            <LucideChevronDown size={20} />
+          </button>
+        )}
 
-      {/* Input Section */}
-      <div className="p-6">
         {messages.length === 0 && (
-          <div className="no-scrollbar mb-6 flex space-x-2 overflow-x-auto">
+          <div className="no-scrollbar mb-21/2 flex space-x-2 overflow-x-auto">
             {samples.map((sample, index) => (
               <button
                 key={index}
-                className="rounded-lg border border-primary/10 bg-gray-100 px-4 py-2 hover:bg-gray-200"
-                onClick={() => {
-                  if (!checkTokenLimit()) return
-                  append({ content: sample, role: 'user' })
-                }}
+                className="rounded-lg border border-primary/10 bg-secondary/50 px-4 py-2"
+                onClick={() => append({ content: sample, role: 'user' })}
               >
                 <span className="text-nowrap text-sm font-medium">{sample}</span>
               </button>
@@ -225,58 +196,52 @@ export default function AIPage() {
           </div>
         )}
 
-        <div className="rounded-3xl shadow-lg">
+        <div className="rounded-xl bg-[url(/images/pre-bg-v-flip.png)] bg-cover bg-center bg-no-repeat p-21/2 shadow-lg">
           <Input
-            className="w-full border-none bg-transparent px-2 text-neutral-400 placeholder:text-neutral-400"
+            className="border-0 font-medium text-neutral-800 shadow-none !ring-0 placeholder:text-neutral-500"
             placeholder={t('How can Deewas help?')}
             value={input}
             onChange={e => handleInputChange(e as any)}
-            onKeyPress={e => {
-              if (e.key === 'Enter') handleSendMessage()
+            onKeyDown={e => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                handleSendMessage(e)
+              }
             }}
           />
           <div className="mt-1.5 flex items-center justify-between gap-1.5">
             {/* Clear Chat */}
             <Button
-              variant="secondary"
-              size="sm"
+              className={cn('rounded-full !bg-white !text-neutral-800')}
               disabled={status === 'streaming' || status === 'submitted'}
               onClick={() => {
                 setMessages([])
+                localStorage.removeItem('messages')
                 stop()
               }}
-              className={cn(
-                'bg-black/10 text-neutral-800',
-                (status === 'streaming' || status === 'submitted') && 'opacity-50'
-              )}
             >
-              <Trash
-                size={16}
-                className="mr-2"
-              />
+              <Trash size={16} />
               {t('Clear')}
             </Button>
 
             <div className="flex flex-1 items-center justify-end gap-1.5">
               {/* Personality */}
-              <Button
-                variant="secondary"
-                size="sm"
-                disabled={status === 'streaming' || status === 'submitted'}
-                onClick={() => (window.location.href = '/change-personality')}
-                className={cn(
-                  'bg-black/10 text-neutral-800',
-                  (status === 'streaming' || status === 'submitted') && 'opacity-50'
-                )}
-              >
-                {settings?.personalities && settings?.personalities?.length === 1
-                  ? t(personalities[settings?.personalities[0]].title)
-                  : t('Mixed personalities')}
-              </Button>
+              <ChangePersonalityDrawer
+                trigger={
+                  <Button
+                    className={cn('rounded-full !bg-white !text-neutral-800')}
+                    disabled={status === 'streaming' || status === 'submitted'}
+                  >
+                    {settings?.personalities && settings?.personalities?.length === 1
+                      ? t(personalities[settings?.personalities[0]].title)
+                      : t('Mixed personalities')}
+                  </Button>
+                }
+              />
 
               <Button
                 size="icon"
-                className={cn('bg-primary', input.trim() === '' && status === 'ready' && 'opacity-50')}
+                className={cn('rounded-full !bg-white !text-neutral-800')}
                 disabled={input.trim() === '' && status === 'ready'}
                 onClick={() => {
                   if (status === 'submitted' || status === 'streaming') stop()
@@ -292,7 +257,9 @@ export default function AIPage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <Separator className="my-9 h-0" />
     </div>
   )
 }

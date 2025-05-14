@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
-import { TransactionType } from '@/models/TransactionModel'
+import { IFullTransaction, TransactionType } from '@/models/TransactionModel'
 import { AnimatePresence, motion } from 'framer-motion'
 import { LucideEllipsisVertical, LucidePlusCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -30,7 +30,14 @@ function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionT
 
   // values
   const { Icon, background, border } = checkTranType(type)
-  const total = categoryGroups.reduce((total, group) => total + group.category.amount, 0)
+  const total = categoryGroups.reduce(
+    (total, group) =>
+      total +
+      (group.transactions as IFullTransaction[])
+        .filter(t => !t.exclude)
+        .reduce((totalTx, tx) => totalTx + tx.amount, 0),
+    0
+  )
 
   useEffect(() => {
     setHasMounted(true)

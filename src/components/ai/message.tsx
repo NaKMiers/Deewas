@@ -8,8 +8,9 @@ import { useTranslations } from 'next-intl'
 import { memo } from 'react'
 import BudgetCard from '../BudgetCard'
 import Category from '../Category'
-import { Transaction } from '../LatestTransactions'
+import Transaction from '../Transaction'
 import { Button } from '../ui/button'
+import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
 import WalletCard from '../WalletCard'
 import { Markdown } from './Markdown'
 
@@ -24,8 +25,6 @@ function Message({ role, content, parts }: MessageProps) {
   const router = useRouter()
 
   const toolInvocations = parts?.[1]?.toolInvocation
-
-  const isLarge = true
 
   // if tool is invoked, show the result of the tool
   if (toolInvocations && toolInvocations?.result) {
@@ -73,23 +72,26 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show a list of wallets
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
                 role={role}
               />
             )}
-            <div className="flex flex-row items-center justify-center">
-              {wallets.map((w: IWallet) => (
-                <WalletCard
-                  wallet={w}
-                  hideMenu
-                  key={w._id}
-                />
-              ))}
-            </div>
-          </p>
+            <Carousel className={cn('mb-21/2', !message && 'mt-21/2')}>
+              <CarouselContent>
+                {wallets.map((wallet: IWallet) => (
+                  <CarouselItem
+                    className={cn('basis-full sm:basis-1/2')}
+                    key={wallet._id}
+                  >
+                    <WalletCard wallet={wallet} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </div>
         )
       }
       case 'get_wallet':
@@ -109,7 +111,7 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show the wallet details
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
@@ -120,9 +122,9 @@ function Message({ role, content, parts }: MessageProps) {
             <WalletCard
               wallet={wallet}
               hideMenu
-              className={cn('mb-21/2', !message && 'mt-21/2')}
+              className={cn('mb-21/2 w-full sm:w-1/2', !message && 'mt-21/2')}
             />
-          </p>
+          </div>
         )
       }
       case 'delete_wallet': {
@@ -171,23 +173,26 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show the source and destination wallets
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
                 role={role}
               />
             )}
-            <div className="flex flex-row items-center justify-center">
-              {[sourceWallet, destinationWallet].map((w: IWallet) => (
-                <WalletCard
-                  wallet={w}
-                  hideMenu
-                  key={w._id}
-                />
-              ))}
-            </div>
-          </p>
+            <Carousel className={cn('mb-21/2', !message && 'mt-21/2')}>
+              <CarouselContent>
+                {[sourceWallet, destinationWallet].map((wallet: IWallet) => (
+                  <CarouselItem
+                    className={cn('basis-1/2')}
+                    key={wallet._id}
+                  >
+                    <WalletCard wallet={wallet} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          </div>
         )
       }
       case 'get_all_categories': {
@@ -205,21 +210,23 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show a list of wallets
         return (
-          <p className="flex-col">
+          <div>
             {message && (
               <BasicMessage
                 content={message}
                 role={role}
               />
             )}
-            {categories.map((c: ICategory) => (
-              <Category
-                category={c}
-                hideMenu
-                key={c._id}
-              />
-            ))}
-          </p>
+            <div className={cn('mb-21/2 flex flex-col gap-1', !message && 'mt-21/2')}>
+              {categories.map((c: ICategory) => (
+                <Category
+                  category={c}
+                  hideMenu
+                  key={c._id}
+                />
+              ))}
+            </div>
+          </div>
         )
       }
       case 'get_category':
@@ -239,7 +246,7 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show the wallet details
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
@@ -252,7 +259,7 @@ function Message({ role, content, parts }: MessageProps) {
               className={cn('mb-21/2', !message && 'mt-21/2')}
               hideMenu
             />
-          </p>
+          </div>
         )
       }
       case 'delete_category': {
@@ -290,27 +297,25 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show a list of wallets
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
                 role={role}
               />
             )}
-            {budgets.map((b: IFullBudget) => (
-              <p
-                className="mb-1"
-                key={b._id}
-              >
+            <div className={cn('mb-21/2', !message && 'mt-21/2')}>
+              {budgets.map((b: IFullBudget) => (
                 <BudgetCard
                   budget={b}
                   begin={b.begin}
                   end={b.end}
                   hideMenu
+                  key={b._id}
                 />
-              </p>
-            ))}
-          </p>
+              ))}
+            </div>
+          </div>
         )
       }
       case 'create_budget':
@@ -329,7 +334,7 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show the wallet details
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
@@ -344,7 +349,7 @@ function Message({ role, content, parts }: MessageProps) {
               hideMenu
               className={cn('mb-21/2', !message && 'mt-21/2')}
             />
-          </p>
+          </div>
         )
       }
       case 'delete_budget': {
@@ -382,7 +387,7 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show a list of transactions
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
@@ -390,17 +395,13 @@ function Message({ role, content, parts }: MessageProps) {
               />
             )}
             {transactions.map((t: IFullTransaction) => (
-              <p
-                className="mb-1"
+              <Transaction
+                transaction={t}
+                hideMenu
                 key={t._id}
-              >
-                <Transaction
-                  transaction={t}
-                  hideMenu
-                />
-              </p>
+              />
             ))}
-          </p>
+          </div>
         )
       }
       case 'get_transaction':
@@ -421,7 +422,7 @@ function Message({ role, content, parts }: MessageProps) {
 
         // show the wallet details
         return (
-          <p className="flex-col">
+          <div className="flex-col">
             {message && (
               <BasicMessage
                 content={message}
@@ -434,7 +435,7 @@ function Message({ role, content, parts }: MessageProps) {
               hideMenu
               className={cn('mb-21/2', !message && 'mt-21/2')}
             />
-          </p>
+          </div>
         )
       }
       case 'delete_transaction': {
@@ -472,7 +473,7 @@ function BasicMessage({ role, content }: MessageProps) {
   return (
     <p
       className={cn(
-        'flex-1 flex-row items-center gap-21/2',
+        'flex items-center gap-21/2',
         role === 'assistant' ? 'flex-row' : 'flex-row-reverse'
       )}
     >
@@ -481,7 +482,7 @@ function BasicMessage({ role, content }: MessageProps) {
           'flex-col gap-1 py-1.5',
           role === 'assistant'
             ? 'flex-1'
-            : 'items-end rounded-[26px] rounded-br-xl border border-primary/5 bg-secondary px-4'
+            : 'items-end rounded-[26px] rounded-br-xl border border-primary/10 bg-secondary px-4'
         )}
       >
         {typeof content === 'string' ? <Markdown>{content}</Markdown> : content}

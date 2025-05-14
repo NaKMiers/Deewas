@@ -1,7 +1,6 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { updateCategory } from '@/lib/reducers/categoryReduce'
 import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
@@ -85,30 +84,37 @@ function Category({ category, hideMenu, className }: CategoryProps) {
         <div className={cn('h-full w-full', background)} />
       </div>
 
-      <div className="absolute left-0 top-0 flex h-full w-full items-center justify-between gap-2 pl-21/2">
+      <div
+        className={cn(
+          'absolute left-0 top-0 flex h-full w-full items-center justify-between gap-2 pl-21/2',
+          hideMenu && 'pr-21/2'
+        )}
+      >
         <div className="relative z-10 flex items-center gap-2">
           <span>{category.icon}</span>
           <p className="text-sm font-semibold">{category.name}</p>
         </div>
         <div className="flex items-center gap-2">
           {currency && (
-            <span className="font-body font-bold">{formatCurrency(currency, category.amount)}</span>
+            <span className="font-body font-bold text-white">
+              {formatCurrency(currency, category.amount)}
+            </span>
           )}
 
-          {!hideMenu && !updating && !deleting ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 rounded-none hover:bg-primary hover:text-secondary"
-                >
-                  <LucideEllipsisVertical />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {/* MARK: Create Transaction */}
-                {category.type === 'expense' && (
+          {!hideMenu &&
+            (!updating && !deleting ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 rounded-none text-white hover:bg-primary hover:text-secondary"
+                  >
+                    <LucideEllipsisVertical />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {/* MARK: Create Transaction */}
                   <CreateTransactionDrawer
                     initCategory={category}
                     trigger={
@@ -121,69 +127,66 @@ function Category({ category, hideMenu, className }: CategoryProps) {
                       </Button>
                     }
                   />
-                )}
 
-                {/* MARK: Set Budget */}
-                {category.type === 'expense' && (
-                  <CreateBudgetDrawer
-                    initCategory={category}
+                  {/* MARK: Set Budget */}
+                  {category.type === 'expense' && (
+                    <CreateBudgetDrawer
+                      initCategory={category}
+                      trigger={
+                        <Button
+                          variant="ghost"
+                          className="flex h-8 w-full items-center justify-start gap-2 px-2 text-orange-500"
+                        >
+                          <LucideChartPie size={16} />
+                          {t('Set Budget')}
+                        </Button>
+                      }
+                    />
+                  )}
+
+                  {/* MARK: Update */}
+                  <UpdateCategoryDrawer
+                    category={category}
                     trigger={
                       <Button
                         variant="ghost"
-                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-orange-500"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
                       >
-                        <LucideChartPie size={16} />
-                        {t('Set Budget')}
+                        <LucidePencil size={16} />
+                        {t('Edit')}
                       </Button>
                     }
                   />
-                )}
 
-                {/* MARK: Update */}
-                <UpdateCategoryDrawer
-                  category={category}
-                  update={(category: ICategory) => dispatch(updateCategory(category))}
-                  load={setUpdating}
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
-                    >
-                      <LucidePencil size={16} />
-                      {t('Edit')}
-                    </Button>
-                  }
-                />
-
-                {/* MARK: Delete */}
-                {category.deletable && (
-                  <ConfirmDialog
-                    label="Delete Wallet"
-                    desc="Are you sure you want to delete this wallet?"
-                    confirmLabel="Delete"
-                    onConfirm={handleDeleteCategory}
-                    trigger={
-                      <Button
-                        variant="ghost"
-                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
-                      >
-                        <LucideTrash size={16} />
-                        {t('Delete')}
-                      </Button>
-                    }
-                  />
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button
-              disabled
-              variant="ghost"
-              size="icon"
-            >
-              <LucideLoaderCircle className="animate-spin" />
-            </Button>
-          )}
+                  {/* MARK: Delete */}
+                  {category.deletable && (
+                    <ConfirmDialog
+                      label={t('Delete category')}
+                      desc={`${t('All budgets of this category will be deleted')}. ${t('Are you sure you want to delete this category?')}`}
+                      confirmLabel={t('Delete')}
+                      onConfirm={handleDeleteCategory}
+                      trigger={
+                        <Button
+                          variant="ghost"
+                          className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
+                        >
+                          <LucideTrash size={16} />
+                          {t('Delete')}
+                        </Button>
+                      }
+                    />
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                disabled
+                variant="ghost"
+                size="icon"
+              >
+                <LucideLoaderCircle className="animate-spin" />
+              </Button>
+            ))}
         </div>
       </div>
     </div>

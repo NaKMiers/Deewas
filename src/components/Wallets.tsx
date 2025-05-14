@@ -1,7 +1,6 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { setWallets } from '@/lib/reducers/walletReducer'
 import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
 import { LucideLoaderCircle, LucidePlusCircle } from 'lucide-react'
@@ -35,8 +34,6 @@ function Wallets({ className }: WalletProps) {
 
         {/* MARK: Create Wallet */}
         <CreateWalletDrawer
-          update={wallet => dispatch(setWallets([wallet, ...wallets]))}
-          load={setCreating}
           trigger={
             <Button
               disabled={creating}

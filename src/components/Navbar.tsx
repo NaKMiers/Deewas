@@ -60,21 +60,31 @@ function Navbar({ className }: NavbarProps) {
     [user, isDarkColorScheme]
   )
 
+  const index = routes.findIndex(route => route.href === pathname)
+  console.log('index', index)
+
   return (
     <nav
       className={cn(
-        'fixed bottom-21 left-1/2 flex w-full max-w-[400px] -translate-x-1/2 justify-center rounded-full bg-primary shadow-md',
+        'fixed bottom-21 left-1/2 flex w-full max-w-[400px] -translate-x-1/2 justify-center rounded-full border border-secondary/10 bg-primary shadow-md',
         className
       )}
     >
+      {index !== -1 && (
+        <div
+          className="trans-300 absolute top-1/2 -z-10 h-full -translate-y-1/2 rounded-full border-2 border-primary bg-secondary"
+          style={{
+            width: (1 / routes.length) * 100 + '%',
+            left: index * (100 / routes.length) + '%',
+          }}
+        />
+      )}
+
       {routes.map(route => (
         <Link
           href={route.href}
           key={route.href}
-          className={cn(
-            'flex flex-1 flex-row items-center justify-center gap-0.5 rounded-full py-1 text-secondary transition-colors duration-200',
-            pathname === route.href ? 'bg-gray-200' : ''
-          )}
+          className="flex flex-1 flex-row items-center justify-center gap-0.5 rounded-full py-1 text-secondary transition-colors duration-200"
         >
           {route.icon ? (
             <route.icon

@@ -4,11 +4,9 @@ import CategoryGroup from '@/components/CategoryGroup'
 import CreateCategoryDrawer from '@/components/dialogs/CreateCategoryDrawer'
 import NoItemsFound from '@/components/NoItemsFound'
 import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { useAppSelector } from '@/hooks/reduxHook'
 import { Link } from '@/i18n/navigation'
-import { addCategory } from '@/lib/reducers/categoryReduce'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
@@ -19,11 +17,10 @@ import { useEffect, useState } from 'react'
 
 function CategoriesPage() {
   // hooks
-  const dispatch = useAppDispatch()
   const t = useTranslations('categoriesPage')
 
   // store
-  const { categories, loading } = useAppSelector(state => state.category)
+  const { categories } = useAppSelector(state => state.category)
 
   // states
   const [groups, setGroups] = useState<any[]>([])
@@ -41,7 +38,11 @@ function CategoriesPage() {
       return acc
     }, {})
 
-    setGroups(Object.entries(groups))
+    const order = ['expense', 'income', 'saving', 'invest']
+    const results = Object.entries(groups)
+      .sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]))
+      .map(([key, value]) => [key, value])
+    setGroups(results)
   }, [categories])
 
   return (
@@ -58,56 +59,42 @@ function CategoriesPage() {
       </div>
 
       {/* Categories Groups */}
-      {!loading ? (
-        groups.length > 0 ? (
-          <Tabs
-            defaultValue={'expense'}
-            className="mt-21 w-full"
-          >
-            <TabsList className="flex h-12 justify-start overflow-y-auto">
-              {groups.map(([key]) => (
-                <TabsTrigger
-                  value={key}
-                  className={cn(
-                    'line-clamp-1 h-full w-1/3 min-w-max capitalize',
-                    groups.length === 1 ? 'w-full' : groups.length === 2 ? 'w-1/2' : 'w-1/3'
-                  )}
-                  key={key}
-                >
-                  {key}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {groups.map(([type, categories]) => (
-              <CategoryGroup
-                type={type as TransactionType}
-                categories={categories.filter((category: ICategory) => category.type === type)}
-                key={type}
-              />
+      {groups.length > 0 ? (
+        <Tabs
+          defaultValue={'expense'}
+          className="mt-21 w-full"
+        >
+          <TabsList className="flex h-12 justify-start overflow-y-auto">
+            {groups.map(([key]) => (
+              <TabsTrigger
+                value={key}
+                className={cn(
+                  'line-clamp-1 h-full w-1/3 min-w-max capitalize',
+                  groups.length === 1 ? 'w-full' : groups.length === 2 ? 'w-1/2' : 'w-1/3'
+                )}
+                key={key}
+              >
+                {key}
+              </TabsTrigger>
             ))}
-          </Tabs>
-        ) : (
-          <NoItemsFound
-            text={t("You don't have any categories yet, create one now!")}
-            className="mt-21"
-          />
-        )
-      ) : (
-        <div className="mt-21 flex flex-col gap-2">
-          <Skeleton className="h-12 w-full" />
-          <Skeleton className="h-96 w-full" />
-          {Array.from({ length: 5 }).map((_, index) => (
-            <Skeleton
-              className="h-24 w-full"
-              key={index}
+          </TabsList>
+          {groups.map(([type, categories]) => (
+            <CategoryGroup
+              type={type as TransactionType}
+              categories={categories.filter((category: ICategory) => category.type === type)}
+              key={type}
             />
           ))}
-        </div>
+        </Tabs>
+      ) : (
+        <NoItemsFound
+          text={t("You don't have any categories yet, create one now!")}
+          className="mt-21"
+        />
       )}
 
       {/* MARK: Create Category */}
       <CreateCategoryDrawer
-        update={category => dispatch(addCategory(category))}
         trigger={
           <Button
             variant="default"

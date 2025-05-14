@@ -1,11 +1,11 @@
 'use client'
 
 import CreateTransactionDrawer from '@/components/dialogs/CreateTransactionDrawer'
+import NoItemsFound from '@/components/NoItemsFound'
 import TransactionTypeGroup from '@/components/TransactionTypeGroup'
 import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/ui/DateRangePicker'
 import { Input } from '@/components/ui/input'
-import { Skeleton } from '@/components/ui/skeleton'
 import WalletPicker from '@/components/WalletPicker'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
@@ -132,7 +132,7 @@ function TransactionsPage() {
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
           showCompare={false}
-          className="h-10 bg-primary px-4 text-secondary shadow-md hover:bg-primary/90 hover:text-secondary"
+          className="border border-primary/10 bg-primary text-secondary shadow-md hover:bg-primary hover:text-secondary"
           onUpdate={values => {
             const { from, to } = values.range
 
@@ -186,34 +186,19 @@ function TransactionsPage() {
       </div>
 
       {/* MARK: Groups */}
-      {!loading ? (
-        <div className="flex flex-col gap-2 px-21/2 md:px-21">
-          {groups.length > 0 ? (
-            groups.map(([type, group]) => (
-              <TransactionTypeGroup
-                type={type}
-                categoryGroups={Object.entries(group).map(g => g[1])}
-                key={type}
-              />
-            ))
-          ) : (
-            <div className="flex items-center justify-center rounded-md border border-muted-foreground/50 px-2 py-7">
-              <p className="text-center text-lg font-semibold text-muted-foreground/50">
-                {t('No transactions found for this wallet, just add one now!')}
-              </p>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="flex flex-col gap-2 px-21/2 md:px-21">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton
-              className="h-[300px]"
-              key={i}
+      <div className="flex flex-col gap-2 px-21/2 md:px-21">
+        {groups.length > 0 ? (
+          groups.map(([type, group]) => (
+            <TransactionTypeGroup
+              type={type}
+              categoryGroups={Object.entries(group).map(g => g[1])}
+              key={type}
             />
-          ))}
-        </div>
-      )}
+          ))
+        ) : (
+          <NoItemsFound text={t('No transactions found, just add one now!')} />
+        )}
+      </div>
 
       {/* MARK: Create Transaction */}
       <CreateTransactionDrawer

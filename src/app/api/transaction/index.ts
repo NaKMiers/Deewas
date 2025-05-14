@@ -450,6 +450,11 @@ export const getTransactions = async (userId: string, params: any = {}) => {
         .lean(),
     ]
 
+    console.log('filter', filter)
+    console.log('sort', sort)
+    console.log('skip', skip)
+    console.log('limit', limit)
+
     if (needOldestDate) {
       promises.push(
         TransactionModel.findOne({ user: userId }).select('date').sort({ date: 1 }).limit(1).lean()

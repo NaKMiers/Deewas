@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button'
 import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { refresh } from '@/lib/reducers/loadReducer'
-import { updateTransaction } from '@/lib/reducers/transactionReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate, toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -14,6 +13,7 @@ import {
   LucideEllipsisVertical,
   LucideLayers2,
   LucideLoaderCircle,
+  LucideMinusCircle,
   LucidePencil,
   LucideTrash,
 } from 'lucide-react'
@@ -49,7 +49,7 @@ function TxItem({ transaction, className }: ITxItemProps) {
     toast.loading(t('Deleting transaction') + '...', { id: 'delete-transaction' })
 
     try {
-      const { transaction: tx, message } = await deleteTransactionApi(transaction._id)
+      const { message } = await deleteTransactionApi(transaction._id)
       toast.success(message, { id: 'delete-transaction' })
 
       dispatch(refresh())
@@ -69,7 +69,7 @@ function TxItem({ transaction, className }: ITxItemProps) {
     toast.loading(t('Duplicating transaction') + '...', { id: 'duplicate-transaction' })
 
     try {
-      const { transaction: tx, message } = await createTransactionApi({
+      const { message } = await createTransactionApi({
         ...transaction,
         walletId: transaction.wallet._id,
         categoryId: transaction.category._id,
@@ -92,6 +92,13 @@ function TxItem({ transaction, className }: ITxItemProps) {
       <p className="text-sm font-semibold">{transaction.name}</p>
 
       <div className="flex items-center gap-1">
+        {transaction.exclude && (
+          <LucideMinusCircle
+            size={16}
+            color="#f97316"
+            className="opacity-80"
+          />
+        )}
         {currency && (
           <div className="flex flex-col items-end">
             <p className="text-xs text-muted-foreground">
@@ -145,7 +152,6 @@ function TxItem({ transaction, className }: ITxItemProps) {
               {/* MARK: Update */}
               <UpdateTransactionDrawer
                 transaction={transaction}
-                update={(transaction: IFullTransaction) => dispatch(updateTransaction(transaction))}
                 trigger={
                   <Button
                     variant="ghost"

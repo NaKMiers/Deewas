@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { addTransaction } from '@/lib/reducers/transactionReducer'
+import { useAppSelector } from '@/hooks/reduxHook'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
@@ -24,7 +23,6 @@ function TransactionCategoryGroup({
   className,
 }: ITransactionCategoryGroupProps) {
   // hooks
-  const dispatch = useAppDispatch()
   const t = useTranslations('transactionCategoryGroup')
 
   // store
@@ -44,7 +42,10 @@ function TransactionCategoryGroup({
                   checkTranType(category.type).color
                 )}
               >
-                {formatCurrency(currency, category.amount)}
+                {formatCurrency(
+                  currency,
+                  transactions.filter(t => !t.exclude).reduce((total, tx) => total + tx.amount, 0)
+                )}
               </span>
             </div>
           )}
@@ -53,7 +54,6 @@ function TransactionCategoryGroup({
         {/* MARK: New Transaction for category */}
         <CreateTransactionDrawer
           initCategory={category}
-          update={(transaction: IFullTransaction) => dispatch(addTransaction(transaction))}
           trigger={
             <Button
               variant="outline"
@@ -68,7 +68,7 @@ function TransactionCategoryGroup({
 
       {/*  MARK: Transactions of category */}
       <div className="my-1.5 pl-2">
-        <div className="flex flex-col gap-0 border-l">
+        <div className={cn('flex flex-col gap-0 border-l-2', checkTranType(category.type).border)}>
           {transactions.map((tx, index) => (
             <motion.div
               initial={{ opacity: 0, y: 20 }}

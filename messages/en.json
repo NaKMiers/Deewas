@@ -151,7 +151,7 @@
     "days!": "days!",
     "Search": "Search",
     "Select wallet": "Select wallet",
-    "No transactions found for this wallet, just add one now!": "No transactions found for this wallet, just add one now!",
+    "No transactions found, just add one now!": "No transactions found, just add one now!",
     "Add Transaction": "Add Transaction",
     "All wallets": "All wallets"
   },
@@ -730,7 +730,10 @@
     "Add Transaction": "Add Transaction",
     "Set Budget": "Set Budget",
     "Edit": "Edit",
-    "Delete": "Delete"
+    "Delete": "Delete",
+    "Delete category": "Delete category",
+    "All budgets of this category will be deleted": "All budgets of this category will be deleted",
+    "Are you sure you want to delete this category?": "Are you sure you want to delete this category?"
   },
   "categoryGroup": {
     "Categories": "Categories",
@@ -765,7 +768,9 @@
     "expense": "expense",
     "saving": "saving",
     "invest": "invest",
-    "transfer": "transfer"
+    "transfer": "transfer",
+    "All budgets of this category will be deleted": "All budgets of this category will be deleted",
+    "Are you sure you want to delete this category?": "Are you sure you want to delete this category?"
   },
   "walletPicker": {
     "All wallets": "All wallets",
@@ -778,7 +783,10 @@
     "Delete wallet": "Delete wallet",
     "Are you sure you want to delete": "Are you sure you want to delete",
     "Delete": "Delete",
-    "Cancel": "Cancel"
+    "Cancel": "Cancel",
+    "All transactions of this wallet will be deleted": "All transactions of this wallet will be deleted",
+    "Are you sure you want to delete this wallet?": "Are you sure you want to delete this wallet?",
+    "Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe": "Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe"
   },
   "emojiPicker": {
     "Pick an emoji": "Pick an emoji",

@@ -15,6 +15,7 @@ import { Button } from './ui/button'
 import { DateRangePicker } from './ui/DateRangePicker'
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import { Switch } from './ui/switch'
 
 interface HistoryProps {
   className?: string
@@ -44,6 +45,7 @@ function History({ className }: HistoryProps) {
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [transactions, setTransactions] = useState<IFullTransaction[]>([])
+  const [isIncludeTransfer, setIsIncludeTransfer] = useState<boolean>(false)
 
   const findMaxKey = useCallback(
     (data: ITransaction[]) => {
@@ -88,12 +90,14 @@ function History({ className }: HistoryProps) {
 
   // auto update chart data
   useEffect(() => {
-    if (!transactions.length || !currency) return
+    const tsx = isIncludeTransfer ? transactions : transactions.filter(t => !t.exclude)
 
-    let incomes = transactions.filter(t => t.type === 'income')
-    let expenses = transactions.filter(t => t.type === 'expense')
-    let savings = transactions.filter(t => t.type === 'saving')
-    let invests = transactions.filter(t => t.type === 'invest')
+    if (!tsx.length || !currency) return
+
+    let incomes = tsx.filter(t => t.type === 'income')
+    let expenses = tsx.filter(t => t.type === 'expense')
+    let savings = tsx.filter(t => t.type === 'saving')
+    let invests = tsx.filter(t => t.type === 'invest')
 
     // x = end date - start date
     // x > 1 years -> split charts into cols of years
@@ -211,7 +215,7 @@ function History({ className }: HistoryProps) {
     }
 
     setData(groupedData)
-  }, [dateRange, transactions, currency])
+  }, [dateRange, transactions, currency, isIncludeTransfer])
 
   return (
     <div className={cn(className)}>
@@ -240,6 +244,14 @@ function History({ className }: HistoryProps) {
 
       <div className="mt-1.5 rounded-xl border border-primary/10 bg-secondary/50 px-0 shadow-md">
         <div className="flex flex-wrap justify-end gap-21/2 p-21/2">
+          <div className="flex flex-1 items-center justify-start gap-2 px-2">
+            <Switch
+              checked={isIncludeTransfer}
+              onCheckedChange={() => setIsIncludeTransfer(!isIncludeTransfer)}
+              className="bg-gray-300 data-[state=checked]:bg-violet-500"
+            />
+            <p className="font-medium">{t('Include transfers')}</p>
+          </div>
           <MultipleSelection
             trigger={
               <Button

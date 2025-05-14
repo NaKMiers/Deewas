@@ -1,7 +1,7 @@
 'use client'
 
-import { currencies } from '@/constants/settings'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -31,17 +31,16 @@ import {
 interface UpdateBudgetDrawerProps {
   budget: IFullBudget
   trigger: ReactNode
-  update?: (budget: IFullBudget) => void
   className?: string
 }
 
-function UpdateBudgetDrawer({ budget, trigger, update, className }: UpdateBudgetDrawerProps) {
+function UpdateBudgetDrawer({ budget, trigger, className }: UpdateBudgetDrawerProps) {
   // hooks
   const t = useTranslations('updateBudgetDrawer')
+  const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // form
   const {
@@ -135,18 +134,17 @@ function UpdateBudgetDrawer({ budget, trigger, update, className }: UpdateBudget
       toast.loading(t('Updating budget') + '...', { id: 'update-budget' })
 
       try {
-        const { budget: b, message } = await updateBudgetApi(budget._id, {
+        const { message } = await updateBudgetApi(budget._id, {
           ...data,
           begin: toUTC(moment(data.begin).startOf('day').toDate()),
           end: toUTC(moment(data.end).endOf('day').toDate()),
           total: data.total,
         })
 
-        if (update) update(b)
-
         toast.success(message, { id: 'update-budget' })
         setOpen(false)
         reset()
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(t('Failed to update budget'), { id: 'update-budget' })
         console.log(err)
@@ -155,7 +153,7 @@ function UpdateBudgetDrawer({ budget, trigger, update, className }: UpdateBudget
         setSaving(false)
       }
     },
-    [handleValidate, reset, update, budget._id, t]
+    [dispatch, handleValidate, reset, budget._id, t]
   )
 
   return (

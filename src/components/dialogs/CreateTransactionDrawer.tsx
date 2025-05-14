@@ -1,13 +1,12 @@
 'use client'
 
-import { currencies } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatSymbol } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
-import { IFullTransaction, TransactionType } from '@/models/TransactionModel'
+import { TransactionType } from '@/models/TransactionModel'
 import { IWallet } from '@/models/WalletModel'
 import { createTransactionApi } from '@/requests'
 import { LucideCalendar, LucideLoaderCircle } from 'lucide-react'
@@ -38,8 +37,6 @@ interface CreateTransactionDrawerProps {
   initCategory?: ICategory
   initDate?: string
   trigger: ReactNode
-  refetch?: () => void
-  update?: (transaction: IFullTransaction) => void
   className?: string
 }
 
@@ -49,8 +46,6 @@ function CreateTransactionDrawer({
   initCategory,
   initDate,
   trigger,
-  update,
-  refetch,
   className,
 }: CreateTransactionDrawerProps) {
   // hooks
@@ -59,9 +54,6 @@ function CreateTransactionDrawer({
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
-
-  // values
-  const locale = currencies.find(c => c.value === currency)?.locale || 'en-US'
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -178,14 +170,10 @@ function CreateTransactionDrawer({
           amount: data.amount,
         })
 
-        dispatch(refresh())
-
-        if (refetch) refetch()
-        if (update) update(transaction)
-
         toast.success(message, { id: 'create-transaction' })
         setOpen(false)
         reset()
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(t('Failed to create transaction'), { id: 'create-transaction' })
         console.log(err)
@@ -194,7 +182,7 @@ function CreateTransactionDrawer({
         setSaving(false)
       }
     },
-    [handleValidate, reset, refetch, update, dispatch, t]
+    [handleValidate, reset, , dispatch, t]
   )
 
   return (

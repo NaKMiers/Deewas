@@ -1,13 +1,14 @@
+import { useAppDispatch } from '@/hooks/reduxHook'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
-import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
 import { createCategoryApi } from '@/requests'
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { LucideCircleOff, LucideLoaderCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Dispatch, memo, ReactNode, SetStateAction, useCallback, useState } from 'react'
+import { memo, ReactNode, useCallback, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import CustomInput from '../CustomInput'
@@ -33,15 +34,14 @@ import {
 
 interface CreateCategoryDrawerProps {
   type?: TransactionType
-  update?: (category: ICategory) => void
   trigger: ReactNode
-  load?: Dispatch<SetStateAction<boolean>>
   className?: string
 }
 
-function CreateCategoryDrawer({ type, trigger, update, load, className }: CreateCategoryDrawerProps) {
+function CreateCategoryDrawer({ type, trigger, className }: CreateCategoryDrawerProps) {
   // hooks
   const t = useTranslations('createCategoryDrawer')
+  const dispatch = useAppDispatch()
 
   // form
   const {
@@ -95,33 +95,24 @@ function CreateCategoryDrawer({ type, trigger, update, load, className }: Create
 
       // start loading
       setSaving(true)
-      if (load) {
-        load(true)
-      }
       toast.loading(t('Creating category') + '...', { id: 'create-category' })
 
       try {
-        const { category, message } = await createCategoryApi({ ...data })
-
-        if (update) {
-          update(category)
-        }
+        const { message } = await createCategoryApi({ ...data })
 
         toast.success(message, { id: 'create-category' })
         setOpen(false)
         reset()
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(err.message, { id: 'create-category' })
         console.log(err)
       } finally {
         // stop loading
         setSaving(false)
-        if (load) {
-          load(false)
-        }
       }
     },
-    [handleValidate, load, reset, update, t]
+    [dispatch, handleValidate, reset, t]
   )
 
   return (
@@ -133,6 +124,7 @@ function CreateCategoryDrawer({ type, trigger, update, load, className }: Create
 
       <DrawerContent className={cn(className)}>
         <div className="mx-auto w-full max-w-sm px-21/2">
+          {/* MARK: Header */}
           <DrawerHeader>
             <DrawerTitle className="text-center">
               {t('Create')}{' '}
@@ -147,6 +139,7 @@ function CreateCategoryDrawer({ type, trigger, update, load, className }: Create
           </DrawerHeader>
 
           <div className="flex flex-col gap-3">
+            {/* MARK: Name */}
             <CustomInput
               id="name"
               label={t('Name')}
@@ -157,6 +150,7 @@ function CreateCategoryDrawer({ type, trigger, update, load, className }: Create
               onFocus={() => clearErrors('name')}
             />
 
+            {/* MARK: Type */}
             {!type && (
               <CustomInput
                 id="type"
@@ -188,6 +182,7 @@ function CreateCategoryDrawer({ type, trigger, update, load, className }: Create
               />
             )}
 
+            {/* MARK: Icon */}
             <div className="mt-3 text-xs">
               <p className="font-semibold">
                 Icon <span className="font-normal">({t('optional')})</span>
@@ -198,13 +193,13 @@ function CreateCategoryDrawer({ type, trigger, update, load, className }: Create
                 onOpenChange={setOpenEmojiPicker}
               >
                 <DialogTrigger className="w-full">
-                  <button className="mt-2 flex h-[100px] w-full flex-col items-center justify-center rounded-md border">
+                  <button className="mt-2 flex h-[120px] w-full flex-col items-center justify-center rounded-md border bg-[url(/images/pre-bg-v-flip.png)] bg-cover bg-center bg-no-repeat text-neutral-800">
                     {form.icon ? (
                       <span className="block text-[48px] leading-[48px]">{form.icon}</span>
                     ) : (
                       <LucideCircleOff size={48} />
                     )}
-                    <p className="mt-1 text-xs text-muted-foreground">{t('Click to select')}</p>
+                    <p className="mt-1 text-xs">{t('Click to select')}</p>
                   </button>
                 </DialogTrigger>
 
@@ -238,6 +233,7 @@ function CreateCategoryDrawer({ type, trigger, update, load, className }: Create
             </div>
           </div>
 
+          {/* MARK: Footer */}
           <DrawerFooter className="mb-21 px-0">
             <div className="mt-3 flex items-center justify-end gap-21/2">
               <DrawerClose>

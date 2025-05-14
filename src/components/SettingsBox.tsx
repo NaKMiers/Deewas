@@ -3,13 +3,15 @@
 import { currencies, languages } from '@/constants/settings'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { usePathname, useRouter } from '@/i18n/navigation'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { setSettings } from '@/lib/reducers/settingsReducer'
 import { cn } from '@/lib/utils'
-import { updateMySettingsApi } from '@/requests'
+import { deleteAllDataApi, updateMySettingsApi } from '@/requests'
 import { useLocale, useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown } from 'react-icons/lu'
+import ConfirmDialog from './dialogs/ConfirmDialog'
 import { Button } from './ui/button'
 import {
   Command,
@@ -42,7 +44,7 @@ function SettingsBox({ isRequireInit, className }: SettingsBoxProps) {
           <Box
             type="currency"
             desc={t('Set your currency')}
-            list={currencies}
+            list={currencies.sort((a, b) => a.label.localeCompare(b.label))}
             init={currencies.find(c => c.value === currency)}
           />
         ) : null
@@ -50,7 +52,7 @@ function SettingsBox({ isRequireInit, className }: SettingsBoxProps) {
         <Box
           type="currency"
           desc={t('Set your currency')}
-          list={currencies}
+          list={currencies.sort((a, b) => a.label.localeCompare(b.label))}
           init={currencies.find(c => c.value === 'USD')}
         />
       )}
@@ -80,28 +82,37 @@ function Box({ type, desc, list, init, className }: BoxProps) {
   const pathname = usePathname()
   const router = useRouter()
   const t = useTranslations('settingsBox')
+  const tSuccess = useTranslations('success')
 
   // states
   const [open, setOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [selected, setSelected] = useState<any>(init)
+  const [nextSelected, setNextSelected] = useState<any>(null)
+  const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
 
   // handle update settings
-  const handleUpdateSettings = useCallback(
+  const handleUpdateCurrency = useCallback(
     async (value: any) => {
       if (!value) return
 
       // start loading
       setLoading(true)
-      toast.loading(`Setting ${type}...`, { id: `update-${type}` })
+      toast.loading(`Changing ${type}...`, { id: `update-${type}` })
 
       try {
         const { settings } = await updateMySettingsApi({
-          [type]: value,
+          currency: value,
         })
 
-        toast.success(`Setting ${type} successfully`, { id: `update-${type}` })
+        await deleteAllDataApi()
 
+        toast.success(tSuccess('Update currency successfully'), { id: `update-${type}` })
+        toast.success(tSuccess('Erase all data successfully'))
+
+        dispatch(refresh())
+        setSelected(nextSelected)
+        setNextSelected(null)
         dispatch(setSettings(settings))
       } catch (err: any) {
         toast.error(err.message, { id: `update-${type}` })
@@ -111,7 +122,7 @@ function Box({ type, desc, list, init, className }: BoxProps) {
         setLoading(false)
       }
     },
-    [dispatch, type]
+    [dispatch, type, tSuccess, nextSelected]
   )
 
   // handle change language
@@ -162,11 +173,12 @@ function Box({ type, desc, list, init, className }: BoxProps) {
                   onSelect={() => {
                     if (type === 'language') {
                       handleChangeLanguage(item.value)
+                      setSelected(item)
+                      setOpen(false)
                     } else {
-                      handleUpdateSettings(item.value)
+                      setOpenConfirmDialog(true)
+                      setNextSelected(item)
                     }
-                    setSelected(item)
-                    setOpen(false)
                   }}
                   className="cursor-pointer font-semibold"
                   key={index}
@@ -178,6 +190,21 @@ function Box({ type, desc, list, init, className }: BoxProps) {
           </Command>
         </PopoverContent>
       </Popover>
+
+      {type === 'currency' && (
+        <p className="mt-0.5 pl-1 text-sm font-medium text-rose-500">
+          {t('Changing currency will erase all your data')}.
+        </p>
+      )}
+
+      <ConfirmDialog
+        open={openConfirmDialog}
+        close={open => setOpenConfirmDialog(open)}
+        label={t('Change Currency')}
+        desc={t('Changing currency will erase all your data, are you sure you still want to change?')}
+        confirmLabel={t('Confirm')}
+        onConfirm={() => handleUpdateCurrency(nextSelected.value)}
+      />
     </div>
   )
 }

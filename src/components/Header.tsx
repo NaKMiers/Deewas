@@ -8,7 +8,6 @@ import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { Button } from './ui/button'
-import { memo } from 'react'
 
 function Header({ className }: { className?: string }) {
   // hooks
@@ -65,4 +64,4 @@ function Header({ className }: { className?: string }) {
   )
 }
 
-export default memo(Header)
+export default Header

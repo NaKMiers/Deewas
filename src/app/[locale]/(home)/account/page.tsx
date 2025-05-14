@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch } from '@/hooks/reduxHook'
 import { refresh, setRefreshing } from '@/lib/reducers/loadReducer'
-import { capitalize, shortName } from '@/lib/string'
+import { shortName } from '@/lib/string'
 import { checkPremium, cn } from '@/lib/utils'
 import { deleteAllDataApi, updateUserApi } from '@/requests'
 import {
@@ -38,11 +38,8 @@ function AccountPage() {
   const isPremium = checkPremium(user)
   const t = useTranslations('accountPage')
   const tError = useTranslations('error')
-  const { theme, setTheme } = useTheme()
+  const { theme, resolvedTheme, setTheme } = useTheme()
   const dispatch = useAppDispatch()
-
-  // Store
-  const { refreshing } = useAppSelector(state => state.load)
 
   // States
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -50,7 +47,6 @@ function AccountPage() {
   const [usnValue, setUsnValue] = useState<string>(shortName(user, ''))
   const [updating, setUpdating] = useState<boolean>(false)
   const [error, setError] = useState<string>('')
-  const [openPremiumModal, setOpenPremiumModal] = useState<boolean>(false)
 
   // MARK: Delete Data
   const handleDeleteData = useCallback(async () => {
@@ -96,7 +92,7 @@ function AccountPage() {
 
   const authImage =
     user.authType !== 'google'
-      ? `/icons/${user.authType}${capitalize(theme === 'light' ? 'Dark' : 'Light')}.png`
+      ? `/icons/${user.authType}-${resolvedTheme === 'dark' ? 'light' : 'dark'}.png`
       : '/icons/google.png'
 
   return (
@@ -281,7 +277,7 @@ function AccountPage() {
           !deleting ? (
             <Button
               variant="outline"
-              className={cn('mt-8 w-full border-rose-500 bg-rose-500/10')}
+              className={cn('mt-8 w-full border-rose-500 bg-rose-500/10 hover:bg-rose-500/20')}
             >
               <span className="font-semibold capitalize text-rose-500">{t('Delete All Data')}</span>
             </Button>
@@ -300,7 +296,7 @@ function AccountPage() {
         trigger={
           <Button
             variant="outline"
-            className={cn('mt-8 w-full border-rose-500 bg-rose-500/10')}
+            className={cn('mt-8 w-full border-rose-500 bg-rose-500/10 hover:bg-rose-500/20')}
           >
             <span className="font-semibold capitalize text-rose-500">{t('Log Out')}</span>
           </Button>

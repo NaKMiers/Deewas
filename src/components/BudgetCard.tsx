@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { addBudget, deleteBudget, updateBudget } from '@/lib/reducers/budgetReducer'
+import { deleteBudget } from '@/lib/reducers/budgetReducer'
 import { checkLevel, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -82,77 +82,76 @@ function BudgetCard({ begin, end, budget, hideMenu, className }: IBudgetCardProp
           )}
         </div>
 
-        {!hideMenu && !deleting ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-              >
-                <LucideEllipsis />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {/* MARK: Duplicate */}
-              <CreateBudgetDrawer
-                initTotal={budget.total}
-                initCategory={budget.category}
-                initBegin={moment(budget.begin).add(1, 'month').toDate()}
-                initEnd={moment(budget.end).add(1, 'month').toDate()}
-                update={(budget: IFullBudget) => dispatch(addBudget(budget))}
-                trigger={
-                  <Button
-                    variant="ghost"
-                    className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
-                  >
-                    <LucideLayers2 size={16} />
-                    {t('Create Similar')}
-                  </Button>
-                }
-              />
+        {!hideMenu &&
+          (!deleting ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                >
+                  <LucideEllipsis />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {/* MARK: Duplicate */}
+                <CreateBudgetDrawer
+                  initTotal={budget.total}
+                  initCategory={budget.category}
+                  initBegin={moment(budget.begin).add(1, 'month').toDate()}
+                  initEnd={moment(budget.end).add(1, 'month').toDate()}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
+                    >
+                      <LucideLayers2 size={16} />
+                      {t('Create Similar')}
+                    </Button>
+                  }
+                />
 
-              {/* MARK: Update */}
-              <UpdateBudgetDrawer
-                update={(budget: IFullBudget) => dispatch(updateBudget(budget))}
-                budget={budget}
-                trigger={
-                  <Button
-                    variant="ghost"
-                    className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
-                  >
-                    <LucidePencil size={16} />
-                    {t('Edit')}
-                  </Button>
-                }
-              />
+                {/* MARK: Update */}
+                <UpdateBudgetDrawer
+                  budget={budget}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
+                    >
+                      <LucidePencil size={16} />
+                      {t('Edit')}
+                    </Button>
+                  }
+                />
 
-              {/* MARK: Delete */}
-              <ConfirmDialog
-                label={t('Delete Budget')}
-                desc={t('Are you sure you want to delete this budget?')}
-                confirmLabel={t('Delete')}
-                onConfirm={handleDeleteBudget}
-                trigger={
-                  <Button
-                    variant="ghost"
-                    className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
-                  >
-                    <LucideTrash size={16} />
-                    {t('Delete')}
-                  </Button>
-                }
-              />
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
-          <Button
-            disabled
-            variant="ghost"
-            size="icon"
-          >
-            <LucideLoaderCircle className="animate-spin" />
-          </Button>
-        )}
+                {/* MARK: Delete */}
+                <ConfirmDialog
+                  label={t('Delete Budget')}
+                  desc={t('Are you sure you want to delete this budget?')}
+                  confirmLabel={t('Delete')}
+                  onConfirm={handleDeleteBudget}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
+                    >
+                      <LucideTrash size={16} />
+                      {t('Delete')}
+                    </Button>
+                  }
+                />
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              disabled
+              variant="ghost"
+              size="icon"
+            >
+              <LucideLoaderCircle className="animate-spin" />
+            </Button>
+          ))}
       </div>
 
       {/* MARK: Left */}

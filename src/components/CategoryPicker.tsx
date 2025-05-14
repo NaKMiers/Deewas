@@ -1,15 +1,17 @@
 'use client'
 
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { TransactionType } from '@/models/TransactionModel'
-import { deleteCategoryApi, getMyCategoriesApi } from '@/requests'
-import { LucidePencil, LucidePlusSquare, LucideX } from 'lucide-react'
+import { deleteCategoryApi } from '@/requests'
+import { LucidePencil, LucidePlusSquare } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
-import { LuChevronsUpDown, LuLoaderCircle } from 'react-icons/lu'
+import { LuChevronsUpDown, LuLoaderCircle, LuTrash } from 'react-icons/lu'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import CreateCategoryDrawer from './dialogs/CreateCategoryDrawer'
 import UpdateCategoryDrawer from './dialogs/UpdateCategoryDrawer'
@@ -31,7 +33,6 @@ import {
   DrawerTrigger,
 } from './ui/drawer'
 import { Separator } from './ui/separator'
-import { Skeleton } from './ui/skeleton'
 
 interface CategoryPickerProps {
   category?: ICategory
@@ -43,13 +44,14 @@ interface CategoryPickerProps {
 function CategoryPicker({ category, type, onChange, className }: CategoryPickerProps) {
   // hooks
   const t = useTranslations('categoryPicker')
+  const dispatch = useAppDispatch()
+
+  // store
+  const categories = useAppSelector(state => state.category.categories)
 
   // states
   const [open, setOpen] = useState<boolean>(false)
-  const [categories, setCategories] = useState<ICategory[]>([])
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(category || null)
-
-  const [getting, setGetting] = useState<boolean>(true)
   const [deleting, setDeleting] = useState<string>('')
 
   // reset selected category when type changes
@@ -62,29 +64,6 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
     if (category) setSelectedCategory(category)
   }, [category])
 
-  // get user categories
-  const getUserCategories = useCallback(async () => {
-    // start loading
-    setGetting(true)
-
-    try {
-      const { categories } = await getMyCategoriesApi()
-
-      setCategories(categories)
-    } catch (err: any) {
-      console.error(err)
-      toast.error(t('Failed to get categories'))
-    } finally {
-      // stop loading
-      setGetting(false)
-    }
-  }, [t])
-
-  // initially get user categories
-  useEffect(() => {
-    getUserCategories()
-  }, [getUserCategories])
-
   // delete category
   const handleDeleteCategory = useCallback(
     async (id: string) => {
@@ -95,10 +74,11 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
       try {
         const { category: c, message } = await deleteCategoryApi(id)
 
-        setCategories(categories.filter(category => category._id !== c._id))
-
         if (selectedCategory?._id === c._id) setSelectedCategory(null)
+
         toast.success(message, { id: 'delete-category' })
+
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(err.message, { id: 'delete-category' })
         console.log(err)
@@ -107,7 +87,7 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
         setDeleting('')
       }
     },
-    [categories, selectedCategory?._id]
+    [dispatch, selectedCategory?._id]
   )
 
   return (
@@ -117,24 +97,19 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
         onOpenChange={setOpen}
       >
         <DrawerTrigger asChild>
-          {!getting ? (
-            <Button
-              variant="outline"
-              className="w-full justify-between"
-              onClick={() => !category && !type && toast.error('Please select type before category')}
-            >
-              {selectedCategory ? (
-                <p>
-                  <span>{selectedCategory.icon}</span> {selectedCategory.name}
-                </p>
-              ) : (
-                t('Select category')
-              )}{' '}
-              <LuChevronsUpDown size={18} />
-            </Button>
-          ) : (
-            <Skeleton className="h-9 rounded-md" />
-          )}
+          <Button
+            className="w-full justify-between"
+            onClick={() => !category && !type && toast.error('Please select type before category')}
+          >
+            {selectedCategory ? (
+              <p>
+                <span>{selectedCategory.icon}</span> {selectedCategory.name}
+              </p>
+            ) : (
+              t('Select category')
+            )}
+            <LuChevronsUpDown size={18} />
+          </Button>
         </DrawerTrigger>
         <DrawerContent className="w-full p-0 shadow-md">
           <div className="mx-auto w-full max-w-sm px-21/2">
@@ -155,17 +130,6 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
 
               {/* MARK: Create Category */}
               <CreateCategoryDrawer
-                update={category => {
-                  // update categories picker list
-                  setCategories([...categories, category])
-                  setSelectedCategory(category)
-
-                  // update parent component
-                  onChange(category._id)
-
-                  // close
-                  setOpen(false)
-                }}
                 type={type}
                 trigger={
                   <Button
@@ -184,7 +148,7 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
                   .filter(c => c.type === type)
                   .map(category => (
                     <CommandItem
-                      className="justify-between gap-1 rounded-none p-0 py-px"
+                      className="justify-between gap-1 rounded-none p-0 pr-21/2"
                       key={category._id}
                     >
                       <Button
@@ -207,13 +171,11 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
                       {category.deletable && (
                         <UpdateCategoryDrawer
                           category={category}
-                          update={(category: ICategory) => {
-                            setCategories(categories.map(c => (c._id === category._id ? category : c)))
-                          }}
                           trigger={
                             <Button
                               variant="ghost"
                               size="icon"
+                              className="0 h-7 p-1.5 hover:bg-transparent"
                             >
                               <LucidePencil />
                             </Button>
@@ -225,7 +187,7 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
                       {category.deletable && (
                         <ConfirmDialog
                           label={t('Delete category')}
-                          desc={`${t('Are you sure you want to delete')} ${category.name}?`}
+                          desc={`${t('All budgets of this category will be deleted')}. ${t('Are you sure you want to delete this category?')}`}
                           confirmLabel={t('Delete')}
                           cancelLabel={t('Cancel')}
                           onConfirm={() => handleDeleteCategory(category._id)}
@@ -235,7 +197,7 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
                             <Button
                               disabled={deleting === category._id}
                               variant="ghost"
-                              className="trans-200 h-full flex-shrink-0 rounded-md px-21/2 py-1.5 text-start text-sm font-semibold hover:bg-slate-200/30"
+                              className="0 h-7 p-1.5 hover:bg-transparent"
                             >
                               {deleting === category._id ? (
                                 <LuLoaderCircle
@@ -243,7 +205,7 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
                                   className="animate-spin text-slate-400"
                                 />
                               ) : (
-                                <LucideX size={16} />
+                                <LuTrash size={16} />
                               )}
                             </Button>
                           }

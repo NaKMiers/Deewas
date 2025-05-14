@@ -1,11 +1,11 @@
 'use client'
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { addWallet, deleteWallet, updateWallet } from '@/lib/reducers/walletReducer'
+import { deleteWallet, updateWallet } from '@/lib/reducers/walletReducer'
 import { cn } from '@/lib/utils'
 import { IWallet } from '@/models/WalletModel'
 import { deleteWalletApi } from '@/requests'
-import { LucidePencil, LucidePlusSquare, LucideX } from 'lucide-react'
+import { LucidePencil, LucidePlusSquare, LucideTrash, LucideX } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { memo, useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -32,6 +32,7 @@ import {
 } from './ui/drawer'
 import { Separator } from './ui/separator'
 import { Skeleton } from './ui/skeleton'
+import { refresh } from '@/lib/reducers/loadReducer'
 
 interface WalletPickerProps {
   wallet?: IWallet
@@ -69,12 +70,10 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
       try {
         const { wallet: w, message } = await deleteWalletApi(id)
 
-        if (wallets.length > 1) {
-          dispatch(deleteWallet(w))
-        } else {
-          dispatch(updateWallet(w))
-        }
         toast.success(message, { id: 'delete-wallet' })
+
+        dispatch(wallets.length > 1 ? deleteWallet(w) : updateWallet(w))
+        dispatch(refresh())
       } catch (err: any) {
         toast.error(err.message, { id: 'delete-wallet' })
         console.log(err)
@@ -131,7 +130,6 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
 
               {/* MARK: Create Wallet */}
               <CreateWalletDrawer
-                update={wallet => dispatch(addWallet(wallet))}
                 trigger={
                   <Button
                     variant="ghost"
@@ -164,7 +162,7 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
 
                 {wallets.map(wallet => (
                   <CommandItem
-                    className="justify-between gap-1 rounded-none p-0 py-px"
+                    className="justify-between gap-1 rounded-none p-0 pr-21/2"
                     key={wallet._id}
                   >
                     <Button
@@ -183,11 +181,11 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
                     {/* MARK: Update Wallet */}
                     <UpdateWalletDrawer
                       wallet={wallet}
-                      update={(wallet: IWallet) => dispatch(updateWallet(wallet))}
                       trigger={
                         <Button
                           variant="ghost"
                           size="icon"
+                          className="h-7 p-1.5 hover:bg-transparent"
                         >
                           <LucidePencil />
                         </Button>
@@ -197,7 +195,11 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
                     {/* MARK: Delete Wallet */}
                     <ConfirmDialog
                       label={t('Delete wallet')}
-                      desc={`${t('Are you sure you want to delete')} ${wallet.name}?`}
+                      desc={
+                        wallets.length > 1
+                          ? `${t('All transactions of this wallet will be deleted')}. ${t('Are you sure you want to delete this wallet?')}`
+                          : `${t('Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe')}. ${t('Are you sure you want to do this?')}`
+                      }
                       confirmLabel={t('Delete')}
                       cancelLabel={t('Cancel')}
                       onConfirm={() => handleDeleteWallet(wallet._id)}
@@ -207,7 +209,7 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
                         <Button
                           disabled={deleting === wallet._id}
                           variant="ghost"
-                          className="trans-200 h-full flex-shrink-0 rounded-md px-21/2 py-1.5 text-start text-sm font-semibold hover:bg-slate-200/30"
+                          className="0 h-7 p-1.5 hover:bg-transparent"
                         >
                           {deleting === wallet._id ? (
                             <LuLoaderCircle
@@ -215,7 +217,7 @@ function WalletPicker({ wallet, isAllowedAll, onChange, className }: WalletPicke
                               className="animate-spin text-slate-400"
                             />
                           ) : (
-                            <LucideX size={16} />
+                            <LucideTrash size={16} />
                           )}
                         </Button>
                       }

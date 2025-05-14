@@ -2,6 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { deleteWallet, updateWallet } from '@/lib/reducers/walletReducer'
 import { checkLevel, checkTranType, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
@@ -64,12 +65,10 @@ function WalletCard({ wallet, hideMenu, className }: WalletCardProps) {
     try {
       const { wallet: w, message } = await deleteWalletApi(wallet._id)
 
-      if (wallets.length > 1) {
-        dispatch(deleteWallet(w))
-      } else {
-        dispatch(updateWallet(w))
-      }
       toast.success(message, { id: 'delete-wallet' })
+
+      dispatch(wallets.length > 1 ? deleteWallet(w) : updateWallet(w))
+      dispatch(refresh())
     } catch (err: any) {
       toast.error(err.message, { id: 'delete-wallet' })
       console.log(err)
@@ -114,104 +113,103 @@ function WalletCard({ wallet, hideMenu, className }: WalletCardProps) {
             <span>{wallet.name}</span>
           </div>
 
-          {!hideMenu && !deleting && !updating ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="px-2">
-                  <LucideEllipsis />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent onClick={e => e.stopPropagation()}>
-                {/* MARK: exclude */}
-                <Button
-                  variant="ghost"
-                  className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
-                >
-                  <Switch
-                    checked={exclude}
-                    onCheckedChange={handleChangeExclude}
-                    className="bg-gray-300 data-[state=checked]:bg-violet-500"
-                  />
-                  {t('Exclude')}
-                </Button>
+          {!hideMenu &&
+            (!deleting && !updating ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="px-2">
+                    <LucideEllipsis />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent onClick={e => e.stopPropagation()}>
+                  {/* MARK: exclude */}
+                  <Button
+                    variant="ghost"
+                    className="flex h-8 w-full items-center justify-start gap-2 px-2 text-violet-500"
+                  >
+                    <Switch
+                      checked={exclude}
+                      onCheckedChange={handleChangeExclude}
+                      className="bg-gray-300 data-[state=checked]:bg-violet-500"
+                    />
+                    {t('Exclude')}
+                  </Button>
 
-                {/* MARK: Transfer */}
-                {wallets.length > 1 && (
-                  <TransferFundDrawer
-                    initFromWallet={wallet}
+                  {/* MARK: Transfer */}
+                  {wallets.length > 1 && (
+                    <TransferFundDrawer
+                      initFromWallet={wallet}
+                      trigger={
+                        <Button
+                          variant="ghost"
+                          className="flex h-8 w-full items-center justify-start gap-2 px-2 text-indigo-500"
+                        >
+                          <LucideArrowRightLeft size={16} />
+                          {t('Transfer')}
+                        </Button>
+                      }
+                    />
+                  )}
+
+                  {/* MARK: Add Transaction */}
+                  <CreateTransactionDrawer
+                    initWallet={wallet}
                     trigger={
                       <Button
                         variant="ghost"
-                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-indigo-500"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2"
                       >
-                        <LucideArrowRightLeft size={16} />
-                        {t('Transfer')}
+                        <LucidePlus size={16} />
+                        {t('Add Transaction')}
                       </Button>
                     }
                   />
-                )}
 
-                {/* MARK: Add Transaction */}
-                <CreateTransactionDrawer
-                  initWallet={wallet}
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="flex h-8 w-full items-center justify-start gap-2 px-2"
-                    >
-                      <LucidePlus size={16} />
-                      {t('Add Transaction')}
-                    </Button>
-                  }
-                />
+                  {/* MARK: Edit */}
+                  <UpdateWalletDrawer
+                    wallet={wallet}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
+                      >
+                        <LucidePencil size={16} />
+                        {t('Edit')}
+                      </Button>
+                    }
+                  />
 
-                {/* MARK: Edit */}
-                <UpdateWalletDrawer
-                  update={wallet => dispatch(updateWallet(wallet))}
-                  wallet={wallet}
-                  load={setUpdating}
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-sky-500"
-                    >
-                      <LucidePencil size={16} />
-                      {t('Edit')}
-                    </Button>
-                  }
-                />
-
-                {/* MARK: Delete */}
-                <ConfirmDialog
-                  label={t('Delete Wallet')}
-                  desc={
-                    wallets.length > 1
-                      ? t('Are you sure you want to delete this wallet?')
-                      : t('deleteOnlyWalletMessage')
-                  }
-                  confirmLabel={wallets.length > 1 ? 'Delete' : 'Clear'}
-                  onConfirm={handleDeleteWallet}
-                  trigger={
-                    <Button
-                      variant="ghost"
-                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
-                    >
-                      <LucideTrash size={16} />
-                      {t('Delete')}
-                    </Button>
-                  }
-                />
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button
-              disabled
-              variant="ghost"
-              size="icon"
-            >
-              <LucideLoaderCircle className="animate-spin" />
-            </Button>
-          )}
+                  {/* MARK: Delete */}
+                  <ConfirmDialog
+                    label={t('Delete Wallet')}
+                    desc={
+                      wallets.length > 1
+                        ? `${t('All transactions of this wallet will be deleted')}. ${t('Are you sure you want to delete this wallet?')}`
+                        : `${t('Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe')}. ${t('Are you sure you want to do this?')}`
+                    }
+                    confirmLabel={wallets.length > 1 ? 'Delete' : 'Clear'}
+                    onConfirm={handleDeleteWallet}
+                    trigger={
+                      <Button
+                        variant="ghost"
+                        className="flex h-8 w-full items-center justify-start gap-2 px-2 text-rose-500"
+                      >
+                        <LucideTrash size={16} />
+                        {t('Delete')}
+                      </Button>
+                    }
+                  />
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                disabled
+                variant="ghost"
+                size="icon"
+              >
+                <LucideLoaderCircle className="animate-spin" />
+              </Button>
+            ))}
         </div>
       </div>
 

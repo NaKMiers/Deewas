@@ -104,17 +104,17 @@ const authOptions = {
         return JSON.parse(JSON.stringify(token))
       }
 
-      if (token) {
-        console.log('- Refresh -')
-        const userDB: any = await UserModel.findOne({ email: token.email }).lean()
-        if (userDB) {
-          const { password: _, ...otherDetails } = userDB
+      // if (token) {
+      //   console.log('- Refresh -')
+      //   const userDB: any = await UserModel.findOne({ email: token.email }).lean()
+      //   if (userDB) {
+      //     const { password: _, ...otherDetails } = userDB
 
-          token = { ...token, ...otherDetails }
-        }
+      //     token = { ...token, ...otherDetails }
+      //   }
 
-        return JSON.parse(JSON.stringify(token))
-      }
+      //   return JSON.parse(JSON.stringify(token))
+      // }
 
       return token
     },
