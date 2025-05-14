@@ -16,7 +16,7 @@ import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 
-interface Stats {
+export interface Stats {
   transactionCount: number
   recentTransactions: ITransaction[]
   walletCount: number

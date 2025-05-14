@@ -1,10 +1,12 @@
+import { Stats } from '@/app/[locale]/(home)/streaks/page'
+import { IUser } from '@/models/UserModel'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export const user = createSlice({
   name: 'user',
   initialState: {
     token: null as string | null,
-    user: null as IFullUser | null,
+    user: null as IUser | null,
     loading: false as boolean,
     onboarding: null as any,
     stats: null as Stats | null,
@@ -13,7 +15,7 @@ export const user = createSlice({
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload
     },
-    setUser: (state, action: PayloadAction<IFullUser>) => {
+    setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload
     },
     setOnboarding: (state, action: PayloadAction<any>) => {

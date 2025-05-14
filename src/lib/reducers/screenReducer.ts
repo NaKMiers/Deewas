@@ -1,3 +1,7 @@
+import { IFullBudget } from '@/models/BudgetModel'
+import { ICategory } from '@/models/CategoryModel'
+import { IFullTransaction } from '@/models/TransactionModel'
+import { IWallet } from '@/models/WalletModel'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import moment from 'moment'
 

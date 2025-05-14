@@ -1,3 +1,4 @@
+import { ISettings } from '@/models/SettingsModel'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export const settings = createSlice({
