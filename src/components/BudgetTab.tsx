@@ -95,7 +95,6 @@ function BudgetTab({ value, begin, end, budgets, className }: IBudgetTabProps) {
 
         {/* MARK: Create Budget */}
         <CreateBudgetDrawer
-          update={(budget: IFullBudget) => dispatch(addBudget(budget))}
           trigger={
             <Button
               variant="secondary"

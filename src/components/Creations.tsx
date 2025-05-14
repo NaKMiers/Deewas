@@ -11,15 +11,8 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { useAppDispatch } from '@/hooks/reduxHook'
-import { addBudget } from '@/lib/reducers/budgetReducer'
 import { addCategory } from '@/lib/reducers/categoryReduce'
-import { refresh } from '@/lib/reducers/loadReducer'
-import { addTransaction } from '@/lib/reducers/transactionReducer'
-import { addWallet } from '@/lib/reducers/walletReducer'
-import { IFullBudget } from '@/models/BudgetModel'
 import { ICategory } from '@/models/CategoryModel'
-import { IFullTransaction } from '@/models/TransactionModel'
-import { IWallet } from '@/models/WalletModel'
 import {
   LucideArrowLeftRight,
   LucideBookCopy,
@@ -61,10 +54,6 @@ function Creations() {
 
           <div className="my-1 flex flex-col gap-2 px-4">
             <CreateTransactionDrawer
-              update={(transaction: IFullTransaction) => {
-                dispatch(addTransaction(transaction))
-                dispatch(refresh())
-              }}
               trigger={
                 <Button variant="outline">
                   <LucideArrowLeftRight />
@@ -74,7 +63,6 @@ function Creations() {
             />
 
             <CreateBudgetDrawer
-              update={(budget: IFullBudget) => dispatch(addBudget(budget))}
               trigger={
                 <Button variant="outline">
                   <LucideChartPie />
@@ -84,7 +72,6 @@ function Creations() {
             />
 
             <CreateWalletDrawer
-              update={(wallet: IWallet) => dispatch(addWallet(wallet))}
               trigger={
                 <Button variant="outline">
                   <LucideWalletCards />
@@ -94,7 +81,6 @@ function Creations() {
             />
 
             <CreateCategoryDrawer
-              update={(category: ICategory) => dispatch(addCategory(category))}
               trigger={
                 <Button variant="outline">
                   <LucideBookCopy />

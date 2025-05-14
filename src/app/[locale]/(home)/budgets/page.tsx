@@ -129,7 +129,6 @@ function BudgetsPage() {
 
       {/* MARK: Create Transaction */}
       <CreateBudgetDrawer
-        update={(budget: IFullBudget) => dispatch(addBudget(budget))}
         trigger={
           <Button
             variant="default"
