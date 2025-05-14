@@ -7,9 +7,10 @@ import { LucideCalendarDays } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { Button } from './ui/button'
 
-function Header({ className }: { className?: string }) {
+function Header() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
@@ -20,15 +21,14 @@ function Header({ className }: { className?: string }) {
 
   console.log(user.plan)
 
-  if (!isPremium) return router.replace('/onboarding')
+  useEffect(() => {
+    if (!isPremium) {
+      router.replace('/onboarding')
+    }
+  }, [isPremium, router])
 
   return (
-    <header
-      className={cn(
-        'h-[50px] w-full border-b border-muted-foreground bg-primary text-secondary',
-        className
-      )}
-    >
+    <header className={cn('h-[50px] w-full border-b border-muted-foreground bg-primary text-secondary')}>
       <div className="container flex h-full items-center justify-between px-21/2 md:px-21">
         <div className="flex items-center gap-2 md:gap-4">
           <Button
