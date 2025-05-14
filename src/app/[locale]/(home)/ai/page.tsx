@@ -1,6 +1,6 @@
 'use client'
 
-import Message from '@/components/ai/Message'
+import Message from '@/components/ai/message'
 import { useScrollToBottom } from '@/components/ai/useScrollToBottom'
 import ChangePersonalityDrawer from '@/components/dialogs/ChangePersonalityDrawer'
 import { Button } from '@/components/ui/button'
