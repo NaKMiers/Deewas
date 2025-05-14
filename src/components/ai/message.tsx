@@ -12,7 +12,7 @@ import Transaction from '../Transaction'
 import { Button } from '../ui/button'
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel'
 import WalletCard from '../WalletCard'
-import { Markdown } from './Markdown'
+import { Markdown } from './markdown'
 
 interface MessageProps {
   role: 'assistant' | 'user'
