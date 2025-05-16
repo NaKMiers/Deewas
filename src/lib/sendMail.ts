@@ -29,7 +29,7 @@ export async function sendMail(to: string | string[], subject: string, html: str
 }
 
 // support email
-export async function sendSupportEmail(name: string, email: string, message: string) {
+export async function sendSupportEmail(name: string, email: string, subject: string, message: string) {
   console.log('- Send Support Email -')
 
   try {
@@ -37,10 +37,15 @@ export async function sendSupportEmail(name: string, email: string, message: str
       SupportEmail({
         name,
         email,
+        subject,
         message,
       })
     )
-    await sendMail(process.env.NEXT_PUBLIC_MAIL!, 'Support Request', html)
+    await sendMail(
+      process.env.NEXT_PUBLIC_MAIL!,
+      `Contact Request: "${subject}"` || 'Support Request',
+      html
+    )
   } catch (err: any) {
     console.log(err)
   }

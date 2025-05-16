@@ -46,7 +46,7 @@ export default async function RootLayout({
             © {new Date().getFullYear()} Deewas. All rights reserved. | Contact us at{' '}
             <a
               href="mailto:deewas.now@gmail.com"
-              className="text-blue-600 hover:underline"
+              className="text-sky-500 hover:underline"
             >
               deewas.now@gmail.com
             </a>

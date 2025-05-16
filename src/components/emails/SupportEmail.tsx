@@ -14,10 +14,11 @@ import { theme } from '../../../tailwind.config'
 interface SupportEmailProps {
   name: string
   email: string
+  subject?: string
   message: string
 }
 
-function SupportEmail({ name, email, message }: SupportEmailProps) {
+function SupportEmail({ name, email, subject, message }: SupportEmailProps) {
   return (
     <Html>
       <Head />
@@ -25,7 +26,9 @@ function SupportEmail({ name, email, message }: SupportEmailProps) {
         <Body className="bg-neutral-100 font-sans text-black">
           <Container className="mx-auto max-w-xl rounded-2xl border border-primary bg-white p-6">
             <Section className="mb-6">
-              <Heading className="text-lg font-semibold text-primary">New Support Request</Heading>
+              <Heading className="text-lg font-semibold text-primary">
+                {subject || 'New Support Request'}
+              </Heading>
               <Text className="text-sm text-muted-foreground">
                 You’ve received a new support message via the Deewas Help Center.
               </Text>

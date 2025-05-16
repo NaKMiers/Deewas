@@ -62,11 +62,7 @@ export default function HelpPage() {
   )
 
   // form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const { register, handleSubmit } = useForm<FieldValues>({
     defaultValues: {
       name: '',
       email: '',

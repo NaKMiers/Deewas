@@ -1084,6 +1084,19 @@
     "Please upgrade to Premium to export data": "Please upgrade to Premium to export data",
     "Upgrade Now": "Upgrade Now"
   },
+  "contactForm": {
+    "Name is required": "Name is required",
+    "Email is required": "Email is required",
+    "Email is invalid": "Email is invalid",
+    "Subject is required": "Subject is required",
+    "Message is required": "Message is required",
+    "Sent message": "Sent message",
+    "Your name": "Your name",
+    "Your email": "Your email",
+    "Subject": "Subject",
+    "Message": "Message",
+    "Send Message": "Send Message"
+  },
   "success": {
     "Sign In Success": "Sign In Success",
     "You have successfully signed in": "You have successfully signed in",

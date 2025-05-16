@@ -52,7 +52,7 @@ function OnboardingPage() {
         <p className="text-lg text-gray-300">Discover the best experience with our app!</p>
         <div className="mt-6 space-x-4">
           <Button asChild>
-            <Link href="https://www.apple.com/app-store/">Download on App Store</Link>
+            <Link href="https://www.apple.com/app-store">Download on App Store</Link>
           </Button>
           <Button asChild>
             <Link href="https://play.google.com/store">Get it on Google Play</Link>

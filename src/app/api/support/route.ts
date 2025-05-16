@@ -7,14 +7,14 @@ export async function POST(req: NextRequest) {
 
   try {
     // get data from request body
-    const { name, email, message } = await req.json()
+    const { name, email, subject, message } = await req.json()
 
     if (!name || !email || !message) {
       return NextResponse.json({ message: 'Please fill in all fields' }, { status: 400 })
     }
 
     // send support email to admin
-    await sendSupportEmail(name, email, message)
+    await sendSupportEmail(name, email, subject, message)
 
     // return response
     return NextResponse.json(

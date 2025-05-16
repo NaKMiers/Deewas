@@ -91,6 +91,6 @@ export const config = {
     '/',
     '/(vi|en)/:path*',
     '/(transactions|budgets|account|wallets|categories|auth|calendar|streaks|admin|api)/:path*',
-    '/(about|support|help|privacy-policy|terms-and-service|onboarding)/:path*',
+    '/(about|support|help|privacy-policy|terms-and-service|onboarding|landing)/:path*',
   ],
 }
