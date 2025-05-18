@@ -91,7 +91,7 @@ const features = [
   {
     icon: LucideLockKeyhole,
     title: 'Private & Secure',
-    desc: 'Your data is encrypted and backed up—only you can access your financial records.',
+    desc: 'Your data is encrypted and backed up - only you can access your financial records.',
   },
   {
     icon: LucideCrown,
@@ -103,7 +103,7 @@ const specialFeatures = [
   {
     subTitle: 'AI Assistant',
     title: 'Smart & Effortless Finance',
-    desc: 'Chat with your AI assistant to log expenses, set budgets, or track savings—no typing or navigating needed.',
+    desc: 'Chat with your AI assistant to log expenses, set budgets, or track savings - no typing or navigating needed.',
     image: '/images/features/ai-feature.png',
     subs: [
       {
@@ -179,36 +179,36 @@ const reviews = [
   {
     image: '/images/avatars/avt1.jpg',
     name: 'Emily Johnson',
-    position: 'CEO of Company',
-    text: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.',
+    position: 'Freelance Designer',
+    text: 'Deewas has completely changed how I manage my freelance income and expenses. The AI assistant is like having a personal accountant in my pocket.',
     rating: 5,
   },
   {
     image: '/images/avatars/avt2.jpg',
     name: 'Michael Smith',
-    position: 'CTO of Company',
-    text: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.',
+    position: 'Software Engineer',
+    text: 'I’ve tried several finance apps, but Deewas is the only one that feels modern and truly helpful. Love the smart suggestions from the AI!',
     rating: 5,
   },
   {
     image: '/images/avatars/avt3.jpg',
     name: 'Nikko Barton',
-    position: 'CFO of Company',
-    text: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.',
+    position: 'Startup Founder',
+    text: 'Managing both business and personal finances was chaotic - until I found Deewas. The budgeting tools and charts make everything so much clearer.',
     rating: 5,
   },
   {
     image: '/images/avatars/avt4.jpg',
     name: 'Jane Doe',
-    position: 'COO of Company',
-    text: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.',
+    position: 'Marketing Manager',
+    text: 'The app is beautiful and easy to use. I especially love the streaks feature - it keeps me motivated to track my spending daily.',
     rating: 5,
   },
   {
     image: '/images/avatars/avt5.jpg',
     name: 'Sophia Williams',
-    position: 'CMO of Company',
-    text: 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.',
+    position: 'University Student',
+    text: 'As a student, budgeting is essential. Deewas helps me stay on track without feeling overwhelmed. It’s simple but powerful.',
     rating: 5,
   },
 ]
@@ -559,7 +559,7 @@ function LandingPage() {
       <Separator className="my-20 h-0" />
 
       {/* MARK: Contact */}
-      <section className="container grid grid-cols-12 px-21/2 md:px-21">
+      <section className="container grid grid-cols-12 gap-y-21 px-21/2 md:px-21">
         <div className="col-span-12 flex-1 md:col-span-6">
           <Image
             src="/images/contact-us.png"

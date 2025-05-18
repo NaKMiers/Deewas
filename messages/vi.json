@@ -4,6 +4,7 @@
     "description": "Công cụ uản lý chi tiêu cá nhân với các tính năng AI mạnh mẽ và giao diện đơn giản"
   },
   "signInPage": {
+    "Sign In - Deewas": "Đăng nhập - Deewas",
     "Sign In to Deewas": "Đăng nhập Deewas",
     "Welcome back, please sign in to continue!": "Chào mừng trở lại, vui lòng đăng nhập để tiếp tục!",
     "Sign In with Google": "Đăng nhập với Google",
@@ -24,6 +25,7 @@
     "Google sign in is in progress": "Đang đăng nhập bằng Google"
   },
   "signUpPage": {
+    "Sign Up - Deewas": "Đăng ký - Deewas",
     "Sign Up to Deewas": "Đăng ký Deewas",
     "Welcome! Please fill in the details to get started": "Chào mừng! Vui lòng điền thông tin để bắt đầu",
     "or": "hoặc",
@@ -153,31 +155,25 @@
     "Add Transaction": "Thêm giao dịch",
     "All wallets": "Tất cả ví"
   },
-  "wizardPage": {
-    "Welcome": "Chào mừng",
-    "Let's start with some simple settings": "Hãy bắt đầu bằng 1 số cài đặt đơn giản",
-    "You can change these settings at any time": "Bạn có thể thay đổi cài đặt này bất cứ lúc nào",
-    "I'm done! Take me to the dashboard": "Đã xong! Đưa tôi đến trang chủ ngay"
-  },
   "aiPage": {
     "Hello": "Xin chào",
     "What can you do?": "Bạn có thể làm gì?",
-    "My most expensive expense this month": "Chi tiêu đắt nhất của tôi trong tháng này",
+    "My most expensive expense this month": "Chi phí đắt nhất của tôi trong tháng này",
     "How to limit my spending": "Cách hạn chế chi tiêu của tôi",
-    "An Error Happens": "Đã có lỗi xảy ra",
-    "Try again": "Hãy thử lại",
-    "Deewas is a personal finance assistant that helps you manage your money wisely": "Deewas là trợ lý tài chính cá nhân giúp bạn quản lý tiền bạc một cách thông minh",
-    "How can Deewas help?": "Deewas có thể giúp gì cho bạn?",
-    "Clear": "Xóa chat",
-    "Mixed personalities": "Trộn tính cách",
-    "The Tough Love Mom": "Người mẹ nghiêm khắc",
-    "The Angry Big Sister": "Chị gái nóng tính",
-    "The Caring Lover": "Người yêu tâm lý",
-    "The Friendly Buddy": "Người bạn thân thiện",
-    "The Creative Little Bro": "Em trai sáng tạo",
-    "The Gentle Dad": "Người cha điềm đạm",
-    "The Loyal Puppy": "Cún con trung thành",
-    "The Moody Cat": "Con mòe khó ở",
+    "An Error Happens": "Có lỗi xảy ra",
+    "Try again": "Thử lại",
+    "Deewas is a personal finance assistant that helps you manage your money wisely": "Deewas là một trợ lý tài chính cá nhân giúp bạn quản lý tiền bạc một cách khôn ngoan",
+    "How can Deewas help?": "Deewas có thể giúp gì?",
+    "Clear": "Xóa",
+    "Mixed personalities": "Tính cách pha trộn",
+    "The Tough Love Mom": "The Tough Love Mom",
+    "The Angry Big Sister": "The Angry Big Sister",
+    "The Caring Lover": "The Caring Lover",
+    "The Friendly Buddy": "The Friendly Buddy",
+    "The Creative Little Bro": "The Creative Little Bro",
+    "The Gentle Dad": "The Gentle Dad",
+    "The Loyal Puppy": "The Loyal Puppy",
+    "The Moody Cat": "The Moody Cat",
     "Listening": "Đang lắng nghe",
     "Please upgrade to Premium to continue using the assistant": "Vui lòng nâng cấp lên Premium để tiếp tục sử dụng trợ lý",
     "You've reached your free token limit for today": "Bạn đã đạt giới hạn token miễn phí cho hôm nay",
@@ -227,6 +223,7 @@
     "The Loyal Puppy": "Cún con trung thành",
     "The Moody Cat": "Con mòe khó ở",
     "Welcome to the family!": "Chào mừng bạn đến với đại gia đình!",
+    "Let's get started on your financial journey together!": "Hãy cùng bắt đầu hành trình tài chính nhé!",
     "We're excited to have you here. Let's get started on your financial journey together!": "Chúng tôi rất vui khi bạn ở đây. Hãy cùng bắt đầu hành trình tài chính nhé!",
     "Get started now": "Bắt đầu ngay",
     "Continue": "Continue",
@@ -733,7 +730,10 @@
     "Add Transaction": "Thêm giao dịch",
     "Set Budget": "Lập ngân sách",
     "Edit": "Sửa",
-    "Delete": "Xóa"
+    "Delete": "Xóa",
+    "Delete category": "Xóa danh mục",
+    "All budgets of this category will be deleted": "Tất cả ngân sách của danh mục này sẽ bị xóa",
+    "Are you sure you want to delete this category?": "Bạn có chắc chắn muốn xóa danh mục này không?"
   },
   "categoryGroup": {
     "Categories": "Danh mục",
@@ -768,7 +768,9 @@
     "expense": "chi tiêu",
     "saving": "tiết kiệm",
     "invest": "đầu tư",
-    "transfer": "chuyển tiền"
+    "transfer": "chuyển tiền",
+    "All budgets of this category will be deleted": "Tất cả ngân sách của danh mục này sẽ bị xóa",
+    "Are you sure you want to delete this category?": "Bạn có chắc chắn muốn xóa danh mục này không?"
   },
   "walletPickerPage": {
     "All wallets": "Tất cả ví",
@@ -781,7 +783,10 @@
     "Delete wallet": "Xóa ví",
     "Are you sure you want to delete": "Bạn có chắc muốn xóa",
     "Delete": "Xóa",
-    "Cancel": "Hủy"
+    "Cancel": "Hủy",
+    "All transactions of this wallet will be deleted": "Tất cả giao dịch của ví này sẽ bị xóa",
+    "Are you sure you want to delete this wallet?": "Bạn có chắc chắn muốn xóa ví này không?",
+    "Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe": "Vì đây là ví duy nhất, thay vì xóa ví này, chúng tôi sẽ xóa tất cả dữ liệu và giao dịch liên quan của bạn, các danh mục của bạn sẽ được bảo toàn"
   },
   "emojiPickerPage": {
     "Pick an emoji": "Chọn biểu tượng cảm xúc",
@@ -1008,11 +1013,12 @@
     "Categories": "Danh mục",
     "Budgets": "Ngân sách",
     "Week Streak": "Chuỗi tuần",
-    "You're unstoppable this week!": "Tuần này bạn là bất bại!",
-    "You're crushing it! Keep pushing": "Bạn đang làm rất tốt! Tiếp tục cố gắng nhé",
-    "You're building a great habit!": "Bạn đang hình thành một thói quen tuyệt vời!",
-    "Nice! One step at a time": "Tốt lắm! Từng bước một thôi",
-    "New week, new chance. Let’s get it": "Tuần mới, cơ hội mới. Bắt đầu thôi nào",
+    "You're unstoppable this week!": "Bạn không thể ngăn cản tuần này!",
+    "You're crushing it! Keep pushing": "Bạn đang làm rất tốt! Tiếp tục cố gắng",
+    "You're building a great habit!": "Bạn đang xây dựng thói quen tốt!",
+    "Nice! One step at a time": "Tuyệt! Một bước một lần",
+    "New week, new chance": "Tuần mới, cơ hội mới",
+    "Let’s get it": "Hãy làm nó",
     "Current streak": "Chuỗi hiện tại",
     "Longest streak": "Chuỗi dài nhất",
     "Your Stats": "Thống kê của bạn",
@@ -1077,6 +1083,19 @@
     "Cancel": "Hủy",
     "Please upgrade to Premium to export data": "Vui lòng nâng cấp lên Premium để xuất dữ liệu",
     "Upgrade Now": "Nâng cấp ngay"
+  },
+  "contactForm": {
+    "Name is required": "Tên không được trống",
+    "Email is required": "Email không được trống",
+    "Email is invalid": "Email không hợp lệ",
+    "Subject is required": "Chủ đề không được trống",
+    "Message is required": "Nội dung không được trống",
+    "Sent message": "Đang gửi tin nhắn",
+    "Your name": "Tên của bạn",
+    "Your email": "Email của bạn",
+    "Subject": "Chủ đề",
+    "Message": "Nội dung",
+    "Send Message": "Gửi tin nhắn"
   },
   "success": {
     "Sign In Success": "Đăng nhập thành công",
