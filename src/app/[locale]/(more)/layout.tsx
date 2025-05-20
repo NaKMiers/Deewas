@@ -19,8 +19,6 @@ function MoreLayout({
           resolvedTheme === 'light' ? 'url(/images/light-bg.png)' : 'url(/images/dark-bg.png)',
       }}
     >
-      <Header />
-
       {children}
     </main>
   )

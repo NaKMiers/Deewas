@@ -28,6 +28,8 @@ export async function POST(req: NextRequest) {
       $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
     }).lean()
 
+    console.log(user)
+
     // check user exists or not in database
     if (!user) {
       return NextResponse.json({ message: 'Incorrect username or email' }, { status: 400 })
@@ -40,6 +42,8 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       )
     }
+
+    console.log(user.password, password)
 
     // check password
     const isValidPassword = await bcrypt.compare(password, user.password)

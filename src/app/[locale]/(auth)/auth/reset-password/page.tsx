@@ -149,7 +149,7 @@ function ResetPasswordPage() {
     <div className="flex h-screen w-full flex-col items-center justify-center p-2">
       <p className="mb-21 flex flex-row items-end text-center text-4xl font-bold tracking-wider">
         DEEWAS
-        <p className="text-[40px] font-bold text-green-500">.</p>
+        <span className="text-[40px] font-bold text-green-500">.</span>
       </p>
 
       <div

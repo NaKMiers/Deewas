@@ -22,7 +22,8 @@
     "Sign In Failed": "Sign In Failed",
     "Username or email is required": "Username or email is required",
     "Password is required": "Password is required",
-    "Google sign in is in progress": "Google sign in is in progress"
+    "Google sign in is in progress": "Google sign in is in progress",
+    "Signing in": "Signing in"
   },
   "signUpPage": {
     "Sign Up - Deewas": "Sign Up - Deewas",
@@ -1173,7 +1174,8 @@
     "Username must be at least 5 characters": "Username must be at least 5 characters",
     "Export Failed": "Export Failed",
     "An error occurred while exporting CSV files": "An error occurred while exporting CSV files",
-    "An error occurred while exporting Excel file": "An error occurred while exporting Excel file"
+    "An error occurred while exporting Excel file": "An error occurred while exporting Excel file",
+    "Invalid username or password": "Invalid username or password"
   },
   "ERROR_CODE": {
     "BUDGET_NOT_FOUND": "Budget not found",

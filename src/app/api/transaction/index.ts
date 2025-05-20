@@ -412,7 +412,11 @@ export const getHistory = async (userId: string, params: any = {}) => {
         .lean(),
 
       // get oldest transaction date
-      TransactionModel.findOne({ user: userId }).select('date').sort({ date: 1 }).limit(1).lean(),
+      TransactionModel.findOne({ user: userId })
+        .select('date createdAt')
+        .sort({ date: 1 })
+        .limit(1)
+        .lean(),
     ])
 
     return {

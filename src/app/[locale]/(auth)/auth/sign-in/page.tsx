@@ -20,6 +20,7 @@ function SignInPage() {
   const router = useRouter()
   const locale = useLocale()
   const t = useTranslations('signInPage')
+  const tError = useTranslations('error')
 
   // states
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -44,7 +45,7 @@ function SignInPage() {
       // start loading
       setIsLoading(true)
 
-      toast.loading(t('Signing in') + '...', { id: 'sing-in' })
+      toast.loading(t('Signing in') + '...', { id: 'sign-in' })
 
       try {
         // send request to server
@@ -52,7 +53,7 @@ function SignInPage() {
 
         if (res?.ok) {
           // show success message
-          toast.success(t('Sign In Successfully!'), { id: 'sing-in' })
+          toast.success(t('Sign In Successfully!'), { id: 'sign-in' })
 
           // redirect to home page
           router.push('/', { locale })
@@ -61,8 +62,14 @@ function SignInPage() {
         if (res?.error) {
           // show error message
           toast.error(res.error, { id: 'sign-in' })
-          setError('usernameOrEmail', { type: 'manual' })
-          setError('password', { type: 'manual' })
+          setError('usernameOrEmail', {
+            type: 'manual',
+            message: tError('Invalid username or password'),
+          })
+          setError('password', {
+            type: 'manual',
+            message: tError('Invalid username or password'),
+          })
         }
       } catch (err: any) {
         toast.error(err.message, { id: 'sign-in' })
@@ -72,7 +79,7 @@ function SignInPage() {
         setIsLoading(false)
       }
     },
-    [setError, router, locale, t]
+    [setError, tError, router, locale, t]
   )
 
   // keyboard event
@@ -98,7 +105,7 @@ function SignInPage() {
     <div className="flex h-screen w-full flex-col items-center justify-center p-2">
       <p className="mb-21 flex flex-row items-end text-center text-4xl font-bold tracking-wider">
         DEEWAS
-        <p className="text-[40px] font-bold text-green-500">.</p>
+        <span className="text-[40px] font-bold text-green-500">.</span>
       </p>
 
       <div

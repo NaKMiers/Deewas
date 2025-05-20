@@ -19,8 +19,6 @@ function Header() {
   const router = useRouter()
   const locale = useLocale()
 
-  console.log(user.plan)
-
   useEffect(() => {
     if (!isPremium) {
       router.replace('/onboarding')
