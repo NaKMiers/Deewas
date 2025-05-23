@@ -61,7 +61,6 @@ function Navbar({ className }: NavbarProps) {
   )
 
   const index = routes.findIndex(route => route.href === pathname)
-  console.log('index', index)
 
   return (
     <nav

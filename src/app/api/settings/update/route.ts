@@ -16,12 +16,13 @@ export async function PUT(req: NextRequest) {
     }
 
     // get data from request body
-    const { currency, language, personalities } = await req.json()
+    const { currency, language, personalities, firstLaunch } = await req.json()
 
     const response = await updateSettings(userId, {
       currency,
       language,
       personalities,
+      firstLaunch,
     })
 
     // return response

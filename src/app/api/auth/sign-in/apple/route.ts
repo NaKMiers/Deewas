@@ -57,8 +57,8 @@ export async function POST(req: NextRequest) {
 
     // find user from database
     let user: any = await UserModel.findOneAndUpdate(
-      { email },
-      { $set: { authType: 'apple' } },
+      { $or: [{ email }, { appleUserId: sub }] },
+      { $set: { authType: 'apple', appleUserId } },
       { new: true }
     ).lean()
 

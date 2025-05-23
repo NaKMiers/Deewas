@@ -26,6 +26,10 @@ const SettingsSchema = new Schema(
       type: Number,
       default: -20000,
     },
+    firstLaunch: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 )
@@ -44,6 +48,7 @@ export interface ISettings {
   language: string
 
   freeTokensUsed: number
+  firstLaunch: boolean
 }
 
 export type IFullSettings = ISettings & { user: IUser }

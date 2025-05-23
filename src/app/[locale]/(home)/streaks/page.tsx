@@ -61,8 +61,6 @@ function StreaksPage() {
           `?from=${toUTC(moment().startOf('week').toDate())}&to=${toUTC(moment().endOf('week').toDate())}`
         )
         dispatch(setStats(stats))
-
-        console.log('user stats', stats)
       } catch (err: any) {
         console.log(err)
       } finally {

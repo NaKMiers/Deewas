@@ -63,10 +63,12 @@ export const updateSettings = async (
     currency,
     language,
     personalities,
+    firstLaunch,
   }: {
     currency?: string
     language?: string
     personalities?: number[]
+    firstLaunch?: boolean
   }
 ) => {
   try {
@@ -75,9 +77,10 @@ export const updateSettings = async (
 
     const set: any = {}
 
-    if (currency) set.currency = currency
-    if (language) set.language = language
-    if (personalities) set.personalities = personalities
+    if (currency !== undefined) set.currency = currency
+    if (language !== undefined) set.language = language
+    if (personalities !== undefined) set.personalities = personalities
+    if (firstLaunch !== undefined) set.firstLaunch = firstLaunch
 
     // update user settings
     let settings = await SettingsModel.findOneAndUpdate(
