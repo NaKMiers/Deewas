@@ -2,30 +2,20 @@
 
 import { Link, useRouter } from '@/i18n/navigation'
 import { shortName } from '@/lib/string'
-import { checkPremium, cn } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { LucideCalendarDays } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
-import { useEffect } from 'react'
 import { Button } from './ui/button'
 
 function Header() {
   // hooks
   const { data: session } = useSession()
   const user: any = session?.user
-  const isPremium = checkPremium(user)
   const t = useTranslations('header')
   const router = useRouter()
   const locale = useLocale()
-
-  useEffect(() => {
-    if (!isPremium && !['admin'].includes(user?.role)) {
-      setTimeout(() => {
-        router.replace('/onboarding')
-      }, 10 * 1000) // 30 seconds
-    }
-  }, [isPremium, router, user?.role])
 
   return (
     <header className={cn('h-[50px] w-full border-b border-muted-foreground bg-primary text-secondary')}>
