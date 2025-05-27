@@ -9,10 +9,12 @@ import '@/models/UserModel'
 export const dynamic = 'force-dynamic'
 
 // [GET]: /admin/referral-code/:id
-export async function GET(req: NextRequest, { params: { code } }: { params: { code: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ code: string }> }) {
   console.log('- Get Referral Code -')
 
   try {
+    const { code } = await params
+
     // connect to database
     await connectDatabase()
 
