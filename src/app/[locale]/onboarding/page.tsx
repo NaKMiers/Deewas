@@ -8,7 +8,6 @@ import { Check, X } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect } from 'react'
 
 const freeFeatures = [
   'Max 2 wallets',
@@ -31,14 +30,9 @@ const premiumFeatures = [
 ]
 
 function OnboardingPage() {
-  const { data: session, update } = useSession()
+  const { data: session } = useSession()
   const user: any = session?.user
   const router = useRouter()
-
-  useEffect(() => {
-    update()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <div className="container mx-auto p-8">
