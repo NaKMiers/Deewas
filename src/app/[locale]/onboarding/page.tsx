@@ -37,7 +37,8 @@ function OnboardingPage() {
 
   useEffect(() => {
     update()
-  }, [update])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="container mx-auto p-8">
