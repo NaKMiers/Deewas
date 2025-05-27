@@ -7,7 +7,7 @@ import { setPageLoading } from '@/lib/reducers/loadReducer'
 import { IUser } from '@/models/UserModel'
 import { editUserApi, getUserApi } from '@/requests'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -16,10 +16,11 @@ import { GoSingleSelect } from 'react-icons/go'
 import { IoText } from 'react-icons/io5'
 import { MdEmail } from 'react-icons/md'
 
-function EditUserPage({ params: { id } }: { params: { id: string } }) {
+function EditUserPage() {
   // hooks
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const { id } = useParams<{ id: string }>()
 
   // states
   const [user, setUser] = useState<IUser | null>(null)
@@ -47,6 +48,8 @@ function EditUserPage({ params: { id } }: { params: { id: string } }) {
   // get user to edit
   useEffect(() => {
     const getUser = async () => {
+      if (!id) return
+
       // star page loading
       dispatch(setPageLoading(true))
 
