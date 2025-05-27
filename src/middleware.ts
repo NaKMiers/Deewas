@@ -18,9 +18,9 @@ const requireAuth = async (req: NextRequest, token: JWT | null, locale: string =
   console.log('- Require Auth -')
   if (!token) return NextResponse.redirect(new URL(`/${locale}/auth/sign-in`, req.url))
 
-  const isPremium = checkPremium(token)
+  if (['admin'].includes(token?.role as string)) return intlMiddleware(req)
 
-  if (!isPremium) return NextResponse.redirect(new URL(`/${locale}/onboarding`, req.url))
+  if (!checkPremium(token)) return NextResponse.redirect(new URL(`/${locale}/sign-in`, req.url))
 
   return intlMiddleware(req)
 }
@@ -71,9 +71,16 @@ export default async function middleware(req: NextRequest) {
     if (['/auth'].some(path => purePathname.startsWith(path))) {
       return requireUnAuth(req, token, locale) // require unauth
     } else if (
-      ['/transactions', '/budgets', '/account', '/wallets', '/categories', '/calendar', '/streaks'].some(
-        path => purePathname.startsWith(path)
-      ) ||
+      [
+        '/transactions',
+        '/budgets',
+        '/account',
+        '/wallets',
+        '/categories',
+        '/calendar',
+        '/streaks',
+        '/onboarding',
+      ].some(path => purePathname.startsWith(path)) ||
       purePathname === '/'
     ) {
       return requireAuth(req, token, locale) // require auth
