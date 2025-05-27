@@ -38,53 +38,21 @@ export const handleQuery = (
   return query
 }
 
-// // valid params
-// const validParams: string[] = [
-//   'from-to',
-//   'active',
-//   'address',
-//   'amount',
-//   'authType',
-//   'avatar',
-//   'balance',
-//   'category',
-//   'code',
-//   'date',
-//   'desc',
-//   'description',
-//   'email',
-//   'firstName',
-//   'from',
-//   'deleted',
-//   'lastName',
-//   'limit',
-//   'page',
-//   'password',
-//   'paymentMethod',
-//   'role',
-//   'search',
-//   'slug',
-//   'status',
-//   'to',
-//   'type',
-//   'userId',
-//   'walletId',
-//   '_id',
-//   'createdAt',
-//   'updatedAt',
-//   'sort',
-//   'orderBy',
-// ]
-
 export const searchParamsToObject = (searchParams: URLSearchParams): { [key: string]: string[] } => {
-  // // remove all invalid params
-  // for (let key of Array.from(searchParams.keys())) {
-  //   if (!validParams.includes(key)) searchParams.delete(key)
-  // }
-
   const params: { [key: string]: string[] } = {}
   for (let key of Array.from(searchParams.keys())) {
     params[key] = searchParams.getAll(key)
+  }
+
+  return params
+}
+
+export const searchParamsToSingleFieldObject = (
+  searchParams: URLSearchParams
+): { [key: string]: string | null } => {
+  const params: { [key: string]: string | null } = {}
+  for (let key of Array.from(searchParams.keys())) {
+    params[key] = searchParams.get(key)
   }
 
   return params

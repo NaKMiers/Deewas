@@ -5,21 +5,23 @@ import UserItem from '@/components/admin/UserItem'
 import CustomInput from '@/components/CustomInput'
 import Pagination from '@/components/Pagination'
 import { useAppDispatch } from '@/hooks/reduxHook'
-import { handleQuery } from '@/lib/query'
+import { handleQuery, searchParamsToSingleFieldObject } from '@/lib/query'
 import { setPageLoading } from '@/lib/reducers/loadReducer'
 import { IUser } from '@/models/UserModel'
 import { getAllUsersApi } from '@/requests'
 import { LucideSortAsc } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { FaSearch } from 'react-icons/fa'
 
-function UsersPage({ searchParams }: { searchParams?: { [key: string]: string[] } }) {
+function UsersPage() {
   // hooks
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   const router = useRouter()
+  const params = useSearchParams()
+  const searchParams: any = useMemo(() => searchParamsToSingleFieldObject(params), [params])
 
   // states
   const [users, setUsers] = useState<IUser[]>([])

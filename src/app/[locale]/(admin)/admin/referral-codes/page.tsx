@@ -6,23 +6,25 @@ import CustomInput from '@/components/CustomInput'
 import ConfirmDialog from '@/components/dialogs/ConfirmDialog'
 import Pagination from '@/components/Pagination'
 import { useAppDispatch } from '@/hooks/reduxHook'
-import { handleQuery } from '@/lib/query'
+import { handleQuery, searchParamsToSingleFieldObject } from '@/lib/query'
 import { setPageLoading } from '@/lib/reducers/loadReducer'
 import { toUTC } from '@/lib/time'
 import { IReferralCode } from '@/models/ReferralCodeModel'
 import { activateReferralCodesApi, deleteReferralCodesApi, getAllReferralCodesApi } from '@/requests'
 import { LucideSortAsc } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { FaSearch } from 'react-icons/fa'
 
-function ReferralCodesPage({ searchParams }: { searchParams?: { [key: string]: string | string[] } }) {
+function ReferralCodesPage() {
   // store
   const dispatch = useAppDispatch()
   const pathname = usePathname()
   const router = useRouter()
+  const params = useSearchParams()
+  const searchParams: any = useMemo(() => searchParamsToSingleFieldObject(params), [params])
 
   // states
   const [referralCodes, setReferralCodes] = useState<IReferralCode[]>([])
@@ -67,6 +69,8 @@ function ReferralCodesPage({ searchParams }: { searchParams?: { [key: string]: s
     const getAllReferralCodes = async () => {
       const query = handleQuery(searchParams)
 
+      console.log(query)
+
       // start page loading
       dispatch(setPageLoading(true))
 
@@ -79,6 +83,7 @@ function ReferralCodesPage({ searchParams }: { searchParams?: { [key: string]: s
 
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
+        console.log(searchParams?.sort, getValues('sort'))
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('active', searchParams?.active || getValues('active'))
       } catch (err: any) {
