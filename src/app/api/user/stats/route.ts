@@ -42,10 +42,10 @@ export async function GET(req: NextRequest) {
 
     await connectDatabase()
 
-    const [recentTransactions, transactionCount, walletCount, categoryCount, budgetCount] =
+    const [recentTransactions, allTransactions, walletCount, categoryCount, budgetCount] =
       await Promise.all([
-        TransactionModel.find(filter).sort({ createdAt: -1 }).lean(),
-        TransactionModel.countDocuments({ user: userId }),
+        TransactionModel.find(filter).select('createdAt').sort({ createdAt: -1 }).lean(),
+        TransactionModel.find().select('createdAt').sort({ createdAt: 1 }).lean(),
         WalletModel.countDocuments({ user: userId }),
         CategoryModel.countDocuments({ user: userId }),
         BudgetModel.countDocuments({ user: userId }),
@@ -57,14 +57,17 @@ export async function GET(req: NextRequest) {
     let lastDate: string | null = null
 
     const uniqueDates = Array.from(
-      new Set(recentTransactions.map(tx => moment(tx.createdAt).format('YYYY-MM-DD')))
+      new Set(allTransactions.map(tx => moment(tx.createdAt).format('YYYY-MM-DD')))
     )
+
+    console.log(`Unique Dates: ${uniqueDates}`)
 
     for (let i = 0; i < uniqueDates.length; i++) {
       const currentDate = uniqueDates[i]
 
       if (lastDate) {
         const expectedNext = moment(lastDate).add(1, 'day').format('YYYY-MM-DD')
+        console.log(expectedNext, currentDate)
         if (currentDate === expectedNext) {
           curStreak++
         } else {
@@ -83,7 +86,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(
       {
         recentTransactions,
-        transactionCount,
+        transactionCount: allTransactions.length,
         walletCount,
         categoryCount,
         budgetCount,

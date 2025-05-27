@@ -1,5 +1,4 @@
 import Header from '@/components/Header'
-import Navbar from '@/components/Navbar'
 import PageLoading from '@/components/PageLoading'
 import Sidebar from '@/components/Sidebar'
 import { ReactNode } from 'react'
@@ -24,8 +23,6 @@ export default async function RootLayout({
           </div>
         </div>
       </main>
-
-      <Navbar />
     </>
   )
 }

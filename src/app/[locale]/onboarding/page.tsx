@@ -8,6 +8,7 @@ import { Check, X } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 const freeFeatures = [
   'Max 2 wallets',
@@ -30,9 +31,13 @@ const premiumFeatures = [
 ]
 
 function OnboardingPage() {
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const user: any = session?.user
   const router = useRouter()
+
+  useEffect(() => {
+    update()
+  }, [update])
 
   return (
     <div className="container mx-auto p-8">
@@ -52,10 +57,10 @@ function OnboardingPage() {
         <p className="text-lg text-gray-300">Discover the best experience with our app!</p>
         <div className="mt-6 space-x-4">
           <Button asChild>
-            <Link href="https://www.apple.com/app-store">Download on App Store</Link>
+            <Link href={process.env.NEXT_PUBLIC_APPSTORE_URL!}>Download on App Store</Link>
           </Button>
           <Button asChild>
-            <Link href="https://play.google.com/store">Get it on Google Play</Link>
+            <Link href={process.env.NEXT_PUBLIC_PLAYSTORE_URL!}>Get it on Google Play</Link>
           </Button>
         </div>
       </section>

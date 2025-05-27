@@ -24,3 +24,20 @@ export const getUserStatsApi = async (query: string = '') => {
 
   return await res.json()
 }
+
+// [POST]: /user/referral-code
+export const applyVoucherApi = async (code: string) => {
+  const res = await fetch(`/api/user/referral-code`, {
+    method: 'POST',
+    body: JSON.stringify({
+      code,
+    }),
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}

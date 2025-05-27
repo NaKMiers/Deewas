@@ -51,6 +51,7 @@ const UserSchema = new Schema(
     },
     avatar: String,
     name: String,
+    isDeleted: Boolean,
     initiated: {
       type: Boolean,
       default: false,
@@ -88,6 +89,7 @@ export interface IUser {
 
   avatar: string
   name: string
+  isDeleted: boolean
   initiated: boolean
 
   plan: string

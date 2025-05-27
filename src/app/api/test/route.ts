@@ -9,19 +9,6 @@ export async function GET(req: NextRequest) {
     // connect to database
     await connectDatabase()
 
-    // // async amount of all categories
-    // const categories = await CategoryModel.find().lean()
-
-    // for (const category of categories) {
-    //   const transactions = await TransactionModel.find({ category: category._id, exclude: false })
-    //     .select('amount')
-    //     .lean()
-    //   const totalAmount = transactions.reduce((acc, transaction) => acc + transaction.amount, 0)
-
-    //   // update category with total amount
-    //   await CategoryModel.findByIdAndUpdate(category._id, { $set: { amount: totalAmount } })
-    // }
-
     // return response
     return NextResponse.json({ message: '' }, { status: 200 })
   } catch (err: any) {

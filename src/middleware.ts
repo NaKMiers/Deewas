@@ -64,7 +64,7 @@ export default async function middleware(req: NextRequest) {
     } else if (['/api/admin'].some(path => pathname.startsWith(path))) {
       return requireAdminForApi(req, token, locale) // require admin
     } else {
-      return requireAuthForApi(req, token, locale) // not required
+      return requireAuthForApi(req, token, locale)
     }
   } else {
     const purePathname = pathname.replace(/^\/(vi|en)/, '') || '/'

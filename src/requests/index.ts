@@ -16,6 +16,9 @@ export * from './userRequests'
 // Transaction
 export * from './transactionRequests'
 
+// Admin
+export * from './adminRequest'
+
 export const getRevenueCatSubscriberApi = async (userId: string) => {
   const res = await fetch(`https://api.revenuecat.com/v1/subscribers/${userId}`, {
     headers: {

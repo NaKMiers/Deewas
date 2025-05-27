@@ -30,6 +30,9 @@ const SettingsSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    referralCode: {
+      type: String,
+    },
   },
   { timestamps: true }
 )
@@ -49,6 +52,7 @@ export interface ISettings {
 
   freeTokensUsed: number
   firstLaunch: boolean
+  referralCode?: string
 }
 
 export type IFullSettings = ISettings & { user: IUser }

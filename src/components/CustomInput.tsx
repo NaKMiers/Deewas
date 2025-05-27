@@ -12,6 +12,8 @@ interface InputProps {
   label: string
   icon?: ReactNode
   className?: string
+  inputClassName?: string
+  labelClassName?: string
 
   id: string
   type?: string
@@ -19,6 +21,7 @@ interface InputProps {
   required?: boolean
   onChange?: any
   register: UseFormRegister<FieldValues>
+  output?: any
   errors: FieldErrors
   options?: any[]
   rows?: number
@@ -41,9 +44,12 @@ function CustomInput({
   onChange,
   icon: Icon,
   options,
+  output,
   onClick,
   control,
   onFocus,
+  labelClassName,
+  inputClassName,
   className,
   ...rest
 }: InputProps) {
@@ -67,7 +73,7 @@ function CustomInput({
     >
       <label
         htmlFor={id}
-        className={cn('ml-1 text-xs font-semibold', errors[id] ? 'text-rose-500' : '')}
+        className={cn('ml-1 text-xs font-semibold', labelClassName, errors[id] && 'text-rose-500')}
       >
         {label}
       </label>
@@ -94,11 +100,18 @@ function CustomInput({
             rules={{ required }}
             render={({ field }) => (
               <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value}
+                onValueChange={value => {
+                  field.onChange(value)
+                  if (output) output(value)
+                }}
+                value={field.value}
               >
                 <SelectTrigger
-                  className={cn('border', errors[id]?.message ? 'border-rose-500' : 'border-dark')}
+                  className={cn(
+                    'border',
+                    inputClassName,
+                    errors[id]?.message ? 'border-rose-500' : 'border-dark'
+                  )}
                 >
                   <SelectValue placeholder={label} />
                 </SelectTrigger>
@@ -140,12 +153,13 @@ function CustomInput({
             id={id}
             className={cn(
               'number-input peer block h-full w-full touch-manipulation appearance-none rounded-lg px-2.5 text-base focus:outline-none focus:ring-0 md:text-sm',
+              inputClassName,
               errors[id]?.message ? 'border-rose-500' : 'border-dark'
             )}
             disabled={disabled}
             type={type === 'password' ? (isShowPassword ? 'text' : 'password') : type}
             {...register(id, { required })}
-            onWheel={e => e.currentTarget.blur()}
+            // onWheel={e => e.currentTarget.blur()}
             placeholder=""
             onChange={onChange}
             {...rest}

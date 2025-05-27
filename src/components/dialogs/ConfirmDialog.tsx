@@ -53,7 +53,10 @@ function ConfirmDialog({
         </AlertDialogTrigger>
       )}
 
-      <AlertDialogContent className="border-200/30 rounded-lg border">
+      <AlertDialogContent
+        className="border-200/30 rounded-lg border"
+        onClick={e => e.stopPropagation()}
+      >
         <AlertDialogHeader>
           <AlertDialogTitle>{label}</AlertDialogTitle>
           <AlertDialogDescription>{desc}</AlertDialogDescription>

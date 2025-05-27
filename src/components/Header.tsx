@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { shortName } from '@/lib/string'
 import { checkPremium, cn } from '@/lib/utils'
 import { LucideCalendarDays } from 'lucide-react'
@@ -37,9 +37,11 @@ function Header() {
           >
             <LucideCalendarDays size={22} />
           </Button>
-          <h1 className="text-nowrap font-semibold tracking-wide">
-            {t('Hi')} {shortName(user)}!👋
-          </h1>
+          <Link href="/">
+            <h1 className="text-nowrap font-semibold tracking-wide">
+              {t('Hi')} {shortName(user)}!👋
+            </h1>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
