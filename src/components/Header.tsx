@@ -7,6 +7,7 @@ import { LucideCalendarDays } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { Button } from './ui/button'
 
 function Header() {
@@ -18,11 +19,13 @@ function Header() {
   const router = useRouter()
   const locale = useLocale()
 
-  // useEffect(() => {
-  //   if (!isPremium) {
-  //     router.replace('/onboarding')
-  //   }
-  // }, [isPremium, router])
+  useEffect(() => {
+    if (!isPremium && !['admin'].includes(user?.role)) {
+      setTimeout(() => {
+        router.replace('/onboarding')
+      }, 10 * 1000) // 30 seconds
+    }
+  }, [isPremium, router, user?.role])
 
   return (
     <header className={cn('h-[50px] w-full border-b border-muted-foreground bg-primary text-secondary')}>

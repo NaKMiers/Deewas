@@ -2,7 +2,7 @@ import { JWT } from 'next-auth/jwt'
 import createMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 import { routing } from './i18n/routing'
-import { checkPremium, extractToken } from './lib/utils'
+import { extractToken } from './lib/utils'
 
 // MARK: Internationalization Middleware
 const intlMiddleware = createMiddleware(routing)
@@ -17,10 +17,6 @@ const requireUnAuth = async (req: NextRequest, token: JWT | null, locale: string
 const requireAuth = async (req: NextRequest, token: JWT | null, locale: string = 'en') => {
   console.log('- Require Auth -')
   if (!token) return NextResponse.redirect(new URL(`/${locale}/auth/sign-in`, req.url))
-
-  if (['admin'].includes(token?.role as string)) return intlMiddleware(req)
-
-  if (!checkPremium(token)) return NextResponse.redirect(new URL(`/${locale}/sign-in`, req.url))
 
   return intlMiddleware(req)
 }
