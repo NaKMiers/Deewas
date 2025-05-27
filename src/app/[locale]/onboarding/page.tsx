@@ -31,18 +31,18 @@ const premiumFeatures = [
 ]
 
 function OnboardingPage() {
-  const { data: session, update } = useSession()
-  const user: any = session?.user
-  const router = useRouter()
+  // const { data: session, update } = useSession()
+  // const user: any = session?.user
+  // const router = useRouter()
 
-  useEffect(() => {
-    update()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   update()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   return (
     <div className="container mx-auto p-8">
-      <div className="flex flex-row justify-end">
+      {/* <div className="flex flex-row justify-end">
         <Button
           variant="default"
           className="shadow-md"
@@ -50,7 +50,7 @@ function OnboardingPage() {
         >
           {user ? 'Log out' : 'Sign in'}
         </Button>
-      </div>
+      </div> */}
 
       {/* MARK: Hero Section */}
       <section className="mb-12 text-center">
@@ -130,7 +130,7 @@ function OnboardingPage() {
       {/* MARK: Onboarding  */}
       <section className="text-center">
         <h2 className="mb-4 text-2xl font-semibold">Get Started</h2>
-        {checkPremium(user) ? (
+        {/* {checkPremium(user) ? (
           <div>
             <p className="mb-4 text-green-600">You are a Premium user! Enjoy full access.</p>
             <Button asChild>
@@ -152,7 +152,7 @@ function OnboardingPage() {
               </Button>
             </div>
           </div>
-        )}
+        )} */}
       </section>
 
       <Separator className="my-16 h-0" />
