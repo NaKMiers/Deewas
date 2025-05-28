@@ -15,7 +15,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     // connect to database
     await connectDatabase()
 
-    const user = await UserModel.findByIdAndUpdate(id, { $unset: { isDeleted: 1 } })
+    const user = await UserModel.findByIdAndUpdate(id, { $unset: { isDeleted: 1 } }, { new: true })
 
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 })

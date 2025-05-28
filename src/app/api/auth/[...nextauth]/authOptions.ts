@@ -50,6 +50,11 @@ const authOptions = {
           $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
         }).lean()
 
+        // check if account is deleted or not
+        if (user && user.isDeleted) {
+          throw new Error('This account has been deleted')
+        }
+
         // check user exists or not in database
         if (!user) {
           throw new Error('Incorrect username or email')
@@ -155,7 +160,7 @@ const authOptions = {
         ).lean()
 
         // user not found
-        if (!existingUser) {
+        if (!existingUser || existingUser.isDeleted) {
           return false
         }
 

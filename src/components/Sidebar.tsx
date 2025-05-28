@@ -48,7 +48,7 @@ function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        'trans-200 h-screen w-full bg-primary p-21/2 text-secondary',
+        'trans-200 sticky top-0 h-screen w-full bg-primary p-21/2 text-secondary',
         open ? 'max-w-[222px]' : 'max-w-[60px]',
         className
       )}

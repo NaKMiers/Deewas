@@ -4,18 +4,35 @@ import { Link, useRouter } from '@/i18n/navigation'
 import { shortName } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { LucideCalendarDays } from 'lucide-react'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { Button } from './ui/button'
 
 function Header() {
   // hooks
-  const { data: session } = useSession()
+  const { data: session, update } = useSession()
   const user: any = session?.user
   const t = useTranslations('header')
   const router = useRouter()
   const locale = useLocale()
+
+  useEffect(() => {
+    setInterval(() => {
+      update()
+    }, 10 * 1000) // 60s
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (!user) return
+
+    if (user.isDeleted) {
+      alert('This account has been deleted ')
+      signOut()
+    }
+  }, [user, router, locale])
 
   return (
     <header className={cn('h-[50px] w-full border-b border-muted-foreground bg-primary text-secondary')}>

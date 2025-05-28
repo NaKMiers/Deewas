@@ -105,6 +105,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'User not found' }, { status: 400 })
     }
 
+    // check if user is deleted or not
+    if (user.isDeleted) {
+      return NextResponse.json({ message: 'This account has been deleted' }, { status: 404 })
+    }
+
     // exclude password from user object
     if (user.password) delete user.password
 
