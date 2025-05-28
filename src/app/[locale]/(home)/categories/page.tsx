@@ -93,6 +93,8 @@ function CategoriesPage() {
         />
       )}
 
+      <Separator className="my-36 h-0" />
+
       {/* MARK: Create Category */}
       <CreateCategoryDrawer
         trigger={
@@ -105,8 +107,6 @@ function CategoriesPage() {
           </Button>
         }
       />
-
-      <Separator className="my-40 h-0" />
     </div>
   )
 }

@@ -65,7 +65,7 @@ function Navbar({ className }: NavbarProps) {
   return (
     <nav
       className={cn(
-        'fixed bottom-21 left-1/2 flex w-full max-w-[400px] -translate-x-1/2 justify-center rounded-full border border-secondary/10 bg-primary shadow-md',
+        'fixed bottom-21 left-1/2 z-10 flex w-full max-w-[400px] -translate-x-1/2 justify-center rounded-full border border-secondary/10 bg-primary shadow-md',
         className
       )}
     >

@@ -45,7 +45,7 @@ function History({ className }: HistoryProps) {
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [transactions, setTransactions] = useState<IFullTransaction[]>([])
-  const [isIncludeTransfer, setIsIncludeTransfer] = useState<boolean>(false)
+  const [isIncludeTransfers, setIsIncludeTransfers] = useState<boolean>(false)
 
   const findMaxKey = useCallback(
     (data: ITransaction[]) => {
@@ -90,7 +90,7 @@ function History({ className }: HistoryProps) {
 
   // auto update chart data
   useEffect(() => {
-    const tsx = isIncludeTransfer ? transactions : transactions.filter(t => !t.exclude)
+    const tsx = isIncludeTransfers ? transactions : transactions.filter(t => !t.exclude)
 
     if (!tsx.length || !currency) return
 
@@ -215,7 +215,7 @@ function History({ className }: HistoryProps) {
     }
 
     setData(groupedData)
-  }, [dateRange, transactions, currency, isIncludeTransfer])
+  }, [dateRange, transactions, currency, isIncludeTransfers])
 
   return (
     <div className={cn(className)}>
@@ -246,8 +246,8 @@ function History({ className }: HistoryProps) {
         <div className="flex flex-wrap justify-end gap-21/2 p-21/2">
           <div className="flex flex-1 items-center justify-start gap-2 px-2">
             <Switch
-              checked={isIncludeTransfer}
-              onCheckedChange={() => setIsIncludeTransfer(!isIncludeTransfer)}
+              checked={isIncludeTransfers}
+              onCheckedChange={() => setIsIncludeTransfers(!isIncludeTransfers)}
               className="bg-gray-300 data-[state=checked]:bg-violet-500"
             />
             <p className="font-medium">{t('Include transfers')}</p>

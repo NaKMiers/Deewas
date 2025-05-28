@@ -154,7 +154,8 @@
     "Select wallet": "Select wallet",
     "No transactions found, just add one now!": "No transactions found, just add one now!",
     "Add Transaction": "Add Transaction",
-    "All wallets": "All wallets"
+    "All wallets": "All wallets",
+    "Include transfers": "Include transfers"
   },
   "aiPage": {
     "Hello": "Hello",

@@ -247,7 +247,7 @@ function LandingPage() {
 
           <div className="mt-5 flex gap-2.5">
             <Link
-              href="https://www.apple.com/app-store"
+              href={process.env.NEXT_PUBLIC_APPSTORE_URL!}
               target="_blank"
               className="h-12 overflow-hidden rounded-lg border border-primary shadow-md"
             >
@@ -260,7 +260,7 @@ function LandingPage() {
               />
             </Link>
             <Link
-              href="https://play.google.com/store"
+              href={process.env.NEXT_PUBLIC_PLAYSTORE_URL!}
               target="_blank"
               className="h-12 overflow-hidden rounded-lg border border-primary shadow-md"
             >
@@ -413,8 +413,7 @@ function LandingPage() {
           <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">FAQs</h6>
           <h4 className="mt-3 max-w-sm text-3xl font-semibold">Have Questions? Look Here</h4>
           <p className="mt-6 max-w-xl text-muted-foreground">
-            Unleash the power of our platform with a multitude of powerful features, empowering you to
-            achieve your goals.
+            Got questions? We&apos;re here to help you understand and make the most of Deewas.
           </p>
 
           <CollapseContents
@@ -444,8 +443,8 @@ function LandingPage() {
           <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">Reviews</h6>
           <h4 className="mt-3 text-3xl font-semibold">10k+ Customers Trust Us</h4>
           <p className="mx-auto mt-8 max-w-xl text-muted-foreground">
-            Unleash the power of our platform with a multitude of powerful features, empowering you to
-            achieve your goals.
+            Join thousands of satisfied users who rely on Deewas to manage their finances with confidence
+            and ease.
           </p>
         </div>
 

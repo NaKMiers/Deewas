@@ -14,12 +14,14 @@ import TxItem from './TxItem'
 interface ITransactionCategoryGroupProps {
   category: ICategory
   transactions: IFullTransaction[]
+  includeTransfers?: boolean
   className?: string
 }
 
 function TransactionCategoryGroup({
   category,
   transactions,
+  includeTransfers,
   className,
 }: ITransactionCategoryGroupProps) {
   // hooks
@@ -44,7 +46,9 @@ function TransactionCategoryGroup({
               >
                 {formatCurrency(
                   currency,
-                  transactions.filter(t => !t.exclude).reduce((total, tx) => total + tx.amount, 0)
+                  transactions
+                    .filter(t => !t.exclude || includeTransfers)
+                    .reduce((total, tx) => total + tx.amount, 0)
                 )}
               </span>
             </div>

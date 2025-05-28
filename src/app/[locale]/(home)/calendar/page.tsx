@@ -5,6 +5,7 @@ import MonthYearPicker from '@/components/MonthYearPicker'
 import Transaction from '@/components/Transaction'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { setRefreshing } from '@/lib/reducers/loadReducer'
 import { formatCompactNumber, getLocale } from '@/lib/string'
@@ -213,7 +214,7 @@ function CalendarPage() {
               {format(selectedDate, 'd MMMM, yyyy', { locale: getLocale(locale) })}
             </span>
           </h2>
-          <ScrollArea className="lg:max-h-auto flex max-h-[500px]">
+          <ScrollArea className="lg:max-h-auto flex max-h-[500px] flex-col overflow-y-auto">
             {getTransactionsForDate(selectedDate).length > 0 ? (
               getTransactionsForDate(selectedDate).map((tx, index) => (
                 <motion.div
@@ -239,6 +240,8 @@ function CalendarPage() {
           </ScrollArea>
         </div>
       </div>
+
+      <Separator className="my-36 h-0" />
     </div>
   )
 }

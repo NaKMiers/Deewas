@@ -47,7 +47,7 @@ function WalletsPage() {
         />
       )}
 
-      <Separator className="my-24 h-0" />
+      <Separator className="my-36 h-0" />
 
       {/* MARK: Create Wallet */}
       <CreateWalletDrawer

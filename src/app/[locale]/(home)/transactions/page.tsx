@@ -6,6 +6,8 @@ import TransactionTypeGroup from '@/components/TransactionTypeGroup'
 import { Button } from '@/components/ui/button'
 import { DateRangePicker } from '@/components/ui/DateRangePicker'
 import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
+import { Switch } from '@/components/ui/switch'
 import WalletPicker from '@/components/WalletPicker'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { useRouter } from '@/i18n/navigation'
@@ -42,6 +44,7 @@ function TransactionsPage() {
   const [groups, setGroups] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState<string>('')
+  const [isIncludeTransfers, setIsIncludeTransfers] = useState<boolean>(false)
 
   // get my transactions of selected wallet
   const getMyTransactions = useCallback(async () => {
@@ -112,7 +115,7 @@ function TransactionsPage() {
   }, [transactions, search])
 
   return (
-    <div className="container min-h-[calc(100vh-50px)] pb-32">
+    <div className="container min-h-[calc(100vh-50px)] p-21/2 pb-32 md:p-21">
       {/* MARK: Top */}
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-21/2 py-4 md:px-21">
         <h2 className="text-lg font-bold">
@@ -127,7 +130,15 @@ function TransactionsPage() {
       </div>
 
       {/* MARK: Date Range */}
-      <div className="mb-21/2 flex items-center justify-end gap-2 px-21/2 md:px-21">
+      <div className="mb-21/2 flex items-center justify-between gap-2 px-21/2 md:px-21">
+        <div className="flex flex-1 items-center justify-start gap-2 px-2">
+          <Switch
+            checked={isIncludeTransfers}
+            onCheckedChange={() => setIsIncludeTransfers(!isIncludeTransfers)}
+            className="bg-gray-300 data-[state=checked]:bg-violet-500"
+          />
+          <p className="font-medium">{t('Include transfers')}</p>
+        </div>
         <DateRangePicker
           initialDateFrom={dateRange.from}
           initialDateTo={dateRange.to}
@@ -192,6 +203,7 @@ function TransactionsPage() {
             <TransactionTypeGroup
               type={type}
               categoryGroups={Object.entries(group).map(g => g[1])}
+              includeTransfers={isIncludeTransfers}
               key={type}
             />
           ))
@@ -199,6 +211,8 @@ function TransactionsPage() {
           <NoItemsFound text={t('No transactions found, just add one now!')} />
         )}
       </div>
+
+      <Separator className="my-36 h-0" />
 
       {/* MARK: Create Transaction */}
       <CreateTransactionDrawer

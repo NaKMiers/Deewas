@@ -3,6 +3,7 @@
 import BudgetTab from '@/components/BudgetTab'
 import CreateBudgetDrawer from '@/components/dialogs/CreateBudgetDrawer'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
@@ -126,6 +127,8 @@ function BudgetsPage() {
           ))}
         </div>
       )}
+
+      <Separator className="my-36 h-0" />
 
       {/* MARK: Create Transaction */}
       <CreateBudgetDrawer

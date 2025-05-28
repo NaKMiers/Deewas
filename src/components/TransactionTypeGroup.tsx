@@ -14,10 +14,16 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dro
 interface ITransactionTypeGroupProps {
   type: TransactionType
   categoryGroups: any[]
+  includeTransfers?: boolean
   className?: string
 }
 
-function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionTypeGroupProps) {
+function TransactionTypeGroup({
+  type,
+  categoryGroups,
+  includeTransfers,
+  className,
+}: ITransactionTypeGroupProps) {
   // hooks
   const t = useTranslations('transactionTypeGroup')
 
@@ -34,7 +40,7 @@ function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionT
     (total, group) =>
       total +
       (group.transactions as IFullTransaction[])
-        .filter(t => !t.exclude)
+        .filter(t => !t.exclude || includeTransfers)
         .reduce((totalTx, tx) => totalTx + tx.amount, 0),
     0
   )
@@ -119,6 +125,7 @@ function TransactionTypeGroup({ type, categoryGroups, className }: ITransactionT
                 <TransactionCategoryGroup
                   category={catGroup.category}
                   transactions={catGroup.transactions}
+                  includeTransfers={includeTransfers}
                   key={index}
                 />
               ))}

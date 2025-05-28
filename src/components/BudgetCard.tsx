@@ -166,15 +166,17 @@ function BudgetCard({ begin, end, budget, hideMenu, className }: IBudgetCardProp
               {t('Left')} {formatCurrency(currency, budget.total - budget.amount)}
             </span>
           )}
-          <div
-            className="absolute top-0 h-full w-0.5 -translate-x-1/2 bg-white/50"
-            style={{ left: (spent / length) * 100 + '%' }}
-          >
-            <div className="absolute left-1/2 top-7 -translate-x-1/2 rounded-sm bg-primary/10 px-0.5 py-0.5 text-[10px]">
-              {t('Today')}
-              <div className="absolute bottom-full left-1/2 h-0 w-0 -translate-x-1/2 border-x-4 border-b-4 border-x-transparent border-b-neutral-800 text-xs"></div>
+          {moment(begin).isSameOrBefore(moment()) && (
+            <div
+              className="absolute top-0 h-full w-0.5 -translate-x-1/2 bg-white/50"
+              style={{ left: (spent / length) * 100 + '%' }}
+            >
+              <div className="absolute left-1/2 top-7 -translate-x-1/2 rounded-sm bg-primary/10 px-0.5 py-0.5 text-[10px]">
+                {t('Today')}
+                <div className="absolute bottom-full left-1/2 h-0 w-0 -translate-x-1/2 border-x-4 border-b-4 border-x-transparent border-b-neutral-800 text-xs"></div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
