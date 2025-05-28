@@ -2,7 +2,7 @@
 
 import { languages, LanguageType } from '@/constants/settings'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
-import { cn } from '@/lib/utils'
+import { checkPremium, cn } from '@/lib/utils'
 import { LucideChevronsUpDown, LucideMenu, LucideMoon, LucideSun } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
@@ -13,6 +13,7 @@ import { Command, CommandItem, CommandList, CommandSeparator } from '../ui/comma
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Separator } from '../ui/separator'
 import { Switch } from '../ui/switch'
+import { signOut, useSession } from 'next-auth/react'
 
 interface HeaderProps {
   routes: string[]
@@ -20,16 +21,21 @@ interface HeaderProps {
 }
 
 function Header({ routes, className }: HeaderProps) {
+  const { data: session } = useSession()
+  const user = session?.user
   const { resolvedTheme, setTheme } = useTheme()
   const [openNav, setOpenNav] = useState<boolean>(false)
+  const router = useRouter()
 
   return (
     <div className={cn('sticky top-0 z-10 bg-background/50', className)}>
-      <p className="border-b border-primary/10 px-2 py-1 text-center text-xs md:text-sm">
-        Web version only available for <span className="font-semibold text-green-500">Premium</span>{' '}
-        account. Download the app and upgrade to{' '}
-        <span className="font-semibold text-green-500">Premium</span> to access web version.
-      </p>
+      {!checkPremium(user) && (
+        <p className="border-b border-primary/10 px-2 py-1 text-center text-xs md:text-sm">
+          Web version only available for <span className="font-semibold text-green-500">Premium</span>{' '}
+          account. Download the app and upgrade to{' '}
+          <span className="font-semibold text-green-500">Premium</span> to access web version.
+        </p>
+      )}
       <header className="container flex h-[52px] items-center justify-between px-21/2 drop-shadow-lg lg:px-21">
         <Link
           href="/"
@@ -76,6 +82,10 @@ function Header({ routes, className }: HeaderProps) {
           </Button>
 
           <LanguageSelection triggerClassName="hidden lg:flex" />
+
+          <Button onClick={() => (user ? signOut() : router.push('/auth/sign-in'))}>
+            {user ? 'Sign Out' : 'Sign In'}
+          </Button>
         </div>
 
         <div
