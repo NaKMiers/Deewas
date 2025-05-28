@@ -187,22 +187,22 @@ export const createBudget = async (
     // connect to database
     await connectDatabase()
 
-    // limit 4 budgets for free user
-    if (!isPremium) {
-      // count user wallets
-      const budgetCount = await BudgetModel.countDocuments({
-        user: userId,
-        end: { $gte: toUTC(moment().toDate()) },
-      }).lean()
+    // // limit 4 budgets for free user
+    // if (!isPremium) {
+    //   // count user wallets
+    //   const budgetCount = await BudgetModel.countDocuments({
+    //     user: userId,
+    //     end: { $gte: toUTC(moment().toDate()) },
+    //   }).lean()
 
-      if (budgetCount >= 4) {
-        throw {
-          errorCode: 'BUDGET_LIMIT_REACHED',
-          message:
-            'You have reached the limit of budgets. Please upgrade to premium to create unlimited budgets.',
-        }
-      }
-    }
+    //   if (budgetCount >= 4) {
+    //     throw {
+    //       errorCode: 'BUDGET_LIMIT_REACHED',
+    //       message:
+    //         'You have reached the limit of budgets. Please upgrade to premium to create unlimited budgets.',
+    //     }
+    //   }
+    // }
 
     // check if category is an expense
     const category: any = await CategoryModel.findById(categoryId).select('type').lean()
@@ -228,7 +228,7 @@ export const createBudget = async (
       amount: totalAmount,
     })
 
-    // get newly created budget
+    // get new created budget
     const budget = await BudgetModel.findById(bud._id).populate('category').lean()
 
     if (!budget) {
