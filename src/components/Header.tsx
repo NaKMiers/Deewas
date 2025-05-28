@@ -19,9 +19,12 @@ function Header() {
   const locale = useLocale()
 
   useEffect(() => {
-    setInterval(() => {
-      update()
-    }, 10 * 1000) // 60s
+    setInterval(
+      () => {
+        update()
+      },
+      2 * 60 * 1000
+    ) // 60s
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
