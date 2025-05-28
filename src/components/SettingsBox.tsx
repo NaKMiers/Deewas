@@ -153,7 +153,6 @@ function Box({ type, desc, list, init, className }: BoxProps) {
             className="w-full justify-between border border-primary/10 bg-primary-foreground"
           >
             <p>{selected ? selected.label : `${t('Select')} ${t(type)}`}</p>
-
             <LuChevronsUpDown size={18} />
           </Button>
         </PopoverTrigger>
