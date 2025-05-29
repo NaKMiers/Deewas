@@ -7,11 +7,9 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { addBudget, setBudgets } from '@/lib/reducers/budgetReducer'
 import { formatTimeRange } from '@/lib/time'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
-import { getMyBudgetsApi } from '@/requests/budgetRequests'
 import { LucidePlus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
@@ -22,32 +20,10 @@ function BudgetsPage() {
   const t = useTranslations('budgetPage')
 
   // store
-  const { budgets } = useAppSelector(state => state.budget)
-  const { refreshPoint } = useAppSelector(state => state.load)
+  const { budgets, loading } = useAppSelector(state => state.budget)
 
   // states
-  const [loading, setLoading] = useState<boolean>(false)
   const [groups, setGroups] = useState<any[]>([])
-
-  // initial fetch
-  useEffect(() => {
-    const getBudgets = async () => {
-      // start loading
-      setLoading(true)
-
-      try {
-        const { budgets } = await getMyBudgetsApi()
-        dispatch(setBudgets(budgets))
-      } catch (err: any) {
-        console.log(err)
-      } finally {
-        // stop loading
-        setLoading(false)
-      }
-    }
-
-    getBudgets()
-  }, [dispatch, refreshPoint])
 
   useEffect(() => {
     const groups: {

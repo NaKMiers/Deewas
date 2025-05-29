@@ -52,8 +52,7 @@ export async function GET(req: NextRequest) {
         }
 
         if (key === 'isDeleted') {
-          // Convert string to boolean
-          if (params[key][0] === 'true') filter[key] = true
+          filter[key] = params[key][0] === 'true' ? true : { $ne: true }
           continue
         }
 

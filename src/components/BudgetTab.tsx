@@ -1,10 +1,8 @@
 import BudgetCard from '@/components/BudgetCard'
 import CreateBudgetDrawer from '@/components/dialogs/CreateBudgetDrawer'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import { TabsContent } from '@/components/ui/tabs'
 import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
-import { addBudget } from '@/lib/reducers/budgetReducer'
 import { checkLevel, formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -17,12 +15,12 @@ interface IBudgetTabProps {
   begin: Date | string
   end: Date | string
   budgets: IFullBudget[]
+  hideMenu?: boolean
   className?: string
 }
 
-function BudgetTab({ value, begin, end, budgets, className }: IBudgetTabProps) {
+function BudgetTab({ value, begin, end, budgets, hideMenu, className }: IBudgetTabProps) {
   // hooks
-  const dispatch = useAppDispatch()
   const t = useTranslations('budgetTab')
   const locale = useLocale()
 
@@ -94,16 +92,18 @@ function BudgetTab({ value, begin, end, budgets, className }: IBudgetTabProps) {
         )}
 
         {/* MARK: Create Budget */}
-        <CreateBudgetDrawer
-          trigger={
-            <Button
-              variant="secondary"
-              className="rounded-full shadow-md"
-            >
-              {t('Create Budget')}
-            </Button>
-          }
-        />
+        {!hideMenu && (
+          <CreateBudgetDrawer
+            trigger={
+              <Button
+                variant="secondary"
+                className="rounded-full shadow-md"
+              >
+                {t('Create Budget')}
+              </Button>
+            }
+          />
+        )}
       </div>
 
       {/* Budget List */}
@@ -114,6 +114,7 @@ function BudgetTab({ value, begin, end, budgets, className }: IBudgetTabProps) {
             end={end}
             budget={budget}
             key={budget._id}
+            hideMenu={hideMenu}
           />
         ))}
       </div>

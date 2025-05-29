@@ -1,9 +1,17 @@
 import { connectDatabase } from '@/config/database'
+import BudgetModel from '@/models/BudgetModel'
+import TransactionModel from '@/models/TransactionModel'
 import UserModel from '@/models/UserModel'
+import WalletModel from '@/models/WalletModel'
 import { NextRequest, NextResponse } from 'next/server'
+import SettingsModel from '@/models/SettingsModel'
 
-// Models: User
+// Models: User, Wallet, Transactions, Budget, Settings
+import '@/models/BudgetModel'
+import '@/models/TransactionModel'
 import '@/models/UserModel'
+import '@/models/WalletModel'
+import '@/models/SettingsModel'
 
 // [GET]: /admin/user/:id
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -23,8 +31,15 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
       return NextResponse.json({ message: 'User not found' }, { status: 404 })
     }
 
+    const [wallets, transactions, budgets, settings] = await Promise.all([
+      WalletModel.find({ user: id }).lean(),
+      TransactionModel.find({ user: id }).populate('category', 'name icon amount').lean(),
+      BudgetModel.find({ user: id }).populate('category', 'name icon amount').lean(),
+      SettingsModel.findOne({ user: id }).select('currency').lean(),
+    ])
+
     // return response
-    return NextResponse.json({ user }, { status: 200 })
+    return NextResponse.json({ user, wallets, transactions, budgets, settings }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 500 })
   }
