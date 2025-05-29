@@ -1,17 +1,18 @@
 import { connectDatabase } from '@/config/database'
 import BudgetModel from '@/models/BudgetModel'
+import SettingsModel from '@/models/SettingsModel'
 import TransactionModel from '@/models/TransactionModel'
 import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
 import { NextRequest, NextResponse } from 'next/server'
-import SettingsModel from '@/models/SettingsModel'
 
-// Models: User, Wallet, Transactions, Budget, Settings
+// Models: User, Wallet, Transactions, Category, Budget, Settings
 import '@/models/BudgetModel'
+import '@/models/CategoryModel'
+import '@/models/SettingsModel'
 import '@/models/TransactionModel'
 import '@/models/UserModel'
 import '@/models/WalletModel'
-import '@/models/SettingsModel'
 
 // [GET]: /admin/user/:id
 export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
