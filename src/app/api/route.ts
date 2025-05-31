@@ -39,11 +39,8 @@ export async function GET(req: NextRequest) {
         .populate('category')
         .sort({ end: 1, createdAt: -1 })
         .lean(),
+      SettingsModel.findOne({ user: userId }).lean(),
     ]
-
-    if (token && !checkPremium(token)) {
-      promises.push(SettingsModel.findOne({ user: userId }).select('updatedAt').lean())
-    }
 
     const [wallets, categories, budgets, settings]: any[] = await Promise.all(promises)
 
@@ -53,7 +50,7 @@ export async function GET(req: NextRequest) {
     }
 
     // return response
-    return NextResponse.json({ wallets, categories, budgets }, { status: 200 })
+    return NextResponse.json({ wallets, categories, budgets, settings }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }

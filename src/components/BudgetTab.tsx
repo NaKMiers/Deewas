@@ -2,7 +2,7 @@ import BudgetCard from '@/components/BudgetCard'
 import CreateBudgetDrawer from '@/components/dialogs/CreateBudgetDrawer'
 import { Button } from '@/components/ui/button'
 import { TabsContent } from '@/components/ui/tabs'
-import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { useAppSelector } from '@/hooks/reduxHook'
 import { checkLevel, formatCompactNumber, formatCurrency } from '@/lib/string'
 import { cn } from '@/lib/utils'
 import { IFullBudget } from '@/models/BudgetModel'
@@ -94,6 +94,8 @@ function BudgetTab({ value, begin, end, budgets, hideMenu, className }: IBudgetT
         {/* MARK: Create Budget */}
         {!hideMenu && (
           <CreateBudgetDrawer
+            initBegin={begin}
+            initEnd={end}
             trigger={
               <Button
                 variant="secondary"

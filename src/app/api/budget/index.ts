@@ -2,7 +2,7 @@ import { connectDatabase } from '@/config/database'
 import { toUTC } from '@/lib/time'
 import BudgetModel from '@/models/BudgetModel'
 import CategoryModel from '@/models/CategoryModel'
-import TransactionModel from '@/models/TransactionModel'
+import TransactionModel, { ITransaction } from '@/models/TransactionModel'
 import moment from 'moment-timezone'
 
 // Models: Transaction, Category, Wallet, Budget
@@ -204,38 +204,65 @@ export const createBudget = async (
       }
     }
 
-    // check if category is an expense
-    const category: any = await CategoryModel.findById(categoryId).select('type').lean()
+    const [category, transactions, existingBudget]: any[] = await Promise.all([
+      // check if category is an expense
+      CategoryModel.findById(categoryId).select('type').lean(),
+
+      // calculate total amount of transactions of category from begin to end of budget
+      TransactionModel.find({
+        category: categoryId,
+        date: { $gte: toUTC(begin), $lte: toUTC(end) },
+      }).lean(),
+
+      // get budget to check if budget already exists
+      BudgetModel.findOne({
+        user: userId,
+        category: categoryId,
+        begin: toUTC(begin),
+        end: toUTC(end),
+      }).lean(),
+    ])
 
     if (!category || category.type !== 'expense') {
       throw { errorCode: 'INVALID_CATEGORY', message: 'Category is not an expense category' }
     }
 
-    // calculate total amount of transactions of category from begin to end of budget
-    const transactions = await TransactionModel.find({
-      category: categoryId,
-      date: { $gte: toUTC(begin), $lte: toUTC(end) },
-    }).lean()
-    const totalAmount = transactions.reduce((total, transaction) => total + transaction.amount, 0)
+    const totalAmount = transactions.reduce((total: number, tx: ITransaction) => total + tx.amount, 0)
 
-    // create budget
-    const bud = await BudgetModel.create({
-      user: userId,
-      category: categoryId,
-      total,
-      begin: toUTC(begin),
-      end: toUTC(end),
-      amount: totalAmount,
-    })
+    let budget: any
 
-    // get newly created budget
-    const budget = await BudgetModel.findById(bud._id).populate('category').lean()
+    if (existingBudget) {
+      // update budget if it already exists
+      budget = await BudgetModel.findByIdAndUpdate(
+        existingBudget._id,
+        { $set: { total, amount: totalAmount } },
+        { new: true }
+      )
+        .populate('category')
+        .lean()
+    } else {
+      // create budget
+      const bud = await BudgetModel.create({
+        user: userId,
+        category: categoryId,
+        total,
+        begin: toUTC(begin),
+        end: toUTC(end),
+        amount: totalAmount,
+      })
+
+      // get newly created budget
+      budget = await BudgetModel.findById(bud._id).populate('category').lean()
+    }
 
     if (!budget) {
       throw { errorCode: 'CREATE_BUDGET_FAILED', message: 'Failed to create budget' }
     }
 
-    return { budget: JSON.parse(JSON.stringify(budget)), message: 'Created budget' }
+    return {
+      budget: JSON.parse(JSON.stringify(budget)),
+      message: existingBudget ? 'Replaced budget' : 'Created budget',
+    }
   } catch (err: any) {
     throw err
   }
