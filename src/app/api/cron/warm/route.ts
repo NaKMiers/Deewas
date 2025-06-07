@@ -12,22 +12,20 @@ const endlessOwnerToken =
 export async function GET(req: NextRequest) {
   console.log('- CRON Warm -')
 
-  const baseURL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://deewas.com'
-
   try {
     // warm up serverless functions (/api)
     const [a, b, c] = await Promise.all([
       // [GET]: /api
-      fetch(`${baseURL}/api`, {
+      fetch(`https://deewas.com/api`, {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${endlessOwnerToken}` },
       }),
       // [GET]: /api/transaction/history
       fetch(
-        `${baseURL}/api/transaction/history?from=${toUTC(moment().startOf('day').toDate())}&to=${toUTC(moment().endOf('day').toDate())}`,
+        `https://deewas.com/api/transaction/history?from=${toUTC(moment().startOf('day').toDate())}&to=${toUTC(moment().endOf('day').toDate())}`,
         { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${endlessOwnerToken}` } }
       ),
       // [GET]: /api/transaction
-      fetch(`${baseURL}/api/transaction`, {
+      fetch(`https://deewas.com/api/transaction`, {
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${endlessOwnerToken}` },
       }),
     ])
