@@ -1,4 +1,3 @@
-import { sendResetPasswordEmail } from '@/lib/sendMail'
 import { toUTC } from '@/lib/time'
 import moment from 'moment-timezone'
 import { NextRequest, NextResponse } from 'next/server'
@@ -31,8 +30,6 @@ export async function GET(req: NextRequest) {
     ])
 
     const [INIT, HISTORY, TRANSACTION] = await Promise.all([a.json(), b.json(), c.json()])
-
-    await sendResetPasswordEmail('diwas118151@gmail.com', 'Deewas Cron', 'https://anhkhoa.site')
 
     return NextResponse.json(
       {
