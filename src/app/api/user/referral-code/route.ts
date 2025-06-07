@@ -59,9 +59,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const isPremium = checkPremium(token)
-    console.log(isPremium)
-
     // prevent user use their own referral code
     const owner: IUser = referralCode.owner as IUser
     if (owner._id.toString() === userId.toString()) {
@@ -77,6 +74,9 @@ export async function POST(req: NextRequest) {
       // add user to used users of the referral code
       ReferralCodeModel.updateOne({ code }, { $addToSet: { usedUsers: userId } }),
     ]
+
+    const isPremium = checkPremium(token)
+    console.log(isPremium)
 
     if (!isPremium) {
       promises.push(

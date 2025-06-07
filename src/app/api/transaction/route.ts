@@ -5,7 +5,7 @@ import { getTransactions } from '.'
 
 export const dynamic = 'force-dynamic'
 
-// [GET]: /transactions
+// [GET]: /transaction
 export async function GET(req: NextRequest) {
   console.log('- Get Transactions -')
 

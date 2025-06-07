@@ -59,7 +59,7 @@ export default async function middleware(req: NextRequest) {
 
   if (['/api'].some(path => pathname.startsWith(path))) {
     if (
-      ['/api/auth', '/api/report', '/api/revenuecat-event', '/api/support'].some(path =>
+      ['/api/auth', '/api/report', '/api/revenuecat-event', '/api/support', '/api/cron'].some(path =>
         pathname.startsWith(path)
       )
     ) {
