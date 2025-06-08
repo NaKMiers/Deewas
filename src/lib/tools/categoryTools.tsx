@@ -3,12 +3,12 @@ import { updateCategory } from '@/app/api/category/'
 import { z } from 'zod'
 
 // MARK: Get all categories
-export const get_all_categories = (userId: string) => {
+export const get_all_categories = (userId: string, style?: string) => {
   return {
     description: 'get all categories of the user',
     parameters: z.object({
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
-      message: z.string().describe('Here are your categories'),
+      message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({ type, message }: { type?: string; message: string }) => {
       try {
@@ -29,13 +29,13 @@ export const get_all_categories = (userId: string) => {
 }
 
 // MARK: Get category
-export const get_category = (userId: string) => {
+export const get_category = (userId: string, style?: string) => {
   return {
     description: 'get category by name',
     parameters: z.object({
       name: z.string(),
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
-      message: z.string().describe('Here is your category'),
+      message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({ name, type, message }: { name: string; type?: string; message: string }) => {
       try {
@@ -65,14 +65,14 @@ export const get_category = (userId: string) => {
 }
 
 // MARK: Create category
-export const create_category = (userId: string) => {
+export const create_category = (userId: string, style?: string) => {
   return {
     description: 'create a category with the following properties: name, icon, type',
     parameters: z.object({
       name: z.string(),
       icon: z.string(),
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']),
-      message: z.string().describe('Here is your category'),
+      message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({
       name,
@@ -100,14 +100,14 @@ export const create_category = (userId: string) => {
 }
 
 // MARK: Update category
-export const update_category = (userId: string) => {
+export const update_category = (userId: string, style?: string) => {
   return {
     description: 'update category by name',
     parameters: z.object({
       name: z.string(),
       newName: z.string(),
       icon: z.string(),
-      message: z.string().describe('Here is your category'),
+      message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({
       name,
@@ -145,12 +145,12 @@ export const update_category = (userId: string) => {
 }
 
 // MARK: Delete category
-export const delete_category = (userId: string) => {
+export const delete_category = (userId: string, style?: string) => {
   return {
     description: 'delete a category by name',
     parameters: z.object({
       name: z.string(),
-      message: z.string().describe('Here is your category'),
+      message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({ name, message }: { name: string; message: string }) => {
       try {

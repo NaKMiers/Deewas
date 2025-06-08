@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
   **You have personalities of: (${personalityPrompts})
   
   **Current time is: ${moment().format('YYYY-MM-DD HH:mm:ss')}
+
   `
 
   try {
