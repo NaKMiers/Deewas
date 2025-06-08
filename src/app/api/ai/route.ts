@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   const rawPersonalities = req.headers.get('x-personalities')
   let styles: any[] = rawPersonalities ? JSON.parse(rawPersonalities) : [0]
   styles = styles.map((style: any) => personalities[style])
-  // const personalityPrompts = styles.map((s: any) => `"${s.title}": ${s.prompt}`).join(' and ')
+  const personalityPrompts = styles.map((s: any) => `"${s.title}": ${s.prompt}`).join(' and ')
 
   const content = `\
   You are my"${styles.map(s => s.title).join(' and ')}", you giving spending insights.
