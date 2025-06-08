@@ -16,7 +16,7 @@ const requireUnAuth = async (req: NextRequest, token: JWT | null, locale: string
 // Require Auth
 const requireAuth = async (req: NextRequest, token: JWT | null, locale: string = 'en') => {
   console.log('- Require Auth -')
-  if (!token) return NextResponse.redirect(new URL(`/${locale}/auth/sign-in`, req.url))
+  if (!token) return NextResponse.redirect(new URL(`/${locale}/landing`, req.url))
 
   // allow admin to access routes regardless of premium status
   if (['admin'].includes(token?.role as string)) return intlMiddleware(req)

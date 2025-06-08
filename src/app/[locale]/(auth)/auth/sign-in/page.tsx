@@ -125,7 +125,7 @@ function SignInPage() {
           {/* MARK: Social Sign In */}
           <div className="flex items-center justify-center gap-2">
             <Button
-              className="trans-200 h-8 flex-1 bg-white hover:bg-black/5"
+              className="trans-200 h-9 flex-1 bg-white hover:bg-black/5"
               onClick={() => signIn('google', { callbackUrl: `/${locale}` })}
             >
               <Image
