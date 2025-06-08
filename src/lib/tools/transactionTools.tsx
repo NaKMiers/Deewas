@@ -8,13 +8,13 @@ import { generateText } from 'ai'
 import { z } from 'zod'
 
 // MARK: Get all transactions
-export const get_all_transactions = (userId: string, style?: string) => {
+export const get_all_transactions = (userId: string) => {
   return {
     description: 'get all transactions of the user',
     parameters: z.object({
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
       limit: z.number().optional().default(20),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('E.g. Here are your transactions'),
     }),
     execute: async ({ type, limit, message }: { type?: string; limit?: number; message: string }) => {
       try {
@@ -36,14 +36,14 @@ export const get_all_transactions = (userId: string, style?: string) => {
 }
 
 // MARK: Get transaction
-export const get_transaction = (userId: string, style?: string) => {
+export const get_transaction = (userId: string) => {
   return {
     description: 'get single transaction by name and amount and type',
     parameters: z.object({
       name: z.string(),
       amount: z.number().optional(),
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('E.g. Here is your transaction'),
     }),
     execute: async ({
       name,
@@ -86,7 +86,7 @@ export const get_transaction = (userId: string, style?: string) => {
 }
 
 // MARK: Create transaction
-export const create_transaction = (userId: string, style?: string) => {
+export const create_transaction = (userId: string) => {
   return {
     description: 'create a new transaction',
     parameters: z.object({
@@ -96,7 +96,7 @@ export const create_transaction = (userId: string, style?: string) => {
       type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']),
       walletName: z.string(),
       categoryName: z.string().optional(),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('E.g. Here is your transaction'),
     }),
     execute: async ({
       name,
@@ -181,7 +181,7 @@ export const create_transaction = (userId: string, style?: string) => {
 }
 
 // MARK: Update transaction
-export const update_transaction = (userId: string, style?: string) => {
+export const update_transaction = (userId: string) => {
   return {
     description:
       'update transaction (using name or amount or date or category name or wallet name to find transaction)',
@@ -196,7 +196,7 @@ export const update_transaction = (userId: string, style?: string) => {
       newCategoryName: z.string().optional(),
       walletName: z.string().optional(),
       newWalletName: z.string().optional(),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('E.g. Here is your transaction'),
     }),
     execute: async ({
       name,
@@ -293,14 +293,14 @@ export const update_transaction = (userId: string, style?: string) => {
 }
 
 // MARK: Delete transaction
-export const delete_transaction = (userId: string, style?: string) => {
+export const delete_transaction = (userId: string) => {
   return {
     description:
       'delete transaction by name and amount (using name and amount(if has) to find transaction)',
     parameters: z.object({
       name: z.string(),
       amount: z.number().optional(),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('E.g. Here is your transaction'),
     }),
     execute: async ({ name, amount, message }: { name: string; amount?: number; message: string }) => {
       try {
@@ -339,7 +339,7 @@ export const delete_transaction = (userId: string, style?: string) => {
 }
 
 // MARK: Get most transaction
-export const get_most_transaction = (userId: string, style?: string) => {
+export const get_most_transaction = (userId: string) => {
   return {
     description: 'get most transaction by type and time',
     parameters: z.object({
@@ -348,7 +348,7 @@ export const get_most_transaction = (userId: string, style?: string) => {
       toDate: z.string(),
       sort: z.enum(['most', 'least']).default('most'),
       orderBy: z.enum(['amount', 'date']).default('amount'),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('E.g. Here is your transaction'),
     }),
     execute: async ({
       type,

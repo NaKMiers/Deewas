@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase()
 
     const promises: any[] = [
-      WalletModel.find({ user: userId }).sort({ createdAt: -1 }).lean(),
+      WalletModel.find({ user: userId }).sort({ updatedAt: -1 }).lean(),
       CategoryModel.find({ user: userId }).sort({ createdAt: -1 }).lean(),
       BudgetModel.find({ user: userId, end: { $gte: toUTC(moment().toDate()) } })
         .populate('category')

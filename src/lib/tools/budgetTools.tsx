@@ -5,12 +5,12 @@ import moment from 'moment-timezone'
 import { z } from 'zod'
 
 // MARK: Get all budgets
-export const get_all_budgets = (userId: string, style?: string) => {
+export const get_all_budgets = (userId: string) => {
   return {
     description: 'get budgets by category name',
     parameters: z.object({
       categoryName: z.string().optional(),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('You will reply with a list of budgets'),
     }),
     execute: async ({ categoryName, message }: { categoryName?: string; message: string }) => {
       try {
@@ -44,7 +44,7 @@ export const get_all_budgets = (userId: string, style?: string) => {
 }
 
 // MARK: Create budget
-export const create_budget = (userId: string, isPremium: boolean, style?: string) => {
+export const create_budget = (userId: string, isPremium: boolean) => {
   return {
     description:
       'create a budget with the following properties: category name, total, begin of budget, end of budget',
@@ -53,7 +53,7 @@ export const create_budget = (userId: string, isPremium: boolean, style?: string
       total: z.number(),
       beginDate: z.string(),
       endDate: z.string(),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('You will reply with a budget'),
     }),
     execute: async ({
       categoryName,
@@ -104,7 +104,7 @@ export const create_budget = (userId: string, isPremium: boolean, style?: string
 }
 
 // MARK: Update budget
-export const update_budget = (userId: string, style?: string) => {
+export const update_budget = (userId: string) => {
   return {
     description:
       'update a budget with the following properties: category name, total, begin date, end date',
@@ -119,7 +119,7 @@ export const update_budget = (userId: string, style?: string) => {
       newBeginDate: z.string().optional(),
       newEndDate: z.string().optional(),
 
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('You will reply with a budget'),
     }),
     execute: async ({
       categoryName,
@@ -207,7 +207,7 @@ export const update_budget = (userId: string, style?: string) => {
 }
 
 // MARK: Delete budget
-export const delete_budget = (userId: string, style?: string) => {
+export const delete_budget = (userId: string) => {
   return {
     description:
       'delete a budget with the following properties: category name, total, begin date, end date',
@@ -216,7 +216,7 @@ export const delete_budget = (userId: string, style?: string) => {
       total: z.number(),
       beginDate: z.string().optional(),
       endDate: z.string().optional(),
-      message: z.string().describe('a short message with your personalities'),
+      message: z.string().describe('You will reply with a budget'),
     }),
     execute: async ({
       categoryName,

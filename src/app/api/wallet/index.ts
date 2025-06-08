@@ -313,7 +313,7 @@ export const getWallets = async (userId: string, params: any = {}) => {
     const { filter, sort, limit, skip } = filterBuilder(params, {
       skip: 0,
       limit: Infinity,
-      sort: { createdAt: 1 },
+      sort: { updatedAt: -1 },
       filter: { user: userId },
     })
 
