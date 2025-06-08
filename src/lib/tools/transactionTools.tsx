@@ -341,7 +341,7 @@ export const delete_transaction = (userId: string) => {
 // MARK: Get most transaction
 export const get_most_transaction = (userId: string) => {
   return {
-    description: 'get most transaction by type and time',
+    description: 'get most expensive/cheapest transaction by type and time',
     parameters: z.object({
       type: z.enum(['income', 'expense', 'saving', 'invest']),
       fromDate: z.string(),

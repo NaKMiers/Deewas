@@ -70,14 +70,6 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    let totalTokens = tokenizer.encode(content).length || 0
-    for (const message of recentMessages) {
-      if (message.content) {
-        totalTokens += tokenizer.encode(message.content).length
-      }
-    }
-    console.log('Total tokens:', totalTokens)
-
     // Calculate token count
     if (!isPremium) {
       let totalTokens = tokenizer.encode(content).length || 0
