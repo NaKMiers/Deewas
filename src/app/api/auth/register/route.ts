@@ -1,11 +1,12 @@
 import { connectDatabase } from '@/config/database'
-import UserModel from '@/models/UserModel'
-import { NextRequest, NextResponse } from 'next/server'
-import { initCategories } from '@/constants/categories'
+import { getMessagesByLocale, initCategories } from '@/constants/categories'
 import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
+import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
 import bcrypt from 'bcrypt'
+import { createTranslator } from 'next-intl'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User, Category, Settings, Wallet
 import '@/models/CategoryModel'
@@ -21,9 +22,10 @@ export async function POST(req: NextRequest) {
     // connect to database
     await connectDatabase()
 
-    let { username, email, password } = await req.json()
+    let { username, email, password, locale } = await req.json()
     username = username.toLowerCase()
     email = email.toLowerCase()
+    locale = locale || 'en'
 
     // check if user is already exist in database
     const existingUser: any = await UserModel.findOne({
@@ -49,9 +51,20 @@ export async function POST(req: NextRequest) {
     const newUser: any = await UserModel.findOne({ email }).lean()
 
     // MARK: Create new user and init data
-    const categories = Object.values(initCategories)
+    const messages = getMessagesByLocale(locale)
+    const t = createTranslator({ locale, messages, namespace: 'categories' })
+
+    let translatedCategories: any = {}
+    for (const type in initCategories) {
+      const categories = (initCategories as any)[type].map((cate: any) => ({
+        ...cate,
+        name: t(cate.name),
+      }))
+      translatedCategories[type] = categories
+    }
+    const categories = Object.values(translatedCategories)
       .flat()
-      .map(category => ({
+      .map((category: any) => ({
         ...category,
         user: newUser._id,
       }))

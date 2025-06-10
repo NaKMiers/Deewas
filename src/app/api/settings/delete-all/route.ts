@@ -15,7 +15,11 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 404 })
     }
 
-    const response = await deleteAllData(userId)
+    // get locale from request body
+    let { locale } = await req.json()
+    locale = locale || 'en'
+
+    const response = await deleteAllData(userId, locale)
 
     // return response
     return NextResponse.json(response, { status: 200 })

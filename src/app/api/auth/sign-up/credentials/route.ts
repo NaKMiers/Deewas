@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import { initCategories } from '@/constants/categories'
+import { getMessagesByLocale, initCategories } from '@/constants/categories'
 import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
@@ -7,6 +7,7 @@ import WalletModel from '@/models/WalletModel'
 import { sign } from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
+import { createTranslator } from 'next-intl'
 
 // Models: User, Category, Settings, Wallet
 import '@/models/CategoryModel'
@@ -20,9 +21,10 @@ export async function POST(req: NextRequest) {
 
   try {
     // get data from request body
-    let { username, email, password } = await req.json()
+    let { username, email, password, locale } = await req.json()
     username = username.trim().toLowerCase()
     email = email.trim().toLowerCase()
+    locale = locale || 'en'
 
     // connect to database
     await connectDatabase()
@@ -51,9 +53,20 @@ export async function POST(req: NextRequest) {
     const newUser: any = await UserModel.findById(user._id).lean()
 
     // MARK: Create new user and init data
-    const categories = Object.values(initCategories)
+    const messages = getMessagesByLocale(locale)
+    const t = createTranslator({ locale, messages, namespace: 'categories' })
+
+    let translatedCategories: any = {}
+    for (const type in initCategories) {
+      const categories = (initCategories as any)[type].map((cate: any) => ({
+        ...cate,
+        name: t(cate.name),
+      }))
+      translatedCategories[type] = categories
+    }
+    const categories = Object.values(translatedCategories)
       .flat()
-      .map(category => ({
+      .map((category: any) => ({
         ...category,
         user: newUser._id,
       }))

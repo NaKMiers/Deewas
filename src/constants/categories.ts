@@ -1,3 +1,30 @@
+import ar from '../../messages/ar.json'
+import bn from '../../messages/bn.json'
+import de from '../../messages/de.json'
+import en from '../../messages/en.json'
+import es from '../../messages/es.json'
+import fr from '../../messages/fr.json'
+import gu from '../../messages/gu.json'
+import hi from '../../messages/hi.json'
+import id from '../../messages/id.json'
+import it from '../../messages/it.json'
+import ja from '../../messages/ja.json'
+import kn from '../../messages/kn.json'
+import ko from '../../messages/ko.json'
+import ml from '../../messages/ml.json'
+import ms from '../../messages/ms.json'
+import nl from '../../messages/nl.json'
+import pt from '../../messages/pt.json'
+import ru from '../../messages/ru.json'
+import ta from '../../messages/ta.json'
+import te from '../../messages/te.json'
+import th from '../../messages/th.json'
+import tr from '../../messages/tr.json'
+import ur from '../../messages/ur.json'
+import vi from '../../messages/vi.json'
+import zhHant from '../../messages/zh-Hant.json'
+import zh from '../../messages/zh.json'
+
 export const initCategories = {
   income: [
     {
@@ -27,7 +54,7 @@ export const initCategories = {
     },
     {
       name: 'Other Income',
-      icon: '📈',
+      icon: '💲',
       type: 'income',
     },
     {
@@ -95,7 +122,7 @@ export const initCategories = {
     },
     {
       name: 'Bill',
-      icon: '💡',
+      icon: '📜',
       type: 'expense',
     },
     {
@@ -110,7 +137,7 @@ export const initCategories = {
     },
     {
       name: 'Other Expense',
-      icon: '📈',
+      icon: '💲',
       type: 'expense',
     },
     {
@@ -128,7 +155,7 @@ export const initCategories = {
     },
     {
       name: 'Retirement Fund',
-      icon: '🏖️',
+      icon: '🧓',
       type: 'saving',
     },
     {
@@ -148,7 +175,7 @@ export const initCategories = {
     },
     {
       name: 'Other Saving',
-      icon: '📈',
+      icon: '💲',
       type: 'saving',
     },
     {
@@ -191,4 +218,45 @@ export const initCategories = {
       deletable: false,
     },
   ],
+}
+
+const messagesByLocale: any = {
+  ar,
+  bn,
+  de,
+  en,
+  es,
+  fr,
+  gu,
+  hi,
+  id,
+  it,
+  ja,
+  kn,
+  ko,
+  ml,
+  ms,
+  nl,
+  pt,
+  ru,
+  ta,
+  te,
+  th,
+  tr,
+  ur,
+  vi,
+  'zh-Hant': zhHant,
+  zh,
+}
+
+// default value if locale is null
+export const getMessagesByLocale = (locale: string = 'en') => {
+  const messages = messagesByLocale[locale]
+
+  // if locale is not found, return en
+  if (!messages) {
+    return messagesByLocale.en
+  }
+
+  return messages
 }

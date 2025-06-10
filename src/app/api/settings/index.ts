@@ -1,10 +1,11 @@
 import { connectDatabase } from '@/config/database'
-import { initCategories } from '@/constants/categories'
+import { getMessagesByLocale, initCategories } from '@/constants/categories'
 import BudgetModel from '@/models/BudgetModel'
 import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
 import TransactionModel from '@/models/TransactionModel'
 import WalletModel from '@/models/WalletModel'
+import { createTranslator } from 'next-intl'
 
 // Models: Wallet, Category, Budget, Transaction, Settings
 import '@/models/BudgetModel'
@@ -14,7 +15,7 @@ import '@/models/TransactionModel'
 import '@/models/WalletModel'
 
 // MARK: Delete All Data
-export const deleteAllData = async (userId: string) => {
+export const deleteAllData = async (userId: string, locale: string) => {
   try {
     // connect to database
     await connectDatabase()
@@ -31,9 +32,22 @@ export const deleteAllData = async (userId: string) => {
       WalletModel.deleteMany({ user: userId }),
     ])
 
-    const categories = Object.values(initCategories)
+    // MARK: Create new user and init data
+    const messages = getMessagesByLocale(locale)
+    const t = createTranslator({ locale, messages, namespace: 'categories' })
+
+    let translatedCategories: any = {}
+    for (const type in initCategories) {
+      const categories = (initCategories as any)[type].map((cate: any) => ({
+        ...cate,
+        name: t(cate.name),
+      }))
+      translatedCategories[type] = categories
+    }
+
+    const categories = Object.values(translatedCategories)
       .flat()
-      .map(category => ({
+      .map((category: any) => ({
         ...category,
         user: userId,
       }))

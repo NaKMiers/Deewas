@@ -1,11 +1,12 @@
 import { connectDatabase } from '@/config/database'
-import { initCategories } from '@/constants/categories'
+import { getMessagesByLocale, initCategories } from '@/constants/categories'
 import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
 import { OAuth2Client } from 'google-auth-library'
 import { sign } from 'jsonwebtoken'
+import { createTranslator } from 'next-intl'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Models: Wallet, Category, Settings, User
@@ -22,7 +23,8 @@ export async function POST(req: NextRequest) {
 
   try {
     // get data from request body
-    const { idToken, googleUserId } = await req.json()
+    let { idToken, googleUserId, locale } = await req.json()
+    locale = locale || 'en'
 
     // check if idToken is exist
     if (!idToken || !googleUserId) {
@@ -82,9 +84,21 @@ export async function POST(req: NextRequest) {
 
       isNewUser = true
 
-      const categories = Object.values(initCategories)
+      // MARK: Create new user and init data
+      const messages = getMessagesByLocale(locale)
+      const t = createTranslator({ locale, messages, namespace: 'categories' })
+
+      let translatedCategories: any = {}
+      for (const type in initCategories) {
+        const categories = (initCategories as any)[type].map((cate: any) => ({
+          ...cate,
+          name: t(cate.name),
+        }))
+        translatedCategories[type] = categories
+      }
+      const categories = Object.values(translatedCategories)
         .flat()
-        .map(category => ({
+        .map((category: any) => ({
           ...category,
           user: newUser._id,
         }))

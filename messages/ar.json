@@ -1,0 +1,1284 @@
+{
+  "metaData": {
+    "title": "ديواس",
+    "description": "مدير النفقات الشخصية مع ميزات ذكاء اصطناعي قوية وواجهة مستخدم بسيطة",
+    "Deewas is your all-in-one finance app with an AI that fits your vibe, helping you track, save, and grow": "ديواس هو تطبيقك الشامل للتمويل مع ذكاء اصطناعي يتناسب مع أسلوبك، يساعدك على تتبع أموالك، الادخار، والنمو"
+  },
+  "signInPage": {
+    "Sign In to Deewas": "تسجيل الدخول إلى ديواس",
+    "Welcome back, please sign in to continue!": "مرحبًا بعودتك، يرجى تسجيل الدخول للمتابعة!",
+    "Sign In with Google": "تسجيل الدخول باستخدام جوجل",
+    "Sign In with Facebook": "تسجيل الدخول باستخدام فيسبوك",
+    "Sign In with Apple": "تسجيل الدخول باستخدام آبل",
+    "or": "أو",
+    "Username / Email": "اسم المستخدم / البريد الإلكتروني",
+    "Password": "كلمة المرور",
+    "Forgot Password?": "نسيت كلمة المرور؟",
+    "Sign In": "تسجيل الدخول",
+    "Don't have an account?": "ليس لديك حساب؟",
+    "Sign Up": "إنشاء حساب",
+    "Logging in": "جارٍ تسجيل الدخول",
+    "Sign In Successfully!": "تم تسجيل الدخول بنجاح!",
+    "Sign In Failed": "فشل تسجيل الدخول",
+    "Username or email is required": "اسم المستخدم أو البريد الإلكتروني مطلوب",
+    "Password is required": "كلمة المرور مطلوبة",
+    "Google sign in is in progress": "تسجيل الدخول باستخدام جوجل قيد التقدم"
+  },
+  "signUpPage": {
+    "Sign Up to Deewas": "إنشاء حساب في ديواس",
+    "Welcome! Please fill in the details to get started": "مرحبًا! يرجى ملء التفاصيل للبدء",
+    "or": "أو",
+    "Username": "اسم المستخدم",
+    "Email": "البريد الإلكتروني",
+    "Password": "كلمة المرور",
+    "Sign Up": "إنشاء حساب",
+    "Already have an account?": "هل لديك حساب بالفعل؟",
+    "Sign In": "تسجيل الدخول",
+    "Signing up": "جارٍ إنشاء الحساب",
+    "Sign Up Successfully": "تم إنشاء الحساب بنجاح!",
+    "Failed to sign up": "فشل إنشاء الحساب",
+    "Username must be at least 5 characters": "يجب أن يتكون اسم المستخدم من 5 أحرف على الأقل",
+    "Invalid email": "بريد إلكتروني غير صالح",
+    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل وتحتوي على حرف صغير واحد، حرف كبير واحد، ورقم واحد",
+    "Sign Up with Google": "تسجيل الدخول باستخدام جوجل",
+    "Sign Up with Facebook": "تسجيل الدخول باستخدام فيسبوك",
+    "Sign Up with Apple": "تسجيل الدخول باستخدام آبل",
+    "Username is required": "اسم المستخدم مطلوب",
+    "Email is required": "البريد الإلكتروني مطلوب",
+    "Password is required": "كلمة المرور مطلوبة",
+    "Google sign up is in progress": "إنشاء حساب باستخدام جوجل قيد التقدم"
+  },
+  "forgotPasswordPage": {
+    "Forgot Password - Deewas": "نسيت كلمة المرور - ديواس",
+    "Reset Your Password": "إعادة تعيين كلمة المرور",
+    "Enter your email to receive a password reset link": "أدخل بريدك الإلكتروني لتلقي رابط إعادة تعيين كلمة المرور",
+    "Email": "البريد الإلكتروني",
+    "Send Reset Link": "إرسال رابط إعادة التعيين",
+    "Back to Sign In": "العودة إلى تسجيل الدخول",
+    "Don't have an account?": "ليس لديك حساب؟",
+    "Sign Up": "إنشاء حساب",
+    "Sending reset link": "جارٍ إرسال رابط إعادة التعيين",
+    "Reset link sent! Check your email": "تم إرسال رابط إعادة التعيين! تحقق من بريدك الإلكتروني",
+    "Something went wrong": "حدث خطأ ما",
+    "Email is required": "البريد الإلكتروني مطلوب",
+    "Invalid email": "بريد إلكتروني غير صالح"
+  },
+  "resetPasswordPage": {
+    "Reset Your Password": "إعادة تعيين كلمة المرور",
+    "Enter your new password below": "أدخل كلمة المرور الجديدة أدناه",
+    "New Password": "كلمة المرور الجديدة",
+    "Confirm New Password": "تأكيد كلمة المرور الجديدة",
+    "Reset Password": "إعادة تعيين كلمة المرور",
+    "Resetting password": "جارٍ إعادة تعيين كلمة المرور",
+    "Password is required": "كلمة المرور مطلوبة",
+    "Confirm password is required": "تأكيد كلمة المرور مطلوب",
+    "Password must be at least 6 characters and contain at least 1 lowercase, 1 uppercase, 1 number": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل وتحتوي على حرف صغير واحد، حرف كبير واحد، ورقم واحد",
+    "Passwords do not match": "كلمتا المرور غير متطابقتين",
+    "Invalid reset link": "رابط إعادة التعيين غير صالح",
+    "Back to Sign In": "العودة إلى تسجيل الدخول",
+    "Don't have an account?": "ليس لديك حساب؟",
+    "Sign Up": "إنشاء حساب"
+  },
+  "accountPage": {
+    "Deleting all data": "حذف جميع البيانات",
+    "Premium Account": "حساب مميز",
+    "Free Account": "حساب مجاني",
+    "Flash Sale": "عرض سريع",
+    "Wallets": "المحافظ",
+    "Categories": "الفئات",
+    "Theme": "الثيم",
+    "light": "فاتح",
+    "Light": "فاتح",
+    "dark": "داكن",
+    "Dark": "داكن",
+    "system": "النظام",
+    "System": "النظام",
+    "About": "حول",
+    "Help & Support": "المساعدة والدعم",
+    "Delete All Data": "حذف جميع البيانات",
+    "Are you sure you want to delete all your data? This action is irreversible": "هل أنت متأكد من أنك تريد حذف جميع بياناتك؟ هذا الإجراء لا يمكن التراجع عنه",
+    "Delete": "حذف",
+    "Cancel": "إلغاء",
+    "Log Out": "تسجيل الخروج",
+    "Are you sure you want to log out?": "هل أنت متأكد من أنك تريد تسجيل الخروج؟",
+    "Version": "الإصدار",
+    "Username": "اسم المستخدم",
+    "Please upgrade to Premium to unlock this feature": "يرجى الترقية إلى الحساب المميز لفتح هذه الميزة",
+    "Upgrade Now": "الترقية الآن",
+    "Biometric Lock": "قفل بيومتري"
+  },
+  "budgetPage": {
+    "You don't have any budgets yet, create one now!": "ليس لديك أي ميزانيات بعد، أنشئ واحدة الآن!",
+    "Create Budget": "إنشاء ميزانية",
+    "Today": "اليوم",
+    "Tomorrow": "غدًا",
+    "Yesterday": "أمس",
+    "This week": "هذا الأسبوع",
+    "Last week": "الأسبوع الماضي",
+    "Next week": "الأسبوع القادم",
+    "This month": "هذا الشهر",
+    "Last month": "الشهر الماضي",
+    "Next month": "الشهر القادم",
+    "This year": "هذا العام",
+    "Last year": "العام الماضي",
+    "Next year": "العام القادم"
+  },
+  "categoriesPage": {
+    "Categories": "الفئات",
+    "Failed to get wallet": "فشل في جلب المحفظة",
+    "You don't have any categories yet, create one now!": "ليس لديك أي فئات بعد، أنشئ واحدة الآن!",
+    "Create Category": "إنشاء فئة",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار"
+  },
+  "walletsPage": {
+    "Wallets": "المحافظ",
+    "You don't have any wallets yet, create one now!": "ليس لديك أي محافظ بعد، أنشئ واحدة الآن!",
+    "Create Wallet": "إنشاء محفظة"
+  },
+  "transactionsPage": {
+    "Failed to fetch transactions": "فشل في جلب المعاملات",
+    "Transactions": "المعاملات",
+    "of": "من",
+    "The selected date range is too large": "النطاق الزمني المحدد كبير جدًا",
+    "Max allowed range is": "النطاق الأقصى المسموح به هو",
+    "days!": "أيام!",
+    "Search": "بحث",
+    "Select wallet": "اختر محفظة",
+    "No transactions found for this wallet, just add one now!": "لم يتم العثور على معاملات لهذه المحفظة، أضف واحدة الآن!",
+    "Add Transaction": "إضافة معاملة",
+    "All wallets": "جميع المحافظ",
+    "Include transfers": "تضمين التحويلات"
+  },
+  "wizardPage": {
+    "Welcome": "مرحبًا",
+    "Let's start with some simple settings": "لنبدأ ببعض الإعدادات البسيطة",
+    "You can change these settings at any time": "يمكنك تغيير هذه الإعدادات في أي وقت",
+    "I'm done! Take me to the dashboard": "انتهيت! انتقل بي إلى لوحة التحكم"
+  },
+  "aiPage": {
+    "Hello": "مرحبًا",
+    "What can you do?": "ماذا يمكنك أن تفعل؟",
+    "My most expensive expense this month?": "أغلى مصروف لي هذا الشهر؟",
+    "How to limit my spending": "كيف أحد من إنفاقي",
+    "An Error Happens": "حدث خطأ",
+    "Try again": "حاول مرة أخرى",
+    "Deewas is a personal finance assistant that helps you manage your money wisely": "ديواس هو مساعد مالي شخصي يساعدك على إدارة أموالك بحكمة",
+    "How can Deewas help?": "كيف يمكن لديواس أن يساعد؟",
+    "Clear": "مسح",
+    "Mixed personalities": "شخصيات مختلطة",
+    "The Tough Love Mom": "الأم الصلبة المحبة",
+    "The Angry Big Sister": "الأخت الكبرى الغاضبة",
+    "The Caring Lover": "العاشق المهتم",
+    "The Friendly Buddy": "الصديق الودود",
+    "The Creative Little Bro": "الأخ الصغير المبدع",
+    "The Gentle Dad": "الأب اللطيف",
+    "The Loyal Puppy": "الجرو المخلص",
+    "The Moody Cat": "القطة المزاجية",
+    "Listening": "الاستماع",
+    "Please upgrade to Premium to continue using the assistant": "يرجى الترقية إلى الحساب المميز لمواصلة استخدام المساعد",
+    "You've reached your free token limit for today": "لقد وصلت إلى الحد الأقصى للرموز المجانية لهذا اليوم",
+    "Cancel": "إلغاء",
+    "Upgrade Now": "الترقية الآن"
+  },
+  "welcomePage": {
+    "Ever wonder where your money goes - and why it's never enough?": "هل تساءلت يومًا إلى أين تذهب أموالك - ولماذا لا تكفي أبدًا؟",
+    "Powered by AI, Deewas helps you track, save smarter, and finally feel in control": "مدعوم بالذكاء الاصطناعي، يساعدك ديواس على تتبع أموالك، الادخار بذكاء، والشعور بالسيطرة أخيرًا",
+    "Try Deewas for Free": "جرب ديواس مجانًا",
+    "I Already Have an Account": "لدي حساب بالفعل",
+    "By trying Deewas, you agree to the": "باستخدام ديواس، فإنك توافق على",
+    "Deewas": "ديواس",
+    "Privacy Policy": "سياسة الخصوصية",
+    "and": "و",
+    "Terms of Conditions": "شروط الاستخدام",
+    "of Deewas": "لديواس"
+  },
+  "onboardingPage": {
+    "How did would you here about us?": "كيف سمعت عنا؟",
+    "Online Search": "البحث عبر الإنترنت",
+    "Friend, Family, or Colleague": "صديق، عائلة، أو زميل",
+    "Influencer": "مؤثر",
+    "News Article": "مقال إخباري",
+    "How do you feel about your finances?": "كيف تشعر حيال أموالك؟",
+    "It's pretty complicated": "الأمر معقد نوعًا ما",
+    "I'm a bit stressed": "أشعر ببعض التوتر",
+    "Not sure yet": "لست متأكدًا بعد",
+    "I want to improve": "أريد التحسين",
+    "I feel confident": "أشعر بالثقة",
+    "Who do you spend money on": "على من تنفق أموالك؟",
+    "Myself": "نفسي",
+    "My partner": "شريكي",
+    "Other family members": "أفراد عائلتي الآخرين",
+    "My friends": "أصدقائي",
+    "My kids": "أطفالي",
+    "My pets": "حيواناتي الأليفة",
+    "Which currency do you usually use?": "ما العملة التي تستخدمها عادة؟",
+    "Pick a personality for Deewas assistant?": "اختر شخصية لمساعد ديواس؟",
+    "Select multiple if you'd like to mix styles": "اختر عدة خيارات إذا كنت ترغب في مزج الأنماط",
+    "The Tough Love Mom": "الأم الصلبة المحبة",
+    "The Angry Big Sister": "الأخت الكبرى الغاضبة",
+    "The Caring Lover": "العاشق المهتم",
+    "The Friendly Buddy": "الصديق الودود",
+    "The Creative Little Bro": "الأخ الصغير المبدع",
+    "The Gentle Dad": "الأب اللطيف",
+    "The Loyal Puppy": "الجرو المخلص",
+    "The Moody Cat": "القطة المزاجية",
+    "Welcome to the family!": "مرحبًا بك في العائلة!",
+    "We're excited to have you here. Let's get started on your financial journey together!": "نحن متحمسون لوجودك هنا. لنبدأ رحلتك المالية معًا!",
+    "Get started now": "ابدأ الآن",
+    "Continue": "متابعة",
+    "Find a currency": "ابحث عن عملة"
+  },
+  "calendarPage": {
+    "Calendar": "التقويم",
+    "Transactions for": "المعاملات لـ",
+    "No transactions for this day": "لا توجد معاملات لهذا اليوم",
+    "Total": "الإجمالي"
+  },
+  "privacyPolicyPage": {
+    "Privacy Policy": "سياسة الخصوصية",
+    "Terms And Conditions": "الشروط والأحكام",
+    "Effective as of April 12, 2025": "ساري المفعول اعتبارًا من 12 أبريل 2025",
+    "Introduction": "مقدمة",
+    "This privacy policy applies to the Deewas app": "تنطبق سياسة الخصوصية هذه على تطبيق ديواس",
+    "hereby referred to as": "يُشار إليه فيما بعد بـ",
+    "Application": "التطبيق",
+    "for mobile devices that was created by Anh Khoa Nguyen": "للأجهزة المحمولة الذي أنشأه أنه خوا نجوين",
+    "Service Provider": "مزود الخدمة",
+    "as a Free service": "كخدمة مجانية",
+    "This service is intended for use": "هذه الخدمة مخصصة للاستخدام",
+    "AS IS": "كما هي",
+    "Information Collection and Use": "جمع المعلومات واستخدامها",
+    "The Application collects information when you download and use it": "يجمع التطبيق المعلومات عندما تقوم بتحميله واستخدامه",
+    "This information may include": "قد تتضمن هذه المعلومات",
+    "Information you provide during login, such as your email address, username, first and last name": "المعلومات التي تقدمها أثناء تسجيل الدخول، مثل عنوان بريدك الإلكتروني، اسم المستخدم، الاسم الأول والأخير",
+    "Public profile information retrieved from third-party services (e.g., Google, Apple) if you choose to log in using these services": "معلومات الملف الشخصي العامة المستردة من خدمات الطرف الثالث (مثل جوجل، آبل) إذا اخترت تسجيل الدخول باستخدام هذه الخدمات",
+    "The time spent on the Application": "الوقت المستغرق في التطبيق",
+    "The operating system you use on your mobile device": "نظام التشغيل الذي تستخدمه على جهازك المحمول",
+    "The Application does not gather precise information about the location of your mobile device": "لا يجمع التطبيق معلومات دقيقة عن موقع جهازك المحمول",
+    "The Service Provider may use the information you provided to contact you from time to time to provide you with important information, required notices, and marketing promotions": "قد يستخدم مزود الخدمة المعلومات التي قدمتها للاتصال بك من وقت لآخر لتزويدك بمعلومات مهمة، إشعارات مطلوبة، وعروض ترويجية تسويقية",
+    "For a better experience, while using the Application, the Service Provider may require you to provide us with certain personally identifiable information, including but not limited to email, name, birthday": "للحصول على تجربة أفضل، أثناء استخدام التطبيق، قد يطلب مزود الخدمة منك تقديم بعض المعلومات الشخصية القابلة للتعرف، بما في ذلك على سبيل المثال لا الحصر البريد الإلكتروني، الاسم، تاريخ الميلاد",
+    "The information that the Service Provider requests will be retained by them and used as described in this privacy policy": "المعلومات التي يطلبها مزود الخدمة سيتم الاحتفاظ بها واستخدامها كما هو موضح في سياسة الخصوصية هذه",
+    "Third Party Access": "الوصول للغير",
+    "Only aggregated, anonymized data is periodically transmitted to external services to aid the Service Provider in improving the Application and their service": "يتم نقل البيانات المجمعة وغير المرتبطة بشخصيات بشكل دوري إلى خدمات خارجية لمساعدة مزود الخدمة في تحسين التطبيق وخدمتهم",
+    "The Service Provider may share your information with third parties in the ways that are described in this privacy statement": "قد يشارك مزود الخدمة معلوماتك مع أطراف ثالثة بالطرق الموضحة في بيان الخصوصية هذا",
+    "Please note that the Application utilizes third-party services that have their own Privacy Policy about handling data": "يرجى ملاحظة أن التطبيق يستخدم خدمات أطراف ثالثة لها سياسات خصوصية خاصة بها بشأن التعامل مع البيانات",
+    "Below are the links to the Privacy Policy of the third-party service providers used by the Application": "فيما يلي روابط سياسة الخصوصية لمزودي خدمات الأطراف الثالثة المستخدمين من قبل التطبيق",
+    "The Service Provider may disclose User Provided and Automatically Collected Information": "قد يكشف مزود الخدمة عن المعلومات المقدمة من المستخدم والمعلومات التي يتم جمعها تلقائيًا",
+    "As required by law, such as to comply with a subpoena, or similar legal process;": "كما يقتضي القانون، مثل الامتثال لأمر استدعاء، أو إجراء قانوني مماثل؛",
+    "When they believe in good faith that disclosure is necessary to protect their rights, protect your safety or the safety of others, investigate fraud, or respond to a government request;": "عندما يعتقدون بحسن نية أن الكشف ضروري لحماية حقوقهم، حماية سلامتك أو سلامة الآخرين، التحقيق في الاحتيال، أو الرد على طلب حكومي؛",
+    "With their trusted services providers who work on their behalf, do not have an independent use of the information we disclose to them, and have agreed to adhere to the rules set forth in this privacy statement": "مع مزودي الخدمات الموثوقين الذين يعملون نيابة عنهم، ولا يملكون استخدامًا مستقلًا للمعلومات التي نكشفها لهم، وقد وافقوا على الالتزام بالقواعد المنصوص عليها في بيان الخصوصية هذا",
+    "Opt-Out Rights": "حقوق الانسحاب",
+    "You can stop all collection of information by the Application easily by uninstalling it": "يمكنك إيقاف جمع جميع المعلومات بواسطة التطبيق بسهولة عن طريق إلغاء تثبيته",
+    "You may use the standard uninstall processes as may be available as part of your mobile device or via the mobile application marketplace or network": "يمكنك استخدام عمليات إلغاء التثبيت القياسية كما قد تكون متاحة كجزء من جهازك المحمول أو عبر سوق تطبيقات الهاتف المحمول أو الشبكة",
+    "Data Retention Policy": "سياسة الاحتفاظ بالبيانات",
+    "The Service Provider will retain User Provided data for as long as you use the Application and for a reasonable time thereafter": "سيحتفظ مزود الخدمة بالبيانات المقدمة من المستخدم طالما تستخدم التطبيق ولفترة معقولة بعد ذلك",
+    "If you’d like them to delete User Provided Data that you have provided via the Application, please contact them at": "إذا كنت ترغب في أن يحذفوا البيانات المقدمة من المستخدم التي قدمتها عبر التطبيق، يرجى التواصل معهم على",
+    "and they will respond in a reasonable time": "وسيردون في وقت معقول",
+    "Children": "الأطفال",
+    "The Service Provider does not use the Application to knowingly solicit data from or market to children under the age of 13": "لا يستخدم مزود الخدمة التطبيق لجمع البيانات عن قصد أو التسويق للأطفال دون سن 13 عامًا",
+    "The Application does not address anyone under the age of 13": "التطبيق لا يستهدف أي شخص دون سن 13 عامًا",
+    "The Service Provider does not knowingly collect personally identifiable information from children under 13 years of age": "لا يجمع مزود الخدمة عن قصد معلومات شخصية قابلة للتعرف من الأطفال دون سن 13 عامًا",
+    "In the case the Service Provider discovers that a child under 13 has provided personal information, the Service Provider will immediately delete this from their servers": "في حال اكتشف مزود الخدمة أن طفلًا دون سن 13 قد قدم معلومات شخصية، سيقوم مزود الخدمة بحذفها فورًا من خوادمهم",
+    "If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact the Service Provider": "إذا كنت والدًا أو وصيًا وتعلم أن طفلك قد قدم لنا معلومات شخصية، يرجى التواصل مع مزود الخدمة",
+    "so that they will be able to take the necessary actions": "حتى يتمكنوا من اتخاذ الإجراءات اللازمة",
+    "Security": "الأمان",
+    "The Service Provider is concerned about safeguarding the confidentiality of your information": "يهتم مزود الخدمة بحماية سرية معلوماتك",
+    "The Service Provider provides physical, electronic, and procedural safeguards to protect information the Service Provider processes and maintains": "يوفر مزود الخدمة حماية مادية وإلكترونية وإجرائية لحماية المعلومات التي يعالجها ويحتفظ بها مزود الخدمة",
+    "Changes": "التغييرات",
+    "This Privacy Policy may be updated from time to time for any reason": "قد يتم تحديث سياسة الخصوصية هذه من وقت لآخر لأي سبب",
+    "The Service Provider will notify you of any changes to the Privacy Policy by updating this page with the new Privacy Policy": "سيعلمك مزود الخدمة بأي تغييرات في سياسة الخصوصية عن طريق تحديث هذه الصفحة بسياسة الخصوصية الجديدة",
+    "You are advised to consult this Privacy Policy regularly for any changes, as continued use is deemed approval of all changes": "يُنصح بمراجعة سياسة الخصوصية هذه بانتظام لمعرفة أي تغييرات، حيث يعتبر الاستخدام المستمر موافقة على جميع التغييرات",
+    "Your Consent": "موافقتك",
+    "By using the Application, you are consenting to the processing of your information as set forth in this Privacy Policy now and as amended by us": "باستخدام التطبيق، فإنك توافق على معالجة معلوماتك كما هو موضح في سياسة الخصوصية هذه الآن وكما يتم تعديلها من قبلنا",
+    "Contact Us": "تواصل معنا",
+    "If you have any questions regarding privacy while using the Application, or have questions about the practices, please contact the Service Provider via email at": "إذا كانت لديك أي أسئلة بشأن الخصوصية أثناء استخدام التطبيق، أو لديك أسئلة حول الممارسات، يرجى التواصل مع مزود الخدمة عبر البريد الإلكتروني على"
+  },
+  "termsAndConditionsPage": {
+    "Privacy Policy": "سياسة الخصوصية",
+    "Terms And Conditions": "الشروط والأحكام",
+    "Effective as of April 12, 2025": "ساري المفعول اعتبارًا من 12 أبريل 2025",
+    "Introduction": "مقدمة",
+    "These terms and conditions apply to the Deewas app": "تنطبق هذه الشروط والأحكام على تطبيق ديواس",
+    "hereby referred to as": "يُشار إليه فيما بعد بـ",
+    "Application": "التطبيق",
+    "for mobile devices that was created by Anh Khoa Nguyen": "للأجهزة المحمولة الذي أنشأه أنه خوا نجوين",
+    "Service Provider": "مزود الخدمة",
+    "as a Free service": "كخدمة مجانية",
+    "Usage Agreement": "اتفاقية الاستخدام",
+    "Upon downloading or utilizing the Application, you are automatically agreeing to the following terms": "عند تحميل التطبيق أو استخدامه، فإنك توافق تلقائيًا على الشروط التالية",
+    "It is strongly advised that you thoroughly read and understand these terms prior to using the Application": "يُنصح بشدة بقراءة هذه الشروط وفهمها جيدًا قبل استخدام التطبيق",
+    "Unauthorized copying, modification of the Application, any part of the Application, or our trademarks is strictly prohibited": "يُمنع منعًا باتًا النسخ غير المصرح به، أو تعديل التطبيق، أو أي جزء من التطبيق، أو علاماتنا التجارية",
+    "Any attempts to extract the source code of the Application, translate the Application into other languages, or create derivative versions are not permitted": "يُمنع أي محاولات لاستخراج الكود المصدري للتطبيق، أو ترجمة التطبيق إلى لغات أخرى، أو إنشاء إصدارات مشتقة",
+    "All trademarks, copyrights, database rights, and other intellectual property rights related to the Application remain the property of the Service Provider": "تبقى جميع العلامات التجارية، حقوق الطبع والنشر، حقوق قواعد البيانات، وحقوق الملكية الفكرية الأخرى المتعلقة بالتطبيق ملكًا لمزود الخدمة",
+    "Modifications and Charges": "التعديلات والرسوم",
+    "The Service Provider is dedicated to ensuring that the Application is as beneficial and efficient as possible": "يلتزم مزود الخدمة بضمان أن يكون التطبيق مفيدًا وفعالًا قدر الإمكان",
+    "As such, they reserve the right to modify the Application or charge for their services at any time and for any reason": "على هذا النحو، يحتفظون بالحق في تعديل التطبيق أو فرض رسوم على خدماتهم في أي وقت ولأي سبب",
+    "The Service Provider assures you that any charges for the Application or its services will be clearly communicated to you": "يؤكد مزود الخدمة لك أن أي رسوم على التطبيق أو خدماته سيتم إبلاغك بها بوضوح",
+    "Data and Device Security": "أمان البيانات والجهاز",
+    "The Application stores and processes personal data that you have provided to the Service Provider in order to provide the Service": "يخزن التطبيق ويعالج البيانات الشخصية التي قدمتها لمزود الخدمة من أجل تقديم الخدمة",
+    "It is your responsibility to maintain the security of your phone and access to the Application": "من مسؤوليتك الحفاظ على أمان هاتفك والوصول إلى التطبيق",
+    "The Service Provider strongly advise against jailbreaking or rooting your phone, which involves removing software restrictions and limitations imposed by the official operating system of your device": "ينصح مزود الخدمة بشدة بعدم كسر حماية هاتفك أو تهيئته، مما يتضمن إزالة القيود والحدود البرمجية التي يفرضها نظام التشغيل الرسمي لجهازك",
+    "Such actions could expose your phone to malware, viruses, malicious programs, compromise your phone’s security features, and may result in the Application not functioning correctly or at all": "قد تعرض هذه الإجراءات هاتفك للبرمجيات الخبيثة، الفيروسات، البرامج الضارة، وتؤثر على ميزات أمان الهاتف، وقد تؤدي إلى عدم عمل التطبيق بشكل صحيح أو على الإطلاق",
+    "Third Party Services": "خدمات الأطراف الثالثة",
+    "Please note that the Application utilizes third-party services that have their own Terms and Conditions": "يرجى ملاحظة أن التطبيق يستخدم خدمات أطراف ثالثة لها شروط وأحكام خاصة بها",
+    "Below are the links to the Terms and Conditions of the third-party service providers used by the Application": "فيما يلي روابط شروط وأحكام مزودي خدمات الأطراف الثالثة المستخدمين من قبل التطبيق",
+    "Service Provider Responsibility": "مسؤولية مزود الخدمة",
+    "Please be aware that the Service Provider does not assume responsibility for certain aspects": "يرجى العلم أن مزود الخدمة لا يتحمل المسؤولية عن جوانب معينة",
+    "Some functions of the Application require an active internet connection, which can be Wi-Fi or provided by your mobile network provider": "تتطلب بعض وظائف التطبيق اتصالًا نشطًا بالإنترنت، يمكن أن يكون عبر شبكة Wi-Fi أو مقدم من مزود شبكة الهاتف المحمول الخاص بك",
+    "The Service Provider cannot be held responsible if the Application does not function at full capacity due to lack of access to Wi-Fi or if you have exhausted your data allowance": "لا يمكن تحميل مزود الخدمة المسؤولية إذا لم يعمل التطبيق بكامل طاقته بسبب عدم الوصول إلى Wi-Fi أو إذا استنفدت حصة بياناتك",
+    "In terms of the Service Provider’s responsibility for your use of the application, it is important to note that while they strive to ensure that it is updated and accurate at all times, they do rely on third parties to provide information to them so that they can make it available to you": "فيما يتعلق بمسؤولية مزود الخدمة عن استخدامك للتطبيق، من المهم ملاحظة أنه بينما يسعون جاهدين لضمان تحديثه ودقته في جميع الأوقات، فإنهم يعتمدون على أطراف ثالثة لتزويدهم بالمعلومات حتى يتمكنوا من توفيرها لك",
+    "The Service Provider accepts no liability for any loss, direct or indirect, that you experience as a result of relying entirely on this functionality of the application": "لا يتحمل مزود الخدمة أي مسؤولية عن أي خسارة، مباشرة أو غير مباشرة، تتعرض لها نتيجة الاعتماد الكلي على هذه الوظيفة في التطبيق",
+    "Internet and Data Charges": "رسوم الإنترنت والبيانات",
+    "If you are using the application outside of a Wi-Fi area, please be aware that your mobile network provider’s agreement terms still apply": "إذا كنت تستخدم التطبيق خارج منطقة Wi-Fi، يرجى العلم أن شروط اتفاقية مزود شبكة الهاتف المحمول الخاص بك لا تزال سارية",
+    "Consequently, you may incur charges from your mobile provider for data usage during the connection to the application, or other third-party charges": "وبالتالي، قد تتحمل رسومًا من مزود الهاتف المحمول الخاص بك لاستخدام البيانات أثناء الاتصال بالتطبيق، أو رسوم أطراف ثالثة أخرى",
+    "By using the application, you accept responsibility for any such charges, including roaming data charges if you use the application outside of your home territory (i.e., region or country) without disabling data roaming": "باستخدام التطبيق، فإنك تقبل المسؤولية عن أي رسوم من هذا القبيل، بما في ذلك رسوم تجوال البيانات إذا استخدمت التطبيق خارج منطقتك المحلية (أي المنطقة أو البلد) دون تعطيل تجوال البيانات",
+    "If you are not the bill payer for the device on which you are using the application, they assume that you have obtained permission from the bill payer": "إذا لم تكن الشخص الذي يدفع الفاتورة للجهاز الذي تستخدم التطبيق عليه، فإنهم يفترضون أنك حصلت على إذن من دافع الفاتورة",
+    "Similarly, the Service Provider cannot always assume responsibility for your usage of the application": "وبالمثل، لا يمكن لمزود الخدمة دائمًا تحمل المسؤولية عن استخدامك للتطبيق",
+    "For instance, it is your responsibility to ensure that your device remains charged": "على سبيل المثال، من مسؤوليتك التأكد من بقاء جهازك مشحونًا",
+    "If your device runs out of battery and you are unable to access the Service, the Service Provider cannot be held responsible": "إذا نفدت بطارية جهازك ولم تتمكن من الوصول إلى الخدمة، لا يمكن تحميل مزود الخدمة المسؤولية",
+    "Application Updates and Termination": "تحديثات التطبيق وإنهاؤه",
+    "The Service Provider may wish to update the application at some point": "قد يرغب مزود الخدمة في تحديث التطبيق في وقت ما",
+    "The application is currently available as per the requirements for the operating system (and for any additional systems they decide to extend the availability of the application to) may change, and you will need to download the updates if you want to continue using the application": "التطبيق متاح حاليًا وفقًا لمتطلبات نظام التشغيل (وأي أنظمة إضافية يقررون توسيع توفر التطبيق لها) قد يتغير، وستحتاج إلى تحميل التحديثات إذا كنت ترغب في الاستمرار في استخدام التطبيق",
+    "The Service Provider does not guarantee that it will always update the application so that it is relevant to you and/or compatible with the particular operating system version installed on your device": "لا يضمن مزود الخدمة أنه سيقوم دائمًا بتحديث التطبيق بحيث يكون مناسبًا لك و/أو متوافقًا مع إصدار نظام التشغيل المثبت على جهازك",
+    "However, you agree to always accept updates to the application when offered to you": "ومع ذلك، فإنك توافق على قبول تحديثات التطبيق دائمًا عندما يتم عرضها عليك",
+    "The Service Provider may also wish to cease providing the application and may terminate its use at any time without providing termination notice to you": "قد يرغب مزود الخدمة أيضًا في التوقف عن توفير التطبيق وقد ينهي استخدامه في أي وقت دون تقديم إشعار إنهاء لك",
+    "Unless they inform you otherwise, upon any termination, (a) the rights and licenses granted to you in these terms will end; (b) you must cease using the application, and (if necessary) delete it from your device": "ما لم يخبروك بخلاف ذلك، عند أي إنهاء، (أ) ستنتهي الحقوق والتراخيص الممنوحة لك في هذه الشروط؛ (ب) يجب عليك التوقف عن استخدام التطبيق، و(إذا لزم الأمر) حذفه من جهازك",
+    "Changes to These Terms": "تغييرات على هذه الشروط",
+    "The Service Provider may periodically update their Terms and Conditions": "قد يقوم مزود الخدمة بتحديث شروطهم وأحكامهم بشكل دوري",
+    "Therefore, you are advised to review this page regularly for any changes": "لذلك، يُنصح بمراجعة هذه الصفحة بانتظام لمعرفة أي تغييرات",
+    "The Service Provider will notify you of any changes by posting the new Terms and Conditions on this page": "سيعلمك مزود الخدمة بأي تغييرات عن طريق نشر الشروط والأحكام الجديدة على هذه الصفحة",
+    "Contact Us": "تواصل معنا",
+    "If you have any questions or suggestions about the Terms and Conditions, please do not hesitate to contact the Service Provider via email at": "إذا كانت لديك أي أسئلة أو اقتراحات بشأن الشروط والأحكام، يرجى عدم التردد في التواصل مع مزود الخدمة عبر البريد الإلكتروني على",
+    "All rights reserved": "جميع الحقوق محفوظة",
+    "Contact us at": "تواصل معنا على"
+  },
+  "aboutPage": {
+    "About Deewas": "حول ديواس",
+    "Your personal expense management companion": "رفيقك في إدارة النفقات الشخصية",
+    "What is Deewas?": "ما هو ديواس؟",
+    "Deewas is a modern, user-friendly app designed to help you track and manage your personal finances effortlessly": "ديواس هو تطبيق حديث وسهل الاستخدام مصمم لمساعدتك على تتبع وإدارة أموالك الشخصية بسهولة",
+    "Whether it's budgeting, tracking transactions, or managing wallets, Deewas has you covered": "سواء كان الأمر يتعلق بالميزانية، تتبع المعاملات، أو إدارة المحافظ، ديواس يغطي كل شيء",
+    "Key Features": "الميزات الرئيسية",
+    "Clean interface": "واجهة نظيفة",
+    "A clean and intuitive interface for easy navigation and management": "واجهة نظيفة وبديهية للتنقل وإدارة سهلة",
+    "Multi-Wallet Support": "دعم المحافظ المتعددة",
+    "Manage multiple wallets seamlessly to keep your finances organized": "إدارة محافظ متعددة بسلاسة للحفاظ على تنظيم أموالك",
+    "Insightful Charts": "مخططات بصرية",
+    "Visualize your spending with beautiful, interactive charts": "تصور إنفاقك باستخدام مخططات جميلة وتفاعلية",
+    "Budget Planning": "تخطيط الميزانية",
+    "Set budgets and stay on top of your financial goals": "حدد الميزانيات وابقَ في صدارة أهدافك المالية",
+    "Smart AI Assistant": "مساعد ذكي بالذكاء الاصطناعي",
+    "Get help from our AI to manage transactions effortlessly": "احصل على مساعدة من الذكاء الاصطناعي لدينا لإدارة المعاملات بسهولة",
+    "Our Mission": "مهمتنا",
+    "At Deewas, we aim to empower individuals to take control of their finances with intuitive tools and smart insights, making money management simple and stress-free": "في ديواس، نهدف إلى تمكين الأفراد من السيطرة على أموالهم باستخدام أدوات بديهية ورؤى ذكية، مما يجعل إدارة الأموال بسيطة وخالية من التوتر",
+    "Ready to Get Started?": "هل أنت جاهز للبدء؟",
+    "Join thousands of users who trust Deewas to manage their expenses": "انضم إلى آلاف المستخدمين الذين يثقون بديواس لإدارة نفقاتهم",
+    "Start Now": "ابدأ الآن",
+    "Deewas": "ديواس",
+    "All rights reserved": "جميع الحقوق محفوظة"
+  },
+  "helpAndSupportPage": {
+    "Help & Support": "المساعدة والدعم",
+    "We're here to assist you with Deewas!": "نحن هنا لمساعدتك مع ديواس!",
+    "Quick Links": "روابط سريعة",
+    "User Guide": "دليل المستخدم",
+    "Learn how to use Deewas with our detailed guide": "تعرف على كيفية استخدام ديواس مع دليلنا المفصل",
+    "Read Guide": "اقرأ الدليل",
+    "Contact Support": "تواصل مع الدعم",
+    "Reach out to our team for personalized help": "تواصل مع فريقنا للحصول على مساعدة مخصصة",
+    "Email Us": "راسلنا عبر البريد الإلكتروني",
+    "Find answers to common questions below": "ابحث عن إجابات للأسئلة الشائعة أدناه",
+    "View FAQ": "عرض الأسئلة الشائعة",
+    "Frequently Asked Questions": "الأسئلة الشائعة",
+    "How do I add a new transaction?": "كيف أضيف معاملة جديدة؟",
+    "Go to the Transactions page, click “Add Transaction,” and fill in the details like name, amount, and category": "انتقل إلى صفحة المعاملات، انقر على “إضافة معاملة”، واملأ التفاصيل مثل الاسم، المبلغ، والفئة",
+    "Our AI can also help via chat!": "يمكن للذكاء الاصطناعي لدينا المساعدة عبر الدردشة!",
+    "Can I manage multiple wallets?": "هل يمكنني إدارة محافظ متعددة؟",
+    "Yes! Deewas supports multiple wallets": "نعم! ديواس يدعم محافظ متعددة",
+    "Add them in the Wallets section and track separately": "أضفها في قسم المحافظ وتتبعها بشكل منفصل",
+    "How do I set a budget?": "كيف أضع ميزانية؟",
+    "Navigate to Budgets, click “Create Budget,” and specify the category, total amount, and time range": "انتقل إلى الميزانيات، انقر على “إنشاء ميزانية”، وحدد الفئة، المبلغ الإجمالي، والنطاق الزمني",
+    "What if I forget my password?": "ماذا لو نسيت كلمة المرور؟",
+    "Still Need Help?": "هل ما زلت بحاجة إلى مساعدة؟",
+    "Our support team is available 24/7 to assist you": "فريق الدعم لدينا متاح على مدار الساعة طوال أيام الأسبوع لمساعدتك",
+    "Drop us a message, and we'll get back to you as soon as possible": "أرسل لنا رسالة، وسنعود إليك في أقرب وقت ممكن",
+    "Deewas": "ديواس",
+    "All rights reserved": "جميع الحقوق محفوظة",
+    "Use the “Forgot Password” link on the sign-in screen to reset it via email": "استخدم رابط “نسيت كلمة المرور” على شاشة تسجيل الدخول لإعادة تعيينها عبر البريد الإلكتروني"
+  },
+  "guidePage": {
+    "Transactions": "المعاملات",
+    "Wallets": "المحافظ",
+    "Categories": "الفئات",
+    "Budgets": "الميزانيات",
+    "Managing Transactions": "إدارة المعاملات",
+    "Track your income and expenses effortlessly": "تتبع دخلك ومصروفاتك بسهولة",
+    "Adding a Transaction": "إضافة معاملة",
+    "Navigate to the “Transactions“ screen from the navbar": "انتقل إلى شاشة “المعاملات” من شريط التنقل",
+    "Click the Add “Transaction“ button": "انقر على زر إضافة “معاملة”",
+    "Fill in details": "املأ التفاصيل",
+    "name (Coffee), amount ($5), date, wallet, and category": "الاسم (مثل قهوة)، المبلغ (مثل 5 دولارات)، التاريخ، المحفظة، والفئة",
+    "Click “Save“ to record it": "انقر على “حفظ” لتسجيلها",
+    "Tip Use the AI chat to say Add $5 coffee expense today for a quicker way!": "نصيحة: استخدم دردشة الذكاء الاصطناعي لتقول أضف مصروف قهوة بقيمة 5 دولارات اليوم لطريقة أسرع!",
+    "Editing a Transaction": "تعديل معاملة",
+    "Find the transaction in the list": "ابحث عن المعاملة في القائمة",
+    "Click the ✏️ icon next to it": "انقر على أيقونة ✏️ بجانبها",
+    "Update the details and save": "قم بتحديث التفاصيل وحفظها",
+    "Deleting a Transaction": "حذف معاملة",
+    "Locate the transaction": "حدد موقع المعاملة",
+    "Click the 🗑️ icon": "انقر على أيقونة 🗑️",
+    "Confirm deletion in the dialog": "تأكيد الحذف في الحوار",
+    "Managing Wallets": "إدارة المحافظ",
+    "Organize your money across multiple wallets": "نظم أموالك عبر محافظ متعددة",
+    "Creating a Wallet": "إنشاء محفظة",
+    "Go to the “Home“ screen": "انتقل إلى شاشة “الرئيسية”",
+    "Click “Add Wallet“": "انقر على “إضافة محفظة”",
+    "Enter a name (e.g., Cash) and choose an icon": "أدخل اسمًا (مثل نقدي) واختر أيقونة",
+    "Save to create it": "احفظ لإنشائها",
+    "Transferring Funds": "تحويل الأموال",
+    "Select a wallet and click “Transfer“": "اختر محفظة وانقر على “تحويل”",
+    "Choose the destination wallet and amount": "اختر المحفظة الوجهة والمبلغ",
+    "Confirm the transfer": "تأكيد التحويل",
+    "Viewing Wallet Details": "عرض تفاصيل المحفظة",
+    "Click a wallet to see its transactions and balance": "انقر على محفظة لرؤية معاملاتها ورصيدها",
+    "Managing Categories": "إدارة الفئات",
+    "Classify your transactions with custom categories": "صنف معاملاتك بفئات مخصصة",
+    "Adding a Category": "إضافة فئة",
+    "Visit the “Categories“ screen": "زر شاشة “الفئات”",
+    "Click “Add Category“": "انقر على “إضافة فئة”",
+    "Specify name (e.g., Food), type (e.g., expense), and icon": "حدد الاسم (مثل طعام)، النوع (مثل مصروفات)، والأيقونة",
+    "Save it": "احفظها",
+    "Editing a Category": "تعديل فئة",
+    "Find the category and click ✏️": "ابحث عن الفئة وانقر على ✏️",
+    "Update the name or icon, then save": "قم بتحديث الاسم أو الأيقونة، ثم احفظ",
+    "Deleting a Category": "حذف فئة",
+    "Click 🗑️ next to the category": "انقر على 🗑️ بجانب الفئة",
+    "Confirm deletion (note only deletable categories can be removed)": "تأكيد الحذف (ملاحظة: يمكن إزالة الفئات القابلة للحذف فقط)",
+    "Managing Budgets": "إدارة الميزانيات",
+    "Plan and control your spending with budgets": "خطط وتحكم في إنفاقك باستخدام الميزانيات",
+    "Setting a Budget": "تحديد ميزانية",
+    "Go to the “Budgets“ screen": "انتقل إلى شاشة “الميزانيات”",
+    "Click “Create Budget“": "انقر على “إنشاء ميزانية”",
+    "Choose a category, set a total amount, and define start/end dates": "اختر فئة، حدد المبلغ الإجمالي، وحدد تواريخ البداية والنهاية",
+    "Save to activate it": "احفظ لتفعيلها",
+    "Monitoring Your Budget": "مراقبة ميزانيتك",
+    "View the budget to see spent vs": "عرض الميزانية لرؤية المصروف مقابل",
+    "total amount": "المبلغ الإجمالي",
+    "Transactions in the category auto-update the budget": "المعاملات في الفئة تحدث الميزانية تلقائيًا",
+    "Adjusting a Budget": "تعديل ميزانية",
+    "Click ✏️ on the budget": "انقر على ✏️ على الميزانية",
+    "Modify the total or dates, then save": "قم بتعديل المبلغ الإجمالي أو التواريخ، ثم احفظ",
+    "Deewas User Guide": "دليل مستخدم ديواس",
+    "Learn how to master your finances with Deewas": "تعرف على كيفية إتقان أموالك مع ديواس",
+    "Welcome to Deewas": "مرحبًا بك في ديواس",
+    "This guide will walk you through the core features of Deewas, from managing transactions to setting budgets": "سيأخذك هذا الدليل عبر الميزات الأساسية لديواس، من إدارة المعاملات إلى تحديد الميزانيات",
+    "Let's get started!": "لنبدأ!",
+    "Jump to Guide": "انتقل إلى الدليل",
+    "Step-by-Step Guide": "دليل خطوة بخطوة",
+    "Need More Help?": "هل تحتاج إلى مزيد من المساعدة؟",
+    "Check out our support page or contact us for further assistance": "تحقق من صفحة الدعم الخاصة بنا أو تواصل معنا للحصول على مزيد من المساعدة",
+    "Go to Support": "انتقل إلى الدعم",
+    "Deewas": "ديواس",
+    "All rights reserved": "جميع الحقوق محفوظة",
+    "Restart tutorial": "إعادة تشغيل البرنامج التعليمي",
+    "Are you sure you want to restart the tutorial?": "هل أنت متأكد أنك تريد إعادة تشغيل البرنامج التعليمي؟",
+    "No": "لا",
+    "Yes": "نعم"
+  },
+  "NotFoundPage": {},
+  "header": {
+    "Hi": "مرحبًا",
+    "Upgrade": "الترقية"
+  },
+  "createBudgetPage": {
+    "Failed to create budget": "فشل في إنشاء الميزانية",
+    "Amount is required": "المبلغ مطلوب",
+    "Amount must be greater than 0": "يجب أن يكون المبلغ أكبر من 0",
+    "Category is required": "الفئة مطلوبة",
+    "From and To date is required": "تاريخ البداية والنهاية مطلوب",
+    "Creating budget": "جارٍ إنشاء الميزانية",
+    "Failed to create transaction": "فشل في إنشاء المعاملة",
+    "Create Budget": "إنشاء ميزانية",
+    "Budget helps you manage money wisely": "الميزانية تساعدك على إدارة الأموال بحكمة",
+    "Select category": "اختر فئة",
+    "Total": "الإجمالي",
+    "Category": "الفئة",
+    "From - To": "من - إلى",
+    "Cancel": "إلغاء",
+    "Save": "حفظ",
+    "Please upgrade to Premium to create more budgets": "يرجى الترقية إلى الحساب المميز لإنشاء المزيد من الميزانيات",
+    "You've reached the limit of 4 budgets": "لقد وصلت إلى الحد الأقصى وهو 4 ميزانيات",
+    "Upgrade Now": "الترقية الآن"
+  },
+  "createCategoryPage": {
+    "Name is required": "الاسم مطلوب",
+    "Creating category": "جارٍ إنشاء الفئة",
+    "Create": "إنشاء",
+    "category": "فئة",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار",
+    "Categories are used to group your": "تُستخدم الفئات لتجميع",
+    "transactions": "معاملاتك",
+    "Name": "الاسم",
+    "Type": "النوع",
+    "optional": "اختياري",
+    "Click to select": "انقر للاختيار",
+    "This is how your category will appear in the app": "هكذا ستظهر فئتك في التطبيق",
+    "Select Icon": "اختر أيقونة",
+    "Icon will be used to represent your category": "سيتم استخدام الأيقونة لتمثيل فئتك",
+    "Cancel": "إلغاء",
+    "Save": "حفظ",
+    "Category name": "اسم الفئة"
+  },
+  "createTransactionPage": {
+    "Wallet is required": "المحفظة مطلوبة",
+    "Name is required": "الاسم مطلوب",
+    "Amount is required": "المبلغ مطلوب",
+    "Type is required": "النوع مطلوب",
+    "Category is required": "الفئة مطلوبة",
+    "Date is required": "التاريخ مطلوب",
+    "Creating transaction": "جارٍ إنشاء المعاملة",
+    "Failed to create transaction": "فشل في إنشاء المعاملة",
+    "Create": "إنشاء",
+    "transaction": "معاملة",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار",
+    "transfer": "تحويل",
+    "Transfer": "تحويل",
+    "Transactions keep track of your finances effectively": "المعاملات تتتبع أموالك بفعالية",
+    "Wallet": "المحفظة",
+    "Name": "الاسم",
+    "Amount": "المبلغ",
+    "Type": "النوع",
+    "Category": "الفئة",
+    "Date": "التاريخ",
+    "Select Date": "اختر التاريخ",
+    "Select category": "اختر فئة",
+    "Select wallet": "اختر محفظة",
+    "When did this transaction happen?": "متى حدثت هذه المعاملة؟",
+    "Cancel": "إلغاء",
+    "Save": "حفظ",
+    "Transaction name": "اسم المعاملة"
+  },
+  "createWalletPage": {
+    "Name is required": "الاسم مطلوب",
+    "Creating wallet": "جارٍ إنشاء المحفظة",
+    "Create wallet": "إنشاء محفظة",
+    "Wallets are used to group your transactions by source of funds": "تُستخدم المحافظ لتجميع معاملاتك حسب مصدر الأموال",
+    "Name": "الاسم",
+    "optional": "اختياري",
+    "Click to select": "انقر للاختيار",
+    "Select Icon": "اختر أيقونة",
+    "Icon will be used to represent your wallet": "سيتم استخدام الأيقونة لتمثيل محفظتك",
+    "This is how your wallet will appear in the app": "هكذا ستظهر محفظتك في التطبيق",
+    "Cancel": "إلغاء",
+    "Save": "حفظ",
+    "Wallet name": "اسم المحفظة",
+    "Please upgrade to Premium to create more wallets": "يرجى الترقية إلى الحساب المميز لإنشاء المزيد من المحافظ",
+    "You've reached the limit of 2 wallets": "لقد وصلت إلى الحد الأقصى وهو محفظتان",
+    "Upgrade Now": "الترقية الآن"
+  },
+  "updateBudgetPage": {
+    "Amount is required": "المبلغ مطلوب",
+    "Amount must be greater than 0": "يجب أن يكون المبلغ أكبر من 0",
+    "Category is required": "الفئة مطلوبة",
+    "From and To date is required": "تاريخ البداية والنهاية مطلوب",
+    "Updating budget": "جارٍ تحديث الميزانية",
+    "Failed to update budget": "فشل في تحديث الميزانية",
+    "Update Budget": "تحديث الميزانية",
+    "Select category": "اختر فئة",
+    "Budget helps you manage money wisely": "الميزانية تساعدك على إدارة الأموال بحكمة",
+    "Total": "الإجمالي",
+    "Category": "الفئة",
+    "From - To": "من - إلى",
+    "Cancel": "إلغاء",
+    "Save": "حفظ"
+  },
+  "updateCategoryPage": {
+    "Name is required": "الاسم مطلوب",
+    "Updating category": "جارٍ تحديث الفئة",
+    "Update": "تحديث",
+    "category": "فئة",
+    "Categories are used to group your": "تُستخدم الفئات لتجميع",
+    "transactions": "معاملاتك",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار",
+    "Name": "الاسم",
+    "optional": "اختياري",
+    "Click to select": "انقر للاختيار",
+    "Select Icon": "اختر أيقونة",
+    "Icon will be used to represent your category": "سيتم استخدام الأيقونة لتمثيل فئتك",
+    "This is how your category will appear in the app": "هكذا ستظهر فئتك في التطبيق",
+    "Cancel": "إلغاء",
+    "Save": "حفظ"
+  },
+  "updateTransactionPage": {
+    "Wallet is required": "المحفظة مطلوبة",
+    "Name is required": "الاسم مطلوب",
+    "Amount is required": "المبلغ مطلوب",
+    "Category is required": "الفئة مطلوبة",
+    "Date is required": "التاريخ مطلوب",
+    "Updating transaction": "جارٍ تحديث المعاملة",
+    "Failed to update transaction": "فشل في تحديث المعاملة",
+    "Update": "تحديث",
+    "transaction": "معاملة",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار",
+    "transfer": "تحويل",
+    "Transfer": "تحويل",
+    "Transactions keep track of your finances effectively": "المعاملات تتتبع أموالك بفعالية",
+    "Wallet": "المحفظة",
+    "Name": "الاسم",
+    "Amount": "المبلغ",
+    "Category": "الفئة",
+    "Date": "التاريخ",
+    "Select Date": "اختر التاريخ",
+    "Select category": "اختر فئة",
+    "Select wallet": "اختر محفظة",
+    "When did this transaction happen?": "متى حدثت هذه المعاملة؟",
+    "Cancel": "إلغاء",
+    "Save": "حفظ"
+  },
+  "updateWalletPage": {
+    "Name is required": "الاسم مطلوب",
+    "Updating wallet": "جارٍ تحديث المحفظة",
+    "Update wallet": "تحديث المحفظة",
+    "Wallets are used to group your transactions by source of funds": "تُستخدم المحافظ لتجميع معاملاتك حسب مصدر الأموال",
+    "Name": "الاسم",
+    "optional": "اختياري",
+    "Click to select": "انقر للاختيار",
+    "Select Icon": "اختر أيقونة",
+    "Icon will be used to represent your wallet": "سيتم استخدام الأيقونة لتمثيل محفظتك",
+    "This is how your wallet will appear in the app": "هكذا ستظهر محفظتك في التتطبيق",
+    "Cancel": "إلغاء",
+    "Save": "حفظ"
+  },
+  "transferFundPage": {
+    "Source wallet is required": "المحفظة المصدر مطلوبة",
+    "Destination wallet is required": "المحفظة الوجهة مطلوبة",
+    "Source wallet and destination wallet must be different": "يجب أن تكون المحفظة المصدر والوجهة مختلفتين",
+    "Amount is required": "المبلغ مطلوب",
+    "Date is required": "التاريخ مطلوب",
+    "Transferring": "جارٍ التحويل",
+    "Failed to transfer": "فشل التحويل",
+    "Transfer Fund": "تحويل الأموال",
+    "Transfer money between wallets": "تحويل الأموال بين المحافظ",
+    "From Wallet": "من المحفظة",
+    "To Wallet": "إلى المحفظة",
+    "Amount": "المبلغ",
+    "Date": "التاريخ",
+    "Select Date": "اختر التاريخ",
+    "Select category": "اختر فئة",
+    "Select wallet": "اختر محفظة",
+    "When did this transferring happen?": "متى حدث هذا التحويل؟",
+    "Cancel": "إلغاء",
+    "Save": "حفظ"
+  },
+  "changePersonalityPage": {
+    "Pick a personality for Deewas assistant?": "اختر شخصية لمساعد ديواس؟",
+    "Select multiple if you'd like to mix styles": "اختر عدة خيارات إذا كنت ترغب في مزج الأنماط",
+    "Save": "حفظ",
+    "Cancel": "إلغاء",
+    "The Tough Love Mom": "الأم الصلبة المحبة",
+    "The Angry Big Sister": "الأخت الكبرى الغاضبة",
+    "The Caring Lover": "العاشق المهتم",
+    "The Friendly Buddy": "الصديق الودود",
+    "The Creative Little Bro": "الأخ الصغير المبدع",
+    "The Gentle Dad": "الأب اللطيف",
+    "The Loyal Puppy": "الجرو المخلص",
+    "The Moody Cat": "القطة المزاجية"
+  },
+  "budgetCard": {
+    "Create Similar": "إنشاء مشابه",
+    "Deleting budget": "جارٍ حذف الميزانية",
+    "Edit": "تعديل",
+    "Delete": "حذف",
+    "Delete Budget": "حذف الميزانية",
+    "Are you sure you want to delete this budget?": "هل أنت متأكد من أنك تريد حذف هذه الميزانية؟",
+    "Left": "المتبقي",
+    "Today": "اليوم"
+  },
+  "budgetTab": {
+    "Amount you can spend": "المبلغ الذي يمكنك إنفاقه",
+    "Total budgets": "إجمالي الميزانيات",
+    "Total spent": "إجمالي المصروف",
+    "day": "يوم",
+    "End of month": "نهاية الشهر",
+    "Daily limit": "الحد اليومي",
+    "Create Budget": "إنشاء ميزانية"
+  },
+  "category": {
+    "Deleting category": "جارٍ حذف الفئة",
+    "Add Transaction": "إضافة معاملة",
+    "Set Budget": "تحديد ميزانية",
+    "Edit": "تعديل",
+    "Delete": "حذف",
+    "Delete category": "حذف الفئة",
+    "All budgets of this category will be deleted": "سيتم حذف جميع الميزانيات لهذه الفئة",
+    "Are you sure you want to delete this category?": "هل أنت متأكد أنك تريد حذف هذه الفئة؟"
+  },
+  "categoryGroup": {
+    "Categories": "الفئات",
+    "Sorted by name": "مرتبة حسب الاسم",
+    "New Category": "فئة جديدة",
+    "No categories found!": "لم يتم العثور على فئات!",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار",
+    "transfer": "تحويل",
+    "Transfer": "تحويل"
+  },
+  "categoryPickerPage": {
+    "Select": "اختيار",
+    "category": "فئة",
+    "Failed to get categories": "فشل في جلب الفئات",
+    "Select category": "اختر فئة",
+    "Categories are used to group your transactions": "تُستخدم الفئات لتجميع معاملاتك",
+    "Find a category": "ابحث عن فئة",
+    "Create Category": "إنشاء فئة",
+    "No results found": "لم يتم العثور على نتائج",
+    "Delete category": "حذف الفئة",
+    "Are you sure you want to delete": "هل أنت متأكد من أنك تريد الحذف",
+    "Delete": "حذف",
+    "Cancel": "إلغاء",
+    "income": "الدخل",
+    "expense": "المصروفات",
+    "saving": "الادخار",
+    "invest": "الاستثمار",
+    "transfer": "تحويل"
+  },
+  "walletPickerPage": {
+    "All wallets": "جميع المحافظ",
+    "Deleting wallet": "جارٍ حذف المحفظة",
+    "Select wallet": "اختر محفظة",
+    "Wallets are used to group your transactions by source of funds": "تُستخدم المحافظ لتجميع معاملاتك حسب مصدر الأموال",
+    "Find a wallet": "ابحث عن محفظة",
+    "Create Wallet": "إنشاء محفظة",
+    "No results found": "لم يتم العثور على نتائج",
+    "Delete wallet": "حذف المحفظة",
+    "Are you sure you want to delete": "هل أنت متأكد من أنك تريد الحذف",
+    "Delete": "حذف",
+    "Cancel": "إلغاء"
+  },
+  "emojiPickerPage": {
+    "Pick an emoji": "اختر رمزًا تعبيريًا",
+    "Emojis are a fun way to express yourself": "الرموز التعبيرية طريقة ممتعة للتعبير عن نفسك",
+    "Find an emoji": "ابحث عن رمز تعبيري",
+    "Search Results": "نتائج البحث",
+    "Frequently used": "الأكثر استخدامًا",
+    "Smileys & Emotion": "الوجوه الضاحكة والعواطف",
+    "People & Body": "الأشخاص والجسم",
+    "Animals & Nature": "الحيوانات والطبيعة",
+    "Food & Drink": "الطعام والشراب",
+    "Activities": "الأنشطة",
+    "Travel & Places": "السفر والأماكن",
+    "Objects": "الأشياء",
+    "Flags": "الأعلام",
+    "Component": "المكونات",
+    "Symbols": "الرموز",
+    "Cancel": "إلغاء",
+    "No emoji found": "لم يتم العثور على رمز تعبيري"
+  },
+  "history": {
+    "History": "السجل",
+    "types": "الأنواع",
+    "type": "النوع",
+    "balance": "الرصيد",
+    "income": "الدخل",
+    "expense": "المصروفات",
+    "saving": "الادخار",
+    "invest": "الاستثمار",
+    "line": "خطي",
+    "bar": "عمودي",
+    "pie": "دائري",
+    "radar": "رادار",
+    "area": "منطقة",
+    "pyramid": "هرمي",
+    "All": "الكل",
+    "Total": "الإجمالي",
+    "week": "أسبوع",
+    "month": "شهر",
+    "year": "سنة",
+    "Previous week": "الأسبوع السابق",
+    "Previous month": "الشهر السابق",
+    "Previous year": "السنة السابقة",
+    "Next week": "الأسبوع القادم",
+    "Next month": "الشهر القادم",
+    "Next year": "السنة القادمة",
+    "Please upgrade to Premium to unlock more charts": "يرجى الترقية إلى الحساب المميز لفتح المزيد من المخططات",
+    "Cancel": "إلغاء",
+    "Upgrade Now": "الترقية الآن",
+    "Include transfers": "تضمين التحويلات"
+  },
+  "multipleSelection": {
+    "All": "الكل",
+    "all": "الكل",
+    "types": "الأنواع",
+    "type": "النوع",
+    "balance": "الرصيد",
+    "income": "الدخل",
+    "expense": "المصروفات",
+    "saving": "الادخار",
+    "invest": "الاستثمار"
+  },
+  "latestTransactions": {
+    "Latest": "الأحدث",
+    "No transactions found": "لم يتم العثور على معاملات",
+    "All": "الكل"
+  },
+  "transaction": {
+    "Deleting transaction": "جارٍ حذف المعاملة",
+    "Duplicating transaction": "جارٍ تكرار المعاملة",
+    "Failed to delete transaction": "فشل في حذف المعاملة",
+    "Edit": "تعديل",
+    "Delete": "حذف",
+    "Cancel": "إلغاء",
+    "Duplicate": "تكرار",
+    "Delete Transaction": "حذف المعاملة",
+    "Duplicate Transaction": "تكرار المعاملة",
+    "Are you sure you want to delete this transaction?": "هل أنت متأكد من أنك تريد حذف هذه المعاملة؟",
+    "Are you sure you want to duplicate this transaction?": "هل أنت متأكد من أنك تريد تكرار هذه المعاملة؟"
+  },
+  "navbar": {
+    "Home": "الرئيسية",
+    "Transactions": "المعاملات",
+    "AI": "الذكاء الاصطناعي",
+    "Budgets": "الميزانيات",
+    "Account": "الحساب",
+    "Welcome to Deewas": "مرحبًا بك في ديواس",
+    "Take control of your daily finances": "تحكم في أموالك اليومية",
+    "Create Transaction": "إنشاء معاملة",
+    "Create Budget": "إنشاء ميزانية",
+    "Create Wallet": "إنشاء محفظة",
+    "Create Category": "إنشاء فئة",
+    "Cancel": "إلغاء"
+  },
+  "overviewCard": {
+    "Total Balance": "الرصيد الإجمالي",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار",
+    "transfer": "تحويل",
+    "Transfer": "تحويل"
+  },
+  "transactionCategoryGroup": {
+    "Add Transaction": "إضافة معاملة"
+  },
+  "txItem": {
+    "Deleting transaction": "جارٍ حذف المعاملة",
+    "Duplicating transaction": "جارٍ تكرار المعاملة",
+    "Failed to delete transaction": "فشل في حذف المعاملة",
+    "Failed to duplicate transaction": "فشل في تكرار المعاملة",
+    "Edit": "تعديل",
+    "Delete": "حذف",
+    "Cancel": "إلغاء",
+    "Duplicate": "تكرار",
+    "Delete Transaction": "حذف المعاملة",
+    "Duplicate Transaction": "تكرار المعاملة",
+    "Are you sure you want to delete this transaction?": "هل أنت متأكد من أنك تريد حذف هذه المعاملة؟",
+    "Are you sure you want to duplicate this transaction?": "هل أنت متأكد من أنك تريد تكرار هذه المعاملة؟"
+  },
+  "transactionTypeGroup": {
+    "Add Transaction": "إضافة معاملة",
+    "incomes": "الدخل",
+    "Incomes": "الدخل",
+    "expenses": "المصروفات",
+    "Expenses": "المصروفات",
+    "savings": "الادخار",
+    "Savings": "الادخار",
+    "invests": "الاستثمار",
+    "Invests": "الاستثمار",
+    "transfers": "التحويلات",
+    "Transfers": "التحويلات"
+  },
+  "wallets": {
+    "Wallets": "المحافظ",
+    "New Wallet": "محفظة جديدة",
+    "No wallets found": "لم يتم العثور على محافظ"
+  },
+  "walletCard": {
+    "Deleting wallet": "جارٍ حذف المحفظة",
+    "Exclude": "استبعاد",
+    "Transfer": "تحويل",
+    "Add Transaction": "إضافة معاملة",
+    "Edit": "تعديل",
+    "Delete Wallet": "حذف المحفظة",
+    "All transactions of this wallet will be deleted": "سيتم حذف جميع معاملات هذه المحفظة",
+    "Are you sure you want to delete this wallet?": "هل أنت متأكد من أنك تريد حذف هذه المحفظة؟",
+    "Since this is the only wallet, instead of deleting this wallet we will clear all your data and associated transactions, your categories will be safe": "بما أن هذه هي المحفظة الوحيدة، بدلاً من حذف هذه المحفظة، سنقوم بمسح جميع بياناتك والمعاملات المرتبطة، وستبقى فئاتك آمنة",
+    "Are you sure you want to do this?": "هل أنت متأكد من أنك تريد القيام بذلك؟",
+    "Delete": "حذف",
+    "balance": "الرصيد",
+    "Balance": "الرصيد",
+    "income": "الدخل",
+    "Income": "الدخل",
+    "expense": "المصروفات",
+    "Expense": "المصروفات",
+    "saving": "الادخار",
+    "Saving": "الادخار",
+    "invest": "الاستثمار",
+    "Invest": "الاستثمار",
+    "transfer": "تحويل",
+    "spent": "المصروف"
+  },
+  "dateRangePickerPage": {
+    "Today": "اليوم",
+    "Yesterday": "أمس",
+    "Last 7 days": "آخر 7 أيام",
+    "Last 14 days": "آخر 14 يومًا",
+    "Last 30 days": "آخر 30 يومًا",
+    "This week": "هذا الأسبوع",
+    "Next week": "الأسبوع القادم",
+    "Last week": "الأسبوع الماضي",
+    "This month": "هذا الشهر",
+    "Next month": "الشهر القادم",
+    "Last month": "الشهر الماضي",
+    "This year": "هذا العام",
+    "Next year": "العام القادم",
+    "Last year": "العام الماضي",
+    "Update": "تحديث",
+    "Cancel": "إلغاء",
+    "Confirm": "تأكيد",
+    "From Date": "من التاريخ",
+    "To Date": "إلى التاريخ",
+    "Custom": "مخصص"
+  },
+  "premiumPage": {
+    "Unlock premium to access all powerful features!": "افتح الحساب المميز للوصول إلى جميع الميزات القوية!",
+    "FREE": "مجاني",
+    "Max 2 wallets": "الحد الأقصى محفظتان",
+    "Max 4 budgets": "الحد الأقصى 4 ميزانيات",
+    "Annoying ads": "إعلانات مزعجة",
+    "10.000 AI tokens every day": "10,000 رمز ذكاء اصطناعي يوميًا",
+    "No priority support": "لا يوجد دعم ذو أولوية",
+    "Can't export data": "لا يمكن تصدير البيانات",
+    "Bar chart only": "مخطط عمودي فقط",
+    "Mobile only": "الهاتف المحمول فقط",
+    "Unlimited wallets": "محافظ غير محدودة",
+    "Unlimited budgets": "ميزانيات غير محدودة",
+    "No advertisement": "لا إعلانات",
+    "Up to 4.500.000 AI tokens per month": "ما يصل إلى 4,500,000 رمز ذكاء اصطناعي شهريًا",
+    "Priority support": "دعم ذو أولوية",
+    "Export data to CSV, Excel": "تصدير البيانات إلى CSV، Excel",
+    "Unlock advanced charts (pie, line, bar, etc.)": "فتح المخططات المتقدمة (دائري، خطي، عمودي، إلخ.)",
+    "Mobile and web": "الهاتف المحمول والويب",
+    "What are users talk about Deewas?": "ماذا يقول المستخدمون عن ديواس؟",
+    "Contact Customer Service": "تواصل مع خدمة العملاء",
+    "Subscription will be auto reviewed, cancel at any time": "سيتم تجديد الاشتراك تلقائيًا، يمكن الإلغاء في أي وقت",
+    "Start 1 Week Free Trial": "ابدأ التجربة المجانية لمدة أسبوع",
+    "Go Premium Now": "اذهب إلى المميز الآن",
+    "Restore purchase": "استعادة الشراء",
+    "Privacy Policy": "سياسة الخصوصية",
+    "Terms of Conditions": "شروط الاستخدام",
+    "and": "و",
+    "per month": "شهريًا",
+    "one-time": "مرة واحدة"
+  },
+  "streaksPage": {
+    "Transactions": "المعاملات",
+    "Wallets": "المحافظ",
+    "Categories": "الفئات",
+    "Budgets": "الميزانيات",
+    "Week Streak": "سلسلة الأسبوع",
+    "You're unstoppable this week!": "أنت لا تُوقف هذا الأسبوع!",
+    "You're crushing it! Keep pushing": "أنت مميز! استمر في التقدم",
+    "You're building a great habit!": "أنت تبني عادة رائعة!",
+    "Nice! One step at a time": "جميل! خطوة بخطوة",
+    "New week, new chance. Let’s get it": "أسبوع جديد، فرصة جديدة. لنبدأ",
+    "Current streak": "السلسلة الحالية",
+    "Longest streak": "أطول سلسلة",
+    "Your Stats": "إحصائياتك",
+    "Continue": "متابعة"
+  },
+  "settingsBox": {
+    "Set your currency": "حدد عملتك",
+    "Set your language": "حدد لغتك",
+    "Find a": "ابحث عن",
+    "currency": "عملة",
+    "language": "لغة",
+    "Select": "اختيار",
+    "No results found": "لم يتم العثور على نتائج",
+    "Language changed to": "تم تغيير اللغة إلى",
+    "Changing currency will erase all your data": "تغيير العملة سيؤدي إلى محو جميع بياناتك",
+    "Changing currency will erase all your data, are you sure you still want to change?": "تغيير العملة سيؤدي إلى محو جميع بياناتك، هل أنت متأكد من أنك لا تزال تريد التغيير؟",
+    "Change Currency": "تغيير العملة",
+    "Confirm": "تأكيد"
+  },
+  "monthYearPicker": {
+    "Month": "شهر",
+    "Year": "سنة",
+    "Apply": "تطبيق"
+  },
+  "dateRangeSegments": {
+    "week": "أسبوع",
+    "month": "شهر",
+    "year": "سنة",
+    "Previous week": "الأسبوع السابق",
+    "Previous month": "الشهر السابق",
+    "Previous year": "السنة السابقة",
+    "Next week": "الأسبوع القادم",
+    "Next month": "الشهر القادم",
+    "Next year": "السنة القادمة"
+  },
+  "authProvider": {
+    "Unlock Deewas": "فتح ديواس",
+    "Enter PIN": "أدخل رمز PIN",
+    "Cancel": "إلغاء",
+    "Account Deleted": "تم حذف الحساب",
+    "Your account has been deleted": "تم حذف حسابك",
+    "Please create a new account to continue using the app": "يرجى إنشاء حساب جديد لمتابعة استخدام التطبيق",
+    "Sign Out": "تسجيل الخروج"
+  },
+  "revenueCatProvider": {
+    "Purchase Success": "نجاح الشراء",
+    "You are now Premium!": "أنت الآن مميز!",
+    "Purchase Failed": "فشل الشراء",
+    "No active premium found": "لم يتم العثور على اشتراك مميز نشط",
+    "Restore Success": "نجاح الاستعادة",
+    "Your Premium access has been restored!": "تمت استعادة وصولك المميز!",
+    "Restore Failed": "فشل الاستعادة",
+    "No active premium found to restore": "لم يتم العثور على اشتراك مميز نشط للاستعادة",
+    "Restore Error": "خطأ في الاستعادة",
+    "Unknown error during restore": "خطأ غير معروف أثناء الاستعادة"
+  },
+  "fileExporter": {
+    "Export Complete": "اكتمال التصدير",
+    "All CSV files have been exported and zipped": "تم تصدير جميع ملفات CSV وضغطها",
+    "All data has been exported to Excel file": "تم تصدير جميع البيانات إلى ملف Excel",
+    "Export CSV": "تصدير CSV",
+    "Export Excel": "تصدير Excel",
+    "Are you sure you want to export all data as CSV?": "هل أنت متأكد من أنك تريد تصدير جميع البيانات بصيغة CSV؟",
+    "Are you sure you want to export all data as Excel?": "هل أنت متأكد من أنك تريد تصدير جميع البيانات بصيغة Excel؟",
+    "Export": "تصدير",
+    "Cancel": "إلغاء",
+    "Please upgrade to Premium to export data": "يرجى الترقية إلى الحساب المميز لتصدير البيانات",
+    "Upgrade Now": "الترقية الآن"
+  },
+  "tutorialOverlay": {
+    "Finish Tutorial": "إنهاء البرنامج التعليمي",
+    "Skip Tutorial": "تخطي البرنامج التعليمي",
+    "Cancel": "إلغاء",
+    "Skip": "تخطي",
+    "Are you sure you want to skip the tutorial?": "هل أنت متأكد أنك تريد تخطي البرنامج التعليمي؟",
+    "Stay on Track": "ابق على المسار",
+    "You're on your way! Follow the steps to continue or skip if you'd like": "أنت على الطريق! اتبع الخطوات للمتابعة أو تخطها إذا أردت",
+    "Step 1": "الخطوة 1",
+    "Step 2": "الخطوة 2",
+    "Step 3": "الخطوة 3",
+    "Step 4": "الخطوة 4",
+    "Step 5": "الخطوة 5",
+    "Step 6": "الخطوة 6",
+    "Step 7": "الخطوة 7",
+    "Step 8": "الخطوة 8",
+    "Step 9": "الخطوة 9",
+    "Step 10": "الخطوة 10",
+    "Step 11": "الخطوة 11",
+    "Create a Wallet": "إنشاء محفظة",
+    "Name Your Wallet": "قم بتسمية محفظتك",
+    "Add a Transaction": "إضافة معاملة",
+    "Record a Transaction": "تسجيل معاملة",
+    "Complete Your Transaction": "أكمل معاملتك",
+    "Create a Budget": "إنشاء ميزانية",
+    "Set Up a Budget": "إعداد ميزانية",
+    "Finalize Your Budget": "إتمام إعداد الميزانية",
+    "Your Finance Assistant": "مساعدك المالي",
+    "Ask Deewas a Question": "اطرح سؤالاً على Deewas",
+    "Welcome to Deewas!": "مرحبًا بك في Deewas!",
+    "Tap the 'New Wallet' button to set up your first wallet": "اضغط على زر 'محفظة جديدة' لإعداد محفظتك الأولى",
+    "Enter a name for your wallet and tap 'Save' to continue": "أدخل اسمًا لمحفظتك واضغط على 'حفظ' للمتابعة",
+    "Go to the 'Transactions' screen to view and manage your transactions": "اذهب إلى شاشة 'المعاملات' لعرض معاملاتك وإدارتها",
+    "Tap 'Add Transaction' to log your first transaction": "اضغط على 'إضافة معاملة' لتسجيل أول معاملة لك",
+    "Enter the name and amount for your transaction, then tap 'Save'": "أدخل الاسم والمبلغ للمعاملة، ثم اضغط على 'حفظ'",
+    "Visit the 'Budgets' tab to start managing your finances": "قم بزيارة علامة تبويب 'الميزانيات' لبدء إدارة أموالك",
+    "Tap 'Create Budget' to define your spending plan": "اضغط على 'إنشاء ميزانية' لتحديد خطة الإنفاق الخاصة بك",
+    "Enter the name and amount for your budget, then tap 'Save'": "أدخل الاسم والمبلغ للميزانية، ثم اضغط على 'حفظ'",
+    "Ask Deewas": "اطرح سؤالاً على Deewas",
+    "Go to the 'Deewas' screen to chat with your AI assistant": "انتقل إلى شاشة 'Deewas' للدردشة مع مساعدك الذكي",
+    "What’s my most expensive expense this month?": "ما هي أكبر مصاريفي هذا الشهر؟",
+    "You’re all set!": "أنت جاهز تمامًا!",
+    "Thank you for choosing Deewas": "شكرًا لاختيارك Deewas",
+    "Let’s manage your finances together!": "دعنا ندير أموالك معًا!"
+  },
+  "referralCode": {
+    "Referral Code": "رمز الإحالة",
+    "Enter your referral code to get 2 days of Premium for free": "أدخل رمز الإحالة الخاص بك للحصول على يومين من Premium مجانًا"
+  },
+  "success": {
+    "Sign In Success": "نجاح تسجيل الدخول",
+    "You have successfully signed in": "لقد سجلت الدخول بنجاح",
+    "Sign Up Success": "نجاح إنشاء الحساب",
+    "You have successfully signed up": "لقد أنشأت الحساب بنجاح",
+    "Reset link sent": "تم إرسال رابط إعادة التعيين",
+    "Reset password link has been sent to your email, please check your inbox": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني، يرجى التحقق من صندوق الوارد",
+    "Transaction created": "تم إنشاء المعاملة",
+    "Category deleted": "تم حذف الفئة",
+    "Transaction deleted": "تم حذف المعاملة",
+    "Transaction duplicated": "تم تكرار المعاملة",
+    "Wallet deleted": "تم حذف المحفظة",
+    "Wallet created": "تم إنشاء المحفظة",
+    "Transferred fund": "تم تحويل الأموال",
+    "Transaction updated": "تم تحديث المعاملة",
+    "Category created": "تم إنشاء الفئة",
+    "Category updated": "تم تحديث الفئة",
+    "Budget deleted": "تم حذف الميزانية",
+    "Budget created": "تم إنشاء الميزانية",
+    "Budget updated": "تم تحديث الميزانية",
+    "Personality changed": "تم تغيير الشخصية",
+    "Update currency successfully": "تم تحديث العملة بنجاح",
+    "Erase all data successfully": "تم محو جميع البيانات بنجاح",
+    "Authentication successful": "التوثيق ناجح",
+    "Wallet updated": "تم تحديث المحفظة",
+    "You have successfully logged in": "لقد سجلت الدخول بنجاح",
+    "Referral code applied successfully": "تم تطبيق رمز الإحالة بنجاح"
+  },
+  "error": {
+    "Error": "خطأ",
+    "Sign In Failed": "فشل تسجيل الدخول",
+    "Incorrect username or email": "اسم المستخدم أو البريد الإلكتروني غير صحيح",
+    "Sign Up Failed": "فشل إنشاء الحساب",
+    "Username or email exists": "اسم المستخدم أو البريد الإلكتروني موجود بالفعل",
+    "Something went wrong": "حدث خطأ ما",
+    "This account is authenticated by google, you can't reset password": "هذا الحساب موثق بواسطة جوجل، لا يمكنك إعادة تعيين كلمة المرور",
+    "This account is authenticated by facebook, you can't reset password": "هذا الحساب موثق بواسطة فيسبوك، لا يمكنك إعادة تعيين كلمة المرور",
+    "This account is authenticated by apple, you can't reset password": "هذا الحساب موثق بواسطة آبل، لا يمكنك إعادة تعيين كلمة المرور",
+    "Failed to create transaction": "فشل في إنشاء المعاملة",
+    "Failed to delete category": "فشل في حذف الفئة",
+    "The selected date range is too large": "النطاق الزمني المحدد كبير جدًا",
+    "Max allowed range is 90 days!": "النطاق الأقصى المسموح به هو 90 يومًا!",
+    "Failed to fetch transactions": "فشل في جلب المعاملات",
+    "Failed to delete transaction": "فشل في حذف المعاملة",
+    "Failed to duplicate transaction": "فشل في تكرار المعاملة",
+    "Failed to delete wallet": "فشل في حذف المحفظة",
+    "Failed to get categories": "فشل في جلب الفئات",
+    "Failed to create wallet": "فشل في إنشاء المحفظة",
+    "Failed to transfer": "فشل التحويل",
+    "Failed to update transaction": "فشل في تحديث المعاملة",
+    "Failed to create category": "فشل في إنشاء الفئة",
+    "Failed to update category": "فشل في تحديث الفئة",
+    "Failed to delete budget": "فشل في حذف الميزانية",
+    "Failed to create budget": "فشل في إنشاء الميزانية",
+    "Failed to update budget": "فشل في تحديث الميزانية",
+    "Please select at least one personality": "يرجى اختيار شخصية واحدة على الأقل",
+    "Failed to change personalities": "فشل في تغيير الشخصيات",
+    "Failed to fetch budgets": "فشل في جلب الميزانيات",
+    "Failed to sign in with Google": "فشل تسجيل الدخول باستخدام جوجل",
+    "An error occurred": "حدث خطأ",
+    "ID token is required": "رمز الهوية مطلوب",
+    "Failed to sign up with Google": "فشل إنشاء الحساب باستخدام جوجل",
+    "Failed to update your currency": "فشل في تحديث عملتك",
+    "Speech recognition failed": "فشل التعرف على الكلام",
+    "Failed to start recording": "فشل في بدء التسجيل",
+    "Authentication error": "خطأ في التوثيق",
+    "Authentication failed": "فشل التوثيق",
+    "Biometric authentication is not supported on this device": "التوثيق البيومتري غير مدعوم على هذا الجهاز",
+    "Biometric authentication failed": "فشل التوثيق البيومتري",
+    "Please select a personality": "يرجى اختيار شخصية",
+    "This account is authenticated by google": "هذا الحساب موثق بواسطة جوجل",
+    "Failed to update wallet": "فشل في تحديث المحفظة",
+    "Failed to change username": "فشل في تغيير اسم المستخدم",
+    "Username already exists": "اسم المستخدم موجود بالفعل",
+    "Username must be at least 5 characters": "يجب أن يتكون اسم المستخدم من 5 أحرف على الأقل",
+    "Export Failed": "فشل التصدير",
+    "An error occurred while exporting CSV files": "حدث خطأ أثناء تصدير ملفات CSV",
+    "An error occurred while exporting Excel file": "حدث خطأ أثناء تصدير ملف Excel",
+    "Failed to apply referral code": "فشل في تطبيق رمز الإحالة"
+  },
+  "ERROR_CODE": {
+    "BUDGET_NOT_FOUND": "الميزانية غير موجودة",
+    "BUDGET_LIMIT_REACHED": "تم الوصول إلى الحد الأقصى للميزانيات، يرجى الترقية إلى الحساب المميز لإنشاء ميزانيات غير محدودة",
+    "INVALID_CATEGORY": "فئة غير صالحة",
+    "CREATE_BUDGET_FAILED": "فشل في إنشاء الميزانية",
+    "CATEGORY_NOT_FOUND": "الفئة غير موجودة",
+    "CATEGORY_NOT_DELETABLE": "لا يمكن حذف الفئة الافتراضية",
+    "CATEGORY_DELETE_FAILED": "فشل في حذف الفئة",
+    "USER_NOT_FOUND": "المستخدم غير موجود",
+    "SETTINGS_NOT_FOUND": "الإعدادات غير موجودة",
+    "USERNAME_EXISTS": "اسم المستخدم موجود بالفعل",
+    "WALLET_LIMIT_REACHED": "تم الوصول إلى الحد الأقصى للمحافظ، يرجى الترقية إلى الحساب المميز لإنشاء محافظ غير محدودة",
+    "WALLET_NOT_FOUND": "المحفظة غير موجودة",
+    "INVALID_BUDGET": "ميزانية غير صالحة",
+    "TRANSACTION_NOT_FOUND": "المعاملة غير موجودة",
+    "SOMETHING_WENT_WRONG": "حدث خطأ ما",
+    "RFCODE_ALREADY_USED": "لقد استخدمت رمز الإحالة هذا بالفعل",
+    "RFCODE_NOT_EXISTS": "رمز الإحالة غير موجود",
+    "RFCODE_OWNER_USED": "لا يمكنك استخدام رمز الإحالة الخاص بك"
+  },
+  "categories": {
+    "Salary": "الراتب",
+    "Business": "الأعمال",
+    "Gift": "هدية",
+    "Refund": "استرداد",
+    "Interest": "فائدة",
+    "Other Income": "دخل آخر",
+    "Uncategorized Income": "دخل غير مصنف",
+    "Food": "الطعام",
+    "Rent": "الإيجار",
+    "Shopping": "التسوق",
+    "Pets": "الحيوانات الأليفة",
+    "Transport": "النقل",
+    "Health": "الصحة",
+    "Entertainment": "الترفيه",
+    "Education": "التعليم",
+    "Investment": "الاستثمار",
+    "Insurance": "التأمين",
+    "Bill": "فاتورة",
+    "Tax": "الضريبة",
+    "Transfer": "تحويل",
+    "Other Expense": "مصروفات أخرى",
+    "Uncategorized Expense": "مصروفات غير مصنفة",
+    "Emergency Fund": "صندوق الطوارئ",
+    "Retirement Fund": "صندوق التقاعد",
+    "Vacation Fund": "صندوق الإجازة",
+    "Education Fund": "صندوق التعليم",
+    "Investment Fund": "صندوق الاستثمار",
+    "Other Saving": "مدخرات أخرى",
+    "Uncategorized Saving": "مدخرات غير مصنفة",
+    "Stock": "الأسهم",
+    "Crypto": "العملات الرقمية",
+    "Real Estate": "العقارات",
+    "Gold": "الذهب",
+    "Other Investment": "استثمار آخر",
+    "Uncategorized Investment": "استثمار غير مصنف"
+  }
+}
