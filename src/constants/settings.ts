@@ -72,8 +72,8 @@ export type LanguageType = {
 
 export const languages: LanguageType[] = [
   { value: 'en', label: 'English', alternative: 'English' },
-  { value: 'vi', label: 'Tiếng Việt', alternative: 'Vietnamese' },
   // { value: 'zh', label: '简体中文', alternative: 'Chinese (Simplified)' },
+  // { value: 'zh-Hant', label: '繁體中文', alternative: 'Chinese (Traditional)' },
   // { value: 'hi', label: 'हिन्दी', alternative: 'Hindi' },
   // { value: 'es', label: 'Español', alternative: 'Spanish' },
   // { value: 'ar', label: 'العربية', alternative: 'Arabic' },
@@ -90,6 +90,7 @@ export const languages: LanguageType[] = [
   // { value: 'ko', label: '한국어', alternative: 'Korean' },
   // { value: 'tr', label: 'Türkçe', alternative: 'Turkish' },
   // { value: 'ml', label: 'മലയാളം', alternative: 'Malayalam' },
+  { value: 'vi', label: 'Tiếng Việt', alternative: 'Vietnamese' },
   // { value: 'it', label: 'Italiano', alternative: 'Italian' },
   // { value: 'th', label: 'ไทย', alternative: 'Thai' },
   // { value: 'gu', label: 'ગુજરાતી', alternative: 'Gujarati' },

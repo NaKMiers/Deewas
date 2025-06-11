@@ -22,7 +22,8 @@
     "Sign In Failed!": "Đăng nhập thất bại!",
     "Username or email is required": "Tên người dùng hoặc email là bắt buộc",
     "Password is required": "Mật khẩu là bắt buộc",
-    "Google sign in is in progress": "Đang đăng nhập bằng Google"
+    "Google sign in is in progress": "Đang đăng nhập bằng Google",
+    "Signing in": "Đang đăng nhập"
   },
   "signUpPage": {
     "Sign Up - Deewas": "Đăng ký - Deewas",
@@ -1174,7 +1175,8 @@
     "Username must be at least 5 characters": "Tên người dùng phải có ít nhất 5 ký tự",
     "Export Failed": "Xuất dữ liệu thất bại",
     "An error occurred while exporting CSV files": "Đã xảy ra lỗi trong khi xuất tệp CSV",
-    "An error occurred while exporting Excel file": "Đã xảy ra lỗi trong khi xuất tệp Excel"
+    "An error occurred while exporting Excel file": "Đã xảy ra lỗi trong khi xuất tệp Excel",
+    "Invalid username or password": "Tên người dùng hoặc mật khẩu không hợp lệ"
   },
   "ERROR_CODE": {
     "BUDGET_NOT_FOUND": "Không tìm thấy ngân sách",
