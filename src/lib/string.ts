@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 
 export const shortName = (user: any, defaultValue: string = '') => {
+  console.log('user', user)
   if (user?.name) return user.name
   if (user?.username) return user.username
   if (user?.email) return user.email.split('@')[0]

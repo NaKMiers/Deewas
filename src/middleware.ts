@@ -92,7 +92,7 @@ export default async function middleware(req: NextRequest) {
 export const config = {
   matcher: [
     '/',
-    '/(vi|en)/:path*',
+    '/(ar|bn|de|en|es|fr|gu|hi|id|it|ja|kn|ko|ml|ms|nl|pt|ru|ta|te|th|tr|ur|vi|zh-Hant|zh|)/:path*',
     '/(transactions|budgets|account|wallets|categories|auth|calendar|streaks|admin|api)/:path*',
     '/(about|support|help|privacy-policy|terms-and-conditions|landing)/:path*',
   ],

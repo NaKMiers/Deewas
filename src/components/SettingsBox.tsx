@@ -83,6 +83,7 @@ function Box({ type, desc, list, init, className }: BoxProps) {
   const router = useRouter()
   const t = useTranslations('settingsBox')
   const tSuccess = useTranslations('success')
+  const locale = useLocale()
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -105,7 +106,7 @@ function Box({ type, desc, list, init, className }: BoxProps) {
           currency: value,
         })
 
-        await deleteAllDataApi()
+        await deleteAllDataApi(locale)
 
         toast.success(tSuccess('Update currency successfully'), { id: `update-${type}` })
         toast.success(tSuccess('Erase all data successfully'))
@@ -122,7 +123,7 @@ function Box({ type, desc, list, init, className }: BoxProps) {
         setLoading(false)
       }
     },
-    [dispatch, type, tSuccess, nextSelected]
+    [dispatch, type, tSuccess, nextSelected, locale]
   )
 
   // handle change language

@@ -24,7 +24,7 @@ import {
   X,
 } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
-import { useTranslations } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -40,6 +40,7 @@ function AccountPage() {
   const tError = useTranslations('error')
   const { theme, resolvedTheme, setTheme } = useTheme()
   const dispatch = useAppDispatch()
+  const locale = useLocale()
 
   // States
   const [deleting, setDeleting] = useState<boolean>(false)
@@ -52,7 +53,7 @@ function AccountPage() {
   const handleDeleteData = useCallback(async () => {
     setDeleting(true)
     try {
-      const { message } = await deleteAllDataApi()
+      const { message } = await deleteAllDataApi(locale)
       toast.success(message)
       dispatch(refresh())
     } catch (err: any) {
@@ -62,7 +63,7 @@ function AccountPage() {
       setDeleting(false)
       dispatch(setRefreshing(false))
     }
-  }, [dispatch])
+  }, [dispatch, locale])
 
   // Handle update settings
   const handleChangeUsername = useCallback(async () => {

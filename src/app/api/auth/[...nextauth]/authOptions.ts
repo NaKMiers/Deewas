@@ -76,7 +76,7 @@ const authOptions = {
         const { password: _, avatar: image, ...otherDetails } = user
 
         // return to session callback
-        return { ...otherDetails, image, name: user.firstName + ' ' + user.lastName }
+        return { ...otherDetails, image }
       },
     }),
 

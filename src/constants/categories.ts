@@ -149,27 +149,27 @@ export const initCategories = {
   ],
   saving: [
     {
-      name: 'Emergency Fund',
+      name: 'Emergency',
       icon: '🚨',
       type: 'saving',
     },
     {
-      name: 'Retirement Fund',
+      name: 'Retirement',
       icon: '🧓',
       type: 'saving',
     },
     {
-      name: 'Vacation Fund',
+      name: 'Vacation',
       icon: '🏖️',
       type: 'saving',
     },
     {
-      name: 'Education Fund',
+      name: 'Education',
       icon: '🎓',
       type: 'saving',
     },
     {
-      name: 'Investment Fund',
+      name: 'Investment',
       icon: '📈',
       type: 'saving',
     },
