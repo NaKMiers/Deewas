@@ -30,7 +30,7 @@ const authOptions = {
 
     // APPLE
     AppleProvider({
-      clientId: process.env.APPLE_CLIENT_ID!,
+      clientId: process.env.APPLE_CLIENT_ID_WEB!,
       clientSecret: process.env.APPLE_CLIENT_SECRET!,
     }),
 
