@@ -14,12 +14,30 @@ import AppleProvider from 'next-auth/providers/apple'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET!,
   session: {
     strategy: 'jwt' as SessionStrategy,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+
+  useSecureCookies: isProd,
+
+  cookies: isProd
+    ? {
+        pkceCodeVerifier: {
+          name: '__Secure-next-auth.pkce.code_verifier',
+          options: {
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true,
+            path: '/',
+          },
+        },
+      }
+    : {},
 
   // debug: process.env.NODE_ENV === 'development',
   providers: [
@@ -33,6 +51,13 @@ const authOptions = {
     AppleProvider({
       clientId: process.env.APPLE_CLIENT_ID_WEB!,
       clientSecret: process.env.APPLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: 'email name',
+          response_mode: 'form_post',
+          response_type: 'code id_token',
+        },
+      },
     }),
 
     // CREDENTIALS
@@ -90,8 +115,6 @@ const authOptions = {
 
     // ...add providers here
   ],
-
-  useSecureCookies: true,
 
   callbacks: {
     // MARK: JWT
