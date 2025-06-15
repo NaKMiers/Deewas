@@ -10,9 +10,9 @@ import '@/models/UserModel'
 import '@/models/WalletModel'
 
 // Providers
+import AppleProvider from 'next-auth/providers/apple'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
-import AppleProvider from 'next-auth/providers/apple'
 
 const authOptions = {
   secret: process.env.NEXTAUTH_SECRET!,
@@ -159,9 +159,18 @@ const authOptions = {
         const email = user.email
         const avatar = user.image
 
+        let filter = {}
+
+        if (account.provider === 'google' && account.providerAccountId) {
+          filter = { $or: [{ email }, { googleUserId: account.providerAccountId }] }
+        }
+        if (account.provider === 'apple' && account.providerAccountId) {
+          filter = { $or: [{ email }, { appleUserId: account.providerAccountId }] }
+        }
+
         // get user from database to check exist
         const existingUser: any = await UserModel.findOneAndUpdate(
-          { email },
+          filter,
           { $set: { avatar } },
           { new: true }
         ).lean()

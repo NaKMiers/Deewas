@@ -274,6 +274,7 @@ function AccountPage() {
         confirmLabel={t('Delete')}
         cancelLabel={t('Cancel')}
         onConfirm={handleDeleteData}
+        className="mx-auto max-w-[500px]"
         trigger={
           !deleting ? (
             <Button
@@ -294,6 +295,7 @@ function AccountPage() {
         confirmLabel={t('Log Out')}
         cancelLabel="Cancel"
         onConfirm={signOut}
+        className="mx-auto max-w-[500px]"
         trigger={
           <Button
             variant="outline"
