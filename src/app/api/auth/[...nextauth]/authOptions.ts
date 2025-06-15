@@ -161,10 +161,10 @@ const authOptions = {
 
         let filter = {}
 
-        if (account.provider === 'google' && account.providerAccountId) {
+        if (account.provider === 'google') {
           filter = { $or: [{ email }, { googleUserId: account.providerAccountId }] }
         }
-        if (account.provider === 'apple' && account.providerAccountId) {
+        if (account.provider === 'apple') {
           filter = { $or: [{ email }, { appleUserId: account.providerAccountId }] }
         }
 

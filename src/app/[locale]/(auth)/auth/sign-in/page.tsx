@@ -138,7 +138,7 @@ function SignInPage() {
                 alt="Google"
               />
 
-              <p className="ml-1 font-semibold text-black/80">Sign In with Google</p>
+              <p className="ml-1 font-semibold text-black/80">{t('Sign In with Google')}</p>
             </Button>
             <Button
               className="trans-200 h-9 w-full bg-white hover:bg-black/5"
@@ -151,7 +151,7 @@ function SignInPage() {
                 alt="Google"
               />
 
-              <p className="ml-1 font-semibold text-black/80">Sign In with Apple</p>
+              <p className="ml-1 font-semibold text-black/80">{t('Sign In with Apple')}</p>
             </Button>
           </div>
 
