@@ -340,15 +340,15 @@ function LandingPage() {
         <div className="mt-20 grid grid-cols-2 gap-21 md:grid-cols-4">
           {features.map((feature, index) => (
             <div
-              className="flex flex-col gap-4 rounded-xl bg-primary/80 p-21 text-secondary shadow-lg"
+              className="flex flex-col gap-4 rounded-xl border border-primary/10 p-21 text-secondary shadow-lg"
               key={index}
             >
               <div className="flex aspect-square w-16 items-center justify-center rounded-xl bg-sky-500 text-white shadow-lg">
                 <feature.icon size={24} />
               </div>
 
-              <p className="text-xl font-medium">{feature.title}</p>
-              <p className="">{feature.desc} </p>
+              <p className="text-xl font-medium text-primary">{feature.title}</p>
+              <p className="text-primary/80">{feature.desc} </p>
             </div>
           ))}
         </div>

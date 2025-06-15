@@ -4,6 +4,7 @@ import { languages, LanguageType } from '@/constants/settings'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import { checkPremium, cn } from '@/lib/utils'
 import { LucideChevronsUpDown, LucideMenu, LucideMoon, LucideSun } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
@@ -13,7 +14,6 @@ import { Command, CommandItem, CommandList, CommandSeparator } from '../ui/comma
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Separator } from '../ui/separator'
 import { Switch } from '../ui/switch'
-import { signOut, useSession } from 'next-auth/react'
 
 interface HeaderProps {
   routes: string[]
@@ -36,10 +36,11 @@ function Header({ routes, className }: HeaderProps) {
           <span className="font-semibold text-green-500">Premium</span> to access web version.
         </p>
       )}
-      <header className="container flex h-[52px] items-center justify-between px-21/2 drop-shadow-lg lg:px-21">
+      <header className="container relative flex h-[52px] items-center justify-between px-21/2 drop-shadow-lg lg:px-21">
         <Link
           href="/"
           className="flex items-center gap-1"
+          onClick={() => setOpenNav(false)}
         >
           <Image
             src={resolvedTheme === 'dark' ? '/images/dark-logo.png' : '/images/light-logo.png'}
@@ -100,6 +101,7 @@ function Header({ routes, className }: HeaderProps) {
               className={cn(
                 'trans-200 h-10 flex-shrink-0 text-sm font-medium capitalize hover:text-sky-500'
               )}
+              onClick={() => setOpenNav(false)}
               key={item}
             >
               {item}
