@@ -1,6 +1,7 @@
 'use client'
 
 import CustomInput from '@/components/CustomInput'
+import LanguageSelector from '@/components/LanguageSelector'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useAppDispatch } from '@/hooks/reduxHook'
@@ -102,7 +103,9 @@ function SignInPage() {
   }, [handleSubmit, onSubmit, dispatch, t])
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center p-2">
+    <div className="relative flex h-screen w-full flex-col items-center justify-center p-2">
+      <LanguageSelector className="absolute right-21 top-21" />
+
       <p className="mb-21 flex flex-row items-end text-center text-4xl font-bold tracking-wider">
         DEEWAS
         <span className="text-[40px] font-bold text-green-500">.</span>
@@ -123,9 +126,9 @@ function SignInPage() {
           <Separator className="my-8 h-0" />
 
           {/* MARK: Social Sign In */}
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex flex-col items-center justify-center gap-2">
             <Button
-              className="trans-200 h-9 flex-1 bg-white hover:bg-black/5"
+              className="trans-200 h-9 w-full bg-white hover:bg-black/5"
               onClick={() => signIn('google', { callbackUrl: `/${locale}` })}
             >
               <Image
@@ -136,6 +139,19 @@ function SignInPage() {
               />
 
               <p className="ml-1 font-semibold text-black/80">Sign In with Google</p>
+            </Button>
+            <Button
+              className="trans-200 h-9 w-full bg-white hover:bg-black/5"
+              onClick={() => signIn('apple', { callbackUrl: `/${locale}` })}
+            >
+              <Image
+                src="/icons/apple-dark.png"
+                width={16}
+                height={16}
+                alt="Google"
+              />
+
+              <p className="ml-1 font-semibold text-black/80">Sign In with Apple</p>
             </Button>
           </div>
 
