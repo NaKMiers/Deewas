@@ -74,7 +74,6 @@ export async function POST(req: NextRequest) {
   **You have personalities of: (${personalityPrompts})
   
   **Current time is: ${moment().format('YYYY-MM-DD HH:mm:ss')}
-
   `
 
   try {
@@ -91,7 +90,8 @@ export async function POST(req: NextRequest) {
     // get messages history from request
     const { messages } = await req.json()
     // get the last 5 messages
-    let recentMessages = messages.slice(-10)
+    const historyCapacity = 5
+    let recentMessages = messages.slice(-historyCapacity)
     if (recentMessages[0]?.role === 'tool') {
       const allMessages = [...messages]
       const lastToolIndex = allMessages.findLastIndex(m => m.role === 'tool')
@@ -127,6 +127,113 @@ export async function POST(req: NextRequest) {
         console.error('Error updating tokens:', error)
       }
     }
+
+    /*
+      init: 4125 input tokens
+      1. Hello
+      2. What can you do?
+      3. Show me my wallets
+      4. What is the most expensive transaction in this month?
+      5. What is the most expensive transaction in last month?
+      6. Create transaction for food today I bought dumpling 50000
+      7. Today I hangout with my friend, I spent 100000 for food and 50000 for drinks
+      8. Show me my expense categories
+      9. Show me the latest transactions
+      10. Delete the last transaction
+      11. Create transaction "Gas refill" $35 for "Gas" category in "Cash" wallet in 23/05/2025
+      12. Delete transaction "drinks" $50000
+      13. Delete food transaction "$100000"
+      14. Create a budget for "transport" $200, start date and end date of next month
+      15. Show me my budgets of "transport" for next month
+      16. Yesterday I bought a book for $15
+      17. Create new invest category name "Index Fund"
+      18. Create new invest category name "SSI Fund"
+      19. Create new invest category name "DCDS Fund"
+      20. Create new saving category name "Oh My God Fund"
+      end: 129316
+      => spend: 129316 - 4125 = 125191 tokens
+      21. Show me my wallets
+      22. Show me my saving categories
+      23. Show me my invest categories
+      24. Add transaction for "Index Fund" $90, start date and end date of next month
+      25. Create budget for "Index Fund" category, amount $100, start date and end date of next month
+      26. Create budget for "SSI Fund" category, amount $100, start date and end date of next month
+      26. Create budget for "DCDS Fund" category, amount $100, start date and end date of next month
+      29. Show me all budgets of next month
+      30. Delete category "DCDS Fund"
+      end: 170689 input tokens
+      => spend: 170689 - 129316 = 41373 tokens
+      => spend: 170689 - 4125 = 166564 tokens
+      166564/30 = 5552 tokens / message
+      1739/36 = 48.3 output tokens / message
+    */
+
+    /*
+      $0.15/1000000 input tokens
+      $0.6/1000000 output tokens
+      5552 input tokens/message
+
+      super heavy usage: 50 messages/day => 1500 messages/month
+      1500 messages/month
+      1500 * 5552 = 8328000 input tokens/month
+      1500 * 48.3 = 72450 output tokens/month
+      => $0.15 * 8328000/1000000 = $1.2492 input tokens/month
+      => $0.6 * 72450/1000000 = $0.04347 output tokens/month
+      => $1.2492 + $0.04347 = $1.29267 total cost/month
+      => $1.29267 * 12 = $15.51204 total cost/year
+      => profit (Monthly) = $1.99 - $1.29267 = $0.69733
+      => profit (Yearly) = $9.99 - $15.51204 = -$5.52204
+    
+      heavy usage: 30 messages/day => 900 messages/month
+      900 * 5552 = 4996800 input tokens/month
+      900 * 48.3 = 43470 output tokens/month
+      => $0.15 * 4996800/1000000 = $0.74952 input tokens/month
+      => $0.6 * 43470/1000000 = $0.02682 output tokens/month
+      => $0.74952 + $0.02682 = $0.77634 total cost/month
+      => $0.77634 * 12 = $9.31568 total cost/year
+      => profit (Monthly) = $1.99 - $0.77634 = $1.21366
+      => profit (Yearly) = $9.99 - $9.31568 = $0.67432
+
+      slight usage: 15 messages/day => 450 messages/month
+      450 * 5552 = 2498400 input tokens/month
+      450 * 48.3 = 21735 output tokens/month
+      => $0.15 * 2498400/1000000 = $0.37476 input tokens/month
+      => $0.6 * 21735/1000000 = $0.01304 output tokens/month
+      => $0.37476 + $0.01304 = $0.3878 total cost/month
+      => $0.3878 * 12 = $4.6536 total cost/year
+      => profit = $1.99 - $0.3878 = $1.6022
+      => profit (Yearly) = $9.99 - $4.6536 = $5.3364
+
+      light usage: 5 messages/day => 150 messages/month
+      150 * 5552 = 832800 input tokens/month
+      150 * 48.3 = 7245 output tokens/month
+      => $0.15 * 832800/1000000 = $0.12492 input tokens/month
+      => $0.6 * 7245/1000000 = $0.00435 output tokens/month
+      => $0.12492 + $0.00435 = $0.12927 total cost/month
+      => $0.12927 * 12 = $1.55124 total cost/year
+      => profit = $1.99 - $0.12927 = $1.86073
+      => profit (Yearly) = $9.99 - $1.55124 = $8.43876
+
+      170689 input tokens, 1739 output tokens
+      170689 + 1739 = 172428 total tokens
+      170689/172428 * 100 = 98.0% input tokens
+      1739/172428 * 100 = 1.0% output tokens
+    */
+
+    /*
+      173947 => 173947 - 170689 = 3258
+      176246 => 176246 - 173947 = 2299
+      178402 => 178402 - 176246 = 2156
+      181625 => 181625 - 178402 = 3223
+      184844 => 184844 - 181625 = 3219
+      187907 => 187907 - 184844 = 3063
+      190853 => 190853 - 187907 = 2946
+      193773 => 193773 - 190853 = 2920
+      196295 => 196295 - 193773 = 2522
+      198597 => 198597 - 196295 = 2302
+      200899 => 200899 - 198597 = 2302
+      => average: 2741.36 tokens/message
+    */
 
     const result = streamText({
       model: openai('gpt-4o-mini'),
