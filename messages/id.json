@@ -1228,5 +1228,9 @@
     "Gold": "Emas",
     "Other Investment": "Investasi Lain",
     "Uncategorized Investment": "Investasi Tanpa Kategori"
+  },
+  "initWallet": {
+    "Cash": "Uang Tunai",
+    "Bank Account": "Rekening Bank"
   }
 }

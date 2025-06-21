@@ -1228,5 +1228,9 @@
     "Gold": "금",
     "Other Investment": "기타 투자",
     "Uncategorized Investment": "분류되지 않은 투자"
+  },
+  "initWallet": {
+    "Cash": "현금",
+    "Bank Account": "은행 계좌"
   }
 }

@@ -1228,5 +1228,9 @@
     "Gold": "സ്വർണം",
     "Other Investment": "മറ്റ് നിക്ഷേപങ്ങൾ",
     "Uncategorized Investment": "വിഭജിക്കാത്ത നിക്ഷേപങ്ങൾ"
+  },
+  "initWallet": {
+    "Cash": "നഗദു",
+    "Bank Account": "ബാങ്ക് അക്കൗണ്ട്"
   }
 }

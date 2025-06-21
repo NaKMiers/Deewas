@@ -1228,5 +1228,9 @@
     "Gold": "સોનુ",
     "Other Investment": "અન્ય નિવેશ",
     "Uncategorized Investment": "અવર્ગીકૃત નિવેશ"
+  },
+  "initWallet": {
+    "Cash": "નગદ",
+    "Bank Account": "બેંક એકાઉન્ટ"
   }
 }

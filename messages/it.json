@@ -1228,5 +1228,9 @@
     "Gold": "Oro",
     "Other Investment": "Altri investimenti",
     "Uncategorized Investment": "Investimenti non categorizzati"
+  },
+  "initWallet": {
+    "Cash": "Contante",
+    "Bank Account": "Conto bancario"
   }
 }

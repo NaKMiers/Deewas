@@ -1228,5 +1228,9 @@
     "Gold": "सोना",
     "Other Investment": "अन्य निवेश",
     "Uncategorized Investment": "अवर्गीकृत निवेश"
+  },
+  "initWallet": {
+    "Cash": "नकद",
+    "Bank Account": "बैंक खाता"
   }
 }

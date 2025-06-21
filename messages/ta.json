@@ -1228,5 +1228,9 @@
     "Gold": "தங்கம்",
     "Other Investment": "பிற முதலீடு",
     "Uncategorized Investment": "வகைப்படுத்தாத முதலீடு"
+  },
+  "initWallet": {
+    "Cash": "நகை",
+    "Bank Account": "வங்கி கணக்கு"
   }
 }

@@ -1228,5 +1228,9 @@
     "Gold": "黄金",
     "Other Investment": "其他投资",
     "Uncategorized Investment": "未分类投资"
+  },
+  "initWallet": {
+    "Cash": "现金",
+    "Bank Account": "银行账户"
   }
 }

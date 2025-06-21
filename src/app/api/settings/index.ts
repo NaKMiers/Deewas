@@ -16,6 +16,8 @@ import '@/models/WalletModel'
 
 // MARK: Delete All Data
 export const deleteAllData = async (userId: string, locale: string) => {
+  console.log('locale', locale)
+
   try {
     // connect to database
     await connectDatabase()
@@ -34,15 +36,22 @@ export const deleteAllData = async (userId: string, locale: string) => {
 
     // MARK: Create new user and init data
     const messages = getMessagesByLocale(locale)
-    const t = createTranslator({ locale, messages, namespace: 'categories' })
+    const tC = createTranslator({ locale, messages, namespace: 'categories' })
+    const tW = createTranslator({ locale, messages, namespace: 'initWallet' })
 
     let translatedCategories: any = {}
     for (const type in initCategories) {
       const categories = (initCategories as any)[type].map((cate: any) => ({
         ...cate,
-        name: t(cate.name),
+        name: tC(cate.name),
       }))
       translatedCategories[type] = categories
+    }
+
+    const translatedWallet: any = {
+      user: userId,
+      name: tW('Cash'),
+      icon: '⭐',
     }
 
     const categories = Object.values(translatedCategories)
@@ -54,11 +63,7 @@ export const deleteAllData = async (userId: string, locale: string) => {
 
     await Promise.all([
       // initially create personal wallet
-      WalletModel.create({
-        user: userId,
-        name: 'Cash',
-        icon: '⭐',
-      }),
+      WalletModel.create(translatedWallet),
 
       // Insert default categories
       CategoryModel.insertMany(categories),
