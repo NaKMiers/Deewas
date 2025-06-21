@@ -1,6 +1,4 @@
 import { connectDatabase } from '@/config/database'
-import { getMessagesByLocale, initCategories } from '@/constants/categories'
-import { createTranslator } from 'next-intl'
 import { NextRequest, NextResponse } from 'next/server'
 
 // [GET]: /test

@@ -52,15 +52,22 @@ export async function POST(req: NextRequest) {
 
     // MARK: Create new user and init data
     const messages = getMessagesByLocale(locale)
-    const t = createTranslator({ locale, messages, namespace: 'categories' })
+    const tC = createTranslator({ locale, messages, namespace: 'categories' })
+    const tW = createTranslator({ locale, messages, namespace: 'initWallet' })
 
     let translatedCategories: any = {}
     for (const type in initCategories) {
       const categories = (initCategories as any)[type].map((cate: any) => ({
         ...cate,
-        name: t(cate.name),
+        name: tC(cate.name),
       }))
       translatedCategories[type] = categories
+    }
+
+    const translatedWallet: any = {
+      user: newUser._id,
+      name: tW('Cash'),
+      icon: '⭐',
     }
     const categories = Object.values(translatedCategories)
       .flat()
@@ -74,11 +81,7 @@ export async function POST(req: NextRequest) {
 
     await Promise.all([
       // create initial wallet
-      WalletModel.create({
-        user: newUser._id,
-        name: 'Cash',
-        icon: '💰',
-      }),
+      WalletModel.create(translatedWallet),
       // initially create settings
       SettingsModel.create({
         user: newUser._id,
