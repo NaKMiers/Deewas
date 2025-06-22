@@ -10,7 +10,6 @@ import { z } from 'zod'
 // Models: Category, Settings
 import '@/models/CategoryModel'
 import '@/models/SettingsModel'
-import { Settings } from 'http2'
 
 // [POST]: /ocr
 export async function POST(req: NextRequest) {
@@ -83,19 +82,19 @@ export async function POST(req: NextRequest) {
 
     const { object } = await generateObject({
       model: openai('gpt-4o-mini'),
-      system: 'Extract receipt info and choose the correct category from the list provided',
+      system: 'Extract transaction info and choose the best matching expense category',
       schema: z.object({
         name: z.string(),
         amount: z.number(),
         date: z.string().transform(val => new Date(val).toISOString()),
         category: z
           .object({
-            _id: z.string().describe('category id from provider list'),
-            name: z.string().describe('category name from provider list'),
+            _id: z.string().describe('category id from list'),
+            name: z.string().describe('category name from list'),
           })
-          .describe('selected category from provider list'),
+          .describe('Best-matched category from list'),
       }),
-      prompt: `"""${receiptText}""", ${JSON.stringify(expenseCategories)}`,
+      prompt: `"""${receiptText}""", categories: ${JSON.stringify(expenseCategories)}`,
     })
 
     // return the extracted object for expense transaction
