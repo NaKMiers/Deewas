@@ -26,6 +26,11 @@ const SettingsSchema = new Schema(
       type: Number,
       default: -20000,
     },
+    scanned: {
+      type: Number,
+      default: 0, // number of scanned transactions
+      min: 0,
+    },
     firstLaunch: {
       type: Boolean,
       default: false,
@@ -51,6 +56,7 @@ export interface ISettings {
   language: string
 
   freeTokensUsed: number
+  scanned: number
   firstLaunch: boolean
   referralCode?: string
 }

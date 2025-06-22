@@ -1,11 +1,18 @@
 import { connectDatabase } from '@/config/database'
-import { extractToken } from '@/lib/utils'
+import { checkPremium, extractToken } from '@/lib/utils'
 import CategoryModel from '@/models/CategoryModel'
+import SettingsModel from '@/models/SettingsModel'
 import { openai } from '@ai-sdk/openai'
 import { generateObject } from 'ai'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
+// Models: Category, Settings
+import '@/models/CategoryModel'
+import '@/models/SettingsModel'
+import { Settings } from 'http2'
+
+// [POST]: /ocr
 export async function POST(req: NextRequest) {
   try {
     const token = await extractToken(req)
@@ -14,6 +21,23 @@ export async function POST(req: NextRequest) {
     // check if user is logged
     if (!userId) {
       return NextResponse.json({ message: 'Please login to continue' }, { status: 401 })
+    }
+
+    const isPremium = checkPremium(token)
+
+    // only allow free users scan 3 receipts/day
+    if (!isPremium) {
+      const userScanned: any = await SettingsModel.findOne({ user: userId }).select('scanned').lean()
+      if (!userScanned || userScanned.scanned >= 3) {
+        return NextResponse.json(
+          {
+            errorCode: 'SCANNING_LIMIT_REACHED',
+            message:
+              'You have reached your daily limit of scanning receipts, please upgrade to premium to continue scanning',
+          },
+          { status: 402 }
+        )
+      }
     }
 
     // get file from form data
@@ -50,10 +74,12 @@ export async function POST(req: NextRequest) {
     // connect database
     await connectDatabase()
 
-    // get user expense categories
-    const expenseCategories = await CategoryModel.find({ user: userId, type: 'expense' })
-      .select('name')
-      .lean()
+    const [expenseCategories] = await Promise.all([
+      // get user expense categories
+      CategoryModel.find({ user: userId, type: 'expense' }).select('name').lean(),
+      // increment scanned count for user
+      SettingsModel.findOneAndUpdate({ user: userId }, { $inc: { scanned: 1 } }),
+    ])
 
     const { object } = await generateObject({
       model: openai('gpt-4o-mini'),
@@ -71,8 +97,6 @@ export async function POST(req: NextRequest) {
       }),
       prompt: `"""${receiptText}""", ${JSON.stringify(expenseCategories)}`,
     })
-
-    console.log('OCR RESULT:', object)
 
     // return the extracted object for expense transaction
     return NextResponse.json({ ...object }, { status: 200 })

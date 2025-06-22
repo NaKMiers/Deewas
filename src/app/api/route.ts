@@ -44,9 +44,9 @@ export async function GET(req: NextRequest) {
 
     const [wallets, categories, budgets, settings]: any[] = await Promise.all(promises)
 
-    // reset free tokens for free user after a day
+    // reset (free tokens and free scan) for free user after a day
     if (settings && moment(settings.updatedAt).isBefore(moment().startOf('day'))) {
-      await SettingsModel.updateOne({ user: userId }, { $set: { freeTokensUsed: 0 } })
+      await SettingsModel.updateOne({ user: userId }, { $set: { freeTokensUsed: 0, scanned: 0 } })
     }
 
     // return response
