@@ -28,8 +28,8 @@ const SettingsSchema = new Schema(
     },
     scanned: {
       type: Number,
-      default: 0, // number of scanned transactions
-      min: 0,
+      default: -5, // number of scanned transactions
+      min: -5,
     },
     firstLaunch: {
       type: Boolean,
