@@ -60,8 +60,6 @@ export async function GET(req: NextRequest) {
       new Set(allTransactions.map(tx => moment(tx.createdAt).format('YYYY-MM-DD')))
     )
 
-    console.log(`Unique Dates: ${uniqueDates}`)
-
     for (let i = 0; i < uniqueDates.length; i++) {
       const currentDate = uniqueDates[i]
 

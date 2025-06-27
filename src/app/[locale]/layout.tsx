@@ -1,5 +1,5 @@
 import authOptions from '@/app/api/auth/[...nextauth]/authOptions'
-import StoreProvider from '@/components/providers/StoreProvider'
+import Providers from '@/components/providers/Providers'
 import { routing } from '@/i18n/routing'
 import { getServerSession } from 'next-auth'
 import { NextIntlClientProvider } from 'next-intl'
@@ -46,7 +46,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body>
         <NextIntlClientProvider messages={messages}>
-          <StoreProvider session={session}>
+          <Providers session={session}>
             {/* Toast */}
             <Toaster
               position="bottom-center"
@@ -68,7 +68,7 @@ export default async function RootLayout({
               showAtBottom={false}
             />
             {children}
-          </StoreProvider>
+          </Providers>
         </NextIntlClientProvider>
       </body>
     </html>

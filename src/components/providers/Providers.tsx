@@ -5,8 +5,9 @@ import { ThemeProvider } from 'next-themes'
 import { useRef } from 'react'
 import { Provider } from 'react-redux'
 import { AppStore, makeStore } from '../../lib/store'
+import ThemeInit from '../ThemeInit'
 
-function StoreProvider({ children, session }: { children: React.ReactNode; session: any }) {
+function Providers({ children, session }: { children: React.ReactNode; session: any }) {
   const storeRef = useRef<AppStore | null>(null)
 
   if (!storeRef.current) {
@@ -18,9 +19,9 @@ function StoreProvider({ children, session }: { children: React.ReactNode; sessi
       attribute="class"
       defaultTheme="system"
       enableSystem
-      disableTransitionOnChange
     >
       <Provider store={storeRef.current}>
+        <ThemeInit />
         <SessionProvider
           session={session}
           refetchOnWindowFocus={true}
@@ -32,4 +33,4 @@ function StoreProvider({ children, session }: { children: React.ReactNode; sessi
   )
 }
 
-export default StoreProvider
+export default Providers

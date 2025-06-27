@@ -83,7 +83,6 @@ function ReferralCodesPage() {
 
         // sync search params with states
         setValue('search', searchParams?.search || getValues('search'))
-        console.log(searchParams?.sort, getValues('sort'))
         setValue('sort', searchParams?.sort || getValues('sort'))
         setValue('active', searchParams?.active || getValues('active'))
       } catch (err: any) {

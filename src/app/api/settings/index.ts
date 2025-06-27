@@ -16,8 +16,6 @@ import '@/models/WalletModel'
 
 // MARK: Delete All Data
 export const deleteAllData = async (userId: string, locale: string) => {
-  console.log('locale', locale)
-
   try {
     // connect to database
     await connectDatabase()

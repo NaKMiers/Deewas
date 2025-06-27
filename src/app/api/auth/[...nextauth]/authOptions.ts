@@ -169,8 +169,6 @@ const authOptions = {
     // MARK: Sign In
     async signIn({ user, account, profile }: any) {
       console.log('- Sign In -')
-      console.log('Account:', account)
-      console.log('Profile:', profile)
 
       try {
         // connect to database

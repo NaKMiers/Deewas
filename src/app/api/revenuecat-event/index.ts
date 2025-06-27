@@ -40,8 +40,6 @@ export const updateUserPlan = async (
       set.planExpiredAt = null
     }
 
-    console.log('set', set)
-
     // update user
     const user: any = await UserModel.findByIdAndUpdate(userId, { $set: set }, { new: true }).lean()
 

@@ -87,7 +87,6 @@ function EditUserPage() {
       name: '',
     },
   })
-  console.log('settings', settings)
 
   // get user to edit
   useEffect(() => {

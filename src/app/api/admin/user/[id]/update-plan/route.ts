@@ -14,7 +14,6 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   try {
     const { id } = await params
     const { plan, planExpiredAt, purchasedAtPlatform } = await req.json()
-    console.log(plan)
 
     // connect to database
     await connectDatabase()
