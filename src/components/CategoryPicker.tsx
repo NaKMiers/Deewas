@@ -47,7 +47,10 @@ function CategoryPicker({ category, type, onChange, className }: CategoryPickerP
   const dispatch = useAppDispatch()
 
   // store
-  const categories = useAppSelector(state => state.category.categories)
+  let categories = useAppSelector(state => state.category.categories)
+  categories = categories
+    .filter(c => c.type === type)
+    .sort((a, b) => (a.deletable === b.deletable ? 0 : a.deletable ? -1 : 1))
 
   // states
   const [open, setOpen] = useState<boolean>(false)

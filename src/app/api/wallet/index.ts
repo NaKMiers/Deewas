@@ -6,6 +6,7 @@ import WalletModel from '@/models/WalletModel'
 
 // Models: Wallet, Transaction, Category, Budget
 import '@/models/BudgetModel'
+import BudgetModel from '@/models/BudgetModel'
 import '@/models/CategoryModel'
 import '@/models/TransactionModel'
 import '@/models/WalletModel'
@@ -30,8 +31,8 @@ const filterBuilder = (
   // options
   let skip = defaults.skip
   let limit = defaults.limit
-  const filter: { [key: string]: any } = defaults.filter
-  let sort: { [key: string]: any } = defaults.sort
+  const filter: { [key: string]: any } = { ...defaults.filter }
+  let sort: { [key: string]: any } = { ...defaults.sort }
 
   // build filter
   for (const key in params) {
@@ -238,10 +239,10 @@ export const transfer = async (
     }
 
     const [sourceW, destinationW] = await Promise.all([
-      // update source wallet
+      // increase source wallet expense
       WalletModel.findByIdAndUpdate(fromWalletId, { $inc: { expense: amount } }, { new: true }),
 
-      // update destination wallet
+      // increase destination wallet income
       WalletModel.findByIdAndUpdate(toWalletId, { $inc: { income: amount } }, { new: true }),
 
       // create transfer transactions
@@ -267,6 +268,22 @@ export const transfer = async (
         date: toUTC(date),
         exclude: true,
       }),
+
+      // increase uncategorized expense category amount
+      CategoryModel.findByIdAndUpdate(unCategorizedExpenseCate._id, { $inc: { amount: amount } }),
+
+      // increase uncategorized income category amount
+      CategoryModel.findByIdAndUpdate(unCategorizedIncomeCate._id, { $inc: { amount: amount } }),
+
+      // increase amount of all budgets of uncategorized expense category
+      BudgetModel.updateMany(
+        {
+          category: unCategorizedExpenseCate._id,
+          begin: { $lte: toUTC(date) },
+          end: { $gte: toUTC(date) },
+        },
+        { $inc: { amount: amount } }
+      ),
     ])
 
     return {

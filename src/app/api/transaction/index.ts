@@ -32,8 +32,8 @@ const filterBuilder = (
   // options
   let skip = defaults.skip
   let limit = defaults.limit
-  const filter: { [key: string]: any } = defaults.filter
-  let sort: { [key: string]: any } = defaults.sort
+  const filter: { [key: string]: any } = { ...defaults.filter }
+  let sort: { [key: string]: any } = { ...defaults.sort }
 
   // build filter
   for (const key in params) {
@@ -389,15 +389,18 @@ export const getHistory = async (userId: string, params: any = {}) => {
     // connect to database
     await connectDatabase()
 
-    const { from, to } = params
+    const { from, to, category } = params
 
     // required date range
     if (!from || !to) {
       return { message: 'Please provide date range' }
     }
 
+    const defaultFilter: { [key: string]: any } = { user: userId }
+    if (category) defaultFilter.category = category
+
     const { filter, sort, skip, limit } = filterBuilder(params, {
-      filter: { user: userId },
+      filter: defaultFilter,
       sort: { date: -1, createdAt: -1 },
       skip: 0,
       limit: Infinity,
@@ -412,12 +415,10 @@ export const getHistory = async (userId: string, params: any = {}) => {
         .lean(),
 
       // get oldest transaction date
-      TransactionModel.findOne({ user: userId })
-        .select('date createdAt')
-        .sort({ date: 1 })
-        .limit(1)
-        .lean(),
+      TransactionModel.findOne(defaultFilter).select('date createdAt').sort({ date: 1 }).limit(1).lean(),
     ])
+
+    console.log(defaultFilter, oldestTransaction)
 
     return {
       transactions: JSON.parse(JSON.stringify(transactions)),

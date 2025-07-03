@@ -24,8 +24,8 @@ const filterBuilder = (
   // options
   let skip = defaults.skip
   let limit = defaults.limit
-  const filter: { [key: string]: any } = defaults.filter
-  let sort: { [key: string]: any } = defaults.sort
+  const filter: { [key: string]: any } = { ...defaults.filter }
+  let sort: { [key: string]: any } = { ...defaults.sort }
 
   // build filter
   for (const key in params) {
