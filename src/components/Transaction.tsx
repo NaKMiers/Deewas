@@ -1,5 +1,7 @@
 import { currencies } from '@/constants/settings'
-import { useAppSelector } from '@/hooks/reduxHook'
+import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
+import { useRouter } from '@/i18n/navigation'
+import { refresh } from '@/lib/reducers/loadReducer'
 import { checkTranType, formatCurrency } from '@/lib/string'
 import { formatDate, toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
@@ -36,6 +38,8 @@ interface TransactionProps {
 function Transaction({ transaction, update, remove, hideMenu, refetch, className }: TransactionProps) {
   // hooks
   const t = useTranslations('transaction')
+  const router = useRouter()
+  const dispatch = useAppDispatch()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -55,7 +59,7 @@ function Transaction({ transaction, update, remove, hideMenu, refetch, className
       toast.success(message, { id: 'delete-transaction' })
 
       if (remove) remove(tx)
-      if (refetch) refetch()
+      dispatch(refresh())
     } catch (err: any) {
       toast.error(t('Failed to delete transaction'), { id: 'delete-transaction' })
       console.log(err)
@@ -63,7 +67,7 @@ function Transaction({ transaction, update, remove, hideMenu, refetch, className
       // stop loading
       setDuplicating(false)
     }
-  }, [remove, refetch, transaction._id, t])
+  }, [dispatch, remove, transaction._id, t])
 
   // duplicate transaction
   const handleDuplicateTransaction = useCallback(async () => {
@@ -80,7 +84,7 @@ function Transaction({ transaction, update, remove, hideMenu, refetch, className
       })
 
       toast.success(message, { id: 'duplicate-transaction' })
-      if (refetch) refetch()
+      dispatch(refresh())
     } catch (err: any) {
       toast.error(t('Failed to duplicate transaction'), { id: 'duplicate-transaction' })
       console.log(err)
@@ -88,10 +92,16 @@ function Transaction({ transaction, update, remove, hideMenu, refetch, className
       // stop loading
       setDeleting(false)
     }
-  }, [refetch, transaction, t])
+  }, [dispatch, transaction, t])
 
   return (
-    <div className={cn('flex w-full items-start gap-1', className)}>
+    <div
+      onClick={() => router.push(`/category-history/${transaction.category._id}`)}
+      className={cn(
+        'trans-200 flex w-full cursor-pointer items-start gap-1 hover:opacity-80',
+        className
+      )}
+    >
       {/* Icon */}
       <span className="text-2xl">{transaction.category.icon}</span>
 
@@ -150,7 +160,7 @@ function Transaction({ transaction, update, remove, hideMenu, refetch, className
                     <LucideEllipsisVertical />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent onClick={e => e.stopPropagation()}>
                   {/* MARK: Duplicate */}
                   <ConfirmDialog
                     label={t('Duplicate Transaction')}

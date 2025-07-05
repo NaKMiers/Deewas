@@ -709,6 +709,7 @@
     "The Moody Cat": "Капризная кошка"
   },
   "budgetCard": {
+    "Add Transaction": "Добавить транзакцию",
     "Create Similar": "Создать аналогичный",
     "Deleting budget": "Удаление бюджета",
     "Edit": "Редактировать",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Самая длинная серия",
     "Your Stats": "Ваша статистика",
     "Continue": "Продолжить"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Добавить транзакцию",
+    "No transactions found": "Транзакции не найдены",
+    "Total": "Итого"
   },
   "settingsBox": {
     "Set your currency": "Выберите валюту",

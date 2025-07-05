@@ -24,6 +24,8 @@ function BudgetsPage() {
 
   // states
   const [groups, setGroups] = useState<any[]>([])
+  const [prevTab, setPrevTab] = useState<string>(groups?.[0]?.[0])
+  const [tab, setTab] = useState<string>(groups?.[0]?.[0])
 
   useEffect(() => {
     const groups: {
@@ -49,16 +51,22 @@ function BudgetsPage() {
       groups[key].budgets.push(budget)
     })
 
-    setGroups(Object.entries(groups))
-  }, [budgets])
+    const results = Object.entries(groups)
+    setGroups(results)
+
+    const prevGroup = results.find(([key]) => key === prevTab)
+    const isPrevTabValid = prevTab && prevGroup && prevGroup[1].budgets.length > 0
+    setTab(isPrevTabValid ? prevTab : results?.[0]?.[0])
+  }, [budgets, prevTab])
 
   return (
     <div className="container min-h-[calc(100vh-50px)] p-21/2 pb-32 md:p-21">
       {!loading ? (
         groups.length > 0 ? (
           <Tabs
-            defaultValue={groups[0]?.[0]}
+            value={tab}
             className="w-full"
+            onValueChange={value => setPrevTab(value)}
           >
             <TabsList className="flex h-12 justify-start overflow-y-auto">
               {groups.map(([key, { begin, end, budgets }]) => (

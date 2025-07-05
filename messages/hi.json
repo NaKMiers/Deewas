@@ -709,6 +709,7 @@
     "The Moody Cat": "मिज़ाज वाली बिल्ली"
   },
   "budgetCard": {
+    "Add Transaction": "लेन-देन जोड़ें",
     "Create Similar": "इसी तरह का बनाएं",
     "Deleting budget": "बजट हटाया जा रहा है",
     "Edit": "संपादित करें",
@@ -1025,6 +1026,11 @@
     "Longest streak": "सबसे लंबी स्ट्रीक",
     "Your Stats": "आपके आँकड़े",
     "Continue": "जारी रखें"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "लेन-देन जोड़ें",
+    "No transactions found": "कोई लेन-देन नहीं मिला",
+    "Total": "कुल"
   },
   "settingsBox": {
     "Set your currency": "अपनी मुद्रा सेट करें",

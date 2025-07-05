@@ -709,6 +709,7 @@
     "The Moody Cat": "Kucing Moody"
   },
   "budgetCard": {
+    "Add Transaction": "Tambah Transaksi",
     "Create Similar": "Buat Serupa",
     "Deleting budget": "Memadam bajet",
     "Edit": "Sunting",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Rekod terpanjang",
     "Your Stats": "Statistik Anda",
     "Continue": "Teruskan"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Tambah Transaksi",
+    "No transactions found": "Tiada transaksi ditemui",
+    "Total": "Jumlah"
   },
   "settingsBox": {
     "Set your currency": "Tetapkan mata wang anda",

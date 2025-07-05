@@ -709,6 +709,7 @@
     "The Moody Cat": "মুডি বিড়াল"
   },
   "budgetCard": {
+    "Add Transaction": "লেনদেন যোগ করুন",
     "Create Similar": "অনুরূপ তৈরি করুন",
     "Deleting budget": "বাজেট মুছে ফেলা হচ্ছে",
     "Edit": "সম্পাদনা",
@@ -1025,6 +1026,11 @@
     "Longest streak": "দীর্ঘতম ধারাবাহিকতা",
     "Your Stats": "আপনার পরিসংখ্যান",
     "Continue": "চালিয়ে যান"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "লেনদেন যোগ করুন",
+    "No transactions found": "কোনও লেনদেন পাওয়া যায়নি",
+    "Total": "মোট"
   },
   "settingsBox": {
     "Set your currency": "আপনার মুদ্রা নির্ধারণ করুন",

@@ -709,6 +709,7 @@
     "The Moody Cat": "മനോഭാവം മാറുന്ന പൂച്ച"
   },
   "budgetCard": {
+    "Add Transaction": "ഇടപാട് ചേർക്കുക",
     "Create Similar": "ഇതു പോലെയുള്ളത് സൃഷ്ടിക്കുക",
     "Deleting budget": "ബജറ്റ് ഇല്ലാതാക്കുന്നു",
     "Edit": "എഡിറ്റ് ചെയ്യുക",
@@ -1025,6 +1026,11 @@
     "Longest streak": "ഏറ്റവും നീണ്ട തുടർച്ച",
     "Your Stats": "നിന്റെ സ്ഥിതിവിവരക്കണക്കുകൾ",
     "Continue": "തുടരുക"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "ഇടപാട് ചേർക്കുക",
+    "No transactions found": "ഇടപാടുകൾ ഒന്നുമില്ല",
+    "Total": "മൊത്തം"
   },
   "settingsBox": {
     "Set your currency": "നിന്റെ കറൻസി സെറ്റ് ചെയ്യുക",

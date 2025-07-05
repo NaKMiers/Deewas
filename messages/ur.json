@@ -709,6 +709,7 @@
     "The Moody Cat": "موڈی بلی"
   },
   "budgetCard": {
+    "Add Transaction": "لین دین شامل کریں",
     "Create Similar": "مشابه بنائیں",
     "Deleting budget": "بجٹ حذف کیا جا رہا ہے",
     "Edit": "ترمیم کریں",
@@ -1025,6 +1026,11 @@
     "Longest streak": "طویل ترین تسلسل",
     "Your Stats": "آپ کے اعدادوشمار",
     "Continue": "جاری رکھیں"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "لین دین شامل کریں",
+    "No transactions found": "کوئی لین دین نہیں ملا",
+    "Total": "کل"
   },
   "settingsBox": {
     "Set your currency": "اپنی کرنسی سیٹ کریں",

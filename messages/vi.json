@@ -709,6 +709,7 @@
     "The Moody Cat": "Con mòe khó ở"
   },
   "budgetCard": {
+    "Add Transaction": "Thêm giao dịch",
     "Create Similar": "Tạo tương tự",
     "Deleting budget": "Đang xóa ngân sách",
     "Edit": "Sửa",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Chuỗi dài nhất",
     "Your Stats": "Thống kê của bạn",
     "Continue": "Tiếp tục"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Thêm giao dịch",
+    "No transactions found": "Không tìm thấy giao dịch nào",
+    "Total": "Tổng"
   },
   "settingsBox": {
     "Set your currency": "Thiết lập tiền tệ",

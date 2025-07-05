@@ -709,6 +709,7 @@
     "The Moody Cat": "De Humeurende Kat"
   },
   "budgetCard": {
+    "Add Transaction": "Transactie toevoegen",
     "Create Similar": "Maak soortgelijk",
     "Deleting budget": "Budget verwijderen",
     "Edit": "Bewerken",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Langste reeks",
     "Your Stats": "Je statistieken",
     "Continue": "Doorgaan"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Transactie toevoegen",
+    "No transactions found": "Geen transacties gevonden",
+    "Total": "Totaal"
   },
   "settingsBox": {
     "Set your currency": "Stel je valuta in",

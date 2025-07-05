@@ -709,6 +709,7 @@
     "The Moody Cat": "Huysuz Kedi"
   },
   "budgetCard": {
+    "Add Transaction": "İşlem Ekle",
     "Create Similar": "Benzer Oluştur",
     "Deleting budget": "Bütçe siliniyor",
     "Edit": "Düzenle",
@@ -1025,6 +1026,11 @@
     "Longest streak": "En uzun seri",
     "Your Stats": "İstatistiklerin",
     "Continue": "Devam Et"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "İşlem Ekle",
+    "No transactions found": "İşlem bulunamadı",
+    "Total": "Toplam"
   },
   "settingsBox": {
     "Set your currency": "Para birimini ayarla",

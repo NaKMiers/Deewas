@@ -709,6 +709,7 @@
     "The Moody Cat": "மனநிலை மாறும் பூனை"
   },
   "budgetCard": {
+    "Add Transaction": "பரிவர்த்தனை சேர்க்கவும்",
     "Create Similar": "இதேபோன்ற ஒன்றை உருவாக்கு",
     "Deleting budget": "மூலதனத்தை அழித்தல்",
     "Edit": "தொகு",
@@ -1025,6 +1026,11 @@
     "Longest streak": "இறுதி தொடர் வெற்றி",
     "Your Stats": "உங்கள் புள்ளிவிவரங்கள்",
     "Continue": "தொடரவும்"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "பரிவர்த்தனை சேர்க்கவும்",
+    "No transactions found": "பரிவர்த்தனைகள் எதுவும் கிடைக்கவில்லை",
+    "Total": "மொத்தம்"
   },
   "settingsBox": {
     "Set your currency": "உங்கள் நாணயத்தை அமைக்கவும்",

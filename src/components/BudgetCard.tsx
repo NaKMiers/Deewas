@@ -12,6 +12,7 @@ import {
   LucideLayers2,
   LucideLoaderCircle,
   LucidePencil,
+  LucidePlus,
   LucideTrash,
 } from 'lucide-react'
 import moment from 'moment-timezone'
@@ -20,9 +21,11 @@ import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmDialog from './dialogs/ConfirmDialog'
 import CreateBudgetDrawer from './dialogs/CreateBudgetDrawer'
+import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import UpdateBudgetDrawer from './dialogs/UpdateBudgetDrawer'
 import { Button } from './ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { useRouter } from '@/i18n/navigation'
 
 interface IBudgetCardProps {
   begin: Date | string
@@ -36,6 +39,7 @@ function BudgetCard({ begin, end, budget, hideMenu, className }: IBudgetCardProp
   // hooks
   const dispatch = useAppDispatch()
   const t = useTranslations('budgetCard')
+  const router = useRouter()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
@@ -69,7 +73,13 @@ function BudgetCard({ begin, end, budget, hideMenu, className }: IBudgetCardProp
   }, [dispatch, budget._id, t])
 
   return (
-    <div className={cn('rounded-xl border border-primary/10 bg-secondary/50 px-3 pb-8 pt-2', className)}>
+    <div
+      onClick={() => router.push(`/category-history/${budget.category._id}`)}
+      className={cn(
+        'trans-200 cursor-pointer rounded-xl border border-primary/10 bg-secondary/50 px-3 pb-8 pt-2 hover:opacity-80',
+        className
+      )}
+    >
       <div className="flex items-center justify-between gap-1">
         {/* MARK: Category & Amount */}
         <div className="flex items-center gap-2 text-sm font-semibold">
@@ -94,6 +104,20 @@ function BudgetCard({ begin, end, budget, hideMenu, className }: IBudgetCardProp
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                {/* MARK: Add Transaction */}
+                <CreateTransactionDrawer
+                  initCategory={budget.category}
+                  trigger={
+                    <Button
+                      variant="ghost"
+                      className="flex h-8 w-full items-center justify-start gap-2 px-2 text-emerald-500"
+                    >
+                      <LucidePlus size={16} />
+                      {t('Add Transaction')}
+                    </Button>
+                  }
+                />
+
                 {/* MARK: Duplicate */}
                 <CreateBudgetDrawer
                   initTotal={budget.total}

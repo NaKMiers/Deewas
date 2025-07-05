@@ -709,6 +709,7 @@
     "The Moody Cat": "మనోభావ దోళక పిల్లి"
   },
   "budgetCard": {
+    "Add Transaction": "లావాదేవీ జోడించు",
     "Create Similar": "ఇలాంటిదే సృష్టించు",
     "Deleting budget": "బడ్జెట్ తొలగిస్తోంది",
     "Edit": "సవరించు",
@@ -1025,6 +1026,11 @@
     "Longest streak": "దీర్ఘకాల విజయరేఖ",
     "Your Stats": "మీ గణాంకాలు",
     "Continue": "కొనసాగించు"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "లావాదేవీ జోడించండి",
+    "No transactions found": "లావాదేవీలు కనుగొనబడలేదు",
+    "Total": "మొత్తం"
   },
   "settingsBox": {
     "Set your currency": "మీ కరెన్సీని సెటప్ చేయండి",

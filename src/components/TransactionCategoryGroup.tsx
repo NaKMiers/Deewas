@@ -5,11 +5,12 @@ import { cn } from '@/lib/utils'
 import { ICategory } from '@/models/CategoryModel'
 import { IFullTransaction } from '@/models/TransactionModel'
 import { motion } from 'framer-motion'
-import { LucidePlusSquare } from 'lucide-react'
+import { LucideChartColumn, LucidePlusSquare } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { memo } from 'react'
 import CreateTransactionDrawer from './dialogs/CreateTransactionDrawer'
 import TxItem from './TxItem'
+import { useRouter } from '@/i18n/navigation'
 
 interface ITransactionCategoryGroupProps {
   category: ICategory
@@ -26,12 +27,16 @@ function TransactionCategoryGroup({
 }: ITransactionCategoryGroupProps) {
   // hooks
   const t = useTranslations('transactionCategoryGroup')
+  const router = useRouter()
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
 
   return (
-    <div className={cn('flex flex-col', className)}>
+    <div
+      onClick={() => router.push(`/category-history/${category?._id}`)}
+      className={cn('trans-200 flex cursor-pointer flex-col hover:opacity-80', className)}
+    >
       <div className="flex items-center justify-between gap-2 py-0.5">
         <div className="flex items-start gap-2">
           <span>{category.icon}</span>
@@ -56,18 +61,27 @@ function TransactionCategoryGroup({
         </div>
 
         {/* MARK: New Transaction for category */}
-        <CreateTransactionDrawer
-          initCategory={category}
-          trigger={
-            <Button
-              variant="outline"
-              className="flex h-7 items-center gap-1.5 rounded-md border border-primary/10 bg-secondary px-2 text-xs"
-            >
-              <LucidePlusSquare />
-              {t('Add Transaction')}
-            </Button>
-          }
-        />
+        <div className="flex items-center gap-2">
+          <CreateTransactionDrawer
+            initCategory={category}
+            trigger={
+              <Button
+                onClick={e => e.stopPropagation()}
+                variant="outline"
+                className="flex h-7 items-center gap-1.5 rounded-md border border-primary/10 bg-secondary px-2 text-xs"
+              >
+                <LucidePlusSquare />
+                {t('Add Transaction')}
+              </Button>
+            }
+          />
+          <Button
+            variant="outline"
+            className="flex h-7 w-10 items-center gap-1.5 rounded-md border border-primary/10 bg-secondary px-2 text-xs"
+          >
+            <LucideChartColumn />
+          </Button>
+        </div>
       </div>
 
       {/*  MARK: Transactions of category */}

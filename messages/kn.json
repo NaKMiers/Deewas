@@ -709,6 +709,7 @@
     "The Moody Cat": "ಮನೋಭಾವ ಬದಲಾಗುವ ಬೆಕ್ಕು"
   },
   "budgetCard": {
+    "Add Transaction": "ವಹಿವಾಟು ಸೇರಿಸಿ",
     "Create Similar": "ಸಮಾನವಾದದ್ದನ್ನು ರಚಿಸಿ",
     "Deleting budget": "ಬಜೆಟ್ ಅಳಿಸಲಾಗುತ್ತಿದೆ",
     "Edit": "ತಿದ್ದು",
@@ -1025,6 +1026,11 @@
     "Longest streak": "ಅತಿ ದೈರ್ಘ್ಯದ ಸರಣಿ",
     "Your Stats": "ನಿಮ್ಮ ಅಂಕಿಅಂಶಗಳು",
     "Continue": "ಮುಂದುವರಿಸಿ"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "ವಹಿವಾಟು ಸೇರಿಸಿ",
+    "No transactions found": "ಯಾವುದೇ ವಹಿವಾಟುಗಳು ಕಂಡುಬಂದಿಲ್ಲ",
+    "Total": "ಒಟ್ಟು"
   },
   "settingsBox": {
     "Set your currency": "ನಿಮ್ಮ ಕರೆನ್ಸಿಯನ್ನು ಸೆಟ್ ಮಾಡಿ",

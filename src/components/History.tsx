@@ -2,6 +2,7 @@ import { useAppSelector } from '@/hooks/reduxHook'
 import { formatCurrency, parseCurrency } from '@/lib/string'
 import { toUTC } from '@/lib/time'
 import { cn } from '@/lib/utils'
+import { ICategory } from '@/models/CategoryModel'
 import { IFullTransaction, ITransaction, TransactionType } from '@/models/TransactionModel'
 import { getHistoryApi } from '@/requests'
 import { differenceInDays } from 'date-fns'
@@ -18,10 +19,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Switch } from './ui/switch'
 
 interface HistoryProps {
+  category?: ICategory
+  onFetchedData?: (_data: IFullTransaction[]) => void
   className?: string
 }
 
-function History({ className }: HistoryProps) {
+function History({ category, onFetchedData, className }: HistoryProps) {
   // hooks
   const { data: session } = useSession()
   const user = session?.user
@@ -37,7 +40,9 @@ function History({ className }: HistoryProps) {
 
   // states
   const [chart, setChart] = useState<string>(charts[0])
-  const [selectedTypes, setSelectedTypes] = useState<TransactionType[]>(['income', 'expense'])
+  const [selectedTypes, setSelectedTypes] = useState<TransactionType[]>(
+    category ? [category.type] : ['income', 'expense']
+  )
   const [data, setData] = useState<any[]>([])
   const [dateRange, setDateRange] = useState<{ from: Date; to: Date }>({
     from: moment().startOf('month').toDate(),
@@ -70,10 +75,14 @@ function History({ className }: HistoryProps) {
     setLoading(true)
 
     try {
-      const from = toUTC(dateRange.from)
-      const to = toUTC(dateRange.to)
+      console.log(dateRange)
 
-      const { transactions } = await getHistoryApi(`?from=${from}&to=${to}`)
+      let query = `?from=${toUTC(moment(dateRange.from).startOf('day').toDate())}&to=${toUTC(moment(dateRange.to).endOf('day').toDate())}`
+      if (category?._id) query += `&category=${category._id}`
+
+      console.log(query)
+
+      const { transactions } = await getHistoryApi(query)
       setTransactions(transactions)
     } catch (err: any) {
       console.log(err)
@@ -81,12 +90,19 @@ function History({ className }: HistoryProps) {
       // stop loading
       setLoading(false)
     }
-  }, [user, dateRange])
+  }, [user, dateRange, category?._id])
 
   // initially get history
   useEffect(() => {
     getHistory()
   }, [getHistory, refreshPoint])
+
+  // transfer transactions to parent component
+  useEffect(() => {
+    if (category && onFetchedData) {
+      onFetchedData(transactions)
+    }
+  }, [category, onFetchedData, transactions])
 
   // auto update chart data
   useEffect(() => {
@@ -252,20 +268,25 @@ function History({ className }: HistoryProps) {
             />
             <p className="font-medium">{t('Include transfers')}</p>
           </div>
-          <MultipleSelection
-            trigger={
-              <Button
-                variant="default"
-                className="h-9 bg-primary px-21/2 text-sm font-semibold text-secondary shadow-md"
-              >
-                {selectedTypes.length} {selectedTypes.length !== 1 ? t('types') : t('type')}
-              </Button>
-            }
-            list={types}
-            selected={selectedTypes}
-            onChange={(list: any[]) => setSelectedTypes(list)}
-          />
 
+          {/* MARK: Type Selection */}
+          {!category && (
+            <MultipleSelection
+              trigger={
+                <Button
+                  variant="default"
+                  className="h-9 bg-primary px-21/2 text-sm font-semibold text-secondary shadow-md"
+                >
+                  {selectedTypes.length} {selectedTypes.length !== 1 ? t('types') : t('type')}
+                </Button>
+              }
+              list={types}
+              selected={selectedTypes}
+              onChange={(list: any[]) => setSelectedTypes(list)}
+            />
+          )}
+
+          {/* MARK: Chart Selection */}
           <Select
             value={chart}
             onValueChange={setChart}

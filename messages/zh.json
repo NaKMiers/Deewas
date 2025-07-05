@@ -709,6 +709,7 @@
     "The Moody Cat": "喜怒无常的猫"
   },
   "budgetCard": {
+    "Add Transaction": "添加交易",
     "Create Similar": "创建相似",
     "Deleting budget": "正在删除预算",
     "Edit": "编辑",
@@ -1025,6 +1026,11 @@
     "Longest streak": "最长连胜",
     "Your Stats": "您的统计数据",
     "Continue": "继续"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "添加交易",
+    "No transactions found": "未找到交易",
+    "Total": "总计"
   },
   "settingsBox": {
     "Set your currency": "设置您的货币",

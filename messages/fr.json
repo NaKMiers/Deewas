@@ -709,6 +709,7 @@
     "The Moody Cat": "Le chat lunatique"
   },
   "budgetCard": {
+    "Add Transaction": "Ajouter une transaction",
     "Create Similar": "Créer un similaire",
     "Deleting budget": "Suppression du budget en cours",
     "Edit": "Modifier",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Série la plus longue",
     "Your Stats": "Vos statistiques",
     "Continue": "Continuer"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Ajouter une transaction",
+    "No transactions found": "Aucune transaction trouvée",
+    "Total": "Total"
   },
   "settingsBox": {
     "Set your currency": "Définir votre devise",

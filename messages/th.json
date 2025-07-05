@@ -709,6 +709,7 @@
     "The Moody Cat": "แมวที่อารมณ์แปรปรวน"
   },
   "budgetCard": {
+    "Add Transaction": "เพิ่มธุรกรรม",
     "Create Similar": "สร้างแบบเดียวกัน",
     "Deleting budget": "กำลังลบงบประมาณ",
     "Edit": "แก้ไข",
@@ -1026,6 +1027,12 @@
     "Your Stats": "สถิติของคุณ",
     "Continue": "ดำเนินการต่อ"
   },
+  "categoryHistoryPage": {
+    "Add Transaction": "เพิ่มธุรกรรม",
+    "No transactions found": "ไม่พบธุรกรรม",
+    "Total": "รวม"
+  },
+
   "settingsBox": {
     "Set your currency": "ตั้งค่าสกุลเงินของคุณ",
     "Set your language": "ตั้งค่าภาษาของคุณ",

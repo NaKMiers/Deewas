@@ -709,6 +709,7 @@
     "The Moody Cat": "Die launische Katze"
   },
   "budgetCard": {
+    "Add Transaction": "Transaktion hinzufügen",
     "Create Similar": "Ähnlich erstellen",
     "Deleting budget": "Budget löschen",
     "Edit": "Bearbeiten",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Längste Streifen",
     "Your Stats": "Ihre Statistiken",
     "Continue": "Weitermachen"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Transaktion hinzufügen",
+    "No transactions found": "Keine Transaktionen gefunden",
+    "Total": "Gesamt"
   },
   "settingsBox": {
     "Set your currency": "Stellen Sie Ihre Währung ein",

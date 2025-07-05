@@ -709,6 +709,7 @@
     "The Moody Cat": "The Moody Cat"
   },
   "budgetCard": {
+    "Add Transaction": "Add Transaction",
     "Create Similar": "Create Similar",
     "Deleting budget": "Deleting budget",
     "Edit": "Edit",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Longest streak",
     "Your Stats": "Your Stats",
     "Continue": "Continue"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Add Transaction",
+    "No transactions found": "No transactions found",
+    "Total": "Total"
   },
   "settingsBox": {
     "Set your currency": "Set your currency",

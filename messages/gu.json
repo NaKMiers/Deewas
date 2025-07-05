@@ -709,6 +709,7 @@
     "The Moody Cat": "મૂડી બિલાડી"
   },
   "budgetCard": {
+    "Add Transaction": "ટ્રાન્ઝેક્શન ઉમેરો",
     "Create Similar": "સમાન બનાવો",
     "Deleting budget": "બજેટ કાઢી રહ્યા છીએ",
     "Edit": "સંપાદિત કરો",
@@ -1025,6 +1026,11 @@
     "Longest streak": "સૌથી લાંબી સતત સિરીઝ",
     "Your Stats": "તમારા આંકડા",
     "Continue": "ચાલુ રાખો"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "ટ્રાન્ઝેક્શન ઉમેરો",
+    "No transactions found": "કોઈ ટ્રાન્ઝેક્શન મળ્યું નથી",
+    "Total": "કુલ"
   },
   "settingsBox": {
     "Set your currency": "તમારી કરન્સી સેટ કરો",

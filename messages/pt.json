@@ -709,6 +709,7 @@
     "The Moody Cat": "O Gato Mal-Humorado"
   },
   "budgetCard": {
+    "Add Transaction": "Adicionar Transação",
     "Create Similar": "Criar Similar",
     "Deleting budget": "Excluindo orçamento",
     "Edit": "Editar",
@@ -1025,6 +1026,11 @@
     "Longest streak": "Maior sequência",
     "Your Stats": "Suas estatísticas",
     "Continue": "Continuar"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "Adicionar Transação",
+    "No transactions found": "Nenhuma transação encontrada",
+    "Total": "Total"
   },
   "settingsBox": {
     "Set your currency": "Defina sua moeda",

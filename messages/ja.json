@@ -709,6 +709,7 @@
     "The Moody Cat": "気まぐれな猫"
   },
   "budgetCard": {
+    "Add Transaction": "取引を追加",
     "Create Similar": "同様のものを作成",
     "Deleting budget": "予算を削除中",
     "Edit": "編集",
@@ -1025,6 +1026,11 @@
     "Longest streak": "最長連続記録",
     "Your Stats": "あなたの統計",
     "Continue": "続ける"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "取引を追加",
+    "No transactions found": "取引が見つかりませんでした",
+    "Total": "合計"
   },
   "settingsBox": {
     "Set your currency": "通貨を設定",

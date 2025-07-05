@@ -709,6 +709,7 @@
     "The Moody Cat": "القطة المزاجية"
   },
   "budgetCard": {
+    "Add Transaction": "إضافة معاملة",
     "Create Similar": "إنشاء مشابه",
     "Deleting budget": "جاري حذف الميزانية",
     "Edit": "تعديل",
@@ -1025,6 +1026,11 @@
     "Longest streak": "أطول سلسلة",
     "Your Stats": "إحصائياتك",
     "Continue": "استمر"
+  },
+  "categoryHistoryPage": {
+    "Add Transaction": "إضافة معاملة",
+    "No transactions found": "لم يتم العثور على معاملات",
+    "Total": "الإجمالي"
   },
   "settingsBox": {
     "Set your currency": "اختر عملتك",
