@@ -54,6 +54,7 @@ function CreateTransactionDrawer({
 
   // store
   const currency = useAppSelector(state => state.settings.settings?.currency)
+  const defaultWallet = useAppSelector(state => state.wallet.defaultWallet)
 
   // states
   const [open, setOpen] = useState<boolean>(false)
@@ -73,7 +74,7 @@ function CreateTransactionDrawer({
     reset,
   } = useForm<FieldValues>({
     defaultValues: {
-      walletId: initWallet?._id || '',
+      walletId: initWallet?._id || defaultWallet?._id || '',
       name: '',
       categoryId: initCategory?._id || '',
       amount: '',
@@ -85,9 +86,9 @@ function CreateTransactionDrawer({
 
   useEffect(() => {
     if (!getValues('walletId')) {
-      setValue('walletId', initWallet?._id)
+      setValue('walletId', initWallet?._id || defaultWallet?._id)
     }
-  }, [getValues, setValue, initWallet])
+  }, [getValues, setValue, initWallet?._id, defaultWallet?._id])
 
   // validate form
   const handleValidate: SubmitHandler<FieldValues> = useCallback(
@@ -298,7 +299,7 @@ function CreateTransactionDrawer({
               <div onFocus={() => clearErrors('walletId')}>
                 <WalletPicker
                   className={cn('w-full justify-normal', errors.walletId?.message && 'border-rose-500')}
-                  wallet={initWallet}
+                  wallet={initWallet || defaultWallet}
                   onChange={(wallet: IWallet | null) => wallet && setValue('walletId', wallet._id)}
                 />
               </div>

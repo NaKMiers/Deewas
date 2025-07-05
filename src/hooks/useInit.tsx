@@ -5,7 +5,11 @@ import { setLoading as setBudgetLoading, setBudgets } from '@/lib/reducers/budge
 import { setCategories, setLoading as setCategoryLoading } from '@/lib/reducers/categoryReducer'
 import { setRefreshing } from '@/lib/reducers/loadReducer'
 import { setStats } from '@/lib/reducers/userReducer'
-import { setLoading as setWalletLoading, setWallets } from '@/lib/reducers/walletReducer'
+import {
+  setDefaultWallet,
+  setLoading as setWalletLoading,
+  setWallets,
+} from '@/lib/reducers/walletReducer'
 import { initApi } from '@/requests'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect } from 'react'
@@ -34,6 +38,7 @@ function useInit() {
       dispatch(setWallets(wallets))
       dispatch(setCategories(categories))
       dispatch(setBudgets(budgets))
+      dispatch(setDefaultWallet(wallets.length > 0 ? wallets[0] : null))
     } catch (err: any) {
       console.log(err)
     } finally {
