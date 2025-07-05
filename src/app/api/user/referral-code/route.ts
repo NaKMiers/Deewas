@@ -27,8 +27,6 @@ export async function POST(req: NextRequest) {
     let { code, platform } = await req.json()
     code = code?.trim().toUpperCase()
 
-    console.log(code, platform)
-
     // get user settings
     const userSettings: any = await SettingsModel.findOne({ user: userId }).select('referralCode').lean()
 
@@ -76,7 +74,6 @@ export async function POST(req: NextRequest) {
     ]
 
     const isPremium = checkPremium(token)
-    console.log(isPremium)
 
     if (!isPremium) {
       promises.push(

@@ -31,11 +31,20 @@ interface TransactionProps {
   update?: (transaction: IFullTransaction) => void
   remove?: (transaction: IFullTransaction) => void
   refetch?: () => void
+  disableClick?: boolean
   hideMenu?: boolean
   className?: string
 }
 
-function Transaction({ transaction, update, remove, hideMenu, refetch, className }: TransactionProps) {
+function Transaction({
+  transaction,
+  update,
+  remove,
+  hideMenu,
+  disableClick,
+  refetch,
+  className,
+}: TransactionProps) {
   // hooks
   const t = useTranslations('transaction')
   const router = useRouter()
@@ -96,9 +105,10 @@ function Transaction({ transaction, update, remove, hideMenu, refetch, className
 
   return (
     <div
-      onClick={() => router.push(`/category-history/${transaction.category._id}`)}
+      onClick={() => !disableClick && router.push(`/category-history/${transaction.category._id}`)}
       className={cn(
-        'trans-200 flex w-full cursor-pointer items-start gap-1 hover:opacity-80',
+        'trans-200 flex w-full items-start gap-1',
+        !disableClick && 'cursor-pointer hover:opacity-80',
         className
       )}
     >
@@ -160,7 +170,7 @@ function Transaction({ transaction, update, remove, hideMenu, refetch, className
                     <LucideEllipsisVertical />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent onClick={e => e.stopPropagation()}>
+                <DropdownMenuContent>
                   {/* MARK: Duplicate */}
                   <ConfirmDialog
                     label={t('Duplicate Transaction')}

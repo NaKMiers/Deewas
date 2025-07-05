@@ -75,12 +75,8 @@ function History({ category, onFetchedData, className }: HistoryProps) {
     setLoading(true)
 
     try {
-      console.log(dateRange)
-
       let query = `?from=${toUTC(moment(dateRange.from).startOf('day').toDate())}&to=${toUTC(moment(dateRange.to).endOf('day').toDate())}`
       if (category?._id) query += `&category=${category._id}`
-
-      console.log(query)
 
       const { transactions } = await getHistoryApi(query)
       setTransactions(transactions)

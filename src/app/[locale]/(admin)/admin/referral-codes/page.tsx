@@ -69,8 +69,6 @@ function ReferralCodesPage() {
     const getAllReferralCodes = async () => {
       const query = handleQuery(searchParams)
 
-      console.log(query)
-
       // start page loading
       dispatch(setPageLoading(true))
 

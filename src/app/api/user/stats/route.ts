@@ -65,7 +65,6 @@ export async function GET(req: NextRequest) {
 
       if (lastDate) {
         const expectedNext = moment(lastDate).add(1, 'day').format('YYYY-MM-DD')
-        console.log(expectedNext, currentDate)
         if (currentDate === expectedNext) {
           curStreak++
         } else {

@@ -100,7 +100,7 @@ function CategoryHistoryPage() {
                 >
                   <Transaction
                     transaction={tx}
-                    // disablePress
+                    disableClick
                     key={tx._id}
                   />
                 </div>
