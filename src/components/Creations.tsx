@@ -10,9 +10,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import { useAppDispatch } from '@/hooks/reduxHook'
-import { addCategory } from '@/lib/reducers/categoryReduce'
-import { ICategory } from '@/models/CategoryModel'
 import {
   LucideArrowLeftRight,
   LucideBookCopy,
@@ -29,7 +26,6 @@ import { Button } from './ui/button'
 
 function Creations() {
   // hooks
-  const dispatch = useAppDispatch()
   const t = useTranslations('navbar')
 
   return (
