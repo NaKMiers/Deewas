@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
     const [recentTransactions, allTransactions, walletCount, categoryCount, budgetCount] =
       await Promise.all([
         TransactionModel.find(filter).select('createdAt').sort({ createdAt: -1 }).lean(),
-        TransactionModel.find().select('createdAt').sort({ createdAt: 1 }).lean(),
+        TransactionModel.find({ user: userId }).select('createdAt').sort({ createdAt: 1 }).lean(),
         WalletModel.countDocuments({ user: userId }),
         CategoryModel.countDocuments({ user: userId }),
         BudgetModel.countDocuments({ user: userId }),
