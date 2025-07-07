@@ -1,5 +1,5 @@
 // Auth
-export * from './authRequest'
+export * from './authRequests'
 
 // Wallet
 export * from './walletRequests'

@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Models: Report
 import '@/models/ReportModel'
 
+// [POST] /report/add
 export async function POST(req: NextRequest) {
   console.log('- Add Report -')
 

@@ -224,7 +224,7 @@ function Chart({ maxKey, types, chart, data = [], className }: ChartProps) {
               labelStyle={{ color: '#01dbe5' }}
               contentStyle={{
                 fontSize: 13,
-                background: resolvedTheme === 'dark' ? '#171717' : '#fff',
+                background: resolvedTheme === 'dark' ? '#fff' : '#fff',
                 borderRadius: 8,
                 border: 'none',
                 boxShadow: '0px 5px 5px 2px rgba(0, 0, 0, 0.2)',

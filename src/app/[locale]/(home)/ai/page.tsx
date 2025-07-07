@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/reduxHook'
 import { refresh } from '@/lib/reducers/loadReducer'
 import { cn } from '@/lib/utils'
 import { useChat } from '@ai-sdk/react'
-import { ArrowUp, LucideChevronDown, Square, Trash } from 'lucide-react'
+import { ArrowUp, LucideChevronDown, LucideX, Square, Trash } from 'lucide-react'
 import moment from 'moment-timezone'
 import { useLocale, useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
@@ -197,18 +197,31 @@ export default function AIPage() {
         )}
 
         <div className="rounded-xl bg-[url(/images/pre-bg-v-flip.png)] bg-cover bg-center bg-no-repeat p-21/2 shadow-lg">
-          <Input
-            className="border-0 font-medium text-neutral-800 shadow-none !ring-0 placeholder:text-neutral-500"
-            placeholder={t('How can Deewas help?')}
-            value={input}
-            onChange={e => handleInputChange(e as any)}
-            onKeyDown={e => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault()
-                handleSendMessage(e)
-              }
-            }}
-          />
+          <div className="relative">
+            <Input
+              className={cn(
+                'border-0 font-medium text-neutral-800 shadow-none !ring-0 placeholder:text-neutral-500',
+                input.trim() !== '' && 'pl-10'
+              )}
+              placeholder={t('How can Deewas help?')}
+              value={input}
+              onChange={e => handleInputChange(e as any)}
+              onKeyDown={e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault()
+                  handleSendMessage(e)
+                }
+              }}
+            />
+            {input.trim() !== '' && (
+              <Button
+                className="absolute left-0 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full"
+                onClick={() => handleInputChange({ target: { value: '' } } as any)}
+              >
+                <LucideX className="text-rose-500" />
+              </Button>
+            )}
+          </div>
           <div className="mt-1.5 flex items-center justify-between gap-1.5">
             {/* Clear Chat */}
             <Button

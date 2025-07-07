@@ -170,3 +170,17 @@ export const deleteReferralCodesApi = async (ids: string[]) => {
 
   return await res.json()
 }
+
+// MARK: REPORTS
+// [GET]: /admin/report
+export const getAllReportsApi = async (query: string = '') => {
+  // no-store to bypass cache
+  const res = await fetch(`/api/admin/report${query}`, { cache: 'no-store' })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
