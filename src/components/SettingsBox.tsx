@@ -6,12 +6,11 @@ import { usePathname, useRouter } from '@/i18n/navigation'
 import { refresh } from '@/lib/reducers/loadReducer'
 import { setSettings } from '@/lib/reducers/settingsReducer'
 import { cn } from '@/lib/utils'
-import { deleteAllDataApi, updateMySettingsApi } from '@/requests'
+import { updateMySettingsApi } from '@/requests'
 import { useLocale, useTranslations } from 'next-intl'
 import { memo, useCallback, useState } from 'react'
 import toast from 'react-hot-toast'
 import { LuChevronsUpDown } from 'react-icons/lu'
-import ConfirmDialog from './dialogs/ConfirmDialog'
 import { Button } from './ui/button'
 import {
   Command,
@@ -89,8 +88,6 @@ function Box({ type, desc, list, init, className }: BoxProps) {
   const [open, setOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [selected, setSelected] = useState<any>(init)
-  const [nextSelected, setNextSelected] = useState<any>(null)
-  const [openConfirmDialog, setOpenConfirmDialog] = useState<boolean>(false)
 
   // handle update settings
   const handleUpdateCurrency = useCallback(
@@ -106,14 +103,9 @@ function Box({ type, desc, list, init, className }: BoxProps) {
           currency: value,
         })
 
-        await deleteAllDataApi(locale)
-
         toast.success(tSuccess('Update currency successfully'), { id: `update-${type}` })
-        toast.success(tSuccess('Erase all data successfully'))
 
         dispatch(refresh())
-        setSelected(nextSelected)
-        setNextSelected(null)
         dispatch(setSettings(settings))
       } catch (err: any) {
         toast.error(err.message, { id: `update-${type}` })
@@ -123,7 +115,7 @@ function Box({ type, desc, list, init, className }: BoxProps) {
         setLoading(false)
       }
     },
-    [dispatch, type, tSuccess, nextSelected, locale]
+    [dispatch, type, tSuccess]
   )
 
   // handle change language
@@ -176,8 +168,9 @@ function Box({ type, desc, list, init, className }: BoxProps) {
                       setSelected(item)
                       setOpen(false)
                     } else {
-                      setOpenConfirmDialog(true)
-                      setNextSelected(item)
+                      handleUpdateCurrency(item.value)
+                      setSelected(item)
+                      setOpen(false)
                     }
                   }}
                   className="cursor-pointer font-semibold"
@@ -190,21 +183,6 @@ function Box({ type, desc, list, init, className }: BoxProps) {
           </Command>
         </PopoverContent>
       </Popover>
-
-      {type === 'currency' && (
-        <p className="mt-0.5 pl-1 text-sm font-medium text-rose-500">
-          {t('Changing currency will erase all your data')}.
-        </p>
-      )}
-
-      <ConfirmDialog
-        open={openConfirmDialog}
-        close={open => setOpenConfirmDialog(open)}
-        label={t('Change Currency')}
-        desc={t('Changing currency will erase all your data, are you sure you still want to change?')}
-        confirmLabel={t('Confirm')}
-        onConfirm={() => handleUpdateCurrency(nextSelected.value)}
-      />
     </div>
   )
 }
