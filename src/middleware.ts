@@ -53,6 +53,10 @@ const requireAdminForApi = async (req: NextRequest, token: JWT | null, locale: s
 }
 
 export default async function middleware(req: NextRequest) {
+  if (req.method === 'OPTIONS') {
+    return new NextResponse(null, { status: 204 })
+  }
+
   const token = await extractToken(req)
   const pathname = req.nextUrl.pathname
   const locale = req.cookies.get('NEXT_LOCALE')?.value || 'en'

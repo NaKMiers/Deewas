@@ -23,40 +23,48 @@ export async function POST(req: NextRequest) {
 
   try {
     // get data from request body
-    let { idToken, googleUserId, locale } = await req.json()
+    let { idToken, googleUserId, locale, googleUserData } = await req.json()
     locale = locale || 'en'
 
-    // check if idToken is exist
-    if (!idToken || !googleUserId) {
-      return NextResponse.json({ message: 'ID is required' }, { status: 400 })
-    }
+    let payload: any = {}
 
-    // verify id token
-    const ticket = await client.verifyIdToken({
-      idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    })
+    if (googleUserData) {
+      payload = googleUserData
+    } else {
+      // check if idToken is exist
+      if (!idToken || !googleUserId) {
+        return NextResponse.json({ message: 'ID is required' }, { status: 400 })
+      }
 
-    // check if ticket is valid
-    if (!ticket) {
-      return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
-    }
+      // verify id token
+      const ticket = await client.verifyIdToken({
+        idToken,
+        audience: '797827468455-02dfeqhp08lo9dtospe2kuq5pp6fdl72.apps.googleusercontent.com',
+      })
 
-    // get payload from ticket
-    const payload: any = ticket.getPayload()
+      // check if ticket is valid
+      if (!ticket) {
+        return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
+      }
 
-    // check if payload is valid
-    if (!payload && !payload?.email) {
-      return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
-    }
+      // get payload from ticket
+      payload = ticket.getPayload()
 
-    // Verify userId matches sub
-    if (payload.sub !== googleUserId) {
-      return NextResponse.json({ message: 'User ID mismatch' }, { status: 401 })
+      // check if payload is valid
+      if (!payload && !payload?.email) {
+        return NextResponse.json({ message: 'Invalid ID token' }, { status: 401 })
+      }
+
+      // Verify userId matches sub
+      if (payload.sub !== googleUserId) {
+        return NextResponse.json({ message: 'User ID mismatch' }, { status: 401 })
+      }
     }
 
     // get data from payload
     const { email, name, picture: avatar } = payload
+
+    console.log('payload:', payload)
 
     // connect to database
     await connectDatabase()
