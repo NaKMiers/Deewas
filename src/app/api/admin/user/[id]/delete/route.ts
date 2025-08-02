@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import UserModel from '@/models/UserModel'
+import UserModel, { IUser } from '@/models/UserModel'
 import { NextRequest, NextResponse } from 'next/server'
 
 import BudgetModel from '@/models/BudgetModel'
@@ -28,6 +28,18 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     await connectDatabase()
 
     if (isForce) {
+      const user: IUser | null = await UserModel.findById(id)
+
+      // check if user does not exist
+      if (!user) {
+        return NextResponse.json({ message: 'User not found' }, { status: 404 })
+      }
+
+      // user should be soft deleted
+      if (!user.isDeleted) {
+        return NextResponse.json({ message: 'User must be soft deleted first' }, { status: 400 })
+      }
+
       await Promise.all([
         // delete all wallets
         WalletModel.deleteMany({ user: id }),

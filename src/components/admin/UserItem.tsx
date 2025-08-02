@@ -38,11 +38,11 @@ function UserItem({
   const curUser: any = session?.user
 
   // states
-  const [user, setUser] = useState<IUser>(data)
+  const [user, setUser] = useState<IUser | null>(data)
   const [deleting, setDeleting] = useState<boolean>(false)
 
   // values
-  const isCurUser = user._id === curUser?._id
+  const isCurUser = user?._id === curUser?._id
 
   const plans: any = {
     free: 'Free',
@@ -52,30 +52,41 @@ function UserItem({
   }
 
   // MARK: Delete User
-  const handleDeleteUser = useCallback(async () => {
-    setDeleting(true)
+  const handleDeleteUser = useCallback(
+    async (isForce: boolean = false) => {
+      if (!user) return
 
-    try {
-      // send request to server
-      const { message } = await deleteUsersApi(user._id)
+      setDeleting(true)
 
-      // remove deleted users from state
-      setSelectedItems(prev => prev.filter(id => id !== user._id))
-      setUser(prev => ({ ...prev, isDeleted: true }))
+      try {
+        // send request to server
+        const { message } = await deleteUsersApi(user._id, isForce)
 
-      // show success message
-      toast.success(message)
-    } catch (err: any) {
-      console.log(err)
-      toast.error(err.message)
-    } finally {
-      setDeleting(false)
-      setSelectedItems(prev => prev.filter(id => id !== user._id))
-    }
-  }, [user, setSelectedItems])
+        // remove deleted users from state
+        setSelectedItems(prev => prev.filter(id => id !== user._id))
+        if (isForce) {
+          setUser(null)
+        } else {
+          setUser(prev => ({ ...prev, isDeleted: true }) as IUser)
+        }
+
+        // show success message
+        toast.success(message)
+      } catch (err: any) {
+        console.log(err)
+        toast.error(err.message)
+      } finally {
+        setDeleting(false)
+        setSelectedItems(prev => prev.filter(id => id !== user._id))
+      }
+    },
+    [user, setSelectedItems]
+  )
 
   // MARK: Restore User
   const handleRestore = useCallback(async () => {
+    if (!user) return
+
     setDeleting(true)
 
     try {
@@ -96,6 +107,8 @@ function UserItem({
       setSelectedItems(prev => prev.filter(id => id !== user._id))
     }
   }, [user, setSelectedItems])
+
+  if (!user) return null
 
   return (
     <div
@@ -211,7 +224,22 @@ function UserItem({
             {formatTime(user.updatedAt)}
           </span>
         </p>
-        {user.isDeleted && <p className="text-sm font-semibold text-rose-500">Deleted</p>}
+        {user.isDeleted && (
+          <ConfirmDialog
+            label="Delete User Forever"
+            desc="Are you sure that you want to delete this user forever?"
+            confirmLabel="Delete Forever"
+            onConfirm={() => handleDeleteUser(true)}
+            trigger={
+              <button
+                onClick={e => e.stopPropagation()}
+                className="trans-200 cursor-pointer text-sm font-semibold text-rose-500 hover:text-rose-800"
+              >
+                Deleted
+              </button>
+            }
+          />
+        )}
       </div>
 
       {/* MARK: Action Buttons*/}
@@ -236,7 +264,7 @@ function UserItem({
                 : 'Are you sure that you want to delete this user?'
             }
             confirmLabel={user.isDeleted ? 'Restore' : 'Delete'}
-            onConfirm={user.isDeleted ? handleRestore : handleDeleteUser}
+            onConfirm={() => (user.isDeleted ? handleRestore() : handleDeleteUser(false))}
             trigger={
               <Button
                 variant="ghost"
