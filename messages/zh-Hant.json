@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "現金",
     "Bank Account": "銀行帳戶"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Don't forget to track your expenses",
+    "It's been 1 days since your last transaction": "It's been 1 days since your last transaction",
+    "It's been 3 days since your last transaction": "It's been 3 days since your last transaction",
+    "It's been 7 days since your last transaction": "It's been 7 days since your last transaction",
+    "It's been 10 days since your last transaction": "It's been 10 days since your last transaction",
+    "It's been 14 days since your last transaction": "It's been 14 days since your last transaction",
+    "It's been 21 days since your last transaction": "It's been 21 days since your last transaction",
+    "It's been 30 days since your last transaction": "It's been 30 days since your last transaction",
+    "It's been 45 days since your last transaction": "It's been 45 days since your last transaction",
+    "It's been 60 days since your last transaction": "It's been 60 days since your last transaction",
+    "Good morning ☀️": "Good morning ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Start your day by noting your morning expenses to stay on track 📝",
+    "Good evening 🌙": "Good evening 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Wrap up your day by recording what you spent today 📒",
+    "Only 3 days of Premium left": "Only 3 days of Premium left",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Enjoy all Premium benefits now and renew to keep your experience going",
+    "Premium ends tomorrow": "Premium ends tomorrow",
+    "Renew today to keep enjoying all your favorite Premium features": "Renew today to keep enjoying all your favorite Premium features",
+    "Premium has ended": "Premium has ended",
+    "Renew anytime to continue enjoying the full Premium experience": "Renew anytime to continue enjoying the full Premium experience"
   }
 }

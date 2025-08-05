@@ -8,11 +8,17 @@ import moment from 'moment-timezone'
 import { createTranslator } from 'next-intl'
 import { NextRequest, NextResponse } from 'next/server'
 
+// Models: User, Transaction, Push Token
+import '@/models/PushTokenModel'
+import '@/models/TransactionModel'
+import '@/models/UserModel'
+
 export const dynamic = 'force-dynamic'
 
 // remind days
 const REMIND_DAYS = [1, 3, 7, 10, 14, 21, 30, 45, 60]
 
+// [CRON]: 30 * * * * -> every hour at 30 minutes
 // [GET]: /cron/notification/remind-transactions
 export async function GET(req: NextRequest) {
   console.log('- Cron: Remind Transactions -')
@@ -25,12 +31,12 @@ export async function GET(req: NextRequest) {
     const users = await UserModel.find({ isDeleted: { $ne: true } }).lean()
 
     for (const user of users) {
-      const tz = user.timezone
+      const tz = user.timezone || 'UTC'
       const nowLocal = moment.tz(tz)
 
-      const targetTime = moment.tz(tz).hour(19).minute(30).second(0) // 19:30
+      const targetTime = moment.tz(tz).hour(18).minute(30).second(0) // 18:30
       const diffMinutes = Math.abs(nowLocal.diff(targetTime, 'minutes'))
-      if (diffMinutes > 1000) continue
+      if (diffMinutes > 10) continue
 
       // find the last transaction of the user
       const lastTx: any = await TransactionModel.findOne({ user: user._id }).sort({ date: -1 }).lean()

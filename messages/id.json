@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Uang Tunai",
     "Bank Account": "Rekening Bank"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Jangan lupa untuk melacak pengeluaran kamu",
+    "It's been 1 days since your last transaction": "Sudah 1 hari sejak transaksi terakhir kamu",
+    "It's been 3 days since your last transaction": "Sudah 3 hari sejak transaksi terakhir kamu",
+    "It's been 7 days since your last transaction": "Sudah 7 hari sejak transaksi terakhir kamu",
+    "It's been 10 days since your last transaction": "Sudah 10 hari sejak transaksi terakhir kamu",
+    "It's been 14 days since your last transaction": "Sudah 14 hari sejak transaksi terakhir kamu",
+    "It's been 21 days since your last transaction": "Sudah 21 hari sejak transaksi terakhir kamu",
+    "It's been 30 days since your last transaction": "Sudah 30 hari sejak transaksi terakhir kamu",
+    "It's been 45 days since your last transaction": "Sudah 45 hari sejak transaksi terakhir kamu",
+    "It's been 60 days since your last transaction": "Sudah 60 hari sejak transaksi terakhir kamu",
+    "Good morning ☀️": "Selamat pagi ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Mulai harimu dengan mencatat pengeluaran pagimu agar tetap pada jalur 📝",
+    "Good evening 🌙": "Selamat malam 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Akhiri harimu dengan mencatat apa yang kamu habiskan hari ini 📒",
+    "Only 3 days of Premium left": "Hanya tersisa 3 hari untuk Premium",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Nikmati semua manfaat Premium sekarang dan perbarui untuk menjaga pengalaman kamu",
+    "Premium ends tomorrow": "Premium berakhir besok",
+    "Renew today to keep enjoying all your favorite Premium features": "Perbarui hari ini untuk terus menikmati semua fitur Premium favorit kamu",
+    "Premium has ended": "Premium telah berakhir",
+    "Renew anytime to continue enjoying the full Premium experience": "Perbarui kapan saja untuk terus menikmati pengalaman Premium penuh"
   }
 }

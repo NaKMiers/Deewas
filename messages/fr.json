@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Espèces",
     "Bank Account": "Compte bancaire"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Ne pas oublier de suivre vos dépenses",
+    "It's been 1 days since your last transaction": "Cela fait 1 jour depuis votre dernière transaction",
+    "It's been 3 days since your last transaction": "Cela fait 3 jours depuis votre dernière transaction",
+    "It's been 7 days since your last transaction": "Cela fait 7 jours depuis votre dernière transaction",
+    "It's been 10 days since your last transaction": "Cela fait 10 jours depuis votre dernière transaction",
+    "It's been 14 days since your last transaction": "Cela fait 14 jours depuis votre dernière transaction",
+    "It's been 21 days since your last transaction": "Cela fait 21 jours depuis votre dernière transaction",
+    "It's been 30 days since your last transaction": "Cela fait 30 jours depuis votre dernière transaction",
+    "It's been 45 days since your last transaction": "Cela fait 45 jours depuis votre dernière transaction",
+    "It's been 60 days since your last transaction": "Cela fait 60 jours depuis votre dernière transaction",
+    "Good morning ☀️": "Bonjour ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Commencez votre journée en notant vos dépenses matinales pour rester sur la bonne voie 📝",
+    "Good evening 🌙": "Bonsoir 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Terminez votre journée en enregistrant ce que vous avez dépensé aujourd'hui 📒",
+    "Only 3 days of Premium left": "Il ne reste que 3 jours de Premium",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Profitez de tous les avantages Premium maintenant et renouvelez pour continuer votre expérience",
+    "Premium ends tomorrow": "Le Premium se termine demain",
+    "Renew today to keep enjoying all your favorite Premium features": "Renouvelez aujourd'hui pour continuer à profiter de toutes vos fonctionnalités Premium préférées",
+    "Premium has ended": "Le Premium a pris fin",
+    "Renew anytime to continue enjoying the full Premium experience": "Renouvelez à tout moment pour continuer à profiter de l'expérience Premium complète"
   }
 }

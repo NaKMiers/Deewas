@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "现金",
     "Bank Account": "银行账户"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "别忘了记录您的支出",
+    "It's been 1 days since your last transaction": "距离您上次交易已经过去 1 天",
+    "It's been 3 days since your last transaction": "距离您上次交易已经过去 3 天",
+    "It's been 7 days since your last transaction": "距离您上次交易已经过去 7 天",
+    "It's been 10 days since your last transaction": "距离您上次交易已经过去 10 天",
+    "It's been 14 days since your last transaction": "距离您上次交易已经过去 14 天",
+    "It's been 21 days since your last transaction": "距离您上次交易已经过去 21 天",
+    "It's been 30 days since your last transaction": "距离您上次交易已经过去 30 天",
+    "It's been 45 days since your last transaction": "距离您上次交易已经过去 45 天",
+    "It's been 60 days since your last transaction": "距离您上次交易已经过去 60 天",
+    "Good morning ☀️": "早上好 ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "通过记录您的早晨开支来开始新的一天，以保持正轨 📝",
+    "Good evening 🌙": "晚上好 🌙",
+    "Wrap up your day by recording what you spent today 📒": "通过记录您今天的开支来结束您的一天 📒",
+    "Only 3 days of Premium left": "仅剩 3 天的高级会员",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "立即享受所有高级会员福利，并续费以保持您的体验",
+    "Premium ends tomorrow": "高级会员明天到期",
+    "Renew today to keep enjoying all your favorite Premium features": "今天续费以继续享受您最喜欢的所有高级功能",
+    "Premium has ended": "高级会员已结束",
+    "Renew anytime to continue enjoying the full Premium experience": "随时续费以继续享受完整的高级体验"
   }
 }

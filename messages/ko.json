@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "현금",
     "Bank Account": "은행 계좌"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "지출을 추적하는 것을 잊지 마세요",
+    "It's been 1 days since your last transaction": "마지막 거래 이후 1일이 지났습니다",
+    "It's been 3 days since your last transaction": "마지막 거래 이후 3일이 지났습니다",
+    "It's been 7 days since your last transaction": "마지막 거래 이후 7일이 지났습니다",
+    "It's been 10 days since your last transaction": "마지막 거래 이후 10일이 지났습니다",
+    "It's been 14 days since your last transaction": "마지막 거래 이후 14일이 지났습니다",
+    "It's been 21 days since your last transaction": "마지막 거래 이후 21일이 지났습니다",
+    "It's been 30 days since your last transaction": "마지막 거래 이후 30일이 지났습니다",
+    "It's been 45 days since your last transaction": "마지막 거래 이후 45일이 지났습니다",
+    "It's been 60 days since your last transaction": "마지막 거래 이후 60일이 지났습니다",
+    "Good morning ☀️": "좋은 아침입니다 ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "아침 지출을 기록하여 계획을 유지하세요 📝",
+    "Good evening 🌙": "좋은 저녁입니다 🌙",
+    "Wrap up your day by recording what you spent today 📒": "오늘 지출한 내용을 기록하여 하루를 마무리하세요 📒",
+    "Only 3 days of Premium left": "프리미엄이 남은 3일뿐입니다",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "지금 모든 프리미엄 혜택을 누리고 경험을 계속 유지하려면 갱신하세요",
+    "Premium ends tomorrow": "프리미엄이 내일 종료됩니다",
+    "Renew today to keep enjoying all your favorite Premium features": "오늘 갱신하여 좋아하는 모든 프리미엄 기능을 계속 즐기세요",
+    "Premium has ended": "프리미엄이 종료되었습니다",
+    "Renew anytime to continue enjoying the full Premium experience": "언제든지 갱신하여 전체 프리미엄 경험을 계속 즐기세요"
   }
 }

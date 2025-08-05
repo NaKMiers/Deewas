@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Caja",
     "Bank Account": "Cuenta bancaria"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "No olvides registrar tus gastos",
+    "It's been 1 days since your last transaction": "Han pasado 1 días desde tu última transacción",
+    "It's been 3 days since your last transaction": "Han pasado 3 días desde tu última transacción",
+    "It's been 7 days since your last transaction": "Han pasado 7 días desde tu última transacción",
+    "It's been 10 days since your last transaction": "Han pasado 10 días desde tu última transacción",
+    "It's been 14 days since your last transaction": "Han pasado 14 días desde tu última transacción",
+    "It's been 21 days since your last transaction": "Han pasado 21 días desde tu última transacción",
+    "It's been 30 days since your last transaction": "Han pasado 30 días desde tu última transacción",
+    "It's been 45 days since your last transaction": "Han pasado 45 días desde tu última transacción",
+    "It's been 60 days since your last transaction": "Han pasado 60 días desde tu última transacción",
+    "Good morning ☀️": "Buenos días ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Comienza tu día registrando tus gastos matutinos para mantenerte en camino 📝",
+    "Good evening 🌙": "Buenas noches 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Termina tu día registrando lo que gastaste hoy 📒",
+    "Only 3 days of Premium left": "Solo quedan 3 días de Premium",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Disfruta de todos los beneficios de Premium ahora y renueva para mantener tu experiencia",
+    "Premium ends tomorrow": "Premium termina mañana",
+    "Renew today to keep enjoying all your favorite Premium features": "Renueva hoy para seguir disfrutando de todas tus funciones Premium favoritas",
+    "Premium has ended": "Premium ha terminado",
+    "Renew anytime to continue enjoying the full Premium experience": "Renueva en cualquier momento para seguir disfrutando de la experiencia Premium completa"
   }
 }

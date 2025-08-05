@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Contant geld",
     "Bank Account": "Bankrekening"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Vergeet niet je uitgaven bij te houden",
+    "It's been 1 days since your last transaction": "Het is 1 dag geleden sinds je laatste transactie",
+    "It's been 3 days since your last transaction": "Het is 3 dagen geleden sinds je laatste transactie",
+    "It's been 7 days since your last transaction": "Het is 7 dagen geleden sinds je laatste transactie",
+    "It's been 10 days since your last transaction": "Het is 10 dagen geleden sinds je laatste transactie",
+    "It's been 14 days since your last transaction": "Het is 14 dagen geleden sinds je laatste transactie",
+    "It's been 21 days since your last transaction": "Het is 21 dagen geleden sinds je laatste transactie",
+    "It's been 30 days since your last transaction": "Het is 30 dagen geleden sinds je laatste transactie",
+    "It's been 45 days since your last transaction": "Het is 45 dagen geleden sinds je laatste transactie",
+    "It's been 60 days since your last transaction": "Het is 60 dagen geleden sinds je laatste transactie",
+    "Good morning ☀️": "Goedemorgen ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Begin je dag met het noteren van je ochtenduitgaven om op koers te blijven 📝",
+    "Good evening 🌙": "Goedenavond 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Sluit je dag af door te registreren wat je vandaag hebt uitgegeven 📒",
+    "Only 3 days of Premium left": "Nog maar 3 dagen Premium over",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Geniet nu van alle Premium-voordelen en verleng je abonnement om je ervaring voort te zetten",
+    "Premium ends tomorrow": "Premium eindigt morgen",
+    "Renew today to keep enjoying all your favorite Premium features": "Verleng vandaag nog je abonnement om te blijven genieten van al je favoriete Premium-functies",
+    "Premium has ended": "Premium is beëindigd",
+    "Renew anytime to continue enjoying the full Premium experience": "Verleng op elk moment om te blijven genieten van de volledige Premium-ervaring"
   }
 }

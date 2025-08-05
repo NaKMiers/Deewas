@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Geld",
     "Bank Account": "Bankkonto"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Vergessen Sie nicht, Ihre Ausgaben zu verfolgen",
+    "It's been 1 days since your last transaction": "Es ist 1 Tag seit Ihrer letzten Transaktion",
+    "It's been 3 days since your last transaction": "Es ist 3 Tage seit Ihrer letzten Transaktion",
+    "It's been 7 days since your last transaction": "Es ist 7 Tage seit Ihrer letzten Transaktion",
+    "It's been 10 days since your last transaction": "Es ist 10 Tage seit Ihrer letzten Transaktion",
+    "It's been 14 days since your last transaction": "Es ist 14 Tage seit Ihrer letzten Transaktion",
+    "It's been 21 days since your last transaction": "Es ist 21 Tage seit Ihrer letzten Transaktion",
+    "It's been 30 days since your last transaction": "Es ist 30 Tage seit Ihrer letzten Transaktion",
+    "It's been 45 days since your last transaction": "Es ist 45 Tage seit Ihrer letzten Transaktion",
+    "It's been 60 days since your last transaction": "Es ist 60 Tage seit Ihrer letzten Transaktion",
+    "Good morning ☀️": "Guten Morgen ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Beginnen Sie Ihren Tag, indem Sie Ihre morgendlichen Ausgaben notieren, um auf Kurs zu bleiben 📝",
+    "Good evening 🌙": "Guten Abend 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Beenden Sie Ihren Tag, indem Sie aufzeichnen, was Sie heute ausgegeben haben 📒",
+    "Only 3 days of Premium left": "Nur noch 3 Tage Premium übrig",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Genießen Sie jetzt alle Premium-Vorteile und erneuern Sie, um Ihr Erlebnis fortzusetzen",
+    "Premium ends tomorrow": "Premium endet morgen",
+    "Renew today to keep enjoying all your favorite Premium features": "Erneuern Sie noch heute, um alle Ihre Lieblingsfunktionen von Premium weiterhin zu genießen",
+    "Premium has ended": "Premium ist abgelaufen",
+    "Renew anytime to continue enjoying the full Premium experience": "Erneuern Sie jederzeit, um das volle Premium-Erlebnis weiterhin zu genießen"
   }
 }

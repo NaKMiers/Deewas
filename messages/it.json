@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Contante",
     "Bank Account": "Conto bancario"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Non dimenticare di tenere traccia delle tue spese",
+    "It's been 1 days since your last transaction": "Sono passati 1 giorno dalla tua ultima transazione",
+    "It's been 3 days since your last transaction": "Sono passati 3 giorni dalla tua ultima transazione",
+    "It's been 7 days since your last transaction": "Sono passati 7 giorni dalla tua ultima transazione",
+    "It's been 10 days since your last transaction": "Sono passati 10 giorni dalla tua ultima transazione",
+    "It's been 14 days since your last transaction": "Sono passati 14 giorni dalla tua ultima transazione",
+    "It's been 21 days since your last transaction": "Sono passati 21 giorni dalla tua ultima transazione",
+    "It's been 30 days since your last transaction": "Sono passati 30 giorni dalla tua ultima transazione",
+    "It's been 45 days since your last transaction": "Sono passati 45 giorni dalla tua ultima transazione",
+    "It's been 60 days since your last transaction": "Sono passati 60 giorni dalla tua ultima transazione",
+    "Good morning ☀️": "Buongiorno ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Inizia la tua giornata annotando le spese del mattino per rimanere in carreggiata 📝",
+    "Good evening 🌙": "Buonasera 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Concludi la tua giornata registrando ciò che hai speso oggi 📒",
+    "Only 3 days of Premium left": "Mancano solo 3 giorni alla scadenza del Premium",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Goditi tutti i vantaggi del Premium ora e rinnova per continuare la tua esperienza",
+    "Premium ends tomorrow": "Il Premium scade domani",
+    "Renew today to keep enjoying all your favorite Premium features": "Rinnova oggi per continuare a godere di tutte le tue funzionalità Premium preferite",
+    "Premium has ended": "Il Premium è terminato",
+    "Renew anytime to continue enjoying the full Premium experience": "Rinnova in qualsiasi momento per continuare a godere dell'intera esperienza Premium"
   }
 }

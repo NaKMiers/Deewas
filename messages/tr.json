@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Para",
     "Bank Account": "Banka Hesabı"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Harcamalarınızı takip etmeyi unutmayın",
+    "It's been 1 days since your last transaction": "Son işleminizden bu yana 1 gün geçti",
+    "It's been 3 days since your last transaction": "Son işleminizden bu yana 3 gün geçti",
+    "It's been 7 days since your last transaction": "Son işleminizden bu yana 7 gün geçti",
+    "It's been 10 days since your last transaction": "Son işleminizden bu yana 10 gün geçti",
+    "It's been 14 days since your last transaction": "Son işleminizden bu yana 14 gün geçti",
+    "It's been 21 days since your last transaction": "Son işleminizden bu yana 21 gün geçti",
+    "It's been 30 days since your last transaction": "Son işleminizden bu yana 30 gün geçti",
+    "It's been 45 days since your last transaction": "Son işleminizden bu yana 45 gün geçti",
+    "It's been 60 days since your last transaction": "Son işleminizden bu yana 60 gün geçti",
+    "Good morning ☀️": "Günaydın ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Gününüzü, sabah harcamalarınızı not alarak başlatın 📝",
+    "Good evening 🌙": "İyi akşamlar 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Bugün harcadıklarınızı kaydederek gününüzü kapatın 📒",
+    "Only 3 days of Premium left": "Sadece 3 gün kaldı Premium için",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Şimdi tüm Premium avantajlarından yararlanın ve deneyiminizi sürdürmek için yenileyin",
+    "Premium ends tomorrow": "Premium yarın bitiyor",
+    "Renew today to keep enjoying all your favorite Premium features": "Bugün yenileyin ve tüm favori Premium özelliklerinizden yararlanmaya devam edin",
+    "Premium has ended": "Premium sona erdi",
+    "Renew anytime to continue enjoying the full Premium experience": "Tam Premium deneyimini yaşamaya devam etmek için istediğiniz zaman yenileyin"
   }
 }

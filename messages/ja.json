@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "現金",
     "Bank Account": "銀行口座"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "支出を追跡するのを忘れないでください",
+    "It's been 1 days since your last transaction": "最後の取引から1日が経過しました",
+    "It's been 3 days since your last transaction": "最後の取引から3日が経過しました",
+    "It's been 7 days since your last transaction": "最後の取引から7日が経過しました",
+    "It's been 10 days since your last transaction": "最後の取引から10日が経過しました",
+    "It's been 14 days since your last transaction": "最後の取引から14日が経過しました",
+    "It's been 21 days since your last transaction": "最後の取引から21日が経過しました",
+    "It's been 30 days since your last transaction": "最後の取引から30日が経過しました",
+    "It's been 45 days since your last transaction": "最後の取引から45日が経過しました",
+    "It's been 60 days since your last transaction": "最後の取引から60日が経過しました",
+    "Good morning ☀️": "おはようございます ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "朝の支出を記録して、計画通りに進めましょう 📝",
+    "Good evening 🌙": "こんばんは 🌙",
+    "Wrap up your day by recording what you spent today 📒": "今日の支出を記録して、一日を締めくくりましょう 📒",
+    "Only 3 days of Premium left": "プレミアムの残りは3日だけです",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "今すぐすべてのプレミアム特典を楽しんで、体験を継続するために更新してください",
+    "Premium ends tomorrow": "プレミアムは明日終了します",
+    "Renew today to keep enjoying all your favorite Premium features": "今日更新して、お気に入りのプレミアム機能を引き続き楽しんでください",
+    "Premium has ended": "プレミアムが終了しました",
+    "Renew anytime to continue enjoying the full Premium experience": "いつでも更新して、プレミアム体験を引き続き楽しんでください"
   }
 }

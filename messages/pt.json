@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Dinheiro",
     "Bank Account": "Conta Bancária"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Não se esqueça de acompanhar suas despesas",
+    "It's been 1 days since your last transaction": "Faz 1 dia desde a sua última transação",
+    "It's been 3 days since your last transaction": "Faz 3 dias desde a sua última transação",
+    "It's been 7 days since your last transaction": "Faz 7 dias desde a sua última transação",
+    "It's been 10 days since your last transaction": "Faz 10 dias desde a sua última transação",
+    "It's been 14 days since your last transaction": "Faz 14 dias desde a sua última transação",
+    "It's been 21 days since your last transaction": "Faz 21 dias desde a sua última transação",
+    "It's been 30 days since your last transaction": "Faz 30 dias desde a sua última transação",
+    "It's been 45 days since your last transaction": "Faz 45 dias desde a sua última transação",
+    "It's been 60 days since your last transaction": "Faz 60 dias desde a sua última transação",
+    "Good morning ☀️": "Bom dia ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Comece o seu dia anotando suas despesas matinais para se manter no caminho certo 📝",
+    "Good evening 🌙": "Boa noite 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Finalize o seu dia registrando o que você gastou hoje 📒",
+    "Only 3 days of Premium left": "Restam apenas 3 dias de Premium",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Aproveite todos os benefícios do Premium agora e renove para continuar sua experiência",
+    "Premium ends tomorrow": "O Premium termina amanhã",
+    "Renew today to keep enjoying all your favorite Premium features": "Renove hoje para continuar desfrutando de todos os seus recursos Premium favoritos",
+    "Premium has ended": "O Premium terminou",
+    "Renew anytime to continue enjoying the full Premium experience": "Renove a qualquer momento para continuar desfrutando da experiência Premium completa"
   }
 }

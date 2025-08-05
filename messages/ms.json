@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Tunai",
     "Bank Account": "Akaun Bank"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Jangan lupa untuk menjejak perbelanjaan anda",
+    "It's been 1 days since your last transaction": "Faz 1 dia sejak transaksi terakhir anda",
+    "It's been 3 days since your last transaction": "Faz 3 hari sejak transaksi terakhir anda",
+    "It's been 7 days since your last transaction": "Faz 7 hari sejak transaksi terakhir anda",
+    "It's been 10 days since your last transaction": "Faz 10 hari sejak transaksi terakhir anda",
+    "It's been 14 days since your last transaction": "Faz 14 hari sejak transaksi terakhir anda",
+    "It's been 21 days since your last transaction": "Faz 21 hari sejak transaksi terakhir anda",
+    "It's been 30 days since your last transaction": "Faz 30 hari sejak transaksi terakhir anda",
+    "It's been 45 days since your last transaction": "Faz 45 hari sejak transaksi terakhir anda",
+    "It's been 60 days since your last transaction": "Faz 60 hari sejak transaksi terakhir anda",
+    "Good morning ☀️": "Selamat pagi ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Mulakan hari anda dengan mencatat perbelanjaan pagi anda untuk kekal pada landasan 📝",
+    "Good evening 🌙": "Selamat petang 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Tutup hari anda dengan merekodkan apa yang anda belanjakan hari ini 📒",
+    "Only 3 days of Premium left": "Hanya tinggal 3 hari lagi untuk Premium",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Nikmati semua faedah Premium sekarang dan perbaharui untuk meneruskan pengalaman anda",
+    "Premium ends tomorrow": "Premium berakhir esok",
+    "Renew today to keep enjoying all your favorite Premium features": "Perbaharui hari ini untuk terus menikmati semua ciri Premium kegemaran anda",
+    "Premium has ended": "Premium telah berakhir",
+    "Renew anytime to continue enjoying the full Premium experience": "Perbaharui bila-bila masa untuk terus menikmati pengalaman Premium sepenuhnya"
   }
 }

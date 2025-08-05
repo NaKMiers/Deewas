@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "Наличные",
     "Bank Account": "Банковский счёт"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Не забудьте отслеживать свои расходы",
+    "It's been 1 days since your last transaction": "It's been 1 day since your last transaction",
+    "It's been 3 days since your last transaction": "It's been 3 days since your last transaction",
+    "It's been 7 days since your last transaction": "It's been 7 days since your last transaction",
+    "It's been 10 days since your last transaction": "It's been 10 days since your last transaction",
+    "It's been 14 days since your last transaction": "It's been 14 days since your last transaction",
+    "It's been 21 days since your last transaction": "It's been 21 days since your last transaction",
+    "It's been 30 days since your last transaction": "It's been 30 days since your last transaction",
+    "It's been 45 days since your last transaction": "It's been 45 days since your last transaction",
+    "It's been 60 days since your last transaction": "It's been 60 days since your last transaction",
+    "Good morning ☀️": "Доброе утро ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "Начните свой день с записи утренних расходов, чтобы оставаться на правильном пути 📝",
+    "Good evening 🌙": "Добрый вечер 🌙",
+    "Wrap up your day by recording what you spent today 📒": "Завершите свой день, записав, на что вы потратили сегодня 📒",
+    "Only 3 days of Premium left": "Осталось всего 3 дня Premium",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "Наслаждайтесь всеми преимуществами Premium сейчас и обновите подписку, чтобы продолжить свой опыт",
+    "Premium ends tomorrow": "Premium заканчивается завтра",
+    "Renew today to keep enjoying all your favorite Premium features": "Обновите подписку сегодня, чтобы продолжать наслаждаться всеми любимыми функциями Premium",
+    "Premium has ended": "Подписка Premium завершена",
+    "Renew anytime to continue enjoying the full Premium experience": "Обновите подписку в любое время, чтобы продолжать наслаждаться полным опытом Premium"
   }
 }

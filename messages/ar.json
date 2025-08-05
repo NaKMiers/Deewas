@@ -1238,5 +1238,27 @@
   "initWallet": {
     "Cash": "نقد",
     "Bank Account": "حساب بنكي"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "لا تنسَ تتبع مصروفاتك",
+    "It's been 1 days since your last transaction": "لقد مرت 1 يوم منذ آخر معاملة لك",
+    "It's been 3 days since your last transaction": "لقد مرت 3 أيام منذ آخر معاملة لك",
+    "It's been 7 days since your last transaction": "لقد مرت 7 أيام منذ آخر معاملة لك",
+    "It's been 10 days since your last transaction": "لقد مرت 10 أيام منذ آخر معاملة لك",
+    "It's been 14 days since your last transaction": "لقد مرت 14 يوم منذ آخر معاملة لك",
+    "It's been 21 days since your last transaction": "لقد مرت 21 يوم منذ آخر معاملة لك",
+    "It's been 30 days since your last transaction": "لقد مرت 30 يوم منذ آخر معاملة لك",
+    "It's been 45 days since your last transaction": "لقد مرت 45 يوم منذ آخر معاملة لك",
+    "It's been 60 days since your last transaction": "لقد مرت 60 يوم منذ آخر معاملة لك",
+    "Good morning ☀️": "صباح الخير ☀️",
+    "Start your day by noting your morning expenses to stay on track 📝": "ابدأ يومك بتدوين مصروفاتك الصباحية للبقاء على المسار الصحيح 📝",
+    "Good evening 🌙": "مساء الخير 🌙",
+    "Wrap up your day by recording what you spent today 📒": "قم بإنهاء يومك بتدوين ما أنفقته اليوم 📒",
+    "Only 3 days of Premium left": "تبقى 3 أيام فقط من البريميوم",
+    "Enjoy all Premium benefits now and renew to keep your experience going": "استمتع بجميع مزايا البريميوم الآن وقم بالتجديد للحفاظ على تجربتك مستمرة",
+    "Premium ends tomorrow": "تنتهي البريميوم غدًا",
+    "Renew today to keep enjoying all your favorite Premium features": "قم بالتجديد اليوم للاستمرار في الاستمتاع بجميع ميزات البريميوم المفضلة لديك",
+    "Premium has ended": "انتهت البريميوم",
+    "Renew anytime to continue enjoying the full Premium experience": "قم بالتجديد في أي وقت للاستمرار في الاستمتاع بتجربة البريميوم الكاملة"
   }
 }
