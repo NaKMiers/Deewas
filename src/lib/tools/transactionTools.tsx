@@ -12,7 +12,7 @@ export const get_all_transactions = (userId: string, style?: string) => {
   return {
     description: 'get all transactions of the user',
     parameters: z.object({
-      type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
+      type: z.enum(['income', 'expense', 'transfer']).optional(),
       limit: z.number().optional().default(20),
       message: z.string().describe('a short message with your personalities'),
     }),
@@ -42,7 +42,7 @@ export const get_transaction = (userId: string, style?: string) => {
     parameters: z.object({
       name: z.string(),
       amount: z.number().optional(),
-      type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
+      type: z.enum(['income', 'expense', 'transfer']).optional(),
       message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({
@@ -93,7 +93,7 @@ export const create_transaction = (userId: string, style?: string) => {
       name: z.string(),
       amount: z.number(),
       date: z.string(),
-      type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']),
+      type: z.enum(['income', 'expense', 'transfer']),
       walletName: z.string(),
       categoryName: z.string().optional(),
       message: z.string().describe('a short message with your personalities'),
@@ -343,7 +343,7 @@ export const get_most_transaction = (userId: string, style?: string) => {
   return {
     description: 'get most transaction by type and time',
     parameters: z.object({
-      type: z.enum(['income', 'expense', 'saving', 'invest']),
+      type: z.enum(['income', 'expense']),
       fromDate: z.string(),
       toDate: z.string(),
       sort: z.enum(['most', 'least']).default('most'),

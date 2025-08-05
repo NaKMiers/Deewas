@@ -168,7 +168,7 @@ export const updateWallet = async (walletId: string, name: string, icon: string,
   // update wallet
   const wallet = await WalletModel.findByIdAndUpdate(
     walletId,
-    { $set: { name, icon, exclude } },
+    { $set: { name: name.trim(), icon, exclude } },
     { new: true }
   ).lean()
 
@@ -197,7 +197,7 @@ export const createWallet = async (userId: string, isPremium: boolean, name: str
     // create wallet
     const wallet = await WalletModel.create({
       user: userId,
-      name,
+      name: name.trim(),
       icon,
     })
 

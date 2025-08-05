@@ -25,9 +25,7 @@ function Overview({ className }: OverviewCardProps) {
   // values
   const totalIncome = wallets.reduce((acc, wallet) => acc + wallet.income, 0)
   const totalExpense = wallets.reduce((acc, wallet) => acc + wallet.expense, 0)
-  const totalSaving = wallets.reduce((acc, wallet) => acc + wallet.saving, 0)
-  const totalInvest = wallets.reduce((acc, wallet) => acc + wallet.invest, 0)
-  const totalBalance = totalIncome + totalSaving + totalInvest - totalExpense
+  const totalBalance = totalIncome - totalExpense
 
   return (
     <div
@@ -60,18 +58,6 @@ function Overview({ className }: OverviewCardProps) {
               title={t('Expense')}
               value={totalExpense}
               type="expense"
-              isShow={showValue}
-            />
-            <Item
-              title={t('Saving')}
-              value={totalSaving}
-              type="saving"
-              isShow={showValue}
-            />
-            <Item
-              title={t('Invest')}
-              value={totalInvest}
-              type="invest"
               isShow={showValue}
             />
           </div>

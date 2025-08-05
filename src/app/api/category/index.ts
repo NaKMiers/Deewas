@@ -163,7 +163,7 @@ export const updateCategory = async (categoryId: string, name: string, icon: str
     // update category
     const category: ICategory | null = (await CategoryModel.findByIdAndUpdate(
       categoryId,
-      { $set: { name, icon } },
+      { $set: { name: name.trim(), icon } },
       { new: true }
     ).lean()) as any
 
@@ -187,7 +187,7 @@ export const createCategory = async (userId: string, name: string, icon: string,
     // create category
     const category = await CategoryModel.create({
       user: userId,
-      name,
+      name: name.trim(),
       icon,
       type,
     })

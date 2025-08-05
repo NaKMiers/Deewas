@@ -174,7 +174,7 @@ export const updateTransaction = async (
     // 2. Update transaction
     const newTx = await TransactionModel.findByIdAndUpdate(
       transactionId,
-      { $set: { name, date: toUTC(date), amount, category: categoryId, wallet: walletId } },
+      { $set: { name: name.trim(), date: toUTC(date), amount, category: categoryId, wallet: walletId } },
       { new: true }
     ).populate('category wallet')
 
@@ -337,7 +337,7 @@ export const createTransaction = async (
       user: userId,
       wallet: walletId,
       category: categoryId,
-      name,
+      name: name.trim(),
       amount,
       date: toUTC(date),
       type,

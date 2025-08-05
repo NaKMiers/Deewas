@@ -217,7 +217,7 @@ function WalletCard({ wallet, hideMenu, className }: WalletCardProps) {
       <div className="flex flex-col gap-2 px-4 pb-2">
         <Item
           title={t('Balance')}
-          value={wallet.income + wallet.saving + wallet.invest - wallet.expense}
+          value={wallet.income - wallet.expense}
           type="balance"
         />
         <div
@@ -232,16 +232,6 @@ function WalletCard({ wallet, hideMenu, className }: WalletCardProps) {
             title={t('Expense')}
             value={wallet.expense}
             type="expense"
-          />
-          <Item
-            title={t('Saving')}
-            value={wallet.saving}
-            type="saving"
-          />
-          <Item
-            title={t('Invest')}
-            value={wallet.invest}
-            type="invest"
           />
         </div>
       </div>

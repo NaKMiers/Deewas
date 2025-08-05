@@ -33,8 +33,6 @@ export type ChartDatum = {
   income: number
   expense: number
   balance: number
-  saving: number
-  invest: number
 }
 
 interface ChartProps {

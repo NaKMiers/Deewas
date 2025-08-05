@@ -31,7 +31,7 @@ function History({ category, onFetchedData, className }: HistoryProps) {
   const t = useTranslations('history')
   const locale = useLocale()
 
-  const types: TransactionType[] = ['balance', 'income', 'expense', 'saving', 'invest']
+  const types: TransactionType[] = ['balance', 'income', 'expense']
   const charts = ['bar', 'line', 'area', 'radar', 'pie']
 
   // store
@@ -108,8 +108,6 @@ function History({ category, onFetchedData, className }: HistoryProps) {
 
     let incomes = tsx.filter(t => t.type === 'income')
     let expenses = tsx.filter(t => t.type === 'expense')
-    let savings = tsx.filter(t => t.type === 'saving')
-    let invests = tsx.filter(t => t.type === 'invest')
 
     // x = end date - start date
     // x > 1 years -> split charts into cols of years
@@ -158,18 +156,6 @@ function History({ category, onFetchedData, className }: HistoryProps) {
         return transactionDate.isBetween(colStart, colEnd, undefined, '[)')
       })
 
-      // Filter saving in this range
-      const chunkSavingTransactions = savings.filter((transaction: ITransaction) => {
-        const transactionDate = moment(transaction.date).utc()
-        return transactionDate.isBetween(colStart, colEnd, undefined, '[)')
-      })
-
-      // Filter invest in this range
-      const chunkInvestTransactions = invests.filter((transaction: ITransaction) => {
-        const transactionDate = moment(transaction.date).utc()
-        return transactionDate.isBetween(colStart, colEnd, undefined, '[)')
-      })
-
       // Calculate total value
       let totalIncomeTransactionValue = chunkIncomeTransactions.reduce(
         (total: number, transaction: any) => total + transaction.amount,
@@ -178,18 +164,6 @@ function History({ category, onFetchedData, className }: HistoryProps) {
 
       // Calculate total value
       let totalExpenseTransactionValue = chunkExpenseTransactions.reduce(
-        (total: number, transaction: any) => total + transaction.amount,
-        0
-      )
-
-      // Calculate total value
-      let totalSavingTransactionValue = chunkSavingTransactions.reduce(
-        (total: number, transaction: any) => total + transaction.amount,
-        0
-      )
-
-      // Calculate total value
-      let totalInvestTransactionValue = chunkInvestTransactions.reduce(
         (total: number, transaction: any) => total + transaction.amount,
         0
       )
@@ -219,8 +193,6 @@ function History({ category, onFetchedData, className }: HistoryProps) {
         balance: parseCurrency(
           formatCurrency(currency, totalIncomeTransactionValue - totalExpenseTransactionValue)
         ),
-        saving: parseCurrency(formatCurrency(currency, totalSavingTransactionValue)),
-        invest: parseCurrency(formatCurrency(currency, totalInvestTransactionValue)),
       })
 
       iterator.add(1, splitGranularity as moment.unitOfTime.DurationConstructor)

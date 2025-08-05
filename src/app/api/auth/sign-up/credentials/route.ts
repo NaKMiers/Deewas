@@ -4,16 +4,17 @@ import CategoryModel from '@/models/CategoryModel'
 import SettingsModel from '@/models/SettingsModel'
 import UserModel from '@/models/UserModel'
 import WalletModel from '@/models/WalletModel'
-import { sign } from 'jsonwebtoken'
-import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
+import { sign } from 'jsonwebtoken'
 import { createTranslator } from 'next-intl'
+import { NextRequest, NextResponse } from 'next/server'
 
 // Models: User, Category, Settings, Wallet
 import '@/models/CategoryModel'
 import '@/models/SettingsModel'
 import '@/models/UserModel'
 import '@/models/WalletModel'
+import moment from 'moment-timezone'
 
 // [POST]: /auth/sign-up/credentials
 export async function POST(req: NextRequest) {
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
     username = username.trim().toLowerCase()
     email = email.trim().toLowerCase()
     locale = locale || 'en'
+    const timezone = req.headers.get('x-timezone') || 'UTC'
 
     // connect to database
     await connectDatabase()
@@ -47,6 +49,11 @@ export async function POST(req: NextRequest) {
       email,
       password: hashedPassword,
       authType: 'local',
+      timezone,
+
+      // MARK: Default plan ---
+      plan: 'premium-monthly',
+      planExpiredAt: moment().add(7, 'day').toDate(),
     })
 
     // get registered user

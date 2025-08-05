@@ -28,14 +28,14 @@ function Slider({ children, className }: SliderProps) {
   return (
     <div className="relative w-full">
       <Button
-        className="absolute left-0 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full border border-primary/50 shadow-md md:-translate-x-1/2"
+        className="absolute left-0 top-1/2 z-10 h-10 w-10 -translate-y-1/2 rounded-full border border-primary/50 shadow-md md:-translate-x-1/2"
         size="icon"
         onClick={() => scroll(false)}
       >
         <LucideChevronLeft />
       </Button>
       <Button
-        className="absolute right-0 top-1/2 h-10 w-10 -translate-y-1/2 rounded-full border border-primary/50 shadow-md md:translate-x-1/2"
+        className="absolute right-0 top-1/2 z-10 h-10 w-10 -translate-y-1/2 rounded-full border border-primary/50 shadow-md md:translate-x-1/2"
         size="icon"
         onClick={() => scroll(true)}
       >

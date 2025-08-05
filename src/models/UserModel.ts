@@ -51,6 +51,11 @@ const UserSchema = new Schema(
     },
     avatar: String,
     name: String,
+    timezone: {
+      type: String,
+      default: 'UTC',
+    },
+
     isDeleted: Boolean,
     initiated: {
       type: Boolean,
@@ -89,6 +94,8 @@ export interface IUser {
 
   avatar: string
   name: string
+  timezone: string
+
   isDeleted: boolean
   initiated: boolean
 

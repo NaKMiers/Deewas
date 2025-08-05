@@ -252,14 +252,6 @@ function CreateTransactionDrawer({
                     label: t('Income'),
                     value: 'income',
                   },
-                  {
-                    label: t('Saving'),
-                    value: 'saving',
-                  },
-                  {
-                    label: t('Invest'),
-                    value: 'invest',
-                  },
                 ]}
                 onFocus={() => clearErrors('type')}
               />

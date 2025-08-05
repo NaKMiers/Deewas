@@ -59,9 +59,14 @@ export default async function middleware(req: NextRequest) {
 
   if (['/api'].some(path => pathname.startsWith(path))) {
     if (
-      ['/api/auth', '/api/report', '/api/revenuecat-event', '/api/support', '/api/cron'].some(path =>
-        pathname.startsWith(path)
-      )
+      [
+        '/api/auth',
+        '/api/report',
+        '/api/revenuecat-event',
+        '/api/support',
+        '/api/cron',
+        '/api/test',
+      ].some(path => pathname.startsWith(path))
     ) {
       return NextResponse.next()
     } else if (['/api/admin'].some(path => pathname.startsWith(path))) {

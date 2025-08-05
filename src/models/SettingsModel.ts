@@ -35,6 +35,10 @@ const SettingsSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    isAcceptPremium: {
+      type: Boolean,
+      default: false,
+    },
     referralCode: {
       type: String,
     },

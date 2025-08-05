@@ -91,7 +91,7 @@ function Header({ routes, className }: HeaderProps) {
 
         <div
           className={cn(
-            'trans-300 absolute left-0 top-[52px] flex w-full flex-col overflow-hidden bg-background/50 px-21 lg:hidden',
+            'trans-300 absolute left-0 top-[52px] flex w-full flex-col overflow-hidden rounded-b-3xl bg-background/80 px-21 lg:hidden',
             openNav ? 'max-h-[500px]' : 'max-h-0'
           )}
         >

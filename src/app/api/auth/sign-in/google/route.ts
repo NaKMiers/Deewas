@@ -14,6 +14,7 @@ import '@/models/CategoryModel'
 import '@/models/SettingsModel'
 import '@/models/UserModel'
 import '@/models/WalletModel'
+import moment from 'moment-timezone'
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
     // get data from request body
     let { idToken, googleUserId, locale } = await req.json()
     locale = locale || 'en'
+    const timezone = req.headers.get('x-timezone') || 'UTC'
 
     // check if idToken is exist
     if (!idToken || !googleUserId) {
@@ -64,7 +66,7 @@ export async function POST(req: NextRequest) {
     // find user from database
     let user: any = await UserModel.findOneAndUpdate(
       { email },
-      { $set: { avatar, authType: 'google' } },
+      { $set: { avatar, authType: 'google', timezone } },
       { new: true }
     ).lean()
 
@@ -79,6 +81,11 @@ export async function POST(req: NextRequest) {
         avatar,
         authType: 'google',
         googleUserId,
+        timezone,
+
+        // MARK: Default plan ---
+        plan: 'premium-monthly',
+        planExpiredAt: moment().add(7, 'day').toDate(),
       })
       user = newUser._doc
 

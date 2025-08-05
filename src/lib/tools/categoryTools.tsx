@@ -7,7 +7,7 @@ export const get_all_categories = (userId: string, style?: string) => {
   return {
     description: 'get all categories of the user',
     parameters: z.object({
-      type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
+      type: z.enum(['income', 'expense', 'transfer']).optional(),
       message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({ type, message }: { type?: string; message: string }) => {
@@ -34,7 +34,7 @@ export const get_category = (userId: string, style?: string) => {
     description: 'get category by name',
     parameters: z.object({
       name: z.string(),
-      type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']).optional(),
+      type: z.enum(['income', 'expense', 'transfer']).optional(),
       message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({ name, type, message }: { name: string; type?: string; message: string }) => {
@@ -71,7 +71,7 @@ export const create_category = (userId: string, style?: string) => {
     parameters: z.object({
       name: z.string(),
       icon: z.string(),
-      type: z.enum(['income', 'expense', 'transfer', 'saving', 'invest']),
+      type: z.enum(['income', 'expense', 'transfer']),
       message: z.string().describe('a short message with your personalities'),
     }),
     execute: async ({

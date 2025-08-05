@@ -13,20 +13,20 @@ import {
   LucideBrain,
   LucideCalendarCheck,
   LucideCalendarDays,
+  LucideChartColumnStacked,
   LucideCrown,
   LucideFlame,
-  LucideLockKeyhole,
   LucideMessageSquare,
   LucidePieChart,
   LucideQuote,
+  LucideScanQrCode,
   LucideSmartphone,
   LucideSparkles,
-  LucideTags,
   LucideWalletCards,
 } from 'lucide-react'
 import Image from 'next/image'
 
-const nav = ['home', 'screenshots', 'features', 'FAQs', 'reviews', 'download', 'contact']
+const nav = ['home', 'screenshots', 'features', 'premium', 'FAQs', 'reviews', 'download', 'contact']
 const previews = [
   {
     image: '/images/previews/home.png',
@@ -41,12 +41,20 @@ const previews = [
     desc: 'AI Feature',
   },
   {
-    image: '/images/previews/charts.png',
-    desc: 'Charts Screen',
+    image: '/images/previews/scanning.png',
+    desc: 'Scanning Screen',
   },
   {
     image: '/images/previews/calendar.png',
     desc: 'Calendar Screen',
+  },
+  {
+    image: '/images/previews/charts.png',
+    desc: 'Charts Screen',
+  },
+  {
+    image: '/images/previews/category-analytics.png',
+    desc: 'Category Analytics Screen',
   },
   {
     image: '/images/previews/budgets.png',
@@ -69,14 +77,19 @@ const features = [
     desc: 'Manage your cash, bank accounts, and digital wallets in one place.',
   },
   {
+    icon: LucideScanQrCode,
+    title: 'Scanning Receipts',
+    desc: 'Easily scan and digitize your receipts for effortless expense tracking.',
+  },
+  {
     icon: LucideBarChart,
     title: 'Smart Analytics',
     desc: 'Visualize your income, expenses, and savings with interactive charts.',
   },
   {
-    icon: LucideTags,
-    title: 'Custom Categories',
-    desc: 'Create and manage your own spending categories tailored to your lifestyle.',
+    icon: LucideChartColumnStacked,
+    title: 'Category Analytics',
+    desc: 'Gain insights into your spending habits by category and make informed decisions.',
   },
   {
     icon: LucideCalendarDays,
@@ -87,11 +100,6 @@ const features = [
     icon: LucideFlame,
     title: 'Daily Streaks',
     desc: 'Build healthy financial habits by tracking your streaks for logging expenses, staying under budget, or saving daily.',
-  },
-  {
-    icon: LucideLockKeyhole,
-    title: 'Private & Secure',
-    desc: 'Your data is encrypted and backed up - only you can access your financial records.',
   },
   {
     icon: LucideCrown,
@@ -153,6 +161,48 @@ const specialFeatures = [
         desc: 'Turn mindful spending into a daily habit with streak-based motivation.',
       },
     ],
+  },
+]
+const premiumHighlights = [
+  {
+    free: 'Max 2 wallets',
+    premium: 'Unlimited wallets',
+    image: '/images/features/comparison-1.png',
+  },
+  {
+    free: 'Max 4 budgets',
+    premium: 'Unlimited budgets',
+    image: '/images/features/comparison-2.png',
+  },
+  {
+    free: 'Annoying ads',
+    premium: 'No advertisement',
+    image: '/images/features/comparison-3.png',
+  },
+  {
+    free: '10.000 AI tokens every day',
+    premium: 'Unlimited AI tokens',
+    image: '/images/features/comparison-4.png',
+  },
+  {
+    free: '3 receipt scans per day',
+    premium: 'Unlimited receipt scans',
+    image: '/images/features/comparison-5.png',
+  },
+  {
+    free: "Can't export data",
+    premium: 'Export data to CSV, Excel',
+    image: '/images/features/comparison-6.png',
+  },
+  {
+    free: 'Bar chart only',
+    premium: 'Unlock advanced charts (pie, line, bar, etc.)',
+    image: '/images/features/comparison-7.png',
+  },
+  {
+    free: 'Mobile only',
+    premium: 'Mobile and web',
+    image: '/images/features/comparison-8.png',
   },
 ]
 const FAQs = [
@@ -326,7 +376,7 @@ function LandingPage() {
       <div id="features" />
       <Separator className="my-20 h-0" />
 
-      {/* MARK: Feature */}
+      {/* MARK: Features */}
       <section className="container px-21/2 md:px-21">
         <div className="text-center">
           <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">FEATURES</h6>
@@ -402,6 +452,48 @@ function LandingPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <div id="premium" />
+      <Separator className="my-20 h-0" />
+
+      {/* MARK: Premium Highlights */}
+      <section className="container px-21/2 md:px-21">
+        <div className="text-center">
+          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
+            Premium Features
+          </h6>
+          <h4 className="mt-3 text-3xl font-semibold">Get 7-day Premium for new users</h4>
+          <p className="mx-auto mt-8 max-w-xl text-muted-foreground">
+            Unlock the full potential of Deewas with our premium features. Enjoy an ad-free experience,
+            advanced AI insights, and early access to new features.
+          </p>
+        </div>
+
+        <Slider className="no-scrollbar mt-12">
+          {premiumHighlights.map(({ free, premium, image }, index) => (
+            <div
+              className="flex-shrink-0 basis-full snap-start px-21/2 shadow-md sm:basis-1/3"
+              key={index}
+            >
+              <div className="flex h-full -rotate-3 flex-col items-center overflow-hidden pb-21">
+                <div className="aspect-[4/3] h-full w-full">
+                  <Image
+                    src={image}
+                    width={700}
+                    height={700}
+                    alt={premium}
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <div className="flex w-full flex-row items-start justify-between">
+                  <p className="w-2/5 text-center text-sm font-semibold text-muted-foreground">{free}</p>
+                  <p className="w-3/5 text-center font-semibold text-sky-500">{premium}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </Slider>
       </section>
 
       <div id="FAQs" />

@@ -28,17 +28,19 @@ function CategoriesPage() {
   // auto group categories by type
   useEffect(() => {
     // group categories by type
-    const groups = categories.reduce((acc: any, category: any) => {
-      if (!acc[category.type]) {
-        acc[category.type] = []
-      }
+    const groups = categories
+      .filter(c => ['income', 'expense'].includes(c.type))
+      .reduce((acc: any, category: any) => {
+        if (!acc[category.type]) {
+          acc[category.type] = []
+        }
 
-      acc[category.type].push(category)
+        acc[category.type].push(category)
 
-      return acc
-    }, {})
+        return acc
+      }, {})
 
-    const order = ['expense', 'income', 'saving', 'invest']
+    const order = ['expense', 'income']
     const results = Object.entries(groups)
       .sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]))
       .map(([key, value]) => [key, value])
