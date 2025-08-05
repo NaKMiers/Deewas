@@ -16,7 +16,7 @@ import '@/models/UserModel'
 export const dynamic = 'force-dynamic'
 
 // remind days
-const REMIND_DAYS = [1, 3, 7, 10, 14, 21, 30, 45, 60]
+const REMIND_DAYS = [1, 3, 7, 10, 14, 21, 30, 45, 60] // 18:30 local time
 
 // [CRON]: 30 * * * * -> every hour at 30 minutes
 // [GET]: /cron/notification/remind-transactions

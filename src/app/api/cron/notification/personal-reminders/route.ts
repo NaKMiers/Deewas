@@ -22,8 +22,8 @@ const FIXED_TIMES = [
     body: 'Start your day by noting your morning expenses to stay on track 📝',
   },
   {
-    hour: 23,
-    minute: 40,
+    hour: 21,
+    minute: 0,
     title: 'Good evening 🌙',
     body: 'Wrap up your day by recording what you spent today 📒',
   },
