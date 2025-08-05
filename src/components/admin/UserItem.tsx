@@ -1,7 +1,7 @@
 import useUtils from '@/hooks/useUtils'
 import { Link } from '@/i18n/navigation'
 import { formatTime } from '@/lib/time'
-import { cn } from '@/lib/utils'
+import { checkPremium, cn } from '@/lib/utils'
 import { IUser } from '@/models/UserModel'
 import { deleteUsersApi, restoreUserApi } from '@/requests/adminRequest'
 import { useSession } from 'next-auth/react'
@@ -155,7 +155,7 @@ function UserItem({
             handleCopy(user.email)
           }}
         >
-          {plans[user.plan]}
+          {plans[checkPremium(user) ? user.plan : 'free']}
         </p>
 
         <p

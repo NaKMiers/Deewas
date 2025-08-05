@@ -1,4 +1,4 @@
-import { sendSupportEmail } from '@/lib/sendMail'
+import { sendSupportEmail } from '@/lib/mailSending'
 import { NextRequest, NextResponse } from 'next/server'
 
 // [POST]: /api/support

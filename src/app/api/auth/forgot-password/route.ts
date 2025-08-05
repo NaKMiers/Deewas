@@ -1,5 +1,5 @@
 import { connectDatabase } from '@/config/database'
-import { sendResetPasswordEmail } from '@/lib/sendMail'
+import { sendResetPasswordEmail } from '@/lib/mailSending'
 import { shortName } from '@/lib/string'
 import UserModel from '@/models/UserModel'
 import jwt from 'jsonwebtoken'

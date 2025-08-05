@@ -1238,5 +1238,17 @@
   "initWallet": {
     "Cash": "Tiền mặt",
     "Bank Account": "Tài khoản ngân hàng"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Đừng quên theo dõi chi tiêu của bạn",
+    "It's been 1 days since your last transaction": "Đã 1 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 3 days since your last transaction": "Đã 3 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 7 days since your last transaction": "Đã 7 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 10 days since your last transaction": "Đã 10 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 14 days since your last transaction": "Đã 14 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 21 days since your last transaction": "Đã 21 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 30 days since your last transaction": "Đã 30 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 45 days since your last transaction": "Đã 45 ngày kể từ giao dịch cuối cùng của bạn",
+    "It's been 60 days since your last transaction": "Đã 60 ngày kể từ giao dịch cuối cùng của bạn"
   }
 }

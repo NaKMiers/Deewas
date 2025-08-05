@@ -1,10 +1,9 @@
 import ResetPasswordEmail from '@/components/emails/ResetPasswordEmail'
-
+import SupportEmail from '@/components/emails/SupportEmail'
 import { render } from '@react-email/render'
 import nodeMailer from 'nodemailer'
 
 // Models: User
-import SupportEmail from '@/components/emails/SupportEmail'
 import '@/models/UserModel'
 
 // SEND MAIL CORE

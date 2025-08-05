@@ -1238,5 +1238,17 @@
   "initWallet": {
     "Cash": "Cash",
     "Bank Account": "Bank Account"
+  },
+  "notification": {
+    "Don't forget to track your expenses": "Don't forget to track your expenses",
+    "It's been 1 days since your last transaction": "It's been 1 days since your last transaction",
+    "It's been 3 days since your last transaction": "It's been 3 days since your last transaction",
+    "It's been 7 days since your last transaction": "It's been 7 days since your last transaction",
+    "It's been 10 days since your last transaction": "It's been 10 days since your last transaction",
+    "It's been 14 days since your last transaction": "It's been 14 days since your last transaction",
+    "It's been 21 days since your last transaction": "It's been 21 days since your last transaction",
+    "It's been 30 days since your last transaction": "It's been 30 days since your last transaction",
+    "It's been 45 days since your last transaction": "It's been 45 days since your last transaction",
+    "It's been 60 days since your last transaction": "It's been 60 days since your last transaction"
   }
 }

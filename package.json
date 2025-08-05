@@ -1,6 +1,6 @@
 {
   "name": "deewas",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -54,6 +54,7 @@
     "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.5.2",
+    "expo-server-sdk": "^3.15.0",
     "framer-motion": "^12.4.7",
     "google-auth-library": "^9.15.1",
     "gpt-tokenizer": "^2.9.0",
