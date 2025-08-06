@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     await connectDatabase()
 
     await sendPushNotification(
-      'ExponentPushToken[Zx-Az0OMLPi-k3YbM3CKnz]',
+      'ExponentPushToken[SH2rZJKmzPPm_SHuiKkQN0]',
       'Hello',
       'This is a test notification'
     )

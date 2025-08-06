@@ -8,7 +8,7 @@ import '@/models/PushTokenModel'
 
 // [POST]: /push-token/create
 export async function POST(req: NextRequest) {
-  console.log('-- Create Push Token --')
+  console.log('- Create Push Token -')
 
   try {
     const token = await extractToken(req)

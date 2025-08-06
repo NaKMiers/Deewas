@@ -7,7 +7,7 @@ import '@/models/PushTokenModel'
 
 // [DELETE]: /push-token/delete
 export async function DELETE(req: NextRequest) {
-  console.log('- Delete Push Tokens -')
+  console.log('- Delete Push Token -')
 
   try {
     const token = await extractToken(req)
@@ -19,15 +19,17 @@ export async function DELETE(req: NextRequest) {
     }
 
     // get category id form params
-    const { ids } = await req.json()
+    const { token: pushToken } = await req.json()
 
-    // delete push tokens
-    await PushTokenModel.deleteMany({
+    console.log('pushToken:', pushToken)
+
+    // delete push token
+    await PushTokenModel.deleteOne({
       user: userId,
-      _id: { $in: ids },
+      token: pushToken,
     })
 
-    return NextResponse.json({ message: 'Push tokens deleted successfully' }, { status: 200 })
+    return NextResponse.json({ message: 'Push token deleted successfully' }, { status: 200 })
   } catch (err: any) {
     return NextResponse.json({ message: err.message || err.error }, { status: 500 })
   }
