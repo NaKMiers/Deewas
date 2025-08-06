@@ -155,19 +155,22 @@ export default function PushNotificationModal({ user, trigger }: PushNotificatio
             <p className="text-xs font-semibold">Select Push Tokens</p>
             <div className="mb mt-2 max-h-32 overflow-y-auto rounded-md border px-21 py-21/2">
               {pushTokens.length > 0 ? (
-                pushTokens.map(pushToken => (
+                pushTokens.map(({ _id, token, deviceInfo }) => (
                   <div
-                    onClick={() => toggleToken(pushToken.token)}
+                    onClick={() => toggleToken(token)}
                     className="flex cursor-pointer select-none items-center gap-2 py-1"
-                    key={pushToken._id}
+                    key={_id}
                   >
-                    <Checkbox checked={selectedTokens.includes(pushToken.token)} />
-                    <span
-                      className="break-all text-sm"
-                      onDoubleClick={() => handleCopy(pushToken.token)}
-                    >
-                      {pushToken.token}
-                    </span>
+                    <Checkbox checked={selectedTokens.includes(token)} />
+                    <div className="flex-1">
+                      <p
+                        className="break-all text-sm"
+                        onDoubleClick={() => handleCopy(token)}
+                      >
+                        {token}
+                      </p>
+                      <p className="text-xs">{`${deviceInfo?.brand || 'unknown brand'} - ${deviceInfo?.modelName || 'unknown model name'} - ${deviceInfo?.osName || 'unknown os'} - ${deviceInfo?.osVersion || 'unknown os version'}`}</p>
+                    </div>
                   </div>
                 ))
               ) : (
