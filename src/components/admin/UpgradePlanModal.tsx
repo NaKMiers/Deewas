@@ -19,6 +19,7 @@ interface UpgradePlanModalProps {
 }
 
 function UpgradePlanModal({ user, trigger, updateUser, className }: UpgradePlanModalProps) {
+  // states
   const [open, setOpen] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 

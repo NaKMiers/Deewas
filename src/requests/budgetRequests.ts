@@ -1,6 +1,6 @@
 // Budgets  -------------------------------------
 
-// [POST]: /budget
+// [GET]: /budget
 export const getMyBudgetsApi = async (
   query: string = '',
   option: RequestInit = { next: { revalidate: 0 } }

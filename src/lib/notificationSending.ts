@@ -2,7 +2,12 @@ import { Expo, ExpoPushMessage } from 'expo-server-sdk'
 
 let expo = new Expo()
 
-export async function sendPushNotification(pushToken: string, title: string, body: string) {
+export async function sendPushNotification(
+  pushToken: string,
+  title: string,
+  body: string,
+  subtitle: string = ''
+) {
   if (!Expo.isExpoPushToken(pushToken)) {
     console.error(`Push token ${pushToken} is not a valid Expo push token`)
     return
@@ -13,6 +18,7 @@ export async function sendPushNotification(pushToken: string, title: string, bod
       to: pushToken,
       sound: 'default',
       title,
+      subtitle,
       body,
       badge: 1,
     },

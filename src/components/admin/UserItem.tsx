@@ -4,6 +4,7 @@ import { formatTime } from '@/lib/time'
 import { checkPremium, cn } from '@/lib/utils'
 import { IUser } from '@/models/UserModel'
 import { deleteUsersApi, restoreUserApi } from '@/requests/adminRequest'
+import { LucideSend } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { Dispatch, memo, SetStateAction, useCallback, useState } from 'react'
@@ -14,6 +15,7 @@ import { RiDonutChartFill } from 'react-icons/ri'
 import { TbRestore } from 'react-icons/tb'
 import ConfirmDialog from '../dialogs/ConfirmDialog'
 import { Button } from '../ui/button'
+import PushNotificationModal from './PushNotificationModal'
 import UpgradePlanModal from './UpgradePlanModal'
 
 interface UserItemProps {
@@ -254,7 +256,7 @@ function UserItem({
           <MdEdit size={18} />
         </Link>
 
-        {/* Delete Button */}
+        {/* Delete User Button */}
         {!isCurUser && (
           <ConfirmDialog
             label={user.isDeleted ? 'Restore User' : 'Delete User'}
@@ -284,6 +286,8 @@ function UserItem({
             }
           />
         )}
+
+        {/* Upgrade Plan Button */}
         <UpgradePlanModal
           user={user}
           updateUser={user => setUser(user)}
@@ -296,6 +300,22 @@ function UserItem({
               title="Upgrade"
             >
               <FaAngleDoubleUp />
+            </Button>
+          }
+        />
+
+        {/* Push Notification Button */}
+        <PushNotificationModal
+          user={user}
+          trigger={
+            <Button
+              variant="ghost"
+              className="h-8 w-8"
+              onClick={e => e.stopPropagation()}
+              disabled={deleting}
+              title="Upgrade"
+            >
+              <LucideSend />
             </Button>
           }
         />
