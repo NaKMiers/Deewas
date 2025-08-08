@@ -34,3 +34,17 @@ export const sendPushNotificationApi = async (
 
   return await res.json()
 }
+
+// [DELETE]: /admin/push-token/:userId/:token/delete
+export const deleteUserPushTokenApi = async (userId: string, token: string) => {
+  const res = await fetch(`/api/admin/push-token/${userId}/${token}/delete`, {
+    method: 'DELETE',
+  })
+
+  // check status
+  if (!res.ok) {
+    throw new Error((await res.json()).message)
+  }
+
+  return await res.json()
+}
