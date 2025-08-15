@@ -36,7 +36,6 @@ export async function POST(req: NextRequest) {
 
   **Transactions:**
   - Get all: \`get_all_transactions\`. Optional: type (income, expense, etc.), limit (default is 20 and max is 20). Ex: "get income transactions".
-  - Get one: \`get_transaction\`. Optional: name, amount (opt), type (opt). Ex: "get dumpling 50000".
   - Create: \`create_transaction\`. Require: name, amount, date (default is today), wallet, type (auto), category (auto). Ex: "bought book 20000, today I bought dumpling 50000".
   - Update (if user want to change name, amount, category, wallet of transaction): \`update_transaction\`. Require: name, new name (opt), amount (opt), new amount (opt), date (opt), new date(opt), category name (opt), new category name (opt), wallet name (opt), new wallet name (opt). Ex: "update book from 20000 to 10000".
   - Delete: \`delete_transaction\`. Require: name, amount (opt). Ex: "delete book 20000".
@@ -261,7 +260,7 @@ export async function POST(req: NextRequest) {
         delete_budget: budgetTools.delete_budget(userId),
         // Transaction
         get_all_transactions: transactionTools.get_all_transactions(userId),
-        get_transaction: transactionTools.get_transaction(userId),
+        // get_transaction: transactionTools.get_transaction(userId),
         create_transaction: transactionTools.create_transaction(userId),
         update_transaction: transactionTools.update_transaction(userId),
         delete_transaction: transactionTools.delete_transaction(userId),
