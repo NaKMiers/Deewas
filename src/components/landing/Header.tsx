@@ -21,11 +21,13 @@ interface HeaderProps {
 }
 
 function Header({ routes, className }: HeaderProps) {
+  // hooks
   const { data: session } = useSession()
   const user = session?.user
   const { resolvedTheme, setTheme } = useTheme()
   const [openNav, setOpenNav] = useState<boolean>(false)
   const router = useRouter()
+  const t = useTranslations('landingPage')
 
   return (
     <div className={cn('sticky top-0 z-10 bg-background/50', className)}>
@@ -36,7 +38,7 @@ function Header({ routes, className }: HeaderProps) {
           <span className="font-semibold text-green-500">Premium</span> to access web version.
         </p>
       )}
-      <header className="container relative flex h-[52px] items-center justify-between px-21/2 drop-shadow-lg lg:px-21">
+      <header className="relative mx-auto flex h-[52px] w-full items-center justify-between gap-21 px-21/2 drop-shadow-lg md:max-w-fit lg:px-21">
         <Link
           href="/"
           className="flex items-center gap-1"
@@ -51,7 +53,7 @@ function Header({ routes, className }: HeaderProps) {
           <p className="text-xl font-bold">DEEWAS</p>
         </Link>
 
-        <div className="flex items-center gap-21">
+        <div className="flex items-center gap-21/2 md:gap-21">
           <div className="hidden items-center gap-3 lg:flex">
             {routes.map(item => (
               <Link
@@ -61,7 +63,7 @@ function Header({ routes, className }: HeaderProps) {
                 )}
                 key={item}
               >
-                {item}
+                {t(item)}
               </Link>
             ))}
           </div>
@@ -75,17 +77,17 @@ function Header({ routes, className }: HeaderProps) {
             />
           </div>
 
+          <LanguageSelection triggerClassName="hidden lg:flex" />
+
+          <Button onClick={() => (user ? signOut() : router.push('/auth/sign-in'))}>
+            {user ? t('Sign Out') : t('Sign In')}
+          </Button>
+
           <Button
             className="h-8 w-8 lg:hidden"
             onClick={() => setOpenNav(!openNav)}
           >
             <LucideMenu />
-          </Button>
-
-          <LanguageSelection triggerClassName="hidden lg:flex" />
-
-          <Button onClick={() => (user ? signOut() : router.push('/auth/sign-in'))}>
-            {user ? 'Sign Out' : 'Sign In'}
           </Button>
         </div>
 
@@ -104,7 +106,7 @@ function Header({ routes, className }: HeaderProps) {
               onClick={() => setOpenNav(false)}
               key={item}
             >
-              {item}
+              {t(item)}
             </Link>
           ))}
           <LanguageSelection triggerClassName="max-w-max" />
@@ -155,7 +157,7 @@ function LanguageSelection({
       >
         <Button
           variant="outline"
-          className="w-full justify-between border border-primary/10 bg-primary-foreground"
+          className="justify-between border border-primary/10 bg-primary-foreground"
         >
           <p className="text-xs uppercase">
             {selectedLanguage ? selectedLanguage.value : `${tBox('language')}`}

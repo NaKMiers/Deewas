@@ -24,6 +24,7 @@ import {
   LucideSparkles,
   LucideWalletCards,
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
 const nav = ['home', 'screenshots', 'features', 'premium', 'FAQs', 'reviews', 'download', 'contact']
@@ -69,96 +70,96 @@ const features = [
   {
     icon: LucideBrain,
     title: 'AI Assistant',
-    desc: 'Use AI to add or edit transactions, set budgets, and personalize your experience.',
+    desc: 'Use AI to add or edit transactions, set budgets, and personalize your experience',
   },
   {
     icon: LucideWalletCards,
     title: 'Multiple Wallets',
-    desc: 'Manage your cash, bank accounts, and digital wallets in one place.',
+    desc: 'Manage your cash, bank accounts, and digital wallets in one place',
   },
   {
     icon: LucideScanQrCode,
     title: 'Scanning Receipts',
-    desc: 'Easily scan and digitize your receipts for effortless expense tracking.',
+    desc: 'Easily scan and digitize your receipts for effortless expense tracking',
   },
   {
     icon: LucideBarChart,
     title: 'Smart Analytics',
-    desc: 'Visualize your income, expenses, and savings with interactive charts.',
+    desc: 'Visualize your income, expenses, and savings with interactive charts',
   },
   {
     icon: LucideChartColumnStacked,
     title: 'Category Analytics',
-    desc: 'Gain insights into your spending habits by category and make informed decisions.',
+    desc: 'Gain insights into your spending habits by category and make informed decisions',
   },
   {
     icon: LucideCalendarDays,
     title: 'Budget Planner',
-    desc: 'Set monthly budgets by category and get alerts when you’re close to limits.',
+    desc: 'Set monthly budgets by category and get alerts when you’re close to limits',
   },
   {
     icon: LucideFlame,
     title: 'Daily Streaks',
-    desc: 'Build healthy financial habits by tracking your streaks for logging expenses, staying under budget, or saving daily.',
+    desc: 'Build healthy financial habits by tracking your streaks for logging expenses, staying under budget, or saving daily',
   },
   {
     icon: LucideCrown,
     title: 'Premium Experience',
-    desc: 'Enjoy an ad-free experience with exclusive AI insights and early feature access.',
+    desc: 'Enjoy an ad-free experience with exclusive AI insights and early feature access',
   },
 ]
 const specialFeatures = [
   {
     subTitle: 'AI Assistant',
     title: 'Smart & Effortless Finance',
-    desc: 'Chat with your AI assistant to log expenses, set budgets, or track savings - no typing or navigating needed.',
+    desc: 'Chat with your AI assistant to log expenses, set budgets, or track savings - no typing or navigating needed',
     image: '/images/features/ai-feature.png',
     subs: [
       {
         icon: LucideMessageSquare,
         title: 'Conversational Input',
-        desc: 'Simply type or speak to log transactions, ask for reports, or update your finances.',
+        desc: 'Simply type or speak to log transactions, ask for reports, or update your finances',
       },
       {
         icon: LucideSparkles,
         title: 'Intelligent Suggestions',
-        desc: 'Get personalized tips and smart actions based on your spending habits and goals.',
+        desc: 'Get personalized tips and smart actions based on your spending habits and goals',
       },
     ],
   },
   {
     subTitle: 'Insights & Reports',
     title: 'Visualize Your Finances',
-    desc: 'Understand your spending habits with clear charts and real-time insights.',
+    desc: 'Understand your spending habits with clear charts and real-time insights',
     image: '/images/features/chart-feature.png',
     subs: [
       {
         icon: LucidePieChart,
         title: 'Smart Breakdown',
-        desc: 'See where your money goes across categories, wallets, and time periods.',
+        desc: 'See where your money goes across categories, wallets, and time periods',
       },
       {
         icon: LucideActivity,
         title: 'Real-Time Tracking',
-        desc: 'Monitor your financial health and progress toward goals at a glance.',
+        desc: 'Monitor your financial health and progress toward goals at a glance',
       },
     ],
   },
   {
     subTitle: 'Daily Streaks',
     title: 'Build Better Habits',
-    desc: 'Stay motivated with streaks that reward you for consistency in tracking your finances.',
+    desc: 'Stay motivated with streaks that reward you for consistency in tracking your finances',
     image: '/images/features/streaks-feature.png',
     subs: [
       {
         icon: LucideFlame,
         title: 'Streak Rewards',
-        desc: 'Get positive reinforcement by keeping your daily financial tracking streak alive.',
+        desc: 'Get positive reinforcement by keeping your daily financial tracking streak alive',
       },
       {
         icon: LucideCalendarCheck,
         title: 'Habit Formation',
-        desc: 'Turn mindful spending into a daily habit with streak-based motivation.',
+        desc: 'Turn mindful spending into a daily habit with streak-based motivation',
       },
     ],
   },
@@ -180,7 +181,7 @@ const premiumHighlights = [
     image: '/images/features/comparison-3.png',
   },
   {
-    free: '10.000 AI tokens every day',
+    free: '10000 AI tokens every day',
     premium: 'Unlimited AI tokens',
     image: '/images/features/comparison-4.png',
   },
@@ -196,7 +197,7 @@ const premiumHighlights = [
   },
   {
     free: 'Bar chart only',
-    premium: 'Unlock advanced charts (pie, line, bar, etc.)',
+    premium: 'Unlock advanced charts (pie, line, bar, etc)',
     image: '/images/features/comparison-7.png',
   },
   {
@@ -207,24 +208,32 @@ const premiumHighlights = [
 ]
 const FAQs = [
   {
-    question: 'How does it work?',
+    question: 'What is Deewas?',
     answer:
-      'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.',
+      'Deewas is a personal finance management app integrated with an AI Agent, helping you track expenses, set budgets, analyze spending trends, and make smarter financial decisions across multiple devices',
   },
   {
-    question: 'What is the purpose of this app?',
-    answer: 'The phrasal sequence of the is now so that many campaign and benefit',
-  },
-  {
-    question: 'How to use this app?',
+    question: 'How can the AI Assistant help me?',
     answer:
-      'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.',
+      'The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences',
   },
   {
-    question: 'What is the purpose of this app?',
-    answer: 'The phrasal sequence of the is now so that many campaign and benefit',
+    question: 'Is my financial data secure?',
+    answer:
+      'Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe',
+  },
+  {
+    question: 'Can I use Deewas on multiple devices?',
+    answer:
+      'Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere',
+  },
+  {
+    question: 'What do I get with the Premium plan?',
+    answer:
+      'Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase',
   },
 ]
+
 const reviews = [
   {
     image: '/images/avatars/avt1.jpg',
@@ -264,6 +273,8 @@ const reviews = [
 ]
 
 function LandingPage() {
+  const t = useTranslations('landingPage')
+
   return (
     <main className="min-h-screen">
       <ParticlesContainer />
@@ -282,15 +293,15 @@ function LandingPage() {
       >
         <div className="relative flex flex-1 flex-col py-8">
           <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
-            PERSONAL FINANCE
+            {t('PERSONAL FINANCE')}
           </h6>
           <h4 className="mb-6 mt-4 text-[40px] font-bold leading-[50px] sm:text-[52px] sm:leading-[72px]">
-            Smarter way to manage your money
+            {t('Smarter way to manage your money')}
           </h4>
 
           <p className="max-w-xl">
-            Track income, expenses, savings, and investments - all in one place. Let AI help you gain
-            control and build better financial habits.
+            {t('Track income, expenses, savings, and investments - all in one place')}.{' '}
+            {t('Let AI help you gain control and build better financial habits')}.
           </p>
 
           <div className="absolute right-[20%] top-0 h-14 w-14 animate-spin-slow rounded-xl bg-gradient-to-r from-sky-100 to-sky-500 sm:-top-16 sm:left-8 sm:h-20 sm:w-20" />
@@ -344,12 +355,14 @@ function LandingPage() {
       <section className="container px-21/2 md:px-21">
         <div className="text-center">
           <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
-            App Screenshots
+            {t('App Screenshots')}
           </h6>
-          <h4 className="mt-3 text-3xl font-semibold">Made for real life. Built for you.</h4>
+          <h4 className="mt-3 text-3xl font-semibold">
+            {t('Made for real life')}. {t('Built for you')}.
+          </h4>
           <p className="mx-auto mt-8 max-w-xl text-muted-foreground">
-            Explore the beautiful and user-friendly interface of Deewas. Each screen is designed to
-            simplify your financial journey.
+            {t('Explore the beautiful and user-friendly interface of Deewas')}.{' '}
+            {t('Each screen is designed to simplify your financial journey')}.
           </p>
         </div>
 
@@ -364,7 +377,7 @@ function LandingPage() {
                   src={preview.image}
                   width={600}
                   height={600}
-                  alt={preview.desc}
+                  alt={t(preview.desc)}
                   className="h-full w-full object-contain"
                 />
               </div>
@@ -379,11 +392,15 @@ function LandingPage() {
       {/* MARK: Features */}
       <section className="container px-21/2 md:px-21">
         <div className="text-center">
-          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">FEATURES</h6>
-          <h4 className="mt-3 text-3xl font-semibold">Discover Powerful Features</h4>
+          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
+            {t('FEATURES')}
+          </h6>
+          <h4 className="mt-3 text-3xl font-semibold">{t('Discover Powerful Features')}</h4>
           <p className="mx-auto mt-8 max-w-xl text-muted-foreground">
-            Unleash the power of our platform with a multitude of powerful features, empowering you to
-            achieve your goals.
+            {t(
+              'Unleash the power of our platform with a multitude of powerful features, empowering you to achieve your goals'
+            )}
+            .
           </p>
         </div>
 
@@ -397,8 +414,8 @@ function LandingPage() {
                 <feature.icon size={24} />
               </div>
 
-              <p className="text-xl font-medium text-primary">{feature.title}</p>
-              <p className="text-primary/80">{feature.desc} </p>
+              <p className="text-xl font-medium text-primary">{t(feature.title)}</p>
+              <p className="text-primary/80">{t(feature.desc)} </p>
             </div>
           ))}
         </div>
@@ -425,10 +442,10 @@ function LandingPage() {
               </div>
               <div className={cn('col-span-12 px-21 md:col-span-7', index % 2 !== 0 && 'md:order-1')}>
                 <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
-                  {feature.subTitle}
+                  {t(feature.subTitle)}
                 </h6>
-                <h4 className="mt-3 max-w-sm text-3xl font-semibold"> {feature.title}</h4>
-                <p className="mt-6 max-w-xl text-muted-foreground">{feature.desc}</p>
+                <h4 className="mt-3 max-w-sm text-3xl font-semibold"> {t(feature.title)}</h4>
+                <p className="mt-6 max-w-xl text-muted-foreground">{t(feature.desc)}</p>
                 <div className="mt-6 flex flex-col gap-21">
                   {feature.subs.map((sub, index) => (
                     <div
@@ -440,9 +457,9 @@ function LandingPage() {
                         className="trans-300 mt-2 flex-shrink-0 text-sky-500 group-hover:text-primary"
                       />
                       <div>
-                        <h5 className="trans-300 text-xl font-semibold">{sub.title}</h5>
+                        <h5 className="trans-300 text-xl font-semibold">{t(sub.title)}</h5>
                         <p className="trans-300 text-muted-foreground group-hover:text-primary">
-                          {sub.desc}{' '}
+                          {t(sub.desc)}{' '}
                         </p>
                       </div>
                     </div>
@@ -461,12 +478,12 @@ function LandingPage() {
       <section className="container px-21/2 md:px-21">
         <div className="text-center">
           <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
-            Premium Features
+            {t('Premium Features')}
           </h6>
-          <h4 className="mt-3 text-3xl font-semibold">Get 7-day Premium for new users</h4>
+          <h4 className="mt-3 text-3xl font-semibold">{t('Get 7-day Premium for new users')}</h4>
           <p className="mx-auto mt-8 max-w-xl text-muted-foreground">
-            Unlock the full potential of Deewas with our premium features. Enjoy an ad-free experience,
-            advanced AI insights, and early access to new features.
+            {t('Unlock the full potential of Deewas with our premium features')}.{' '}
+            {t('Enjoy an ad-free experience, advanced AI insights, and early access to new features')}.
           </p>
         </div>
 
@@ -487,8 +504,10 @@ function LandingPage() {
                   />
                 </div>
                 <div className="flex w-full flex-row items-start justify-between">
-                  <p className="w-2/5 text-center text-sm font-semibold text-muted-foreground">{free}</p>
-                  <p className="w-3/5 text-center font-semibold text-sky-500">{premium}</p>
+                  <p className="w-2/5 text-center text-sm font-semibold text-muted-foreground">
+                    {t(free)}
+                  </p>
+                  <p className="w-3/5 text-center font-semibold text-sky-500">{t(premium)}</p>
                 </div>
               </div>
             </div>
@@ -502,14 +521,16 @@ function LandingPage() {
       {/* MARK: FAQs */}
       <section className="container flex flex-col gap-21 px-21/2 md:flex-row md:px-21">
         <div className="flex-1 sm:order-2 md:order-1">
-          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">FAQs</h6>
-          <h4 className="mt-3 max-w-sm text-3xl font-semibold">Have Questions? Look Here</h4>
+          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">{t('FAQs')}</h6>
+          <h4 className="mt-3 max-w-sm text-3xl font-semibold">
+            {t('Have Questions')}? {t('Look Here')}
+          </h4>
           <p className="mt-6 max-w-xl text-muted-foreground">
-            Got questions? We&apos;re here to help you understand and make the most of Deewas.
+            {t('Got questions')}? {t("We're here to help you understand and make the most of Deewas")}.
           </p>
 
           <CollapseContents
-            data={FAQs.map(item => ({ content: item.question, hiddenContent: item.answer }))}
+            data={FAQs.map(item => ({ content: t(item.question), hiddenContent: t(item.answer) }))}
             className="mt-8"
           />
         </div>
@@ -532,11 +553,15 @@ function LandingPage() {
       {/* MARK: Reviews */}
       <section className="container px-21/2 md:px-21">
         <div className="text-center">
-          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">Reviews</h6>
-          <h4 className="mt-3 text-3xl font-semibold">10k+ Customers Trust Us</h4>
+          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
+            {t('Reviews')}
+          </h6>
+          <h4 className="mt-3 text-3xl font-semibold">{t('10k+ Customers Trust Us')}</h4>
           <p className="mx-auto mt-8 max-w-xl text-muted-foreground">
-            Join thousands of satisfied users who rely on Deewas to manage their finances with confidence
-            and ease.
+            {t(
+              'Join thousands of satisfied users who rely on Deewas to manage their finances with confidence and ease'
+            )}
+            .
           </p>
         </div>
 
@@ -598,12 +623,16 @@ function LandingPage() {
           />
         </div>
         <div className={cn('col-span-12 px-21 md:col-span-7')}>
-          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">MOBILE APPS</h6>
-          <h4 className="mt-3 max-w-sm text-3xl font-semibold">Manage Your Money</h4>
-          <h4 className="mt-3 max-w-sm text-3xl font-semibold">Right from Your Phone</h4>
+          <h6 className="font-body font-semibold uppercase tracking-widest text-sky-500">
+            {t('MOBILE APPS')}
+          </h6>
+          <h4 className="mt-3 max-w-sm text-3xl font-semibold">{t('Manage Your Money')}</h4>
+          <h4 className="mt-3 max-w-sm text-3xl font-semibold">{t('Right from Your Phone')}</h4>
           <p className="mt-6 max-w-xl text-muted-foreground">
-            Download Deewas on iOS and Android to track expenses, monitor your budget, and chat with your
-            AI financial assistant - anytime, anywhere.
+            {t(
+              'Download Deewas on iOS and Android to track expenses, monitor your budget, and chat with your AI financial assistant - anytime, anywhere'
+            )}
+            .
           </p>
           <div className="mt-5 flex gap-2.5">
             <Link
@@ -615,7 +644,7 @@ function LandingPage() {
                 src="/images/appstore-download.png"
                 width={200}
                 height={100}
-                alt="Download Deewas on App Store"
+                alt={t('Download Deewas on App Store')}
                 className="h-full w-full"
               />
             </Link>
@@ -628,7 +657,7 @@ function LandingPage() {
                 src="/images/googleplay-download.png"
                 width={200}
                 height={100}
-                alt="Download Deewas on Google Play"
+                alt={t('Download Deewas on Google Play')}
                 className="h-full w-full"
               />
             </Link>
@@ -637,9 +666,9 @@ function LandingPage() {
           <div className="mt-8 flex items-center gap-2">
             <LucideSmartphone size={36} />
             <div>
-              <p>Install app now on your cellphones</p>
+              <p>{t('Install app now on your cellphones')}</p>
               <p className="trans-20 flex items-center gap-2 hover:text-sky-500">
-                Install Now <LucideArrowRight size={16} />
+                {t('Install Now')} <LucideArrowRight size={16} />
               </p>
             </div>
           </div>
@@ -657,13 +686,13 @@ function LandingPage() {
             width={400}
             height={400}
             className="h-full w-full object-contain"
-            alt="Contact Us"
+            alt={t('Contact Us')}
           />
         </div>
         <div className="col-span-12 flex flex-1 items-center justify-center md:col-span-6 md:p-12">
           <ContactForm
-            subTitle="CONTACT US"
-            title="Get in touch !"
+            subTitle={t('CONTACT US')}
+            title={t('Get in touch!')}
             className="pb-8"
           />
         </div>
