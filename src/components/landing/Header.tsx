@@ -35,7 +35,7 @@ function Header({ routes, className }: HeaderProps) {
         <p className="border-b border-primary/10 px-2 py-1 text-center text-xs md:text-sm">
           {(() => {
             const premiumText = t('Premium')
-            const message = `${t('Web version only available for Premium account')}. ${t('Download the app and upgrade to Premium to access web version')}.`
+            const message = t('Download the app and upgrade to Premium to access web version')
             const parts = message.split(premiumText)
             return parts.reduce<ReactNode[]>((acc, part, idx) => {
               acc.push(part)
