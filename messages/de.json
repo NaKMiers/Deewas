@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "Der KI-Assistent kann Ihre Ausgabengewohnheiten analysieren, personalisierte Budgets vorschlagen, finanzbezogene Fragen beantworten und sogar seine Persönlichkeit an Ihre Vorlieben anpassen.",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "Ja, Deewas verwendet biometrische Authentifizierung, sichere Cloud-Speicherung und verschlüsselte Transaktionen, um sicherzustellen, dass Ihre persönlichen und finanziellen Daten sicher bleiben.",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "Absolut, Deewas ist auf iOS, Android und als Web-App verfügbar, sodass Ihre Daten überall synchronisiert und zugänglich bleiben.",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium schaltet erweiterte Analysen, unbegrenzte Nutzung des KI-Assistenten, zusätzliche Diagrammtypen, erweiterte Datenhistorie frei und entfernt Werbung. Die Pläne sind monatlich, jährlich oder als einmaliger Lebenszeitkauf erhältlich."
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium schaltet erweiterte Analysen, unbegrenzte Nutzung des KI-Assistenten, zusätzliche Diagrammtypen, erweiterte Datenhistorie frei und entfernt Werbung. Die Pläne sind monatlich, jährlich oder als einmaliger Lebenszeitkauf erhältlich.",
+    "Web version only available for Premium account": "Webversion nur für Premium-Konten verfügbar",
+    "Download the app and upgrade to Premium to access web version": "Laden Sie die App herunter und upgraden Sie auf Premium, um auf die Webversion zuzugreifen",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "Stellen Sie Ihre Währung ein",

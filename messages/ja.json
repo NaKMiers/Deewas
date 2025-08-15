@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AIアシスタントは、あなたの支出習慣を分析し、パーソナライズされた予算を提案し、財務関連の質問に答え、さらにはあなたの好みに合わせてその性格を適応させることができます。",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "はい、Deewasは生体認証、安全なクラウドストレージ、暗号化された取引を使用して、あなたの個人情報と財務データが安全に保たれるようにしています。",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "もちろん、DeewasはiOS、Android、Webアプリとして利用可能で、データはどこでも同期され、アクセス可能です。",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "プレミアムでは、高度な分析、無制限のAIアシスタントの使用、追加のチャートタイプ、拡張されたデータ履歴がアンロックされ、広告が削除されます。プランは月額、年額、または一度限りの生涯購入として利用可能です。"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "プレミアムでは、高度な分析、無制限のAIアシスタントの使用、追加のチャートタイプ、拡張されたデータ履歴がアンロックされ、広告が削除されます。プランは月額、年額、または一度限りの生涯購入として利用可能です。",
+    "Web version only available for Premium account": "ウェブバージョンはプレミアムアカウントでのみ利用可能です。",
+    "Download the app and upgrade to Premium to access web version": "アプリをダウンロードしてプレミアムにアップグレードすると、ウェブバージョンにアクセスできます。",
+    "Premium": "プレミアム"
   },
   "settingsBox": {
     "Set your currency": "通貨を設定",

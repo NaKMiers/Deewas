@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "এআই সহকারী আপনার ব্যয় অভ্যাস বিশ্লেষণ করতে পারে, ব্যক্তিগতকৃত বাজেট সুপারিশ করতে পারে, অর্থ সম্পর্কিত প্রশ্নের উত্তর দিতে পারে এবং এমনকি আপনার পছন্দের সাথে মেলাতে তার ব্যক্তিত্বও অভিযোজিত করতে পারে",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "হ্যাঁ, ডিওয়াস আপনার ব্যক্তিগত এবং আর্থিক তথ্য নিরাপদ রাখতে বায়োমেট্রিক প্রমাণীকরণ, নিরাপদ ক্লাউড স্টোরেজ এবং এনক্রিপ্টেড লেনদেন ব্যবহার করে",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "অবশ্যই, ডিওয়াস iOS, Android এবং একটি ওয়েব অ্যাপ হিসাবে উপলব্ধ, তাই আপনার ডেটা যেকোনো জায়গায় সিঙ্ক এবং অ্যাক্সেসযোগ্য থাকে",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "প্রিমিয়াম উন্নত বিশ্লেষণ, সীমাহীন এআই সহকারী ব্যবহারের সুযোগ, অতিরিক্ত চার্টের ধরন, বাড়ানো ডেটা ইতিহাস এবং বিজ্ঞাপন অপসারণ করে, পরিকল্পনাগুলি মাসিক, বার্ষিক বা এককালীন লাইফটাইম ক্রয়ের জন্য উপলব্ধ"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "প্রিমিয়াম উন্নত বিশ্লেষণ, সীমাহীন এআই সহকারী ব্যবহারের সুযোগ, অতিরিক্ত চার্টের ধরন, বাড়ানো ডেটা ইতিহাস এবং বিজ্ঞাপন অপসারণ করে, পরিকল্পনাগুলি মাসিক, বার্ষিক বা এককালীন লাইফটাইম ক্রয়ের জন্য উপলব্ধ",
+    "Web version only available for Premium account": "ওয়েব সংস্করণ শুধুমাত্র প্রিমিয়াম অ্যাকাউন্টের জন্য উপলব্ধ",
+    "Download the app and upgrade to Premium to access web version": "অ্যাপটি ডাউনলোড করুন এবং ওয়েব সংস্করণে অ্যাক্সেস করতে প্রিমিয়াম আপগ্রেড করুন",
+    "Premium": "প্রিমিয়াম"
   },
   "settingsBox": {
     "Set your currency": "আপনার মুদ্রা নির্ধারণ করুন",

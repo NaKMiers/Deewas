@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "Trợ lý AI có thể phân tích thói quen chi tiêu của bạn, đề xuất ngân sách cá nhân hóa, trả lời các câu hỏi liên quan đến tài chính và thậm chí điều chỉnh tính cách của nó để phù hợp với sở thích của bạn",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "Có, Deewas sử dụng xác thực sinh trắc học, lưu trữ đám mây an toàn và giao dịch được mã hóa để đảm bảo dữ liệu cá nhân và tài chính của bạn luôn được bảo mật",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "Chắc chắn rồi, Deewas có sẵn trên iOS, Android và dưới dạng Ứng dụng Web, vì vậy dữ liệu của bạn luôn được đồng bộ và truy cập từ bất kỳ đâu",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Gói Premium mở khóa phân tích nâng cao, sử dụng Trợ lý AI không giới hạn, các loại biểu đồ bổ sung, lịch sử dữ liệu mở rộng và loại bỏ quảng cáo. Các gói có sẵn hàng tháng, hàng năm hoặc mua một lần trọn đời"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Gói Premium mở khóa phân tích nâng cao, sử dụng Trợ lý AI không giới hạn, các loại biểu đồ bổ sung, lịch sử dữ liệu mở rộng và loại bỏ quảng cáo. Các gói có sẵn hàng tháng, hàng năm hoặc mua một lần trọn đời",
+    "Web version only available for Premium account": "Phiên bản web chỉ có sẵn cho tài khoản Premium",
+    "Download the app and upgrade to Premium to access web version": "Tải xuống ứng dụng và nâng cấp lên Premium để truy cập phiên bản web",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "Thiết lập tiền tệ",

@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "Pembantu AI boleh menganalisis tabiat perbelanjaan anda, mencadangkan bajet yang diperibadikan, menjawab soalan berkaitan kewangan, dan bahkan menyesuaikan personalitinya untuk mencocokkan pilihan anda",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "Ya, Deewas menggunakan pengesahan biometrik, penyimpanan awan yang selamat, dan transaksi yang dienkripsi untuk memastikan data peribadi dan kewangan anda tetap selamat",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "Sudah tentu, Deewas tersedia di iOS, Android, dan sebagai Aplikasi Web, jadi data anda tetap diselaraskan dan boleh diakses di mana sahaja",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium membuka analisis lanjutan, penggunaan Pembantu AI tanpa had, jenis carta tambahan, sejarah data yang diperluas, dan menghapus iklan, pelan tersedia secara bulanan, tahunan, atau sebagai pembelian seumur hidup sekali sahaja"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium membuka analisis lanjutan, penggunaan Pembantu AI tanpa had, jenis carta tambahan, sejarah data yang diperluas, dan menghapus iklan, pelan tersedia secara bulanan, tahunan, atau sebagai pembelian seumur hidup sekali sahaja",
+    "Web version only available for Premium account": "Versi web hanya tersedia untuk akun Premium",
+    "Download the app and upgrade to Premium to access web version": "Unduh aplikasi dan tingkatkan ke Premium untuk mengakses versi web",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "Tetapkan mata wang anda",

@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "ผู้ช่วย AI สามารถวิเคราะห์พฤติกรรมการใช้จ่ายของคุณ แนะนำงบประมาณที่ปรับให้เหมาะสม ตอบคำถามที่เกี่ยวข้องกับการเงิน และแม้กระทั่งปรับบุคลิกภาพให้ตรงกับความชอบของคุณ",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "ใช่ Deewas ใช้การตรวจสอบสิทธิ์ทางชีวภาพ การจัดเก็บข้อมูลบนคลาวด์ที่ปลอดภัย และการทำธุรกรรมที่เข้ารหัสเพื่อให้แน่ใจว่าข้อมูลส่วนบุคคลและข้อมูลทางการเงินของคุณยังคงปลอดภัย",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "แน่นอนว่า Deewas มีให้บริการบน iOS, Android และเป็นแอปเว็บ ดังนั้นข้อมูลของคุณจึงซิงค์และเข้าถึงได้จากทุกที่",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "พรีเมียมปลดล็อกการวิเคราะห์ขั้นสูง การใช้งานผู้ช่วย AI แบบไม่จำกัด ประเภทแผนภูมิเพิ่มเติม ประวัติข้อมูลที่ขยายออกไป และลบโฆษณา แผนมีให้บริการรายเดือน รายปี หรือเป็นการซื้อครั้งเดียวตลอดชีพ"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "พรีเมียมปลดล็อกการวิเคราะห์ขั้นสูง การใช้งานผู้ช่วย AI แบบไม่จำกัด ประเภทแผนภูมิเพิ่มเติม ประวัติข้อมูลที่ขยายออกไป และลบโฆษณา แผนมีให้บริการรายเดือน รายปี หรือเป็นการซื้อครั้งเดียวตลอดชีพ",
+    "Web version only available for Premium account": "เวอร์ชันเว็บมีให้บริการเฉพาะบัญชีพรีเมียม",
+    "Download the app and upgrade to Premium to access web version": "ดาวน์โหลดแอปและอัปเกรดเป็นพรีเมียมเพื่อเข้าถึงเวอร์ชันเว็บ",
+    "Premium": "พรีเมียม"
   },
   "settingsBox": {
     "Set your currency": "ตั้งค่าสกุลเงินของคุณ",

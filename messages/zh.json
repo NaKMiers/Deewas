@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AI助手可以分析您的消费习惯，建议个性化预算，回答与财务相关的问题，甚至可以调整其个性以匹配您的偏好",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "是的，Deewas使用生物识别认证、安全的云存储和加密交易来确保您的个人和财务数据保持安全",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "当然，Deewas可在iOS、Android和Web应用上使用，因此您的数据可以随时同步和访问",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "高级版解锁高级分析、无限制的AI助手使用、额外的图表类型、扩展的数据历史记录，并移除广告，计划可按月、按年或一次性终身购买"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "高级版解锁高级分析、无限制的AI助手使用、额外的图表类型、扩展的数据历史记录，并移除广告，计划可按月、按年或一次性终身购买",
+    "Web version only available for Premium account": "仅限高级帐户的Web版本",
+    "Download the app and upgrade to Premium to access web version": "下载应用程序并升级到高级帐户以访问Web版本",
+    "Premium": "高级"
   },
   "settingsBox": {
     "Set your currency": "设置您的货币",

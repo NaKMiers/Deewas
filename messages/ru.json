@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AI помощник может анализировать ваши привычки в расходах, предлагать персонализированные бюджеты, отвечать на вопросы, связанные с финансами, и даже адаптировать свою личность в соответствии с вашими предпочтениями",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "Да, Deewas использует биометрическую аутентификацию, безопасное облачное хранилище и зашифрованные транзакции, чтобы гарантировать безопасность ваших личных и финансовых данных",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "Безусловно, Deewas доступен на iOS, Android и в виде веб-приложения, так что ваши данные остаются синхронизированными и доступными в любом месте",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Премиум-версия открывает доступ к расширенной аналитике, неограниченному использованию AI помощника, дополнительным типам графиков, расширенной истории данных и удаляет рекламу, планы доступны ежемесячно, ежегодно или в виде единовременной покупки на всю жизнь"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Премиум-версия открывает доступ к расширенной аналитике, неограниченному использованию AI помощника, дополнительным типам графиков, расширенной истории данных и удаляет рекламу, планы доступны ежемесячно, ежегодно или в виде единовременной покупки на всю жизнь",
+    "Web version only available for Premium account": "Веб-версия доступна только для премиум-аккаунтов",
+    "Download the app and upgrade to Premium to access web version": "Скачайте приложение и обновите до премиум, чтобы получить доступ к веб-версии",
+    "Premium": "Премиум"
   },
   "settingsBox": {
     "Set your currency": "Выберите валюту",

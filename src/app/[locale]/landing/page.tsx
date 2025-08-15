@@ -24,6 +24,7 @@ import {
   LucideSparkles,
   LucideWalletCards,
 } from 'lucide-react'
+import { Metadata } from 'next'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
@@ -233,7 +234,6 @@ const FAQs = [
       'Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase',
   },
 ]
-
 const reviews = [
   {
     image: '/images/avatars/avt1.jpg',
@@ -271,6 +271,44 @@ const reviews = [
     rating: 5,
   },
 ]
+
+export const metadata: Metadata = {
+  title: 'Deewas: Smart AI Money Planner',
+  description:
+    'Deewas is a personal finance management app integrated with an AI Agent, helping you track expenses, set budgets, analyze spending trends, and make smarter financial decisions across multiple devices.',
+  keywords:
+    'deewas, finance, personal finance, budgeting, expense tracking, AI, money management, app, mobile, web, planning, nguyen anh khoa',
+  icons: {
+    icon: ['/favicon.ico?v=4'],
+    apple: ['/apple-touch-icon.png?v=4'],
+    shortcut: ['/apple-touch-icon.png'],
+  },
+  manifest: '/site.webmanifest',
+  openGraph: {
+    title: 'Deewas: Smart AI Money Planner',
+    description:
+      'Deewas is a personal finance management app integrated with an AI Agent, helping you track expenses, set budgets, analyze spending trends, and make smarter financial decisions across multiple devices.',
+    url: process.env.NEXT_PUBLIC_APP_URL,
+    siteName: 'Deewas',
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/images/icon.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Deewas Logo',
+      },
+    ],
+    locale: 'en-US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Deewas: Smart AI Money Planner',
+    description:
+      'Deewas is a personal finance management app integrated with an AI Agent, helping you track expenses, set budgets, analyze spending trends, and make smarter financial decisions across multiple devices.',
+    images: [`${process.env.NEXT_PUBLIC_APP_URL}/images/icon.png`],
+  },
+}
 
 function LandingPage() {
   const t = useTranslations('landingPage')

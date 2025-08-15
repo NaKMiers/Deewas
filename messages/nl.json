@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "De AI-assistent kan je uitgavenpatronen analyseren, gepersonaliseerde budgetten voorstellen, vragen over financiën beantwoorden en zelfs zijn persoonlijkheid aanpassen aan jouw voorkeuren",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "Ja, Deewas maakt gebruik van biometrische authenticatie, veilige cloudopslag en versleutelde transacties om ervoor te zorgen dat jouw persoonlijke en financiële gegevens veilig blijven",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "Absoluut, Deewas is beschikbaar op iOS, Android en als webapp, zodat jouw gegevens gesynchroniseerd en overal toegankelijk blijven",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium ontgrendelt geavanceerde analyses, onbeperkt gebruik van de AI-assistent, extra grafiektypen, uitgebreide gegevensgeschiedenis en verwijdert advertenties. Abonnementen zijn beschikbaar op maandbasis, jaarlijks of als eenmalige levenslange aankoop"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium ontgrendelt geavanceerde analyses, onbeperkt gebruik van de AI-assistent, extra grafiektypen, uitgebreide gegevensgeschiedenis en verwijdert advertenties. Abonnementen zijn beschikbaar op maandbasis, jaarlijks of als eenmalige levenslange aankoop",
+    "Web version only available for Premium account": "Webversie alleen beschikbaar voor Premium-account",
+    "Download the app and upgrade to Premium to access web version": "Download de app en upgrade naar Premium om toegang te krijgen tot de webversie",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "Stel je valuta in",

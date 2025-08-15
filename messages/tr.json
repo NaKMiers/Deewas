@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AI Asistanı, harcama alışkanlıklarınızı analiz edebilir, kişiselleştirilmiş bütçeler önerebilir, finans ile ilgili soruları yanıtlayabilir ve hatta kişisel tercihlerinize uyacak şekilde kişiliğini adapte edebilir",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "Evet, Deewas biyometrik kimlik doğrulama, güvenli bulut depolama ve şifreli işlemler kullanarak kişisel ve finansal verilerinizin güvende kalmasını sağlar",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "Kesinlikle, Deewas iOS, Android ve Web Uygulaması olarak mevcuttur, böylece verileriniz her yerde senkronize ve erişilebilir kalır",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium, gelişmiş analizleri, sınırsız AI Asistanı kullanımını, ek grafik türlerini, genişletilmiş veri geçmişini açar ve reklamları kaldırır, planlar aylık, yıllık veya tek seferlik ömür boyu satın alma olarak mevcuttur"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium, gelişmiş analizleri, sınırsız AI Asistanı kullanımını, ek grafik türlerini, genişletilmiş veri geçmişini açar ve reklamları kaldırır, planlar aylık, yıllık veya tek seferlik ömür boyu satın alma olarak mevcuttur",
+    "Web version only available for Premium account": "Web sürümü yalnızca Premium hesabı için mevcuttur",
+    "Download the app and upgrade to Premium to access web version": "Uygulamayı indirin ve web sürümüne erişmek için Premium'a yükseltin",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "Para birimini ayarla",

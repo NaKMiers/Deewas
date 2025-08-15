@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AI ಸಹಾಯಕನು ನಿಮ್ಮ ಖರ್ಚು ಶ್ರೇಣಿಗಳನ್ನು ವಿಶ್ಲೇಷಿಸಲು, ವೈಯಕ್ತಿಕ ಬಜೆಟ್‌ಗಳನ್ನು ಶಿಫಾರಸು ಮಾಡಲು, ಹಣಕಾಸು ಸಂಬಂಧಿತ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಲು ಮತ್ತು ನಿಮ್ಮ ಇಚ್ಛೆಗಳಿಗೆ ಹೊಂದಿಸಲು ತನ್ನ ವ್ಯಕ್ತಿತ್ವವನ್ನು ಹೊಂದಿಸಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "ಹೌದು, Deewas ನಿಮ್ಮ ವೈಯಕ್ತಿಕ ಮತ್ತು ಹಣಕಾಸು ಡೇಟಾ ಸುರಕ್ಷಿತವಾಗಿರಲು ಜೈವಿಕ ದೃಢೀಕರಣ, ಸುರಕ್ಷಿತ ಕ್ಲೌಡ್ ಸಂಗ್ರಹಣೆ ಮತ್ತು ಎನ್‌ಕ್ರಿಪ್ಟೆಡ್ ವ್ಯವಹಾರಗಳನ್ನು ಬಳಸುತ್ತದೆ",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "ಖಂಡಿತವಾಗಿ, Deewas iOS, Android ಮತ್ತು ವೆಬ್ ಅಪ್ಲಿಕೇಶನ್‌ನಲ್ಲಿ ಲಭ್ಯವಿದೆ, ಆದ್ದರಿಂದ ನಿಮ್ಮ ಡೇಟಾ ಎಲ್ಲೆಡೆ ಸಿಂಕ್ ಮತ್ತು ಪ್ರವೇಶಿಸಲು ಲಭ್ಯವಿದೆ",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "ಪ್ರೀಮಿಯಂ ಉನ್ನತ ವಿಶ್ಲೇಷಣೆ, ಅಸীম AI ಸಹಾಯಕ ಬಳಕೆ, ಹೆಚ್ಚುವರಿ ಚಾರ್ಟ್ ಪ್ರಕಾರಗಳು, ವಿಸ್ತೃತ ಡೇಟಾ ಇತಿಹಾಸ ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ, ಯೋಜನೆಗಳು ಮಾಸಿಕ, ವಾರ್ಷಿಕ ಅಥವಾ ಒಮ್ಮೆ lifetime ಖರೀದಿಯಾಗಿ ಲಭ್ಯವಿದೆ"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "ಪ್ರೀಮಿಯಂ ಉನ್ನತ ವಿಶ್ಲೇಷಣೆ, ಅಸীম AI ಸಹಾಯಕ ಬಳಕೆ, ಹೆಚ್ಚುವರಿ ಚಾರ್ಟ್ ಪ್ರಕಾರಗಳು, ವಿಸ್ತೃತ ಡೇಟಾ ಇತಿಹಾಸ ಮತ್ತು ಜಾಹೀರಾತುಗಳನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ, ಯೋಜನೆಗಳು ಮಾಸಿಕ, ವಾರ್ಷಿಕ ಅಥವಾ ಒಮ್ಮೆ lifetime ಖರೀದಿಯಾಗಿ ಲಭ್ಯವಿದೆ",
+    "Web version only available for Premium account": "ವೆಬ್ ಆವೃತ್ತಿ ಪ್ರೀಮಿಯಂ ಖಾತೆಗೆ ಮಾತ್ರ ಲಭ್ಯವಿದೆ",
+    "Download the app and upgrade to Premium to access web version": "ವೆಬ್ ಆವೃತ್ತಿಗೆ ಪ್ರವೇಶಿಸಲು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ ಮತ್ತು ಪ್ರೀಮಿಯಂಗೆ ಅಪ್‌ಗ್ರೇಡ್ ಮಾಡಿ",
+    "Premium": "ಪ್ರೀಮಿಯಂ"
   },
   "settingsBox": {
     "Set your currency": "ನಿಮ್ಮ ಕರೆನ್ಸಿಯನ್ನು ಸೆಟ್ ಮಾಡಿ",

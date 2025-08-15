@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads. Plans are available monthly, yearly, or as a one-time lifetime purchase"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads. Plans are available monthly, yearly, or as a one-time lifetime purchase",
+    "Web version only available for Premium account": "Web version only available for Premium account",
+    "Download the app and upgrade to Premium to access web version": "Download the app and upgrade to Premium to access web version",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "Set your currency",

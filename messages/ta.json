@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AI సహాయకుడు మీ ఖర్చు అలవాట్లను విశ్లేషించగలడు, వ్యక్తిగత బడ్జెట్లను సూచించగలడు, ఆర్థిక సంబంధిత ప్రశ్నలకు సమాధానమివ్వగలడు, మరియు మీ ఇష్టాలకు అనుగుణంగా దాని వ్యక్తిత్వాన్ని అనుకూలీకరించగలడు",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "అవును, Deewas మీ వ్యక్తిగత మరియు ఆర్థిక డేటా భద్రంగా ఉండేందుకు బయోమెట్రిక్ ధృవీకరణ, భద్రతా క్లౌడ్ నిల్వ, మరియు ఎన్‌క్రిప్టెడ్ లావాదేవీలను ఉపయోగిస్తుంది",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "ఖచ్చితంగా, Deewas iOS, Android మరియు వెబ్ యాప్ గా అందుబాటులో ఉంది, కాబట్టి మీ డేటా ఎక్కడైనా సమకాలీకరించబడుతుంది మరియు అందుబాటులో ఉంటుంది",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "ప్రీమియమ్ అధిక విశ్లేషణ, అపరిమిత AI సహాయకుడు వినియోగం, అదనపు చార్ట్ రకాలు, విస్తృత డేటా చరిత్రను అన్లాక్ చేస్తుంది మరియు ప్రకటనలను తొలగిస్తుంది, ప్రణాళికలు నెలవారీ, వార్షిక లేదా ఒకసారి జీవితకాల కొనుగోలుగా అందుబాటులో ఉన్నాయి"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "ప్రీమియమ్ అధిక విశ్లేషణ, అపరిమిత AI సహాయకుడు వినియోగం, అదనపు చార్ట్ రకాలు, విస్తృత డేటా చరిత్రను అన్లాక్ చేస్తుంది మరియు ప్రకటనలను తొలగిస్తుంది, ప్రణాళికలు నెలవారీ, వార్షిక లేదా ఒకసారి జీవితకాల కొనుగోలుగా అందుబాటులో ఉన్నాయి",
+    "Web version only available for Premium account": "வெப் பதிப்பு ப்ரீமியம் கணக்குக்கு மட்டுமே கிடைக்கிறது",
+    "Download the app and upgrade to Premium to access web version": "வெப் பதிப்புக்கு அணுகுவதற்காக செயலியை பதிவிறக்கம் செய்து ப்ரீமியமாக மேம்படுத்தவும்",
+    "Premium": "ப்ரீமியம்"
   },
   "settingsBox": {
     "Set your currency": "உங்கள் நாணயத்தை அமைக்கவும்",

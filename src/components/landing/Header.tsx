@@ -8,7 +8,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { useLocale, useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
-import { useCallback, useState } from 'react'
+import { ReactNode, useCallback, useState } from 'react'
 import { Button } from '../ui/button'
 import { Command, CommandItem, CommandList, CommandSeparator } from '../ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
@@ -33,9 +33,26 @@ function Header({ routes, className }: HeaderProps) {
     <div className={cn('sticky top-0 z-10 bg-background/50', className)}>
       {!checkPremium(user) && (
         <p className="border-b border-primary/10 px-2 py-1 text-center text-xs md:text-sm">
-          Web version only available for <span className="font-semibold text-green-500">Premium</span>{' '}
-          account. Download the app and upgrade to{' '}
-          <span className="font-semibold text-green-500">Premium</span> to access web version.
+          {(() => {
+            const premiumText = t('Premium')
+            const message = `${t('Web version only available for Premium account')}. ${t('Download the app and upgrade to Premium to access web version')}.`
+            const parts = message.split(premiumText)
+            return parts.reduce<ReactNode[]>((acc, part, idx) => {
+              acc.push(part)
+              if (idx < parts.length - 1) {
+                acc.push(
+                  <span
+                    className="font-semibold text-green-500"
+                    key={idx}
+                  >
+                    {premiumText}
+                  </span>
+                )
+              }
+              console.log(acc)
+              return acc
+            }, [])
+          })()}
         </p>
       )}
       <header className="relative mx-auto flex h-[52px] w-full items-center justify-between gap-21 px-21/2 drop-shadow-lg md:max-w-fit lg:px-21">

@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "ผู้ช่วย AI สามารถวิเคราะห์พฤติกรรมการใช้จ่ายของคุณแนะนำงบประมาณที่ปรับให้เหมาะสมตอบคำถามที่เกี่ยวข้องกับการเงินและแม้แต่ปรับบุคลิกภาพให้ตรงกับความชอบของคุณ",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "ใช่ Deewas ใช้การตรวจสอบสิทธิ์ทางชีวภาพการจัดเก็บข้อมูลในคลาวด์ที่ปลอดภัยและการทำธุรกรรมที่เข้ารหัสเพื่อให้แน่ใจว่าข้อมูลส่วนบุคคลและข้อมูลทางการเงินของคุณยังคงปลอดภัย",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "แน่นอนว่า Deewas มีให้บริการบน iOS, Android และเป็นแอปเว็บดังนั้นข้อมูลของคุณจึงซิงค์และเข้าถึงได้จากทุกที่",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "พรีเมียมปลดล็อกการวิเคราะห์ขั้นสูงการใช้งาน AI Assistant แบบไม่จำกัดประเภทแผนภูมิเพิ่มเติมประวัติข้อมูลที่ขยายออกไปและลบโฆษณาแผนมีให้บริการรายเดือนรายปีหรือเป็นการซื้อครั้งเดียวตลอดชีพ"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "พรีเมียมปลดล็อกการวิเคราะห์ขั้นสูงการใช้งาน AI Assistant แบบไม่จำกัดประเภทแผนภูมิเพิ่มเติมประวัติข้อมูลที่ขยายออกไปและลบโฆษณาแผนมีให้บริการรายเดือนรายปีหรือเป็นการซื้อครั้งเดียวตลอดชีพ",
+    "Web version only available for Premium account": "Webversie alleen beschikbaar voor Premium-account",
+    "Download the app and upgrade to Premium to access web version": "Download de app en upgrade naar Premium om toegang te krijgen tot de webversie",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "നിന്റെ കറൻസി സെറ്റ് ചെയ്യുക",

@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AI સહાયક તમારા ખર્ચના આચરણોનું વિશ્લેષણ કરી શકે છે, વ્યક્તિગત બજેટની ભલામણ કરી શકે છે, નાણાં સંબંધિત પ્રશ્નોના જવાબ આપી શકે છે, અને તમારા પસંદગીઓ સાથે મેળ ખાવા માટે તેની વ્યક્તિગતતા પણ અનુકૂળ કરી શકે છે",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "હા, દીવાદ બાયોઇમેટ્રિક ઓથેન્ટિકેશન, સુરક્ષિત ક્લાઉડ સ્ટોરેજ, અને એન્ક્રિપ્ટેડ ટ્રાન્ઝેક્શન્સનો ઉપયોગ કરે છે જેથી તમારા વ્યક્તિગત અને નાણાકીય ડેટા સુરક્ષિત રહે",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "બિલકુલ, દીવાદ iOS, Android, અને વેબ એપ તરીકે ઉપલબ્ધ છે, તેથી તમારું ડેટા ક્યાંય પણ સમન્વયિત અને ઉપલબ્ધ રહે છે",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "પ્રીમિયમ અદ્યતન વિશ્લેષણ, અનલિમિટેડ AI સહાયક ઉપયોગ, વધારાના ચાર્ટ પ્રકારો, વિસ્તૃત ડેટા ઇતિહાસને અનલોક કરે છે, અને જાહેરાતોને દૂર કરે છે, યોજનાઓ માસિક, વાર્ષિક, અથવા એકવારની જીવનકાળની ખરીદી તરીકે ઉપલબ્ધ છે"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "પ્રીમિયમ અદ્યતન વિશ્લેષણ, અનલિમિટેડ AI સહાયક ઉપયોગ, વધારાના ચાર્ટ પ્રકારો, વિસ્તૃત ડેટા ઇતિહાસને અનલોક કરે છે, અને જાહેરાતોને દૂર કરે છે, યોજનાઓ માસિક, વાર્ષિક, અથવા એકવારની જીવનકાળની ખરીદી તરીકે ઉપલબ્ધ છે",
+    "Web version only available for Premium account": "વેબ સંસ્કરણ ફક્ત પ્રીમિયમ ખાતા માટે ઉપલબ્ધ છે",
+    "Download the app and upgrade to Premium to access web version": "એપ્લિકેશન ડાઉનલોડ કરો અને વેબ સંસ્કરણને ઍક્સેસ કરવા માટે પ્રીમિયમમાં અપગ્રેડ કરો",
+    "Premium": "પ્રીમિયમ"
   },
   "settingsBox": {
     "Set your currency": "તમારી કરન્સી સેટ કરો",

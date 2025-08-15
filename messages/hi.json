@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "AI सहायक आपके खर्च करने की आदतों का विश्लेषण कर सकता है, व्यक्तिगत बजट का सुझाव दे सकता है, वित्त से संबंधित प्रश्नों का उत्तर दे सकता है, और यहां तक कि आपकी प्राथमिकताओं के अनुसार अपनी व्यक्तित्व को अनुकूलित कर सकता है",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "हाँ, Deewas बायोमेट्रिक प्रमाणीकरण, सुरक्षित क्लाउड स्टोरेज और एन्क्रिप्टेड लेनदेन का उपयोग करता है ताकि आपके व्यक्तिगत और वित्तीय डेटा सुरक्षित रहें",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "बिल्कुल, Deewas iOS, Android और एक वेब ऐप के रूप में उपलब्ध है, इसलिए आपका डेटा कहीं भी समन्वयित और सुलभ रहता है",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "प्रीमियम उन्नत विश्लेषण, असीमित AI सहायक उपयोग, अतिरिक्त चार्ट प्रकार, विस्तारित डेटा इतिहास को अनलॉक करता है, और विज्ञापनों को हटा देता है, योजनाएँ मासिक, वार्षिक, या एक बार की जीवनकाल खरीद के रूप में उपलब्ध हैं"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "प्रीमियम उन्नत विश्लेषण, असीमित AI सहायक उपयोग, अतिरिक्त चार्ट प्रकार, विस्तारित डेटा इतिहास को अनलॉक करता है, और विज्ञापनों को हटा देता है, योजनाएँ मासिक, वार्षिक, या एक बार की जीवनकाल खरीद के रूप में उपलब्ध हैं",
+    "Web version only available for Premium account": "वेब संस्करण केवल प्रीमियम खाते के लिए उपलब्ध है",
+    "Download the app and upgrade to Premium to access web version": "ऐप डाउनलोड करें और वेब संस्करण तक पहुंचने के लिए प्रीमियम में अपग्रेड करें",
+    "Premium": "प्रीमियम"
   },
   "settingsBox": {
     "Set your currency": "अपनी मुद्रा सेट करें",

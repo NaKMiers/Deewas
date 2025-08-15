@@ -1146,7 +1146,10 @@
     "The AI Assistant can analyze your spending habits, suggest personalized budgets, answer finance-related questions, and even adapt its personality to match your preferences": "يمكن لمساعد الذكاء الاصطناعي تحليل عادات إنفاقك، واقتراح ميزانيات مخصصة، والإجابة على الأسئلة المتعلقة بالمالية، وحتى التكيف مع شخصيتك لتناسب تفضيلاتك",
     "Yes, Deewas uses biometric authentication, secure cloud storage, and encrypted transactions to ensure your personal and financial data remain safe": "نعم، يستخدم Deewas المصادقة البيومترية، والتخزين السحابي الآمن، والمعاملات المشفرة لضمان بقاء بياناتك الشخصية والمالية آمنة",
     "Absolutely, Deewas is available on iOS, Android, and as a Web App, so your data stays synced and accessible anywhere": "بالتأكيد، Deewas متاح على iOS و Android، وكذلك كـ Web App، لذا تظل بياناتك متزامنة وقابلة للوصول في أي مكان",
-    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "تفتح خطة Premium تحليلات متقدمة، واستخدام غير محدود لمساعد الذكاء الاصطناعي، وأنواع إضافية من الرسوم البيانية، وتاريخ بيانات موسع، وتزيل الإعلانات، وتتوفر الخطط شهريًا، سنويًا، أو كشراء لمرة واحدة مدى الحياة"
+    "Premium unlocks advanced analytics, unlimited AI Assistant usage, additional chart types, extended data history, and removes ads, plans are available monthly, yearly, or as a one-time lifetime purchase": "تفتح خطة Premium تحليلات متقدمة، واستخدام غير محدود لمساعد الذكاء الاصطناعي، وأنواع إضافية من الرسوم البيانية، وتاريخ بيانات موسع، وتزيل الإعلانات، وتتوفر الخطط شهريًا، سنويًا، أو كشراء لمرة واحدة مدى الحياة",
+    "Web version only available for Premium account": "النسخة الويب متاحة فقط لحساب Premium",
+    "Download the app and upgrade to Premium to access web version": "قم بتنزيل التطبيق وترقية حسابك إلى Premium للوصول إلى النسخة الويب",
+    "Premium": "Premium"
   },
   "settingsBox": {
     "Set your currency": "اختر عملتك",
